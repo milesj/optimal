@@ -1,0 +1,15 @@
+coverage/
+flow/
+flow-typed/
+tests/
+.babelrc
+.eslintcache
+.eslintignore
+.eslintrc
+.flowconfig
+.gitignore
+.npmignore
+.travis.yml
+.yarnclean
+jest.json
+yarn-error.log
