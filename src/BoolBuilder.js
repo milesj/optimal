@@ -5,10 +5,26 @@
  */
 
 import Builder from './Builder';
+import invariant from './invariant';
 
 export default class BoolBuilder extends Builder<boolean> {
   constructor(defaultValue: boolean) {
     super('boolean', defaultValue);
+  }
+
+  only(): this {
+    invariant(
+      (typeof this.defaultValue === 'boolean'),
+      'bool.only() requires a boolean default value.',
+    );
+
+    return this.addCheck(this.checkOnly);
+  }
+
+  checkOnly(path: string, value: *) {
+    const only = this.defaultValue;
+
+    invariant((value === only), `Boolean may only be ${String(only)}.`, path);
   }
 }
 

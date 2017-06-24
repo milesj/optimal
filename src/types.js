@@ -9,7 +9,7 @@ import type BoolBuilder from './BoolBuilder';
 
 export type SupportedType = 'boolean' | 'string' | 'number';
 
-export type Checker = (path: string, value: *) => void;
+export type Checker = (path: string, value: *, ...args: *[]) => void;
 
 export type Blueprint = { [key: string]: Builder<*> | Blueprint };
 

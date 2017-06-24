@@ -5,6 +5,7 @@
  */
 
 import { bool } from './BoolBuilder';
+import { string } from './StringBuilder';
 import isObject from './isObject';
 
 import type { Factory, Blueprint } from './types';
@@ -61,6 +62,7 @@ export default class Options {
     // and run validation checks on each property and value recursively
     const options = buildAndCheckOptions(baseOptions, factory({
       bool,
+      string,
     }));
 
     // Since there are no class properties or methods on Options,

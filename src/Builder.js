@@ -10,8 +10,11 @@ import isObject from './isObject';
 import type { SupportedType, Checker } from './types';
 
 export default class Builder<T> {
+  checks: {
+    args: *[],
+    func: Checker,
+  }[];
   defaultValue: T;
-  checks: Checker[];
   type: SupportedType;
 
   constructor(type: SupportedType, defaultValue: T) {
@@ -19,9 +22,23 @@ export default class Builder<T> {
       throw new TypeError(`A default value for type "${type}" is required.`);
     }
 
+    this.checks = [];
     this.defaultValue = defaultValue;
-    this.checks = [this.checkTypeOf];
     this.type = type;
+
+    this.addCheck(this.checkTypeOf);
+  }
+
+  /**
+   * Add a checking function with optional arguments.
+   */
+  addCheck(func: Checker, ...args: *[]): this {
+    this.checks.push({
+      args,
+      func,
+    });
+
+    return this;
   }
 
   /**
@@ -30,8 +47,8 @@ export default class Builder<T> {
   runChecks(path: string, initialValue: *): * {
     const value = (typeof initialValue === 'undefined') ? this.defaultValue : initialValue;
 
-    this.checks.forEach((check) => {
-      check.call(this, path, value);
+    this.checks.forEach((checker) => {
+      checker.func.call(this, path, value, ...checker.args);
     });
 
     return value;
@@ -43,14 +60,14 @@ export default class Builder<T> {
   checkTypeOf(path: string, value: *) {
     switch (this.type) {
       case 'array':
-        return invariant(Array.isArray(value), path, 'Must be an array.');
+        return invariant(Array.isArray(value), 'Must be an array.', path);
 
       case 'object':
-        return invariant(isObject(value), path, 'Must be a plain object.');
+        return invariant(isObject(value), 'Must be a plain object.', path);
 
       default:
         // eslint-disable-next-line valid-typeof
-        return invariant((typeof value === this.type), path, `Must be a ${this.type}.`);
+        return invariant((typeof value === this.type), `Must be a ${this.type}.`, path);
     }
   }
 }

@@ -7,8 +7,14 @@
 /**
  * Throw an error if the condition is falsy.
  */
-export default function invariant(condition: boolean, path: string, message: string) {
-  if (!condition) {
+export default function invariant(condition: boolean, message: string, path: string = '') {
+  if (condition) {
+    return;
+  }
+
+  if (path) {
     throw new Error(`Invalid option "${path}". ${message}`);
+  } else {
+    throw new Error(message);
   }
 }
