@@ -5,6 +5,7 @@
  */
 
 import { bool } from './BoolBuilder';
+import { func } from './FuncBuilder';
 import { string } from './StringBuilder';
 import isObject from './isObject';
 
@@ -62,6 +63,7 @@ export default class Options {
     // and run validation checks on each property and value recursively
     const options = buildAndCheckOptions(baseOptions, factory({
       bool,
+      func,
       string,
     }));
 

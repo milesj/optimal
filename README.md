@@ -13,18 +13,24 @@ The plain object is then validated, built, and returned.
 const baseOptions = {
   bool: false,
   number: 10,
+  object: {
+    foo: 'b',
+  },
 };
 
-const options = new Options(baseOptions, ({ bool, string, number, func }) => ({
-  bool: bool(true),
-  string: string('foo').notEmpty(),
-  number: number(5).between(0, 10),
-  func: func(),
+const options = new Options(baseOptions, (o) => ({
+  bool: o.bool(true),
+  string: o.string('foo').notEmpty(),
+  number: o.number(5).between(0, 10),
+  func: o.func(),
+  object: {
+    foo: o.string().oneOf(['a', 'b', 'c']),
+  },
 }));
 
 /*
 {
-  bool: true,
+  bool: false,
   string: 'foo',
   number: 10,
   func: null,

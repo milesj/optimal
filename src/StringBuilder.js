@@ -11,6 +11,9 @@ import isString from './isString';
 export default class StringBuilder extends Builder<string> {
   constructor(defaultValue: *) {
     super('string', defaultValue);
+
+    // Only allow strings
+    this.required();
   }
 
   contains(token: string, index: number = 0): this {

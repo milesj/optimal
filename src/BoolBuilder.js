@@ -10,12 +10,15 @@ import invariant from './invariant';
 export default class BoolBuilder extends Builder<boolean> {
   constructor(defaultValue: boolean) {
     super('boolean', defaultValue);
+
+    // Only allow booleans
+    this.required();
   }
 
   only(): this {
     invariant(
       (typeof this.defaultValue === 'boolean'),
-      'bool.only() requires a boolean default value.',
+      'bool.only() requires a default boolean value.',
     );
 
     return this.addCheck(this.checkOnly);
