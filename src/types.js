@@ -20,6 +20,7 @@ export type Blueprint = { [key: string]: Builder<*> | Blueprint };
 export type FactoryMap = {
   bool: (value: boolean) => BoolBuilder,
   func: (value: ?Function) => FuncBuilder,
+  number: (value: number) => NumberBuilder,
   string: (value: string) => StringBuilder,
 };
 

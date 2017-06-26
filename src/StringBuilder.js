@@ -6,10 +6,13 @@
 
 import Builder from './Builder';
 import invariant from './invariant';
-import isString from './isString';
+
+function isString(value: *): boolean {
+  return (typeof value === 'string' && value !== '');
+}
 
 export default class StringBuilder extends Builder<string> {
-  constructor(defaultValue: *) {
+  constructor(defaultValue: string = '') {
     super('string', defaultValue);
 
     // Only allow strings

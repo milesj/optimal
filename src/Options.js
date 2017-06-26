@@ -4,14 +4,16 @@
  * @flow
  */
 
+import Builder from './Builder';
 import { bool } from './BoolBuilder';
 import { func } from './FuncBuilder';
+import { number } from './NumberBuilder';
 import { string } from './StringBuilder';
 import isObject from './isObject';
 
 import type { Factory, Blueprint } from './types';
 
-function buildAndCheckOptions(
+export function buildAndCheckOptions(
   baseOptions: Object,
   blueprint: Blueprint,
   parentPath: string = '',
@@ -26,7 +28,7 @@ function buildAndCheckOptions(
     const path = parentPath ? `${parentPath}.${key}` : '';
 
     // Run validation checks
-    if (builder instanceof builder) {
+    if (builder instanceof Builder) {
       options[key] = builder.runChecks(path, value);
 
     // Builder is a plain object, so let's recursively try again
@@ -64,6 +66,7 @@ export default class Options {
     const options = buildAndCheckOptions(baseOptions, factory({
       bool,
       func,
+      number,
       string,
     }));
 
