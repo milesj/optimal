@@ -4,11 +4,11 @@
  * @flow
  */
 
-export default class Options {
-  constructor(options: Object) {
-    Object.keys(options).forEach((key) => {
-      // $FlowIgnore
-      this[key] = options[key];
-    });
-  }
+/**
+ * When in production, we want to avoid all the unnecessary overhead.
+ * We can achieve this by "faking" a class using a function,
+ * and simply have the function return the options object as is.
+ */
+export default function Options(options: Object) {
+  return options;
 }

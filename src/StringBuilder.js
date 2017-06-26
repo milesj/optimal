@@ -26,7 +26,7 @@ export default class StringBuilder extends Builder<string> {
   }
 
   checkContains(path: string, value: *, token: string, index: number = 0) {
-    invariant(value.includes(token, index), `String does not include ${token}.`, path);
+    invariant(value.includes(token, index), `String does not include "${token}".`, path);
   }
 
   match(pattern: RegExp): this {
@@ -39,7 +39,7 @@ export default class StringBuilder extends Builder<string> {
   }
 
   checkMatch(path: string, value: *, pattern: RegExp) {
-    invariant(value.match(pattern), `String does not match pattern: ${pattern.source}.`, path);
+    invariant(value.match(pattern), `String does not match pattern "${pattern.source}".`, path);
   }
 
   notEmpty(): this {
