@@ -7,13 +7,12 @@ describe('Options', () => {
 
   // This blueprint is based on Webpack's configuration: https://webpack.js.org/configuration/
   // Webpack provides a pretty robust example of how to use this library.
-  // const factory = ({ bool, func, string, number }) => {
+  // const factory = ({ arrayOf, bool, func, string, number }) => {
   //   return {
   //     context: string(process.cwd()).notEmpty(),
   //     entry: [
   //       string().notEmpty(),
-  //       // TODO
-  //       // arrayOf(string()),
+  //       arrayOf(string()),
   //       // objectOf([
   //       //   string().notEmpty(),
   //       //   arrayOf(string()),
@@ -47,7 +46,7 @@ describe('Options', () => {
   //       library: string(),
   //       libraryExport: [
   //         string(),
-  //         // arrayOf(string()), TODO
+  //         arrayOf(string()),
   //       ],
   //       libraryTarget: string('var').oneOf([
   //         'var', 'this', 'window', 'global', 'assign', 'jsonp',

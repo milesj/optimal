@@ -5,6 +5,7 @@
  */
 
 import Builder from './Builder';
+import { arrayOf } from './ArrayBuilder';
 import { bool } from './BoolBuilder';
 import { func } from './FuncBuilder';
 import { number } from './NumberBuilder';
@@ -64,6 +65,7 @@ export default class Options {
     // Generate the options blueprint based on the builders provided by the factory,
     // and run validation checks on each property and value recursively
     const options = buildAndCheckOptions(baseOptions, factory({
+      arrayOf,
       bool,
       func,
       number,
