@@ -8,20 +8,17 @@ import Builder from './Builder';
 import invariant from './invariant';
 
 export default class ArrayBuilder<T> extends Builder<T[]> {
-  contents: Builder<T>;
-
   constructor(contents: Builder<T>) {
     super('array', []);
 
     invariant((contents instanceof Builder), 'A blueprint is required for array contents.');
 
-    this.contents = contents;
-    this.addCheck(this.checkContents);
+    this.addCheck(this.checkContents, contents);
   }
 
-  checkContents(path: string, array: *) {
+  checkContents(path: string, array: *, contents: Builder<T>) {
     array.forEach((value) => {
-      this.contents.runChecks(path, value);
+      contents.runChecks(path, value);
     });
   }
 }

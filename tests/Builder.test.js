@@ -207,4 +207,41 @@ describe('Builder', () => {
       }).toThrowError('Invalid option "key". Must be a string.');
     });
   });
+
+  describe('only()', () => {
+    it('errors if default value is not the same type', () => {
+      builder.defaultValue = 123;
+
+      expect(() => {
+        builder.only();
+      }).toThrowError('only() requires a default string value.');
+    });
+
+    it('adds a checker', () => {
+      builder.only();
+
+      expect(builder.checks[1]).toEqual({
+        func: builder.checkOnly,
+        args: [],
+      });
+    });
+  });
+
+  describe('checkOnly()', () => {
+    beforeEach(() => {
+      builder.only();
+    });
+
+    it('errors if value doesnt match the default value', () => {
+      expect(() => {
+        builder.checkOnly('key', 'bar');
+      }).toThrowError('Invalid option "key". Value may only be "foo".');
+    });
+
+    it('doesnt error if value matches default value', () => {
+      expect(() => {
+        builder.checkOnly('key', 'foo');
+      }).not.toThrowError('Invalid option "key". Value may only be "foo".');
+    });
+  });
 });

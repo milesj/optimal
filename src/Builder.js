@@ -42,6 +42,17 @@ export default class Builder<T> {
   }
 
   /**
+   * Validate the value matches only the default value.
+   */
+  checkOnly(path: string, value: *) {
+    invariant(
+      (value === this.defaultValue),
+      `Value may only be "${String(this.defaultValue)}".`,
+      path,
+    );
+  }
+
+  /**
    * Validate the type of value.
    */
   checkTypeOf(path: string, value: *) {
@@ -59,6 +70,19 @@ export default class Builder<T> {
         invariant((typeof value === this.type), `Must be a ${this.type}.`, path);
         break;
     }
+  }
+
+  /**
+   * Mark a field as only the default value can be used.
+   */
+  only(): this {
+    invariant(
+      // eslint-disable-next-line valid-typeof
+      (typeof this.defaultValue === this.type),
+      `only() requires a default ${this.type} value.`,
+    );
+
+    return this.addCheck(this.checkOnly);
   }
 
   /**
