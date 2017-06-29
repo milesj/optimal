@@ -7,32 +7,38 @@ describe('Options', () => {
 
   // This blueprint is based on Webpack's configuration: https://webpack.js.org/configuration/
   // Webpack provides a pretty robust example of how to use this library.
-  // const factory = ({ arrayOf, bool, func, string, number }) => {
-  //   return {
-  //     context: string(process.cwd()).notEmpty(),
-  //     entry: [
-  //       string().notEmpty(),
-  //       arrayOf(string()),
-  //       // objectOf([
-  //       //   string().notEmpty(),
-  //       //   arrayOf(string()),
-  //       // ]),
-  //       func(),
-  //     ],
-  //     output: {
-  //       chunkFilename: string('[id].js').notEmpty(),
-  //       chunkLoadTimeout: number(120000),
-  //       crossOriginLoading: [
-  //         bool(false).only(),
-  //         string('anonymous').oneOf(['anonymous', 'use-credentials']),
-  //       ],
-  //       filename: string('bundle.js').notEmpty(),
-  //       hashFunction: string('md5').oneOf(['md5', 'sha256', 'sha512']),
-  //       path: string().notEmpty(),
-  //       publicPath: string(),
-  //     },
-  //   };
-  // };
+  // eslint-disable-next-line
+  const factory = ({ arrayOf, objectOf, bool, func, string, number, regex }) => ({
+    context: string(process.cwd()).notEmpty(),
+    entry: [
+      string().notEmpty(),
+      arrayOf(string()),
+      objectOf([
+        string().notEmpty(),
+        arrayOf(string()),
+      ]),
+      func(),
+    ],
+    output: {
+      chunkFilename: string('[id].js').notEmpty(),
+      chunkLoadTimeout: number(120000),
+      crossOriginLoading: [
+        bool(false).only(),
+        string('anonymous').oneOf(['anonymous', 'use-credentials']),
+      ],
+      filename: string('bundle.js').notEmpty(),
+      hashFunction: string('md5').oneOf(['md5', 'sha256', 'sha512']),
+      path: string().notEmpty(),
+      publicPath: string(),
+    },
+    module: {
+      noParse: [
+        regex(),
+        arrayOf(regex()),
+        func(),
+      ],
+    },
+  });
 
   describe('constructor()', () => {
     it('errors if a non-object is passed', () => {

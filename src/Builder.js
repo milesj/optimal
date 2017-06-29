@@ -65,6 +65,10 @@ export default class Builder<T> {
         invariant(isObject(value), 'Must be a plain object.', path);
         break;
 
+      case 'regex':
+        invariant((value instanceof RegExp), 'Must be a `RegExp`.', path);
+        break;
+
       default:
         // eslint-disable-next-line valid-typeof
         invariant((typeof value === this.type), `Must be a ${this.type}.`, path);

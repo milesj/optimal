@@ -1,4 +1,7 @@
 {
+  "env": {
+    "node": true
+  },
   "rules": {
     "no-magic-numbers": 0
   }
