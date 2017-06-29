@@ -7,16 +7,18 @@ describe('StringBuilder', () => {
     builder = new StringBuilder('foo');
   });
 
-  it('errors if a non-string value is used', () => {
-    expect(() => {
-      builder.runChecks('key', 123);
-    }).toThrowError('Invalid option "key". Must be a string.');
-  });
+  describe('runChecks()', () => {
+    it('errors if a non-string value is used', () => {
+      expect(() => {
+        builder.runChecks('key', 123);
+      }).toThrowError('Invalid option "key". Must be a string.');
+    });
 
-  it('errors if a null value is used', () => {
-    expect(() => {
-      builder.runChecks('key', null);
-    }).toThrowError('Invalid option "key". Must be a string.');
+    it('errors if a null value is used', () => {
+      expect(() => {
+        builder.runChecks('key', null);
+      }).toThrowError('Invalid option "key". Must be a string.');
+    });
   });
 
   describe('contains()', () => {

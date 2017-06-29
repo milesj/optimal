@@ -7,16 +7,18 @@ describe('FuncBuilder', () => {
     builder = new FuncBuilder();
   });
 
-  it('errors if a non-function value is used', () => {
-    expect(() => {
-      builder.runChecks('key', 123);
-    }).toThrowError('Invalid option "key". Must be a function.');
-  });
+  describe('runChecks()', () => {
+    it('errors if a non-function value is used', () => {
+      expect(() => {
+        builder.runChecks('key', 123);
+      }).toThrowError('Invalid option "key". Must be a function.');
+    });
 
-  it('allows nulls', () => {
-    expect(() => {
-      builder.runChecks('key', null);
-    }).not.toThrowError('Invalid option "key". Must be a function.');
+    it('allows nulls', () => {
+      expect(() => {
+        builder.runChecks('key', null);
+      }).not.toThrowError('Invalid option "key". Must be a function.');
+    });
   });
 });
 

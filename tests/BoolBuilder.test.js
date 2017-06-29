@@ -7,16 +7,18 @@ describe('BoolBuilder', () => {
     builder = new BoolBuilder(true);
   });
 
-  it('errors if a non-boolean value is used', () => {
-    expect(() => {
-      builder.runChecks('key', 123);
-    }).toThrowError('Invalid option "key". Must be a boolean.');
-  });
+  describe('runChecks()', () => {
+    it('errors if a non-boolean value is used', () => {
+      expect(() => {
+        builder.runChecks('key', 123);
+      }).toThrowError('Invalid option "key". Must be a boolean.');
+    });
 
-  it('errors if a null value is used', () => {
-    expect(() => {
-      builder.runChecks('key', null);
-    }).toThrowError('Invalid option "key". Must be a boolean.');
+    it('errors if a null value is used', () => {
+      expect(() => {
+        builder.runChecks('key', null);
+      }).toThrowError('Invalid option "key". Must be a boolean.');
+    });
   });
 });
 

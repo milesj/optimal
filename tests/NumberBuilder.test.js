@@ -7,16 +7,18 @@ describe('NumberBuilder', () => {
     builder = new NumberBuilder(123);
   });
 
-  it('errors if a non-number value is used', () => {
-    expect(() => {
-      builder.runChecks('key', 'foo');
-    }).toThrowError('Invalid option "key". Must be a number.');
-  });
+  describe('runChecks()', () => {
+    it('errors if a non-number value is used', () => {
+      expect(() => {
+        builder.runChecks('key', 'foo');
+      }).toThrowError('Invalid option "key". Must be a number.');
+    });
 
-  it('errors if a null value is used', () => {
-    expect(() => {
-      builder.runChecks('key', null);
-    }).toThrowError('Invalid option "key". Must be a number.');
+    it('errors if a null value is used', () => {
+      expect(() => {
+        builder.runChecks('key', null);
+      }).toThrowError('Invalid option "key". Must be a number.');
+    });
   });
 
   describe('between()', () => {

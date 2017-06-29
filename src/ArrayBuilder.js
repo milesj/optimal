@@ -17,8 +17,8 @@ export default class ArrayBuilder<T> extends Builder<T[]> {
   }
 
   checkContents(path: string, array: *, contents: Builder<T>) {
-    array.forEach((value) => {
-      contents.runChecks(path, value);
+    array.forEach((value, i) => {
+      contents.runChecks(`${path}[${i}]`, value);
     });
   }
 }
