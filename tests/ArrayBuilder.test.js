@@ -33,6 +33,12 @@ describe('ArrayBuilder', () => {
       expect(builder.runChecks('key')).toEqual([]);
     });
 
+    it('errors if a non-array is passed', () => {
+      expect(() => {
+        builder.runChecks('key', 'foo');
+      }).toThrowError('Invalid option "key". Must be an array.');
+    });
+
     it('checks each item in the array', () => {
       expect(() => {
         builder.runChecks('key', ['foo', 'bar', 'baz', 123]);

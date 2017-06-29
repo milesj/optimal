@@ -13,7 +13,7 @@ import type FuncBuilder from './FuncBuilder';
 import type NumberBuilder from './NumberBuilder';
 import type StringBuilder from './StringBuilder';
 
-export type SupportedType = 'array' | 'boolean' | 'string' | 'number' | 'function';
+export type SupportedType = 'array' | 'object' | 'boolean' | 'string' | 'number' | 'function';
 
 export type Checker = (path: string, value: *, ...args: *[]) => void;
 
