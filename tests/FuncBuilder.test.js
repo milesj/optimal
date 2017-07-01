@@ -14,10 +14,8 @@ describe('FuncBuilder', () => {
       }).toThrowError('Invalid option "key". Must be a function.');
     });
 
-    it('allows nulls', () => {
-      expect(() => {
-        builder.runChecks('key', null);
-      }).not.toThrowError('Invalid option "key". Must be a function.');
+    it('supports null', () => {
+      expect(builder.runChecks('key', null)).toBe(null);
     });
   });
 });

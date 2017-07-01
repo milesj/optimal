@@ -8,7 +8,10 @@ import Builder from './Builder';
 import { arrayOf } from './ArrayBuilder';
 import { bool } from './BoolBuilder';
 import { func } from './FuncBuilder';
+import { instanceOf } from './InstanceBuilder';
 import { number } from './NumberBuilder';
+import { objectOf } from './ObjectBuilder';
+import { regex } from './RegexBuilder';
 import { string } from './StringBuilder';
 import isObject from './isObject';
 
@@ -68,7 +71,10 @@ export default class Options {
       arrayOf,
       bool,
       func,
+      instanceOf,
       number,
+      objectOf,
+      regex,
       string,
     }));
 

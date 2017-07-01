@@ -72,6 +72,10 @@ describe('ArrayBuilder', () => {
         ]);
       }).toThrowError('Invalid option "key[1][1]". Must be a string.');
     });
+
+    it('supports null', () => {
+      expect(builder.runChecks('key', null)).toBe(null);
+    });
   });
 });
 

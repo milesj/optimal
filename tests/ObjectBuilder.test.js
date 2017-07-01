@@ -88,6 +88,10 @@ describe('ObjectBuilder', () => {
         });
       }).toThrowError('Invalid option "key.a.bar". Must be a string.');
     });
+
+    it('supports null', () => {
+      expect(builder.runChecks('key', null)).toBe(null);
+    });
   });
 });
 

@@ -7,7 +7,7 @@
 import Builder from './Builder';
 import invariant from './invariant';
 
-export default class ArrayBuilder<T> extends Builder<T[]> {
+export default class ArrayBuilder<T> extends Builder<?T[]> {
   constructor(contents: Builder<T>) {
     super('array', []);
 

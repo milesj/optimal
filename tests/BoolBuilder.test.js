@@ -14,7 +14,7 @@ describe('BoolBuilder', () => {
       }).toThrowError('Invalid option "key". Must be a boolean.');
     });
 
-    it('errors if a null value is used', () => {
+    it('doesnt support null', () => {
       expect(() => {
         builder.runChecks('key', null);
       }).toThrowError('Invalid option "key". Must be a boolean.');

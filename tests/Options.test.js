@@ -2,13 +2,15 @@
 
 import Options from '../src/Options';
 
+class Plugin {}
+
 describe('Options', () => {
   let options;
 
   // This blueprint is based on Webpack's configuration: https://webpack.js.org/configuration/
   // Webpack provides a pretty robust example of how to use this library.
   // eslint-disable-next-line
-  const factory = ({ arrayOf, objectOf, bool, func, string, number, regex }) => ({
+  const factory = ({ arrayOf, instanceOf, objectOf, bool, func, string, number, regex }) => ({
     context: string(process.cwd()).notEmpty(),
     entry: [
       string().notEmpty(),
@@ -37,6 +39,11 @@ describe('Options', () => {
         arrayOf(regex()),
         func(),
       ],
+    },
+    resolve: {
+      alias: objectOf(string()),
+      extensions: arrayOf(string()),
+      plugins: arrayOf(instanceOf(Plugin)),
     },
   });
 

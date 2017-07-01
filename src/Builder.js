@@ -61,6 +61,10 @@ export default class Builder<T> {
         invariant(Array.isArray(value), 'Must be an array.', path);
         break;
 
+      case 'instance':
+        // Handle in the sub-class
+        break;
+
       case 'object':
         invariant(isObject(value), 'Must be a plain object.', path);
         break;

@@ -7,7 +7,7 @@
 import Builder from './Builder';
 import invariant from './invariant';
 
-export default class ObjectBuilder<T> extends Builder<{ [key: string]: T }> {
+export default class ObjectBuilder<T> extends Builder<?{ [key: string]: T }> {
   constructor(contents: Builder<T>) {
     super('object', {});
 
