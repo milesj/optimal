@@ -7,16 +7,19 @@
 import Builder from './Builder';
 import invariant from './invariant';
 
-export default class InstanceBuilder<T> extends Builder<?Class<T>> {
+export default class InstanceBuilder<T> extends Builder<?T> {
+  refClass: T;
+
   constructor(refClass: T) {
     super('instance', null);
 
     invariant((typeof refClass === 'function'), 'A class reference is required.');
 
+    this.refClass = refClass;
     this.addCheck(this.checkInstance, refClass);
   }
 
-  checkInstance(path: string, value: *, refClass: Class<T>) {
+  checkInstance(path: string, value: *, refClass: T) {
     invariant(
       (value instanceof refClass),
       // $FlowIgnore constructor check
@@ -28,4 +31,12 @@ export default class InstanceBuilder<T> extends Builder<?Class<T>> {
 
 export function instanceOf<T>(refClass: T): InstanceBuilder<T> {
   return new InstanceBuilder(refClass);
+}
+
+export function regex(): InstanceBuilder<Class<RegExp>> {
+  return instanceOf(RegExp);
+}
+
+export function date(): InstanceBuilder<Class<Date>> {
+  return instanceOf(Date);
 }

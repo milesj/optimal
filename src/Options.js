@@ -8,11 +8,11 @@ import Builder from './Builder';
 import { arrayOf } from './ArrayBuilder';
 import { bool } from './BoolBuilder';
 import { func } from './FuncBuilder';
-import { instanceOf } from './InstanceBuilder';
+import { instanceOf, date, regex } from './InstanceBuilder';
 import { number } from './NumberBuilder';
 import { objectOf } from './ObjectBuilder';
-import { regex } from './RegexBuilder';
 import { string } from './StringBuilder';
+import { union } from './UnionBuilder';
 import isObject from './isObject';
 
 import type { Factory, Blueprint } from './types';
@@ -70,12 +70,14 @@ export default class Options {
     const options = buildAndCheckOptions(baseOptions, factory({
       arrayOf,
       bool,
+      date,
       func,
       instanceOf,
       number,
       objectOf,
       regex,
       string,
+      union,
     }));
 
     // Since there are no class properties or methods on Options,

@@ -7,7 +7,7 @@
 import Builder from './Builder';
 
 export default class BoolBuilder extends Builder<boolean> {
-  constructor(defaultValue: boolean) {
+  constructor(defaultValue: boolean = false) {
     super('boolean', defaultValue);
 
     // Only allow booleans

@@ -13,12 +13,12 @@ import type FuncBuilder from './FuncBuilder';
 import type InstanceBuilder from './InstanceBuilder';
 import type NumberBuilder from './NumberBuilder';
 import type ObjectBuilder from './ObjectBuilder';
-import type RegexBuilder from './RegexBuilder';
 import type StringBuilder from './StringBuilder';
+import type UnionBuilder from './UnionBuilder';
 
 export type SupportedType =
-  'array' | 'object' | 'function' | 'instance' |
-  'boolean' | 'string' | 'number' | 'regex';
+  'array' | 'object' | 'function' | 'instance' | 'union' |
+  'boolean' | 'string' | 'number';
 
 export type Checker = (path: string, value: *, ...args: *[]) => void;
 
@@ -27,12 +27,14 @@ export type Blueprint = { [key: string]: Builder<*> | Blueprint };
 export type FactoryMap = {
   arrayOf: (builder: Builder<*>) => ArrayBuilder<*>,
   bool: (value: boolean) => BoolBuilder,
+  date: (value: ?Date) => InstanceBuilder<Class<Date>>,
   func: (value: ?Function) => FuncBuilder,
-  instanceOf: (refClass: Class<*>) => InstanceBuilder<*>,
+  instanceOf: (refClass: *) => InstanceBuilder<*>,
   number: (value: number) => NumberBuilder,
   objectOf: (builder: Builder<*>) => ObjectBuilder<*>,
-  regex: (value: ?RegExp) => RegexBuilder,
+  regex: (value: ?RegExp) => InstanceBuilder<Class<RegExp>>,
   string: (value: string) => StringBuilder,
+  union: (builders: Builder<*>[]) => UnionBuilder,
 };
 
 export type Factory = (factories: FactoryMap) => Blueprint;

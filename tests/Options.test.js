@@ -10,41 +10,62 @@ describe('Options', () => {
   // This blueprint is based on Webpack's configuration: https://webpack.js.org/configuration/
   // Webpack provides a pretty robust example of how to use this library.
   // eslint-disable-next-line
-  const factory = ({ arrayOf, instanceOf, objectOf, bool, func, string, number, regex }) => ({
+  const factory = ({
+    arrayOf,
+    bool,
+    func,
+    instanceOf,
+    number,
+    objectOf,
+    regex,
+    string,
+    union,
+  }) => ({
     context: string(process.cwd()).notEmpty(),
-    entry: [
+    entry: union([
       string().notEmpty(),
       arrayOf(string()),
-      objectOf([
+      objectOf(union([
         string().notEmpty(),
         arrayOf(string()),
-      ]),
+      ])),
       func(),
-    ],
+    ]),
     output: {
       chunkFilename: string('[id].js').notEmpty(),
       chunkLoadTimeout: number(120000),
-      crossOriginLoading: [
+      crossOriginLoading: union([
         bool(false).only(),
         string('anonymous').oneOf(['anonymous', 'use-credentials']),
-      ],
+      ]),
       filename: string('bundle.js').notEmpty(),
       hashFunction: string('md5').oneOf(['md5', 'sha256', 'sha512']),
       path: string().notEmpty(),
       publicPath: string(),
     },
     module: {
-      noParse: [
+      noParse: union([
         regex(),
         arrayOf(regex()),
         func(),
-      ],
+      ]),
     },
     resolve: {
-      alias: objectOf(string()),
-      extensions: arrayOf(string()),
+      alias: objectOf(string().notEmpty()),
+      extensions: arrayOf(string().notEmpty()),
       plugins: arrayOf(instanceOf(Plugin)),
+      resolveLoader: objectOf(arrayOf(string().notEmpty())),
     },
+    plugins: arrayOf(instanceOf(Plugin)),
+    target: string('web').oneOf([
+      'async-node', 'electron-main', 'electron-renderer',
+      'node', 'node-webkit', 'web', 'webworker',
+    ]),
+    watch: bool(false),
+    node: objectOf(union([
+      bool(),
+      string('mock').oneOf(['mock', 'empty']),
+    ])),
   });
 
   describe('constructor()', () => {
