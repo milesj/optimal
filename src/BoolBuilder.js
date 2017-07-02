@@ -15,6 +15,6 @@ export default class BoolBuilder extends Builder<boolean> {
   }
 }
 
-export function bool(defaultValue: boolean): BoolBuilder {
+export function bool(defaultValue: boolean = false): BoolBuilder {
   return new BoolBuilder(defaultValue);
 }

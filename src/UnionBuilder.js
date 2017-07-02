@@ -8,9 +8,9 @@ import Builder from './Builder';
 import invariant from './invariant';
 import typeOf from './typeOf';
 
-export default class UnionBuilder extends Builder<Builder<*>[]> {
-  constructor(builders: Builder<*>[]) {
-    super('union', []);
+export default class UnionBuilder extends Builder<*> {
+  constructor(builders: Builder<*>[], defaultValue: * = null) {
+    super('union', defaultValue);
 
     invariant((
       Array.isArray(builders) &&
@@ -41,6 +41,6 @@ export default class UnionBuilder extends Builder<Builder<*>[]> {
   }
 }
 
-export function union(builders: Builder<*>[]): UnionBuilder {
-  return new UnionBuilder(builders);
+export function union(builders: Builder<*>[], defaultValue: * = null): UnionBuilder {
+  return new UnionBuilder(builders, defaultValue);
 }

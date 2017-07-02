@@ -67,6 +67,6 @@ export default class StringBuilder extends Builder<string> {
   }
 }
 
-export function string(defaultValue: *): StringBuilder {
+export function string(defaultValue: string = ''): StringBuilder {
   return new StringBuilder(defaultValue);
 }

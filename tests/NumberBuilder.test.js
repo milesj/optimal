@@ -7,6 +7,14 @@ describe('NumberBuilder', () => {
     builder = new NumberBuilder(123);
   });
 
+  describe('constructor()', () => {
+    it('sets default value', () => {
+      builder = new NumberBuilder(456);
+
+      expect(builder.defaultValue).toBe(456);
+    });
+  });
+
   describe('runChecks()', () => {
     it('errors if a non-number value is used', () => {
       expect(() => {
@@ -122,6 +130,12 @@ describe('NumberBuilder', () => {
 
 describe('number()', () => {
   it('returns a builder', () => {
-    expect(number('foo')).toBeInstanceOf(NumberBuilder);
+    expect(number(123)).toBeInstanceOf(NumberBuilder);
+  });
+
+  it('sets default value', () => {
+    const builder = number(456);
+
+    expect(builder.defaultValue).toBe(456);
   });
 });

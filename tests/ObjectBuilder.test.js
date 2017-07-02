@@ -26,6 +26,12 @@ describe('ObjectBuilder', () => {
         builder = new ObjectBuilder(string());
       }).not.toThrowError('A blueprint is required for object contents.');
     });
+
+    it('sets default value', () => {
+      builder = new ObjectBuilder(string(), { foo: 'bar' });
+
+      expect(builder.defaultValue).toEqual({ foo: 'bar' });
+    });
   });
 
   describe('runChecks()', () => {
@@ -98,5 +104,11 @@ describe('ObjectBuilder', () => {
 describe('objectOf()', () => {
   it('returns a builder', () => {
     expect(objectOf(string())).toBeInstanceOf(ObjectBuilder);
+  });
+
+  it('sets default value', () => {
+    const builder = objectOf(string(), { foo: 'bar' });
+
+    expect(builder.defaultValue).toEqual({ foo: 'bar' });
   });
 });

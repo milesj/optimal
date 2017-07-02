@@ -7,6 +7,14 @@ describe('BoolBuilder', () => {
     builder = new BoolBuilder(true);
   });
 
+  describe('constructor()', () => {
+    it('sets default value', () => {
+      builder = new BoolBuilder(true);
+
+      expect(builder.defaultValue).toBe(true);
+    });
+  });
+
   describe('runChecks()', () => {
     it('errors if a non-boolean value is used', () => {
       expect(() => {
@@ -25,5 +33,11 @@ describe('BoolBuilder', () => {
 describe('bool()', () => {
   it('returns a builder', () => {
     expect(bool(true)).toBeInstanceOf(BoolBuilder);
+  });
+
+  it('sets default value', () => {
+    const builder = bool(true);
+
+    expect(builder.defaultValue).toBe(true);
   });
 });

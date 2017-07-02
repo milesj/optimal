@@ -26,6 +26,12 @@ describe('ArrayBuilder', () => {
         builder = new ArrayBuilder(string());
       }).not.toThrowError('A blueprint is required for array contents.');
     });
+
+    it('sets default value', () => {
+      builder = new ArrayBuilder(string(), ['foo']);
+
+      expect(builder.defaultValue).toEqual(['foo']);
+    });
   });
 
   describe('runChecks()', () => {
@@ -82,5 +88,11 @@ describe('ArrayBuilder', () => {
 describe('arrayOf()', () => {
   it('returns a builder', () => {
     expect(arrayOf(string())).toBeInstanceOf(ArrayBuilder);
+  });
+
+  it('sets default value', () => {
+    const builder = arrayOf(string(), ['foo']);
+
+    expect(builder.defaultValue).toEqual(['foo']);
   });
 });

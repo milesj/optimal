@@ -47,6 +47,12 @@ describe('UnionBuilder', () => {
         builder = new UnionBuilder([string()]);
       }).not.toThrowError('An array of blueprints are required for a union.');
     });
+
+    it('sets default value', () => {
+      builder = new UnionBuilder([string()], 'bar');
+
+      expect(builder.defaultValue).toBe('bar');
+    });
   });
 
   describe('runChecks()', () => {
@@ -127,5 +133,11 @@ describe('union()', () => {
     expect(union([
       string(),
     ])).toBeInstanceOf(UnionBuilder);
+  });
+
+  it('sets default value', () => {
+    const builder = union([string()], 'bar');
+
+    expect(builder.defaultValue).toBe('bar');
   });
 });

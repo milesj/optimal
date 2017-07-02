@@ -7,6 +7,14 @@ describe('StringBuilder', () => {
     builder = new StringBuilder('foo');
   });
 
+  describe('constructor()', () => {
+    it('sets default value', () => {
+      builder = new StringBuilder('bar');
+
+      expect(builder.defaultValue).toBe('bar');
+    });
+  });
+
   describe('runChecks()', () => {
     it('errors if a non-string value is used', () => {
       expect(() => {
@@ -161,5 +169,11 @@ describe('StringBuilder', () => {
 describe('string()', () => {
   it('returns a builder', () => {
     expect(string('foo')).toBeInstanceOf(StringBuilder);
+  });
+
+  it('sets default value', () => {
+    const builder = string('bar');
+
+    expect(builder.defaultValue).toBe('bar');
   });
 });

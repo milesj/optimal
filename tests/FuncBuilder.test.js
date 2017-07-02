@@ -7,6 +7,15 @@ describe('FuncBuilder', () => {
     builder = new FuncBuilder();
   });
 
+  describe('constructor()', () => {
+    it('sets default value', () => {
+      const noop = () => {};
+      builder = new FuncBuilder(noop);
+
+      expect(builder.defaultValue).toBe(noop);
+    });
+  });
+
   describe('runChecks()', () => {
     it('errors if a non-function value is used', () => {
       expect(() => {
@@ -23,5 +32,12 @@ describe('FuncBuilder', () => {
 describe('func()', () => {
   it('returns a builder', () => {
     expect(func()).toBeInstanceOf(FuncBuilder);
+  });
+
+  it('sets default value', () => {
+    const noop = () => {};
+    const builder = func(noop);
+
+    expect(builder.defaultValue).toBe(noop);
   });
 });
