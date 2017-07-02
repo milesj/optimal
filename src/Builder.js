@@ -62,15 +62,12 @@ export default class Builder<T> {
         break;
 
       case 'instance':
+      case 'union':
         // Handle in the sub-class
         break;
 
       case 'object':
         invariant(isObject(value), 'Must be a plain object.', path);
-        break;
-
-      case 'regex':
-        invariant((value instanceof RegExp), 'Must be a `RegExp`.', path);
         break;
 
       default:

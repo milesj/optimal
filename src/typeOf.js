@@ -13,7 +13,7 @@ export default function typeOf(value: *): SupportedType {
     return 'array';
 
   } else if (isObject(value)) {
-    return value.constructor ? 'instance' : 'object';
+    return (value.constructor === Object) ? 'object' : 'instance';
   }
 
   // $FlowIgnore
