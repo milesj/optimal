@@ -4,6 +4,7 @@ import { bool } from '../src/BoolBuilder';
 import { instanceOf } from '../src/InstanceBuilder';
 import { number } from '../src/NumberBuilder';
 import { objectOf } from '../src/ObjectBuilder';
+import { shape } from '../src/ShapeBuilder';
 import { string } from '../src/StringBuilder';
 
 class Foo {}
@@ -27,25 +28,25 @@ describe('UnionBuilder', () => {
     it('errors if a non-array is not passed', () => {
       expect(() => {
         builder = new UnionBuilder('foo');
-      }).toThrowError('An array of blueprints are required for a union.');
+      }).toThrowError('A non-empty array of blueprints are required for a union.');
     });
 
     it('errors if an empty array is passed', () => {
       expect(() => {
         builder = new UnionBuilder([]);
-      }).toThrowError('An array of blueprints are required for a union.');
+      }).toThrowError('A non-empty array of blueprints are required for a union.');
     });
 
     it('errors if an array with non-builders is passed', () => {
       expect(() => {
         builder = new UnionBuilder([123]);
-      }).toThrowError('An array of blueprints are required for a union.');
+      }).toThrowError('A non-empty array of blueprints are required for a union.');
     });
 
     it('doesnt error if a builder array is passed', () => {
       expect(() => {
         builder = new UnionBuilder([string()]);
-      }).not.toThrowError('An array of blueprints are required for a union.');
+      }).not.toThrowError('A non-empty array of blueprints are required for a union.');
     });
 
     it('sets default value', () => {
@@ -78,6 +79,29 @@ describe('UnionBuilder', () => {
         ]);
         builder.runChecks('key', []);
       }).toThrowError('Nested unions are not supported.');
+    });
+
+    it('errors if an object and shape are used', () => {
+      expect(() => {
+        builder = new UnionBuilder([
+          objectOf(string()),
+          shape({
+            foo: string(),
+            bar: number(),
+          }),
+        ]);
+        builder.runChecks('key', []);
+      }).toThrowError('Sibling objects and shapes are not supported.');
+    });
+
+    it('errors if the same builder type is used multiple times', () => {
+      expect(() => {
+        builder = new UnionBuilder([
+          objectOf(string()),
+          objectOf(number()),
+        ]);
+        builder.runChecks('key', []);
+      }).toThrowError('Only one instance of "object" may be used.');
     });
 
     it('runs array check', () => {
