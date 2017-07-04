@@ -2,14 +2,15 @@
 # yarn lockfile v1
 
 
-"@milesj/build-tool-config@^0.12.1":
-  version "0.12.1"
-  resolved "https://registry.yarnpkg.com/@milesj/build-tool-config/-/build-tool-config-0.12.1.tgz#a402f97b0911fd65ed93a36783e848cb2643ec26"
+"@milesj/build-tool-config@^0.13.0":
+  version "0.13.0"
+  resolved "https://registry.yarnpkg.com/@milesj/build-tool-config/-/build-tool-config-0.13.0.tgz#a108d52a14a02d16763dbbefda787cd3f293515d"
   dependencies:
     babel-cli "^6.24.1"
     babel-eslint "^7.2.0"
     babel-jest "^20.0.3"
     babel-plugin-external-helpers "^6.22.0"
+    babel-plugin-transform-dev "^2.0.0"
     babel-plugin-transform-export-extensions "^6.22.0"
     babel-plugin-transform-runtime "^6.23.0"
     babel-preset-env "^1.5.2"
@@ -580,6 +581,10 @@ babel-plugin-transform-decorators@^6.24.1:
     babel-runtime "^6.22.0"
     babel-template "^6.24.1"
     babel-types "^6.24.1"
+
+babel-plugin-transform-dev@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-transform-dev/-/babel-plugin-transform-dev-2.0.0.tgz#7a0bb173ab32455de8d38042755b444abcca7743"
 
 babel-plugin-transform-es2015-arrow-functions@^6.22.0:
   version "6.22.0"

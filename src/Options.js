@@ -41,7 +41,7 @@ export function buildAndCheckOptions(
       options[key] = buildAndCheckOptions(value, builder, path);
 
     // Oops
-    } else {
+    } else if (__DEV__) {
       throw new Error('Unknown blueprint option. Must be a builder or plain object.');
     }
 
@@ -50,20 +50,24 @@ export function buildAndCheckOptions(
   });
 
   // Throw errors for unknown options
-  Object.keys(unknownOptions).forEach((key) => {
-    throw new Error(`Unknown option ${parentPath ? `${parentPath}.${key}` : key}.`);
-  });
+  if (__DEV__) {
+    Object.keys(unknownOptions).forEach((key) => {
+      throw new Error(`Unknown option ${parentPath ? `${parentPath}.${key}` : key}.`);
+    });
+  }
 
   return options;
 }
 
 export default class Options {
   constructor(baseOptions: Object, factory: Factory) {
-    if (!isObject(baseOptions)) {
-      throw new TypeError(`Options require a plain object, found ${typeof baseOptions}.`);
+    if (__DEV__) {
+      if (!isObject(baseOptions)) {
+        throw new TypeError(`Options require a plain object, found ${typeof baseOptions}.`);
 
-    } else if (typeof factory !== 'function') {
-      throw new TypeError('An options factory function is required.');
+      } else if (typeof factory !== 'function') {
+        throw new TypeError('An options factory function is required.');
+      }
     }
 
     // Generate the options blueprint based on the builders provided by the factory,

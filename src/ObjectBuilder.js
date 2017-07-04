@@ -11,15 +11,19 @@ export default class ObjectBuilder<T> extends Builder<?{ [key: string]: T }> {
   constructor(contents: Builder<T>, defaultValue: ?{ [key: string]: T } = {}) {
     super('object', defaultValue);
 
-    invariant((contents instanceof Builder), 'A blueprint is required for object contents.');
+    if (__DEV__) {
+      invariant((contents instanceof Builder), 'A blueprint is required for object contents.');
+    }
 
     this.addCheck(this.checkContents, contents);
   }
 
   checkContents(path: string, object: *, contents: Builder<T>) {
-    Object.keys(object).forEach((key) => {
-      contents.runChecks(`${path}.${key}`, object[key]);
-    });
+    if (__DEV__) {
+      Object.keys(object).forEach((key) => {
+        contents.runChecks(`${path}.${key}`, object[key]);
+      });
+    }
   }
 }
 

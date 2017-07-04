@@ -20,36 +20,44 @@ export default class NumberBuilder extends Builder<number> {
   }
 
   between(min: number, max: number, inclusive: boolean = false): this {
-    invariant(
-      (isNumber(min) && isNumber(max)),
-      'number.between() requires a minimum and maximum number.',
-    );
+    if (__DEV__) {
+      invariant(
+        (isNumber(min) && isNumber(max)),
+        'number.between() requires a minimum and maximum number.',
+      );
+    }
 
     return this.addCheck(this.checkBetween, min, max, inclusive);
   }
 
   checkBetween(path: string, value: *, min: number, max: number, inclusive: boolean = false) {
-    invariant(
-      (
-        isNumber(value) &&
-        (inclusive ? (value >= min && value <= max) : (value > min && value < max))
-      ),
-      `Number must be between ${min} and ${max}${inclusive ? ' inclusive' : ''}.`,
-      path,
-    );
+    if (__DEV__) {
+      invariant(
+        (
+          isNumber(value) &&
+          (inclusive ? (value >= min && value <= max) : (value > min && value < max))
+        ),
+        `Number must be between ${min} and ${max}${inclusive ? ' inclusive' : ''}.`,
+        path,
+      );
+    }
   }
 
   oneOf(list: string[] = []): this {
-    invariant(
-      (Array.isArray(list) && list.length > 0 && list.every(isNumber)),
-      'number.oneOf() requires a non-empty array of numbers.',
-    );
+    if (__DEV__) {
+      invariant(
+        (Array.isArray(list) && list.length > 0 && list.every(isNumber)),
+        'number.oneOf() requires a non-empty array of numbers.',
+      );
+    }
 
     return this.addCheck(this.checkOneOf, list);
   }
 
   checkOneOf(path: string, value: *, list: string[] = []) {
-    invariant(list.includes(value), `Number must be one of: ${list.join(', ')}`, path);
+    if (__DEV__) {
+      invariant(list.includes(value), `Number must be one of: ${list.join(', ')}`, path);
+    }
   }
 }
 

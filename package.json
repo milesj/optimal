@@ -13,7 +13,7 @@
     "posttest": "yarn run flow",
     "pretest": "yarn run eslint",
     "preversion": "yarn test && yarn run babel",
-    "rollup": "bundle-lib",
+    "rollup": "NODE_ENV=production bundle-lib",
     "test": "yarn run jest"
   },
   "repository": {
@@ -43,7 +43,7 @@
     "babel-runtime": "^6.23.0"
   },
   "devDependencies": {
-    "@milesj/build-tool-config": "^0.12.1"
+    "@milesj/build-tool-config": "^0.13.0"
   },
   "babel": {
     "extends": "./node_modules/@milesj/build-tool-config/babel.json5"

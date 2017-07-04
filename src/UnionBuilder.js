@@ -12,47 +12,51 @@ export default class UnionBuilder extends Builder<*> {
   constructor(builders: Builder<*>[], defaultValue: * = null) {
     super('union', defaultValue);
 
-    invariant((
-      Array.isArray(builders) &&
-      builders.length > 0 &&
-      builders.every(builder => (builder instanceof Builder))
-    ), 'A non-empty array of blueprints are required for a union.');
+    if (__DEV__) {
+      invariant((
+        Array.isArray(builders) &&
+        builders.length > 0 &&
+        builders.every(builder => (builder instanceof Builder))
+      ), 'A non-empty array of blueprints are required for a union.');
+    }
 
     this.addCheck(this.checkUnions, builders);
   }
 
   checkUnions(path: string, value: *, builders: Builder<*>[]) {
-    const usage = {};
-    const type = typeOf(value);
+    if (__DEV__) {
+      const usage = {};
+      const type = typeOf(value);
 
-    // Verify structure and usage
-    builders.forEach((builder) => {
-      if (usage[builder.type]) {
-        invariant(false, `Only one instance of "${builder.type}" may be used.`, path);
+      // Verify structure and usage
+      builders.forEach((builder) => {
+        if (usage[builder.type]) {
+          invariant(false, `Only one instance of "${builder.type}" may be used.`, path);
 
-      } else if (builder.type === 'union') {
-        invariant(false, 'Nested unions are not supported.', path);
+        } else if (builder.type === 'union') {
+          invariant(false, 'Nested unions are not supported.', path);
 
-      } else {
-        usage[builder.type] = true;
+        } else {
+          usage[builder.type] = true;
+        }
+      });
+
+      if (usage.shape && usage.object) {
+        invariant(false, 'Sibling objects and shapes are not supported.', path);
       }
-    });
 
-    if (usage.shape && usage.object) {
-      invariant(false, 'Sibling objects and shapes are not supported.', path);
+      // Run checks on value
+      let checked = false;
+
+      builders.forEach((builder) => {
+        if (type === builder.type) {
+          builder.runChecks(path, value);
+          checked = true;
+        }
+      });
+
+      invariant(checked, `Type must be one of ${Object.keys(usage).join(', ')}.`, path);
     }
-
-    // Run checks on value
-    let checked = false;
-
-    builders.forEach((builder) => {
-      if (type === builder.type) {
-        builder.runChecks(path, value);
-        checked = true;
-      }
-    });
-
-    invariant(checked, `Type must be one of ${Object.keys(usage).join(', ')}.`, path);
   }
 }
 

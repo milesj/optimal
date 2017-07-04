@@ -13,19 +13,23 @@ export default class InstanceBuilder<T> extends Builder<?T> {
   constructor(refClass: T) {
     super('instance', null);
 
-    invariant((typeof refClass === 'function'), 'A class reference is required.');
+    if (__DEV__) {
+      invariant((typeof refClass === 'function'), 'A class reference is required.');
+    }
 
     this.refClass = refClass;
     this.addCheck(this.checkInstance, refClass);
   }
 
   checkInstance(path: string, value: *, refClass: T) {
-    invariant(
-      (value instanceof refClass),
-      // $FlowIgnore constructor check
-      `Must be an instance of "${refClass.name || refClass.constructor.name}".`,
-      path,
-    );
+    if (__DEV__) {
+      invariant(
+        (value instanceof refClass),
+        // $FlowIgnore constructor check
+        `Must be an instance of "${refClass.name || refClass.constructor.name}".`,
+        path,
+      );
+    }
   }
 }
 

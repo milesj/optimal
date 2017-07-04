@@ -15,21 +15,25 @@ export default class ShapeBuilder extends Builder<?Shape> {
   constructor(contents: ShapeBlueprint, defaultValue: ?Shape = {}) {
     super('shape', defaultValue);
 
-    invariant((
-      isObject(contents) &&
-      Object.keys(contents).length > 0 &&
-      Object.keys(contents).every(key => (contents[key] instanceof Builder))
-    ), 'A non-empty object of properties to blueprints are required for a shape.');
+    if (__DEV__) {
+      invariant((
+        isObject(contents) &&
+        Object.keys(contents).length > 0 &&
+        Object.keys(contents).every(key => (contents[key] instanceof Builder))
+      ), 'A non-empty object of properties to blueprints are required for a shape.');
+    }
 
     this.addCheck(this.checkContents, contents);
   }
 
   checkContents(path: string, object: *, contents: ShapeBlueprint) {
-    Object.keys(object).forEach((key) => {
-      if (contents[key]) {
-        contents[key].runChecks(`${path}.${key}`, object[key]);
-      }
-    });
+    if (__DEV__) {
+      Object.keys(object).forEach((key) => {
+        if (contents[key]) {
+          contents[key].runChecks(`${path}.${key}`, object[key]);
+        }
+      });
+    }
   }
 }
 

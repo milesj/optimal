@@ -19,8 +19,10 @@ export default class Builder<T> {
   type: SupportedType;
 
   constructor(type: SupportedType, defaultValue: T) {
-    if (typeof defaultValue === 'undefined') {
-      throw new TypeError(`A default value for type "${type}" is required.`);
+    if (__DEV__) {
+      if (typeof defaultValue === 'undefined') {
+        throw new TypeError(`A default value for type "${type}" is required.`);
+      }
     }
 
     this.defaultValue = defaultValue;
@@ -45,36 +47,40 @@ export default class Builder<T> {
    * Validate the value matches only the default value.
    */
   checkOnly(path: string, value: *) {
-    invariant(
-      (value === this.defaultValue),
-      `Value may only be "${String(this.defaultValue)}".`,
-      path,
-    );
+    if (__DEV__) {
+      invariant(
+        (value === this.defaultValue),
+        `Value may only be "${String(this.defaultValue)}".`,
+        path,
+      );
+    }
   }
 
   /**
    * Validate the type of value.
    */
   checkTypeOf(path: string, value: *) {
-    switch (this.type) {
-      case 'array':
-        invariant(Array.isArray(value), 'Must be an array.', path);
-        break;
+    if (__DEV__) {
+      switch (this.type) {
+        case 'array':
+          invariant(Array.isArray(value), 'Must be an array.', path);
+          break;
 
-      case 'instance':
-      case 'union':
-        // Handle in the sub-class
-        break;
+        case 'instance':
+        case 'union':
+          // Handle in the sub-class
+          break;
 
-      case 'object':
-      case 'shape':
-        invariant(isObject(value), 'Must be a plain object.', path);
-        break;
+        case 'object':
+        case 'shape':
+          invariant(isObject(value), 'Must be a plain object.', path);
+          break;
 
-      default:
-        // eslint-disable-next-line valid-typeof
-        invariant((typeof value === this.type), `Must be a ${this.type}.`, path);
-        break;
+        default:
+          // eslint-disable-next-line valid-typeof
+          invariant((typeof value === this.type), `Must be a ${this.type}.`, path);
+          break;
+      }
     }
   }
 
@@ -82,11 +88,13 @@ export default class Builder<T> {
    * Mark a field as only the default value can be used.
    */
   only(): this {
-    invariant(
-      // eslint-disable-next-line valid-typeof
-      (typeof this.defaultValue === this.type),
-      `only() requires a default ${this.type} value.`,
-    );
+    if (__DEV__) {
+      invariant(
+        // eslint-disable-next-line valid-typeof
+        (typeof this.defaultValue === this.type),
+        `only() requires a default ${this.type} value.`,
+      );
+    }
 
     return this.addCheck(this.checkOnly);
   }
@@ -112,9 +120,11 @@ export default class Builder<T> {
     }
 
     // Run all checks against the value
-    this.checks.forEach((checker) => {
-      checker.func.call(this, path, value, ...checker.args);
-    });
+    if (__DEV__) {
+      this.checks.forEach((checker) => {
+        checker.func.call(this, path, value, ...checker.args);
+      });
+    }
 
     return value;
   }
