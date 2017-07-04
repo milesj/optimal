@@ -99,6 +99,31 @@ describe('ObjectBuilder', () => {
       expect(builder.runChecks('key', null)).toBe(null);
     });
   });
+
+  describe('notEmpty()', () => {
+    it('adds a checker', () => {
+      builder.notEmpty();
+
+      expect(builder.checks[2]).toEqual({
+        func: builder.checkNotEmpty,
+        args: [],
+      });
+    });
+  });
+
+  describe('checkNotEmpty()', () => {
+    it('errors if value is empty', () => {
+      expect(() => {
+        builder.checkNotEmpty('key', {});
+      }).toThrowError('Invalid option "key". Object cannot be empty.');
+    });
+
+    it('doesnt error if not empty', () => {
+      expect(() => {
+        builder.checkNotEmpty('key', { foo: 123 });
+      }).not.toThrowError('Invalid option "key". Object cannot be empty.');
+    });
+  });
 });
 
 describe('objectOf()', () => {

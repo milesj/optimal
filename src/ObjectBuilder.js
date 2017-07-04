@@ -25,6 +25,16 @@ export default class ObjectBuilder<T> extends Builder<?{ [key: string]: T }> {
       });
     }
   }
+
+  notEmpty(): this {
+    return this.addCheck(this.checkNotEmpty);
+  }
+
+  checkNotEmpty(path: string, object: *) {
+    if (__DEV__) {
+      invariant((Object.keys(object).length > 0), 'Object cannot be empty.', path);
+    }
+  }
 }
 
 export function objectOf<T>(

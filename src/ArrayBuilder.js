@@ -25,6 +25,16 @@ export default class ArrayBuilder<T> extends Builder<?T[]> {
       });
     }
   }
+
+  notEmpty(): this {
+    return this.addCheck(this.checkNotEmpty);
+  }
+
+  checkNotEmpty(path: string, array: *) {
+    if (__DEV__) {
+      invariant((array.length > 0), 'Array cannot be empty.', path);
+    }
+  }
 }
 
 export function arrayOf<T>(contents: Builder<T>, defaultValue: ?T[] = []): ArrayBuilder<T> {
