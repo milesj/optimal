@@ -1,4 +1,5 @@
-# Optimal [DEV]
+# Optimal v0.0.0
+[![Build Status](https://travis-ci.org/milesj/optimal.svg?branch=master)](https://travis-ci.org/milesj/optimal)
 
 Options object builder and validator.
 
@@ -20,7 +21,7 @@ const baseOptions = {
 
 const options = new Options(baseOptions, (o) => ({
   bool: o.bool(true),
-  string: o.string('foo').notEmpty(),
+  string: o.string('foo'),
   number: o.number(5).between(0, 10),
   func: o.func(),
   object: {

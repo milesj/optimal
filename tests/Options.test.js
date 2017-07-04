@@ -53,27 +53,27 @@ describe('Options', () => {
     });
 
     return {
-      context: string(process.cwd()).notEmpty(),
+      context: string(process.cwd()),
       entry: union([
-        string().notEmpty(),
+        string(),
         arrayOf(string()),
         objectOf(union([
-          string().notEmpty(),
+          string(),
           arrayOf(string()),
         ])),
         func(),
       ]),
       output: {
-        chunkFilename: string('[id].js').notEmpty(),
+        chunkFilename: string('[id].js'),
         chunkLoadTimeout: number(120000),
         crossOriginLoading: union([
           bool(false).only(),
           string('anonymous').oneOf(['anonymous', 'use-credentials']),
         ]),
-        filename: string('bundle.js').notEmpty(),
+        filename: string('bundle.js'),
         hashFunction: string('md5').oneOf(['md5', 'sha256', 'sha512']),
-        path: string().notEmpty(),
-        publicPath: string(),
+        path: string().empty(),
+        publicPath: string().empty(),
       },
       module: {
         noParse: union([
@@ -84,10 +84,10 @@ describe('Options', () => {
         rules: arrayOf(rule),
       },
       resolve: {
-        alias: objectOf(string().notEmpty()),
-        extensions: arrayOf(string().notEmpty()),
+        alias: objectOf(string()),
+        extensions: arrayOf(string()),
         plugins: arrayOf(instanceOf(Plugin)),
-        resolveLoader: objectOf(arrayOf(string().notEmpty())),
+        resolveLoader: objectOf(arrayOf(string())),
       },
       plugins: arrayOf(instanceOf(Plugin)),
       target: string('web').oneOf([
@@ -134,7 +134,7 @@ describe('Options', () => {
       }, ({ number, bool, string }) => ({
         foo: number(0),
         bar: bool(true),
-        baz: string(),
+        baz: string().empty(),
       }));
 
       expect(options.foo).toBe(123);

@@ -45,7 +45,7 @@ describe('StringBuilder', () => {
     it('adds a checker', () => {
       builder.contains('oo');
 
-      expect(builder.checks[1]).toEqual({
+      expect(builder.checks[2]).toEqual({
         func: builder.checkContains,
         args: ['oo', 0],
       });
@@ -76,7 +76,7 @@ describe('StringBuilder', () => {
     it('adds a checker', () => {
       builder.match(/oo/);
 
-      expect(builder.checks[1]).toEqual({
+      expect(builder.checks[2]).toEqual({
         func: builder.checkMatch,
         args: [/oo/],
       });
@@ -97,14 +97,11 @@ describe('StringBuilder', () => {
     });
   });
 
-  describe('notEmpty()', () => {
-    it('adds a checker', () => {
-      builder.notEmpty();
+  describe('empty()', () => {
+    it('allows empty', () => {
+      builder.empty();
 
-      expect(builder.checks[1]).toEqual({
-        func: builder.checkNotEmpty,
-        args: [],
-      });
+      expect(builder.allowEmpty).toBe(true);
     });
   });
 
@@ -115,9 +112,9 @@ describe('StringBuilder', () => {
       }).toThrowError('Invalid option "key". String cannot be empty.');
     });
 
-    it('doesnt error if value matches pattern', () => {
+    it('doesnt error if allow empty', () => {
       expect(() => {
-        builder.checkNotEmpty('key', 'foo');
+        builder.empty().checkNotEmpty('key', '');
       }).not.toThrowError('Invalid option "key". String cannot be empty.');
     });
   });
@@ -144,7 +141,7 @@ describe('StringBuilder', () => {
     it('adds a checker', () => {
       builder.oneOf(['foo', 'bar', 'baz']);
 
-      expect(builder.checks[1]).toEqual({
+      expect(builder.checks[2]).toEqual({
         func: builder.checkOneOf,
         args: [['foo', 'bar', 'baz']],
       });

@@ -12,11 +12,16 @@ function isString(value: *): boolean {
 }
 
 export default class StringBuilder extends Builder<string> {
+  allowEmpty: boolean = false;
+
   constructor(defaultValue: string = '') {
     super('string', defaultValue);
 
     // Only allow strings
     this.required();
+
+    // Check emptiness
+    this.addCheck(this.checkNotEmpty);
   }
 
   contains(token: string, index: number = 0): this {
@@ -53,13 +58,17 @@ export default class StringBuilder extends Builder<string> {
     }
   }
 
-  notEmpty(): this {
-    return this.addCheck(this.checkNotEmpty);
+  empty(): this {
+    this.allowEmpty = true;
+
+    return this;
   }
 
   checkNotEmpty(path: string, value: *) {
     if (__DEV__) {
-      invariant((value !== ''), 'String cannot be empty.', path);
+      if (!this.allowEmpty) {
+        invariant(isString(value), 'String cannot be empty.', path);
+      }
     }
   }
 
