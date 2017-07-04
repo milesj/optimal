@@ -5,7 +5,6 @@
  */
 
 import Builder from './Builder';
-import invariant from './invariant';
 import typeOf from './typeOf';
 
 export default class UnionBuilder extends Builder<*> {
@@ -13,11 +12,14 @@ export default class UnionBuilder extends Builder<*> {
     super('union', defaultValue);
 
     if (__DEV__) {
-      invariant((
-        Array.isArray(builders) &&
-        builders.length > 0 &&
-        builders.every(builder => (builder instanceof Builder))
-      ), 'A non-empty array of blueprints are required for a union.');
+      this.invariant(
+        (
+          Array.isArray(builders) &&
+          builders.length > 0 &&
+          builders.every(builder => (builder instanceof Builder))
+        ),
+        'A non-empty array of blueprints are required for a union.',
+      );
     }
 
     this.addCheck(this.checkUnions, builders);
@@ -31,10 +33,10 @@ export default class UnionBuilder extends Builder<*> {
       // Verify structure and usage
       builders.forEach((builder) => {
         if (usage[builder.type]) {
-          invariant(false, `Only one instance of "${builder.type}" may be used.`, path);
+          this.invariant(false, `Multiple instances of "${builder.type}" is not supported.`, path);
 
         } else if (builder.type === 'union') {
-          invariant(false, 'Nested unions are not supported.', path);
+          this.invariant(false, 'Nested unions are not supported.', path);
 
         } else {
           usage[builder.type] = true;
@@ -42,7 +44,7 @@ export default class UnionBuilder extends Builder<*> {
       });
 
       if (usage.shape && usage.object) {
-        invariant(false, 'Sibling objects and shapes are not supported.', path);
+        this.invariant(false, 'Objects and shapes within the same union are not supported.', path);
       }
 
       // Run checks on value
@@ -58,7 +60,7 @@ export default class UnionBuilder extends Builder<*> {
         }
       });
 
-      invariant(checked, `Type must be one of ${Object.keys(usage).join(', ')}.`, path);
+      this.invariant(checked, `Type must be one of ${Object.keys(usage).join(', ')}.`, path);
     }
   }
 }

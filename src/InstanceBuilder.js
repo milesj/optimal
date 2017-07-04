@@ -5,7 +5,6 @@
  */
 
 import Builder from './Builder';
-import invariant from './invariant';
 
 export default class InstanceBuilder<T> extends Builder<?T> {
   refClass: T;
@@ -14,7 +13,10 @@ export default class InstanceBuilder<T> extends Builder<?T> {
     super('instance', null);
 
     if (__DEV__) {
-      invariant((typeof refClass === 'function'), 'A class reference is required.');
+      this.invariant(
+        (typeof refClass === 'function'),
+        'A class reference is required.',
+      );
     }
 
     this.refClass = refClass;
@@ -23,7 +25,7 @@ export default class InstanceBuilder<T> extends Builder<?T> {
 
   checkInstance(path: string, value: *, refClass: T) {
     if (__DEV__) {
-      invariant(
+      this.invariant(
         (value instanceof refClass),
         // $FlowIgnore constructor check
         `Must be an instance of "${refClass.name || refClass.constructor.name}".`,

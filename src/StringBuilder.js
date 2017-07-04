@@ -5,7 +5,6 @@
  */
 
 import Builder from './Builder';
-import invariant from './invariant';
 
 function isString(value: *): boolean {
   return (typeof value === 'string' && value !== '');
@@ -26,7 +25,7 @@ export default class StringBuilder extends Builder<string> {
 
   contains(token: string, index: number = 0): this {
     if (__DEV__) {
-      invariant(
+      this.invariant(
         isString(token),
         'string.contains() requires a non-empty string.',
       );
@@ -37,13 +36,17 @@ export default class StringBuilder extends Builder<string> {
 
   checkContains(path: string, value: *, token: string, index: number = 0) {
     if (__DEV__) {
-      invariant(value.includes(token, index), `String does not include "${token}".`, path);
+      this.invariant(
+        (value.indexOf(token, index) >= 0),
+        `String does not include "${token}".`,
+        path,
+      );
     }
   }
 
   match(pattern: RegExp): this {
     if (__DEV__) {
-      invariant(
+      this.invariant(
         (pattern instanceof RegExp),
         'string.match() requires a regular expression to match against.',
       );
@@ -54,7 +57,11 @@ export default class StringBuilder extends Builder<string> {
 
   checkMatch(path: string, value: *, pattern: RegExp) {
     if (__DEV__) {
-      invariant(value.match(pattern), `String does not match pattern "${pattern.source}".`, path);
+      this.invariant(
+        value.match(pattern),
+        `String does not match pattern "${pattern.source}".`,
+        path,
+      );
     }
   }
 
@@ -67,14 +74,18 @@ export default class StringBuilder extends Builder<string> {
   checkNotEmpty(path: string, value: *) {
     if (__DEV__) {
       if (!this.allowEmpty) {
-        invariant(isString(value), 'String cannot be empty.', path);
+        this.invariant(
+          isString(value),
+          'String cannot be empty.',
+          path,
+        );
       }
     }
   }
 
   oneOf(list: string[] = []): this {
     if (__DEV__) {
-      invariant(
+      this.invariant(
         (Array.isArray(list) && list.length > 0 && list.every(isString)),
         'string.oneOf() requires a non-empty array of strings.',
       );
@@ -85,7 +96,11 @@ export default class StringBuilder extends Builder<string> {
 
   checkOneOf(path: string, value: *, list: string[] = []) {
     if (__DEV__) {
-      invariant(list.includes(value), `String must be one of: ${list.join(', ')}`, path);
+      this.invariant(
+        (list.indexOf(value) >= 0),
+        `String must be one of: ${list.join(', ')}`,
+        path,
+      );
     }
   }
 }

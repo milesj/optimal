@@ -5,14 +5,16 @@
  */
 
 import Builder from './Builder';
-import invariant from './invariant';
 
 export default class ObjectBuilder<T> extends Builder<?{ [key: string]: T }> {
   constructor(contents: Builder<T>, defaultValue: ?{ [key: string]: T } = {}) {
     super('object', defaultValue);
 
     if (__DEV__) {
-      invariant((contents instanceof Builder), 'A blueprint is required for object contents.');
+      this.invariant(
+        (contents instanceof Builder),
+        'A blueprint is required for object contents.',
+      );
     }
 
     this.addCheck(this.checkContents, contents);
@@ -32,7 +34,11 @@ export default class ObjectBuilder<T> extends Builder<?{ [key: string]: T }> {
 
   checkNotEmpty(path: string, object: *) {
     if (__DEV__) {
-      invariant((Object.keys(object).length > 0), 'Object cannot be empty.', path);
+      this.invariant(
+        (Object.keys(object).length > 0),
+        'Object cannot be empty.',
+        path,
+      );
     }
   }
 }

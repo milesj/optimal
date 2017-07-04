@@ -170,6 +170,26 @@ describe('Builder', () => {
     });
   });
 
+  describe('invariant()', () => {
+    it('does nothing if condition is true', () => {
+      expect(() => {
+        builder.invariant(true);
+      }).not.toThrowError();
+    });
+
+    it('errors if condition is false', () => {
+      expect(() => {
+        builder.invariant(false, 'Failure');
+      }).toThrowError('Failure');
+    });
+
+    it('includes an option path', () => {
+      expect(() => {
+        builder.invariant(false, 'Failure', 'foo.bar');
+      }).toThrowError('Invalid option "foo.bar". Failure');
+    });
+  });
+
   describe('message()', () => {
     it('errors for empty value', () => {
       expect(() => {

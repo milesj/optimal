@@ -91,7 +91,7 @@ describe('UnionBuilder', () => {
           }),
         ]);
         builder.runChecks('key', []);
-      }).toThrowError('Sibling objects and shapes are not supported.');
+      }).toThrowError('Objects and shapes within the same union are not supported.');
     });
 
     it('errors if the same builder type is used multiple times', () => {
@@ -101,7 +101,7 @@ describe('UnionBuilder', () => {
           objectOf(number()),
         ]);
         builder.runChecks('key', []);
-      }).toThrowError('Only one instance of "object" may be used.');
+      }).toThrowError('Multiple instances of "object" is not supported.');
     });
 
     it('runs array check', () => {

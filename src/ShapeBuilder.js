@@ -5,7 +5,6 @@
  */
 
 import Builder from './Builder';
-import invariant from './invariant';
 import isObject from './isObject';
 
 type ShapeBlueprint = { [key: string]: Builder<*> };
@@ -16,11 +15,14 @@ export default class ShapeBuilder extends Builder<?Shape> {
     super('shape', defaultValue);
 
     if (__DEV__) {
-      invariant((
-        isObject(contents) &&
-        Object.keys(contents).length > 0 &&
-        Object.keys(contents).every(key => (contents[key] instanceof Builder))
-      ), 'A non-empty object of properties to blueprints are required for a shape.');
+      this.invariant(
+        (
+          isObject(contents) &&
+          Object.keys(contents).length > 0 &&
+          Object.keys(contents).every(key => (contents[key] instanceof Builder))
+        ),
+        'A non-empty object of properties to blueprints are required for a shape.',
+      );
     }
 
     this.addCheck(this.checkContents, contents);

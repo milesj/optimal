@@ -4,7 +4,6 @@
  * @flow
  */
 
-import invariant from './invariant';
 import isObject from './isObject';
 
 import type { SupportedType, Checker } from './types';
@@ -21,9 +20,10 @@ export default class Builder<T> {
 
   constructor(type: SupportedType, defaultValue: T) {
     if (__DEV__) {
-      if (typeof defaultValue === 'undefined') {
-        throw new TypeError(`A default value for type "${type}" is required.`);
-      }
+      this.invariant(
+        (typeof defaultValue !== 'undefined'),
+        `A default value for type "${type}" is required.`,
+      );
     }
 
     this.defaultValue = defaultValue;
@@ -49,7 +49,7 @@ export default class Builder<T> {
    */
   checkOnly(path: string, value: *) {
     if (__DEV__) {
-      invariant(
+      this.invariant(
         (value === this.defaultValue),
         `Value may only be "${String(this.defaultValue)}".`,
         path,
@@ -64,7 +64,7 @@ export default class Builder<T> {
     if (__DEV__) {
       switch (this.type) {
         case 'array':
-          invariant(Array.isArray(value), 'Must be an array.', path);
+          this.invariant(Array.isArray(value), 'Must be an array.', path);
           break;
 
         case 'instance':
@@ -74,13 +74,30 @@ export default class Builder<T> {
 
         case 'object':
         case 'shape':
-          invariant(isObject(value), 'Must be a plain object.', path);
+          this.invariant(isObject(value), 'Must be a plain object.', path);
           break;
 
         default:
           // eslint-disable-next-line valid-typeof
-          invariant((typeof value === this.type), `Must be a ${this.type}.`, path);
+          this.invariant((typeof value === this.type), `Must be a ${this.type}.`, path);
           break;
+      }
+    }
+  }
+
+  /**
+   * Throw an error if the condition is falsy.
+   */
+  invariant(condition: boolean, message: string, path: string = '') {
+    if (condition) {
+      return;
+    }
+
+    if (__DEV__) {
+      if (path) {
+        throw new Error(`Invalid option "${path}". ${message}`);
+      } else {
+        throw new Error(message);
       }
     }
   }
@@ -90,8 +107,8 @@ export default class Builder<T> {
    */
   message(message: string): this {
     if (__DEV__) {
-      invariant(
-        (typeof message === 'string' && message),
+      this.invariant(
+        (typeof message === 'string' && !!message),
         'A non-empty string is required for custom messages.',
       );
     }
@@ -106,7 +123,7 @@ export default class Builder<T> {
    */
   only(): this {
     if (__DEV__) {
-      invariant(
+      this.invariant(
         // eslint-disable-next-line valid-typeof
         (typeof this.defaultValue === this.type),
         `only() requires a default ${this.type} value.`,
@@ -144,7 +161,7 @@ export default class Builder<T> {
         });
       } catch (error) {
         if (this.errorMessage) {
-          invariant(false, this.errorMessage, path);
+          this.invariant(false, this.errorMessage, path);
         } else {
           throw error;
         }

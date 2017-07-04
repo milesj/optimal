@@ -5,14 +5,16 @@
  */
 
 import Builder from './Builder';
-import invariant from './invariant';
 
 export default class ArrayBuilder<T> extends Builder<?T[]> {
   constructor(contents: Builder<T>, defaultValue: ?T[] = []) {
     super('array', defaultValue);
 
     if (__DEV__) {
-      invariant((contents instanceof Builder), 'A blueprint is required for array contents.');
+      this.invariant(
+        (contents instanceof Builder),
+        'A blueprint is required for array contents.',
+      );
     }
 
     this.addCheck(this.checkContents, contents);
@@ -32,7 +34,11 @@ export default class ArrayBuilder<T> extends Builder<?T[]> {
 
   checkNotEmpty(path: string, array: *) {
     if (__DEV__) {
-      invariant((array.length > 0), 'Array cannot be empty.', path);
+      this.invariant(
+        (array.length > 0),
+        'Array cannot be empty.',
+        path,
+      );
     }
   }
 }
