@@ -15,6 +15,7 @@ export default class Builder<T> {
     func: Checker,
   }[] = [];
   defaultValue: T;
+  errorMessage: string = '';
   nullable: boolean = true;
   type: SupportedType;
 
@@ -85,6 +86,22 @@ export default class Builder<T> {
   }
 
   /**
+   * Set a custom error message for all checks.
+   */
+  message(message: string): this {
+    if (__DEV__) {
+      invariant(
+        (typeof message === 'string' && message),
+        'A non-empty string is required for custom messages.',
+      );
+    }
+
+    this.errorMessage = message;
+
+    return this;
+  }
+
+  /**
    * Mark a field as only the default value can be used.
    */
   only(): this {
@@ -121,9 +138,17 @@ export default class Builder<T> {
 
     // Run all checks against the value
     if (__DEV__) {
-      this.checks.forEach((checker) => {
-        checker.func.call(this, path, value, ...checker.args);
-      });
+      try {
+        this.checks.forEach((checker) => {
+          checker.func.call(this, path, value, ...checker.args);
+        });
+      } catch (error) {
+        if (this.errorMessage) {
+          invariant(false, this.errorMessage, path);
+        } else {
+          throw error;
+        }
+      }
     }
 
     return value;

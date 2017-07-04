@@ -134,6 +134,20 @@ describe('UnionBuilder', () => {
       }).toThrowError('Invalid option "key.foo". Must be a number.');
     });
 
+    it('runs shape check', () => {
+      expect(() => {
+        builder = new UnionBuilder([
+          shape({
+            foo: string(),
+            bar: number(),
+          }),
+        ]);
+        builder.runChecks('key', {
+          foo: 123,
+        });
+      }).toThrowError('Invalid option "key.foo". Must be a string.');
+    });
+
     it('runs string check', () => {
       expect(() => {
         builder.runChecks('key', 'qux');

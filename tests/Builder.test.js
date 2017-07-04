@@ -170,6 +170,26 @@ describe('Builder', () => {
     });
   });
 
+  describe('message()', () => {
+    it('errors for empty value', () => {
+      expect(() => {
+        builder.message('');
+      }).toThrowError('A non-empty string is required for custom messages.');
+    });
+
+    it('errors for non-string value', () => {
+      expect(() => {
+        builder.message(123);
+      }).toThrowError('A non-empty string is required for custom messages.');
+    });
+
+    it('sets message', () => {
+      builder.message('foobar');
+
+      expect(builder.errorMessage).toBe('foobar');
+    });
+  });
+
   describe('required()', () => {
     it('marks a field as non-nullable', () => {
       expect(builder.nullable).toBe(true);
@@ -205,6 +225,12 @@ describe('Builder', () => {
       expect(() => {
         builder.runChecks('key', 123);
       }).toThrowError('Invalid option "key". Must be a string.');
+    });
+
+    it('uses custom message', () => {
+      expect(() => {
+        builder.message('Oops, something is broken.').runChecks('key', 123);
+      }).toThrowError('Invalid option "key". Oops, something is broken.');
     });
   });
 
