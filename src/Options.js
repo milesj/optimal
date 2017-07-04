@@ -15,10 +15,11 @@ import { shape } from './ShapeBuilder';
 import { string } from './StringBuilder';
 import { union } from './UnionBuilder';
 import isObject from './isObject';
+import typeOf from './typeOf';
 
 import type { Factory, Blueprint } from './types';
 
-export function buildAndCheckOptions(
+function buildAndCheckOptions(
   baseOptions: Object,
   blueprint: Blueprint,
   parentPath: string = '',
@@ -30,7 +31,7 @@ export function buildAndCheckOptions(
   Object.keys(blueprint).forEach((key) => {
     const builder = blueprint[key];
     const value = baseOptions[key];
-    const path = parentPath ? `${parentPath}.${key}` : '';
+    const path = parentPath ? `${parentPath}.${key}` : key;
 
     // Run validation checks
     if (builder instanceof Builder) {
@@ -38,7 +39,7 @@ export function buildAndCheckOptions(
 
     // Builder is a plain object, so let's recursively try again
     } else if (isObject(builder)) {
-      options[key] = buildAndCheckOptions(value, builder, path);
+      options[key] = buildAndCheckOptions(value || {}, builder, path);
 
     // Oops
     } else if (__DEV__) {
@@ -51,46 +52,39 @@ export function buildAndCheckOptions(
 
   // Throw errors for unknown options
   if (__DEV__) {
-    Object.keys(unknownOptions).forEach((key) => {
-      throw new Error(`Unknown option ${parentPath ? `${parentPath}.${key}` : key}.`);
-    });
+    const unknownKeys = Object.keys(unknownOptions);
+
+    if (unknownKeys.length > 0) {
+      throw new Error(`Unknown options ${unknownKeys.join(', ')}.`);
+    }
   }
 
   return options;
 }
 
-export default class Options {
-  constructor(baseOptions: Object, factory: Factory) {
-    if (__DEV__) {
-      if (!isObject(baseOptions)) {
-        throw new TypeError(`Options require a plain object, found ${typeof baseOptions}.`);
+export default function Options(baseOptions: Object, factory: Factory) {
+  if (__DEV__) {
+    if (!isObject(baseOptions)) {
+      throw new TypeError(`Options require a plain object, found ${typeOf(baseOptions)}.`);
 
-      } else if (typeof factory !== 'function') {
-        throw new TypeError('An options factory function is required.');
-      }
+    } else if (typeof factory !== 'function') {
+      throw new TypeError('An options factory function is required.');
     }
-
-    // Generate the options blueprint based on the builders provided by the factory,
-    // and run validation checks on each property and value recursively
-    const options = buildAndCheckOptions(baseOptions, factory({
-      arrayOf,
-      bool,
-      date,
-      func,
-      instanceOf,
-      number,
-      objectOf,
-      regex,
-      shape,
-      string,
-      union,
-    }));
-
-    // Since there are no class properties or methods on Options,
-    // we can mix the plain options object into the class
-    Object.keys(options).forEach((key) => {
-      // $FlowIgnore
-      this[key] = options[key];
-    });
   }
+
+  // Generate the options blueprint based on the builders provided by the factory,
+  // and run validation checks on each property and value recursively
+  return buildAndCheckOptions(baseOptions, factory({
+    arrayOf,
+    bool,
+    date,
+    func,
+    instanceOf,
+    number,
+    objectOf,
+    regex,
+    shape,
+    string,
+    union,
+  }));
 }

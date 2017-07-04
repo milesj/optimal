@@ -6,7 +6,7 @@ Options object builder and validator.
 ## Usage
 
 Pass a plain object and a factory function to `Options`. The factory defines a
-blueprint for every property, and its value, within the options object.
+blueprint for every property and value within the options object.
 
 The plain object is then validated, built, and returned.
 
@@ -25,7 +25,7 @@ const options = new Options(baseOptions, (o) => ({
   number: o.number(5).between(0, 10),
   func: o.func(),
   object: {
-    foo: o.string().oneOf(['a', 'b', 'c']),
+    foo: o.string('a').oneOf(['a', 'b', 'c']),
   },
 }));
 
@@ -35,6 +35,9 @@ const options = new Options(baseOptions, (o) => ({
   string: 'foo',
   number: 10,
   func: null,
+  object: {
+    foo: 'b',
+  }
 }
 */
 

@@ -18,8 +18,8 @@ import type StringBuilder from './StringBuilder';
 import type UnionBuilder from './UnionBuilder';
 
 export type SupportedType =
-  'array' | 'object' | 'function' | 'instance' | 'union' |
-  'boolean' | 'string' | 'number' | 'shape';
+  'array' | 'boolean' | 'function' | 'instance' | 'number' |
+  'object' | 'shape' | 'string' | 'union';
 
 export type Checker = (path: string, value: *, ...args: *[]) => void;
 
