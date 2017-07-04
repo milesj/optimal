@@ -12,7 +12,7 @@
     "jest": "run-tests",
     "posttest": "yarn run flow",
     "pretest": "yarn run eslint",
-    "preversion": "yarn test && yarn run babel",
+    "preversion": "yarn test && yarn run babel && yarn run rollup",
     "rollup": "NODE_ENV=production bundle-lib",
     "test": "yarn run jest"
   },
