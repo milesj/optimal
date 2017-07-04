@@ -11,6 +11,7 @@ import { func } from './FuncBuilder';
 import { instanceOf, date, regex } from './InstanceBuilder';
 import { number } from './NumberBuilder';
 import { objectOf } from './ObjectBuilder';
+import { shape } from './ShapeBuilder';
 import { string } from './StringBuilder';
 import { union } from './UnionBuilder';
 import isObject from './isObject';
@@ -76,6 +77,7 @@ export default class Options {
       number,
       objectOf,
       regex,
+      shape,
       string,
       union,
     }));

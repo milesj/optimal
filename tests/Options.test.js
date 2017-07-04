@@ -18,55 +18,89 @@ describe('Options', () => {
     number,
     objectOf,
     regex,
+    shape,
     string,
     union,
-  }) => ({
-    context: string(process.cwd()).notEmpty(),
-    entry: union([
-      string().notEmpty(),
-      arrayOf(string()),
-      objectOf(union([
+  }) => {
+    const primitive = union([
+      string(),
+      number(),
+      bool(),
+    ]);
+
+    const condition = union([
+      string(),
+      regex(),
+      func(),
+      arrayOf(regex()),
+      objectOf(regex()),
+    ]);
+
+    const rule = shape({
+      enforce: string('post').oneOf(['pre', 'post']),
+      exclude: condition,
+      include: condition,
+      issuer: condition,
+      parser: objectOf(bool()),
+      resource: condition,
+      use: arrayOf(union([
+        string(),
+        shape({
+          loader: string(),
+          options: objectOf(primitive),
+        }),
+      ])),
+    });
+
+    return {
+      context: string(process.cwd()).notEmpty(),
+      entry: union([
         string().notEmpty(),
         arrayOf(string()),
-      ])),
-      func(),
-    ]),
-    output: {
-      chunkFilename: string('[id].js').notEmpty(),
-      chunkLoadTimeout: number(120000),
-      crossOriginLoading: union([
-        bool(false).only(),
-        string('anonymous').oneOf(['anonymous', 'use-credentials']),
-      ]),
-      filename: string('bundle.js').notEmpty(),
-      hashFunction: string('md5').oneOf(['md5', 'sha256', 'sha512']),
-      path: string().notEmpty(),
-      publicPath: string(),
-    },
-    module: {
-      noParse: union([
-        regex(),
-        arrayOf(regex()),
+        objectOf(union([
+          string().notEmpty(),
+          arrayOf(string()),
+        ])),
         func(),
       ]),
-    },
-    resolve: {
-      alias: objectOf(string().notEmpty()),
-      extensions: arrayOf(string().notEmpty()),
+      output: {
+        chunkFilename: string('[id].js').notEmpty(),
+        chunkLoadTimeout: number(120000),
+        crossOriginLoading: union([
+          bool(false).only(),
+          string('anonymous').oneOf(['anonymous', 'use-credentials']),
+        ]),
+        filename: string('bundle.js').notEmpty(),
+        hashFunction: string('md5').oneOf(['md5', 'sha256', 'sha512']),
+        path: string().notEmpty(),
+        publicPath: string(),
+      },
+      module: {
+        noParse: union([
+          regex(),
+          arrayOf(regex()),
+          func(),
+        ]),
+        rules: arrayOf(rule),
+      },
+      resolve: {
+        alias: objectOf(string().notEmpty()),
+        extensions: arrayOf(string().notEmpty()),
+        plugins: arrayOf(instanceOf(Plugin)),
+        resolveLoader: objectOf(arrayOf(string().notEmpty())),
+      },
       plugins: arrayOf(instanceOf(Plugin)),
-      resolveLoader: objectOf(arrayOf(string().notEmpty())),
-    },
-    plugins: arrayOf(instanceOf(Plugin)),
-    target: string('web').oneOf([
-      'async-node', 'electron-main', 'electron-renderer',
-      'node', 'node-webkit', 'web', 'webworker',
-    ]),
-    watch: bool(false),
-    node: objectOf(union([
-      bool(),
-      string('mock').oneOf(['mock', 'empty']),
-    ])),
-  });
+      target: string('web').oneOf([
+        'async-node', 'electron-main', 'electron-renderer',
+        'node', 'node-webkit', 'web', 'webworker',
+      ]),
+      watch: bool(false),
+      node: objectOf(union([
+        bool(),
+        string('mock').oneOf(['mock', 'empty']),
+      ])),
+    };
+  };
 
   describe('constructor()', () => {
     it('errors if a non-object is passed', () => {

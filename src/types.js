@@ -13,12 +13,13 @@ import type FuncBuilder from './FuncBuilder';
 import type InstanceBuilder from './InstanceBuilder';
 import type NumberBuilder from './NumberBuilder';
 import type ObjectBuilder from './ObjectBuilder';
+import type ShapeBuilder from './ShapeBuilder';
 import type StringBuilder from './StringBuilder';
 import type UnionBuilder from './UnionBuilder';
 
 export type SupportedType =
   'array' | 'object' | 'function' | 'instance' | 'union' |
-  'boolean' | 'string' | 'number';
+  'boolean' | 'string' | 'number' | 'shape';
 
 export type Checker = (path: string, value: *, ...args: *[]) => void;
 
@@ -33,6 +34,7 @@ export type FactoryMap = {
   number: (value: number) => NumberBuilder,
   objectOf: (builder: Builder<*>) => ObjectBuilder<*>,
   regex: (value: ?RegExp) => InstanceBuilder<Class<RegExp>>,
+  shape: (builders: { [key: string]: Builder<*> }) => ShapeBuilder,
   string: (value: string) => StringBuilder,
   union: (builders: Builder<*>[]) => UnionBuilder,
 };

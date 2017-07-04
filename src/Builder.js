@@ -67,6 +67,7 @@ export default class Builder<T> {
         break;
 
       case 'object':
+      case 'shape':
         invariant(isObject(value), 'Must be a plain object.', path);
         break;
 
