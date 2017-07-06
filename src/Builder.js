@@ -6,13 +6,14 @@
 
 import isObject from './isObject';
 
-import type { SupportedType, Checker } from './types';
+import type { SupportedType, Checker, Config } from './types';
 
 export default class Builder<T> {
   checks: {
     args: *[],
     func: Checker,
   }[] = [];
+  currentConfig: Config = {};
   defaultValue: T;
   errorMessage: string = '';
   nullable: boolean = true;
@@ -89,16 +90,23 @@ export default class Builder<T> {
    * Throw an error if the condition is falsy.
    */
   invariant(condition: boolean, message: string, path: string = '') {
-    if (condition) {
-      return;
-    }
-
     if (__DEV__) {
-      if (path) {
-        throw new Error(`Invalid option "${path}". ${message}`);
-      } else {
-        throw new Error(message);
+      if (condition) {
+        return;
       }
+
+      const { name } = this.currentConfig;
+      let prefix = '';
+
+      if (path) {
+        if (name) {
+          prefix += `Invalid \`${name}\` option "${path}". `;
+        } else {
+          prefix += `Invalid option "${path}". `;
+        }
+      }
+
+      throw new Error(`${prefix}${this.errorMessage || message}`);
     }
   }
 
@@ -145,7 +153,9 @@ export default class Builder<T> {
   /**
    * Run all validation checks that have been enqueued.
    */
-  runChecks(path: string, initialValue: *): * {
+  runChecks(path: string, initialValue: *, config: Config = {}): * {
+    this.currentConfig = config;
+
     const value = (typeof initialValue === 'undefined') ? this.defaultValue : initialValue;
 
     // If nullable, just abort early
@@ -155,17 +165,9 @@ export default class Builder<T> {
 
     // Run all checks against the value
     if (__DEV__) {
-      try {
-        this.checks.forEach((checker) => {
-          checker.func.call(this, path, value, ...checker.args);
-        });
-      } catch (error) {
-        if (this.errorMessage) {
-          this.invariant(false, this.errorMessage, path);
-        } else {
-          throw error;
-        }
-      }
+      this.checks.forEach((checker) => {
+        checker.func.call(this, path, value, ...checker.args);
+      });
     }
 
     return value;

@@ -142,6 +142,17 @@ describe('Options', () => {
     }).toThrowError('Unknown options foo, bar.');
   });
 
+  it('doesnt error for unknown options if `unknown` is true', () => {
+    expect(() => {
+      new Options({
+        foo: 123,
+        bar: 456,
+      }, factory, {
+        unknown: true,
+      });
+    }).not.toThrowError('Unknown options foo, bar.');
+  });
+
   it('sets object keys as class properties', () => {
     options = new Options({
       foo: 123,
@@ -210,5 +221,15 @@ describe('Options', () => {
         },
       }, factory);
     }).toThrowError('Invalid option "output.crossOriginLoading". String must be one of: anonymous, use-credentials');
+  });
+
+  it('includes a custom `name` in the error message', () => {
+    expect(() => {
+      options = new Options({
+        entry: 123,
+      }, factory, {
+        name: 'FooBar',
+      });
+    }).toThrowError('Invalid `FooBar` option "entry". Type must be one of string, array, object, function.');
   });
 });

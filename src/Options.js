@@ -17,11 +17,12 @@ import { union } from './UnionBuilder';
 import isObject from './isObject';
 import typeOf from './typeOf';
 
-import type { Factory, Blueprint } from './types';
+import type { Factory, Blueprint, Config } from './types';
 
 function buildAndCheckOptions(
   baseOptions: Object,
   blueprint: Blueprint,
+  config: Config = {},
   parentPath: string = '',
 ) {
   const unknownOptions = { ...baseOptions };
@@ -35,11 +36,11 @@ function buildAndCheckOptions(
 
     // Run validation checks
     if (builder instanceof Builder) {
-      options[key] = builder.runChecks(path, value);
+      options[key] = builder.runChecks(path, value, config);
 
     // Builder is a plain object, so let's recursively try again
     } else if (isObject(builder)) {
-      options[key] = buildAndCheckOptions(value || {}, builder, path);
+      options[key] = buildAndCheckOptions(value || {}, builder, config, path);
 
     // Oops
     } else if (__DEV__) {
@@ -54,7 +55,7 @@ function buildAndCheckOptions(
   if (__DEV__) {
     const unknownKeys = Object.keys(unknownOptions);
 
-    if (unknownKeys.length > 0) {
+    if (!config.unknown && unknownKeys.length > 0) {
       throw new Error(`Unknown options ${unknownKeys.join(', ')}.`);
     }
   }
@@ -62,7 +63,7 @@ function buildAndCheckOptions(
   return options;
 }
 
-export default function Options(baseOptions: Object, factory: Factory) {
+export default function Options(baseOptions: Object, factory: Factory, config: Config = {}) {
   if (__DEV__) {
     if (!isObject(baseOptions)) {
       throw new TypeError(`Options require a plain object, found ${typeOf(baseOptions)}.`);
@@ -73,7 +74,7 @@ export default function Options(baseOptions: Object, factory: Factory) {
   }
 
   // Generate the options blueprint based on the builders provided by the factory,
-  // and run validation checks on each property and value recursively
+  // and run validation checks on each property and value recursively.
   return buildAndCheckOptions(baseOptions, factory({
     arrayOf,
     bool,
@@ -86,5 +87,5 @@ export default function Options(baseOptions: Object, factory: Factory) {
     shape,
     string,
     union,
-  }));
+  }), config);
 }

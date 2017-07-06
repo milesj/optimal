@@ -40,3 +40,8 @@ export type FactoryMap = {
 };
 
 export type Factory = (factories: FactoryMap) => Blueprint;
+
+export type Config = {
+  name?: string,
+  unknown?: boolean,
+};
