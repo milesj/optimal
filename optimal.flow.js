@@ -35,13 +35,15 @@ declare module 'optimal' {
     currentConfig: Config;
     defaultValue: T;
     errorMessage: string;
-    nullable: boolean;
+    isNullable: boolean;
+    isRequired: boolean;
     type: SupportedType;
 
     constructor(type: SupportedType, defaultValue: T): void;
     addCheck(func: Checker, ...args: *[]): this;
     invariant(condition: boolean, message: string, path: string): void;
     message(message: string): this;
+    nullable(): this;
     only(): this;
     required(): this;
     runChecks(path: string, initialValue: *, config: Config): *;

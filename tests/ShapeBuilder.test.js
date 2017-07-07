@@ -121,10 +121,6 @@ describe('ShapeBuilder', () => {
         });
       }).toThrowError('Invalid option "key.foo.c". Must be a string.');
     });
-
-    it('supports null', () => {
-      expect(builder.runChecks('key', null)).toBe(null);
-    });
   });
 });
 

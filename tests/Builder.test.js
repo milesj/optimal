@@ -210,13 +210,17 @@ describe('Builder', () => {
     });
   });
 
-  describe('required()', () => {
-    it('marks a field as non-nullable', () => {
-      expect(builder.nullable).toBe(true);
+  describe('nullable()', () => {
+    it('toggles nullable state', () => {
+      expect(builder.isNullable).toBe(false);
 
-      builder.required();
+      builder.nullable();
 
-      expect(builder.nullable).toBe(false);
+      expect(builder.isNullable).toBe(true);
+
+      builder.nullable(false);
+
+      expect(builder.isNullable).toBe(false);
     });
   });
 
@@ -230,15 +234,13 @@ describe('Builder', () => {
     });
 
     it('returns null if value passed is null and builder is nullable', () => {
-      expect(builder.runChecks('key', null)).toBe(null);
+      expect(builder.nullable().runChecks('key', null)).toBe(null);
     });
 
     it('runs checks if value passed is null and builder is non-nullable', () => {
-      builder.required();
-
       expect(() => {
         builder.runChecks('key', null);
-      }).toThrowError('Invalid option "key". Must be a string.');
+      }).toThrowError('Invalid option "key". Null is not allowed.');
     });
 
     it('runs default type of check', () => {

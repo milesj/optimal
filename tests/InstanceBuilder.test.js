@@ -51,10 +51,6 @@ describe('InstanceBuilder', () => {
         builder.runChecks('key', new Foo());
       }).not.toThrowError('Invalid option "key". Must be an instance of "Foo".');
     });
-
-    it('supports null', () => {
-      expect(builder.runChecks('key', null)).toBe(null);
-    });
   });
 });
 

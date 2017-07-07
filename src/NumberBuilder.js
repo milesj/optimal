@@ -13,9 +13,6 @@ function isNumber(value: *): boolean {
 export default class NumberBuilder extends Builder<number> {
   constructor(defaultValue: number = 0) {
     super('number', defaultValue);
-
-    // Only allow numbers
-    this.required();
   }
 
   between(min: number, max: number, inclusive: boolean = false): this {

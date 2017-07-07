@@ -21,12 +21,6 @@ describe('StringBuilder', () => {
         builder.runChecks('key', 123);
       }).toThrowError('Invalid option "key". Must be a string.');
     });
-
-    it('doesnt support null', () => {
-      expect(() => {
-        builder.runChecks('key', null);
-      }).toThrowError('Invalid option "key". Must be a string.');
-    });
   });
 
   describe('contains()', () => {

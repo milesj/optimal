@@ -61,7 +61,7 @@ describe('Options', () => {
           arrayOf(string()),
         ])),
         func(),
-      ]),
+      ]).nullable(),
       output: {
         chunkFilename: string('[id].js'),
         chunkLoadTimeout: number(120000),
@@ -79,7 +79,7 @@ describe('Options', () => {
           regex(),
           arrayOf(regex()),
           func(),
-        ]),
+        ]).nullable(),
         rules: arrayOf(rule),
       },
       resolve: {

@@ -22,10 +22,6 @@ describe('FuncBuilder', () => {
         builder.runChecks('key', 123);
       }).toThrowError('Invalid option "key". Must be a function.');
     });
-
-    it('supports null', () => {
-      expect(builder.runChecks('key', null)).toBe(null);
-    });
   });
 });
 

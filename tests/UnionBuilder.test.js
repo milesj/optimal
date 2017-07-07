@@ -159,10 +159,6 @@ describe('UnionBuilder', () => {
       expect(builder.runChecks('key', 3)).toBe(3);
       expect(builder.runChecks('key', true)).toBe(true);
     });
-
-    it('supports null', () => {
-      expect(builder.runChecks('key', null)).toBe(null);
-    });
   });
 });
 

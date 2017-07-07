@@ -16,7 +16,8 @@ export default class Builder<T> {
   currentConfig: Config = {};
   defaultValue: T;
   errorMessage: string = '';
-  nullable: boolean = true;
+  isNullable: boolean = false;
+  isRequired: boolean = false;
   type: SupportedType;
 
   constructor(type: SupportedType, defaultValue: T) {
@@ -128,6 +129,15 @@ export default class Builder<T> {
   }
 
   /**
+   * Mark a field to allow nulls.
+   */
+  nullable(state: boolean = true): this {
+    this.isNullable = state;
+
+    return this;
+  }
+
+  /**
    * Mark a field as only the default value can be used.
    */
   only(): this {
@@ -143,15 +153,6 @@ export default class Builder<T> {
   }
 
   /**
-   * Mark a field as required and disallow nulls.
-   */
-  required(): this {
-    this.nullable = false;
-
-    return this;
-  }
-
-  /**
    * Run all validation checks that have been enqueued.
    */
   runChecks(path: string, initialValue: *, config: Config = {}): * {
@@ -159,9 +160,14 @@ export default class Builder<T> {
 
     const value = (typeof initialValue === 'undefined') ? this.defaultValue : initialValue;
 
-    // If nullable, just abort early
-    if (value === null && this.nullable) {
-      return value;
+    // Handle nulls
+    if (value === null) {
+      if (this.isNullable) {
+        return value;
+
+      } else if (__DEV__) {
+        this.invariant(this.isNullable, 'Null is not allowed.', path);
+      }
     }
 
     // Run all checks against the value

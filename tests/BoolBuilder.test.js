@@ -21,12 +21,6 @@ describe('BoolBuilder', () => {
         builder.runChecks('key', 123);
       }).toThrowError('Invalid option "key". Must be a boolean.');
     });
-
-    it('doesnt support null', () => {
-      expect(() => {
-        builder.runChecks('key', null);
-      }).toThrowError('Invalid option "key". Must be a boolean.');
-    });
   });
 });
 

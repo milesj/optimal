@@ -43,10 +43,6 @@ describe('CustomBuilder', () => {
         builder.runChecks('key', 123);
       }).not.toThrowError('Invalid option "error". This will error!');
     });
-
-    it('supports null', () => {
-      expect(builder.runChecks('key', null)).toBe(null);
-    });
   });
 });
 

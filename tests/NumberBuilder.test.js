@@ -21,12 +21,6 @@ describe('NumberBuilder', () => {
         builder.runChecks('key', 'foo');
       }).toThrowError('Invalid option "key". Must be a number.');
     });
-
-    it('doesnt support null', () => {
-      expect(() => {
-        builder.runChecks('key', null);
-      }).toThrowError('Invalid option "key". Must be a number.');
-    });
   });
 
   describe('between()', () => {

@@ -12,6 +12,9 @@ export default class InstanceBuilder<T> extends Builder<?T> {
   constructor(refClass: T) {
     super('instance', null);
 
+    // Nullable by default
+    this.nullable();
+
     if (__DEV__) {
       this.invariant(
         (typeof refClass === 'function'),
