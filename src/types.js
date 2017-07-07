@@ -4,7 +4,7 @@
  * @flow
  */
 
-/* eslint-disable flowtype/no-weak-types */
+/* eslint-disable flowtype/no-weak-types, max-len */
 
 import type Builder from './Builder';
 import type ArrayBuilder from './ArrayBuilder';
@@ -18,6 +18,8 @@ import type ShapeBuilder from './ShapeBuilder';
 import type StringBuilder from './StringBuilder';
 import type UnionBuilder from './UnionBuilder';
 
+// Note: Keep in sync with flow definition!
+
 export type SupportedType =
   'array' | 'boolean' | 'function' | 'instance' | 'number' |
   'object' | 'shape' | 'string' | 'union' | 'custom';
@@ -27,18 +29,18 @@ export type Checker = (path: string, value: *, ...args: *[]) => void;
 export type Blueprint = { [key: string]: Builder<*> | Blueprint };
 
 export type FactoryMap = {
-  arrayOf: (builder: Builder<*>) => ArrayBuilder<*>,
-  bool: (value: boolean) => BoolBuilder,
-  custom: (checker: Checker) => CustomBuilder,
-  date: (value: ?Date) => InstanceBuilder<Class<Date>>,
-  func: (value: ?Function) => FuncBuilder,
+  arrayOf: (builder: Builder<*>, defaultValue: ?*[]) => ArrayBuilder<*>,
+  bool: (defaultValue: boolean) => BoolBuilder,
+  custom: (checker: Checker, defaultValue: *) => CustomBuilder,
+  date: () => InstanceBuilder<Class<Date>>,
+  func: (defaultValue: ?Function) => FuncBuilder,
   instanceOf: (refClass: *) => InstanceBuilder<*>,
-  number: (value: number) => NumberBuilder,
-  objectOf: (builder: Builder<*>) => ObjectBuilder<*>,
-  regex: (value: ?RegExp) => InstanceBuilder<Class<RegExp>>,
-  shape: (builders: { [key: string]: Builder<*> }) => ShapeBuilder,
-  string: (value: string) => StringBuilder,
-  union: (builders: Builder<*>[]) => UnionBuilder,
+  number: (defaultValue: number) => NumberBuilder,
+  objectOf: (builder: Builder<*>, defaultValue: ?{ [key: string]: * }) => ObjectBuilder<*>,
+  regex: () => InstanceBuilder<Class<RegExp>>,
+  shape: (builders: { [key: string]: Builder<*> }, defaultValue: ?{ [key: string]: * }) => ShapeBuilder,
+  string: (defaultValue: string) => StringBuilder,
+  union: (builders: Builder<*>[], defaultValue: *) => UnionBuilder,
 };
 
 export type Factory = (factories: FactoryMap) => Blueprint;

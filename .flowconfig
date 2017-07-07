@@ -8,6 +8,7 @@
 
 [libs]
 ./flow
+./optimal.flow.js
 
 [options]
 emoji=true
