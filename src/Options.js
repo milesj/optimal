@@ -7,6 +7,7 @@
 import Builder from './Builder';
 import { arrayOf } from './ArrayBuilder';
 import { bool } from './BoolBuilder';
+import { custom } from './CustomBuilder';
 import { func } from './FuncBuilder';
 import { instanceOf, date, regex } from './InstanceBuilder';
 import { number } from './NumberBuilder';
@@ -78,6 +79,7 @@ export default function Options(baseOptions: Object, factory: Factory, config: C
   return buildAndCheckOptions(baseOptions, factory({
     arrayOf,
     bool,
+    custom,
     date,
     func,
     instanceOf,

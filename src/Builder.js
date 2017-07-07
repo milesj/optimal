@@ -68,6 +68,7 @@ export default class Builder<T> {
           this.invariant(Array.isArray(value), 'Must be an array.', path);
           break;
 
+        case 'custom':
         case 'instance':
         case 'union':
           // Handle in the sub-class

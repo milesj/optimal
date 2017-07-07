@@ -9,6 +9,7 @@
 import type Builder from './Builder';
 import type ArrayBuilder from './ArrayBuilder';
 import type BoolBuilder from './BoolBuilder';
+import type CustomBuilder from './CustomBuilder';
 import type FuncBuilder from './FuncBuilder';
 import type InstanceBuilder from './InstanceBuilder';
 import type NumberBuilder from './NumberBuilder';
@@ -19,7 +20,7 @@ import type UnionBuilder from './UnionBuilder';
 
 export type SupportedType =
   'array' | 'boolean' | 'function' | 'instance' | 'number' |
-  'object' | 'shape' | 'string' | 'union';
+  'object' | 'shape' | 'string' | 'union' | 'custom';
 
 export type Checker = (path: string, value: *, ...args: *[]) => void;
 
@@ -28,6 +29,7 @@ export type Blueprint = { [key: string]: Builder<*> | Blueprint };
 export type FactoryMap = {
   arrayOf: (builder: Builder<*>) => ArrayBuilder<*>,
   bool: (value: boolean) => BoolBuilder,
+  custom: (checker: Checker) => CustomBuilder,
   date: (value: ?Date) => InstanceBuilder<Class<Date>>,
   func: (value: ?Function) => FuncBuilder,
   instanceOf: (refClass: *) => InstanceBuilder<*>,
