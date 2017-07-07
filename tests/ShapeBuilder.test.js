@@ -102,6 +102,19 @@ describe('ShapeBuilder', () => {
       expect(builder.runChecks('key', data)).toEqual(data);
     });
 
+    it('supports nested required', () => {
+      builder = new ShapeBuilder({
+        foo: string(),
+        bar: bool().required(),
+      });
+
+      expect(() => {
+        builder.runChecks('key', {
+          foo: 'abc',
+        });
+      }).toThrowError('Invalid option "key.bar". Field is required and must be defined.');
+    });
+
     it('errors correctly for shapes in shapes', () => {
       builder = new ShapeBuilder({
         foo: shape({

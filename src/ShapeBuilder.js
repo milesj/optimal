@@ -30,9 +30,12 @@ export default class ShapeBuilder extends Builder<?Shape> {
 
   checkContents(path: string, object: *, contents: ShapeBlueprint) {
     if (__DEV__) {
-      Object.keys(object).forEach((key) => {
-        if (contents[key]) {
-          contents[key].runChecks(`${path}.${key}`, object[key]);
+      Object.keys(contents).forEach((key) => {
+        const builder = contents[key];
+
+        // Properties should be optional by default unless explicitly required
+        if (builder.isRequired || typeof object[key] !== 'undefined') {
+          builder.runChecks(`${path}.${key}`, object[key]);
         }
       });
     }

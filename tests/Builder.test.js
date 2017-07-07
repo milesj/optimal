@@ -224,6 +224,20 @@ describe('Builder', () => {
     });
   });
 
+  describe('required()', () => {
+    it('toggles required state', () => {
+      expect(builder.isRequired).toBe(false);
+
+      builder.required();
+
+      expect(builder.isRequired).toBe(true);
+
+      builder.required(false);
+
+      expect(builder.isRequired).toBe(false);
+    });
+  });
+
   describe('runChecks()', () => {
     it('returns valid value', () => {
       expect(builder.runChecks('key', 'bar')).toBe('bar');
@@ -237,7 +251,13 @@ describe('Builder', () => {
       expect(builder.nullable().runChecks('key', null)).toBe(null);
     });
 
-    it('runs checks if value passed is null and builder is non-nullable', () => {
+    it('errors if value passed is undefined and builder is required', () => {
+      expect(() => {
+        builder.required().runChecks('key');
+      }).toThrowError('Invalid option "key". Field is required and must be defined.');
+    });
+
+    it('errors if value passed is null and builder is non-nullable', () => {
       expect(() => {
         builder.runChecks('key', null);
       }).toThrowError('Invalid option "key". Null is not allowed.');

@@ -11,6 +11,9 @@ import Builder from './Builder';
 export default class FuncBuilder extends Builder<?Function> {
   constructor(defaultValue: ?Function = null) {
     super('function', defaultValue);
+
+    // Nullable by default
+    this.nullable();
   }
 }
 

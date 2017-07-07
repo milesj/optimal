@@ -43,9 +43,9 @@ declare module 'optimal' {
     addCheck(func: Checker, ...args: *[]): this;
     invariant(condition: boolean, message: string, path: string): void;
     message(message: string): this;
-    nullable(): this;
+    nullable(state: boolean): this;
     only(): this;
-    required(): this;
+    required(state: boolean): this;
     runChecks(path: string, initialValue: *, config: Config): *;
   }
 

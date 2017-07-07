@@ -129,7 +129,7 @@ export default class Builder<T> {
   }
 
   /**
-   * Mark a field to allow nulls.
+   * Allow null values.
    */
   nullable(state: boolean = true): this {
     this.isNullable = state;
@@ -153,20 +153,39 @@ export default class Builder<T> {
   }
 
   /**
+   * Disallow undefined values.
+   */
+  required(state: boolean = true): this {
+    this.isRequired = state;
+
+    return this;
+  }
+
+  /**
    * Run all validation checks that have been enqueued.
    */
   runChecks(path: string, initialValue: *, config: Config = {}): * {
     this.currentConfig = config;
 
-    const value = (typeof initialValue === 'undefined') ? this.defaultValue : initialValue;
+    let value = initialValue;
 
-    // Handle nulls
+    // Handle undefined
+    if (typeof value === 'undefined') {
+      if (!this.isRequired) {
+        value = this.defaultValue;
+
+      } else if (__DEV__) {
+        this.invariant(false, 'Field is required and must be defined.', path);
+      }
+    }
+
+    // Handle null
     if (value === null) {
       if (this.isNullable) {
         return value;
 
       } else if (__DEV__) {
-        this.invariant(this.isNullable, 'Null is not allowed.', path);
+        this.invariant(false, 'Null is not allowed.', path);
       }
     }
 
