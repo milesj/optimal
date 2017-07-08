@@ -29,14 +29,14 @@ export type Checker = (path: string, value: *, ...args: *[]) => void;
 export type Blueprint = { [key: string]: Builder<*> | Blueprint };
 
 export type FactoryMap = {
-  arrayOf: (builder: Builder<*>, defaultValue: ?*[]) => ArrayBuilder<*>,
+  array: (builder: Builder<*>, defaultValue: ?*[]) => ArrayBuilder<*>,
   bool: (defaultValue: boolean) => BoolBuilder,
   custom: (checker: Checker, defaultValue: *) => CustomBuilder,
   date: () => InstanceBuilder<Class<Date>>,
   func: (defaultValue: ?Function) => FuncBuilder,
-  instanceOf: (refClass: *) => InstanceBuilder<*>,
+  instance: (refClass: *) => InstanceBuilder<*>,
   number: (defaultValue: number) => NumberBuilder,
-  objectOf: (builder: Builder<*>, defaultValue: ?{ [key: string]: * }) => ObjectBuilder<*>,
+  object: (builder: Builder<*>, defaultValue: ?{ [key: string]: * }) => ObjectBuilder<*>,
   regex: () => InstanceBuilder<Class<RegExp>>,
   shape: (builders: { [key: string]: Builder<*> }, defaultValue: ?{ [key: string]: * }) => ShapeBuilder,
   string: (defaultValue: string) => StringBuilder,

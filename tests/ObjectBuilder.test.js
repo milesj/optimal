@@ -1,4 +1,4 @@
-import ObjectBuilder, { objectOf } from '../src/ObjectBuilder';
+import ObjectBuilder, { object } from '../src/ObjectBuilder';
 import { string } from '../src/StringBuilder';
 
 describe('ObjectBuilder', () => {
@@ -64,7 +64,7 @@ describe('ObjectBuilder', () => {
     });
 
     it('supports objects of objects', () => {
-      builder = new ObjectBuilder(objectOf(string()));
+      builder = new ObjectBuilder(object(string()));
 
       const data = {
         a: {
@@ -80,7 +80,7 @@ describe('ObjectBuilder', () => {
     });
 
     it('errors correctly for objects in objects', () => {
-      builder = new ObjectBuilder(objectOf(string()));
+      builder = new ObjectBuilder(object(string()));
 
       expect(() => {
         builder.runChecks('key', {
@@ -122,13 +122,13 @@ describe('ObjectBuilder', () => {
   });
 });
 
-describe('objectOf()', () => {
+describe('object()', () => {
   it('returns a builder', () => {
-    expect(objectOf(string())).toBeInstanceOf(ObjectBuilder);
+    expect(object(string())).toBeInstanceOf(ObjectBuilder);
   });
 
   it('sets default value', () => {
-    const builder = objectOf(string(), { foo: 'bar' });
+    const builder = object(string(), { foo: 'bar' });
 
     expect(builder.defaultValue).toEqual({ foo: 'bar' });
   });

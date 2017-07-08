@@ -38,14 +38,14 @@ export default class InstanceBuilder<T> extends Builder<?T> {
   }
 }
 
-export function instanceOf<T>(refClass: T): InstanceBuilder<T> {
+export function instance<T>(refClass: T): InstanceBuilder<T> {
   return new InstanceBuilder(refClass);
 }
 
 export function regex(): InstanceBuilder<Class<RegExp>> {
-  return instanceOf(RegExp);
+  return instance(RegExp);
 }
 
 export function date(): InstanceBuilder<Class<Date>> {
-  return instanceOf(Date);
+  return instance(Date);
 }

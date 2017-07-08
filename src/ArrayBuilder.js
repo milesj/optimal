@@ -20,10 +20,10 @@ export default class ArrayBuilder<T> extends Builder<?T[]> {
     this.addCheck(this.checkContents, contents);
   }
 
-  checkContents(path: string, array: *, contents: Builder<T>) {
+  checkContents(path: string, value: *, contents: Builder<T>) {
     if (__DEV__) {
-      array.forEach((value, i) => {
-        contents.runChecks(`${path}[${i}]`, value);
+      value.forEach((item, i) => {
+        contents.runChecks(`${path}[${i}]`, item);
       });
     }
   }
@@ -32,10 +32,10 @@ export default class ArrayBuilder<T> extends Builder<?T[]> {
     return this.addCheck(this.checkNotEmpty);
   }
 
-  checkNotEmpty(path: string, array: *) {
+  checkNotEmpty(path: string, value: *) {
     if (__DEV__) {
       this.invariant(
-        (array.length > 0),
+        (value.length > 0),
         'Array cannot be empty.',
         path,
       );
@@ -43,6 +43,6 @@ export default class ArrayBuilder<T> extends Builder<?T[]> {
   }
 }
 
-export function arrayOf<T>(contents: Builder<T>, defaultValue: ?T[] = []): ArrayBuilder<T> {
+export function array<T>(contents: Builder<T>, defaultValue: ?T[] = []): ArrayBuilder<T> {
   return new ArrayBuilder(contents, defaultValue);
 }

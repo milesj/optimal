@@ -1,9 +1,9 @@
 import UnionBuilder, { union } from '../src/UnionBuilder';
-import { arrayOf } from '../src/ArrayBuilder';
+import { array } from '../src/ArrayBuilder';
 import { bool } from '../src/BoolBuilder';
-import { instanceOf } from '../src/InstanceBuilder';
+import { instance } from '../src/InstanceBuilder';
 import { number } from '../src/NumberBuilder';
-import { objectOf } from '../src/ObjectBuilder';
+import { object } from '../src/ObjectBuilder';
 import { shape } from '../src/ShapeBuilder';
 import { string } from '../src/StringBuilder';
 
@@ -15,11 +15,11 @@ describe('UnionBuilder', () => {
 
   beforeEach(() => {
     builder = new UnionBuilder([
-      arrayOf(string()),
+      array(string()),
       bool(true).only(),
-      instanceOf(Foo),
+      instance(Foo),
       number().between(0, 5),
-      objectOf(number()),
+      object(number()),
       string('foo').oneOf(['foo', 'bar', 'baz']),
     ]);
   });
@@ -84,7 +84,7 @@ describe('UnionBuilder', () => {
     it('errors if an object and shape are used', () => {
       expect(() => {
         builder = new UnionBuilder([
-          objectOf(string()),
+          object(string()),
           shape({
             foo: string(),
             bar: number(),
@@ -97,8 +97,8 @@ describe('UnionBuilder', () => {
     it('errors if the same builder type is used multiple times', () => {
       expect(() => {
         builder = new UnionBuilder([
-          objectOf(string()),
-          objectOf(number()),
+          object(string()),
+          object(number()),
         ]);
         builder.runChecks('key', []);
       }).toThrowError('Multiple instances of "object" is not supported.');

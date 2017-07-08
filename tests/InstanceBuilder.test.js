@@ -1,4 +1,4 @@
-import InstanceBuilder, { instanceOf, date, regex } from '../src/InstanceBuilder';
+import InstanceBuilder, { instance, date, regex } from '../src/InstanceBuilder';
 
 class Foo {}
 
@@ -54,9 +54,9 @@ describe('InstanceBuilder', () => {
   });
 });
 
-describe('instanceOf()', () => {
+describe('instance()', () => {
   it('returns a builder', () => {
-    expect(instanceOf(Foo)).toBeInstanceOf(InstanceBuilder);
+    expect(instance(Foo)).toBeInstanceOf(InstanceBuilder);
   });
 });
 

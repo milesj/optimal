@@ -8,14 +8,14 @@ declare module 'optimal' {
   declare export type Blueprint = { [key: string]: Builder<*> | Blueprint };
 
   declare export type Factory = (factories: {
-    arrayOf: (builder: Builder<*>, defaultValue: ?*[]) => Builder<?*[]>,
+    array: (builder: Builder<*>, defaultValue: ?*[]) => Builder<?*[]>,
     bool: (defaultValue: boolean) => Builder<boolean>,
     custom: (checker: Checker, defaultValue: *) => Builder<?*>,
     date: () => Builder<Class<Date>>,
     func: (defaultValue: ?Function) => Builder<?Function>,
-    instanceOf: (refClass: *) => Builder<?*>,
+    instance: (refClass: *) => Builder<?*>,
     number: (defaultValue: number) => Builder<number>,
-    objectOf: (builder: Builder<*>, defaultValue: ?{ [key: string]: * }) => Builder<?Object>,
+    object: (builder: Builder<*>, defaultValue: ?{ [key: string]: * }) => Builder<?Object>,
     regex: () => Builder<Class<RegExp>>,
     shape: (builders: { [key: string]: Builder<*> }, defaultValue: ?{ [key: string]: * }) => Builder<?Object>,
     string: (defaultValue: string) => Builder<string>,

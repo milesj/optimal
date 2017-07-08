@@ -1,4 +1,4 @@
-import ArrayBuilder, { arrayOf } from '../src/ArrayBuilder';
+import ArrayBuilder, { array } from '../src/ArrayBuilder';
 import { string } from '../src/StringBuilder';
 
 describe('ArrayBuilder', () => {
@@ -58,7 +58,7 @@ describe('ArrayBuilder', () => {
     });
 
     it('supports arrays of arrays', () => {
-      builder = new ArrayBuilder(arrayOf(string()));
+      builder = new ArrayBuilder(array(string()));
 
       const data = [
         ['foo', 'bar'],
@@ -69,7 +69,7 @@ describe('ArrayBuilder', () => {
     });
 
     it('errors correctly for arrays in arrays', () => {
-      builder = new ArrayBuilder(arrayOf(string()));
+      builder = new ArrayBuilder(array(string()));
 
       expect(() => {
         builder.runChecks('key', [
@@ -106,13 +106,13 @@ describe('ArrayBuilder', () => {
   });
 });
 
-describe('arrayOf()', () => {
+describe('array()', () => {
   it('returns a builder', () => {
-    expect(arrayOf(string())).toBeInstanceOf(ArrayBuilder);
+    expect(array(string())).toBeInstanceOf(ArrayBuilder);
   });
 
   it('sets default value', () => {
-    const builder = arrayOf(string(), ['foo']);
+    const builder = array(string(), ['foo']);
 
     expect(builder.defaultValue).toEqual(['foo']);
   });

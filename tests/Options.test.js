@@ -10,12 +10,12 @@ describe('Options', () => {
   // This blueprint is based on Webpack's configuration: https://webpack.js.org/configuration/
   // Webpack provides a pretty robust example of how to use this library.
   const factory = ({
-    arrayOf,
+    array,
     bool,
     func,
-    instanceOf,
+    instance,
     number,
-    objectOf,
+    object,
     regex,
     shape,
     string,
@@ -31,8 +31,8 @@ describe('Options', () => {
       string(),
       regex(),
       func(),
-      arrayOf(regex()),
-      objectOf(regex()),
+      array(regex()),
+      object(regex()),
     ]);
 
     const rule = shape({
@@ -40,13 +40,13 @@ describe('Options', () => {
       exclude: condition,
       include: condition,
       issuer: condition,
-      parser: objectOf(bool()),
+      parser: object(bool()),
       resource: condition,
-      use: arrayOf(union([
+      use: array(union([
         string(),
         shape({
           loader: string(),
-          options: objectOf(primitive),
+          options: object(primitive),
         }),
       ])),
     });
@@ -55,10 +55,10 @@ describe('Options', () => {
       context: string(process.cwd()),
       entry: union([
         string(),
-        arrayOf(string()),
-        objectOf(union([
+        array(string()),
+        object(union([
           string(),
-          arrayOf(string()),
+          array(string()),
         ])),
         func(),
       ]).nullable(),
@@ -77,24 +77,24 @@ describe('Options', () => {
       module: {
         noParse: union([
           regex(),
-          arrayOf(regex()),
+          array(regex()),
           func(),
         ]).nullable(),
-        rules: arrayOf(rule),
+        rules: array(rule),
       },
       resolve: {
-        alias: objectOf(string()),
-        extensions: arrayOf(string()),
-        plugins: arrayOf(instanceOf(Plugin)),
-        resolveLoader: objectOf(arrayOf(string())),
+        alias: object(string()),
+        extensions: array(string()),
+        plugins: array(instance(Plugin)),
+        resolveLoader: object(array(string())),
       },
-      plugins: arrayOf(instanceOf(Plugin)),
+      plugins: array(instance(Plugin)),
       target: string('web').oneOf([
         'async-node', 'electron-main', 'electron-renderer',
         'node', 'node-webkit', 'web', 'webworker',
       ]),
       watch: bool(false),
-      node: objectOf(union([
+      node: object(union([
         bool(),
         string('mock').oneOf(['mock', 'empty']),
       ])),

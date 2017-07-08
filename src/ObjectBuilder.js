@@ -20,10 +20,10 @@ export default class ObjectBuilder<T> extends Builder<?{ [key: string]: T }> {
     this.addCheck(this.checkContents, contents);
   }
 
-  checkContents(path: string, object: *, contents: Builder<T>) {
+  checkContents(path: string, value: *, contents: Builder<T>) {
     if (__DEV__) {
-      Object.keys(object).forEach((key) => {
-        contents.runChecks(`${path}.${key}`, object[key]);
+      Object.keys(value).forEach((key) => {
+        contents.runChecks(`${path}.${key}`, value[key]);
       });
     }
   }
@@ -32,10 +32,10 @@ export default class ObjectBuilder<T> extends Builder<?{ [key: string]: T }> {
     return this.addCheck(this.checkNotEmpty);
   }
 
-  checkNotEmpty(path: string, object: *) {
+  checkNotEmpty(path: string, value: *) {
     if (__DEV__) {
       this.invariant(
-        (Object.keys(object).length > 0),
+        (Object.keys(value).length > 0),
         'Object cannot be empty.',
         path,
       );
@@ -43,7 +43,7 @@ export default class ObjectBuilder<T> extends Builder<?{ [key: string]: T }> {
   }
 }
 
-export function objectOf<T>(
+export function object<T>(
   contents: Builder<T>,
   defaultValue: ?{ [key: string]: T } = {},
 ): ObjectBuilder<T> {

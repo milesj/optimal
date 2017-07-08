@@ -5,13 +5,13 @@
  */
 
 import Builder from './Builder';
-import { arrayOf } from './ArrayBuilder';
+import { array } from './ArrayBuilder';
 import { bool } from './BoolBuilder';
 import { custom } from './CustomBuilder';
 import { func } from './FuncBuilder';
-import { instanceOf, date, regex } from './InstanceBuilder';
+import { instance, date, regex } from './InstanceBuilder';
 import { number } from './NumberBuilder';
-import { objectOf } from './ObjectBuilder';
+import { object } from './ObjectBuilder';
 import { shape } from './ShapeBuilder';
 import { string } from './StringBuilder';
 import { union } from './UnionBuilder';
@@ -77,14 +77,14 @@ export default function Options(baseOptions: Object, factory: Factory, config: C
   // Generate the options blueprint based on the builders provided by the factory,
   // and run validation checks on each property and value recursively.
   return buildAndCheckOptions(baseOptions, factory({
-    arrayOf,
+    array,
     bool,
     custom,
     date,
     func,
-    instanceOf,
+    instance,
     number,
-    objectOf,
+    object,
     regex,
     shape,
     string,
