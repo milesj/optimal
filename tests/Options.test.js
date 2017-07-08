@@ -133,24 +133,10 @@ describe('Options', () => {
     }).toThrowError('Unknown blueprint option. Must be a builder or plain object.');
   });
 
-  it('errors for unknown options', () => {
+  it('errors if a non-object config is passed', () => {
     expect(() => {
-      new Options({
-        foo: 123,
-        bar: 456,
-      }, factory);
-    }).toThrowError('Unknown options: foo, bar.');
-  });
-
-  it('doesnt error for unknown options if `unknown` is true', () => {
-    expect(() => {
-      new Options({
-        foo: 123,
-        bar: 456,
-      }, factory, {
-        unknown: true,
-      });
-    }).not.toThrowError('Unknown options: foo, bar.');
+      new Options({}, factory, 123);
+    }).toThrowError('Option configuration must be a plain object.');
   });
 
   it('sets object keys as class properties', () => {
@@ -205,18 +191,6 @@ describe('Options', () => {
     });
   });
 
-  it('sets unknown options', () => {
-    expect(new Options({
-      foo: 123,
-      bar: 456,
-    }, factory, {
-      unknown: true,
-    })).toEqual(expect.objectContaining({
-      foo: 123,
-      bar: 456,
-    }));
-  });
-
   it('runs checks for root level values', () => {
     expect(() => {
       options = new Options({
@@ -243,5 +217,75 @@ describe('Options', () => {
         name: 'FooBar',
       });
     }).toThrowError('Invalid `FooBar` option "entry". Type must be one of: string, array, object, function.');
+  });
+
+  describe('unknown options', () => {
+    it('errors for unknown options', () => {
+      expect(() => {
+        new Options({
+          foo: 123,
+          bar: 456,
+        }, factory);
+      }).toThrowError('Unknown options: foo, bar.');
+    });
+
+    it('doesnt error for unknown options if `unknown` is true', () => {
+      expect(() => {
+        new Options({
+          foo: 123,
+          bar: 456,
+        }, factory, {
+          unknown: true,
+        });
+      }).not.toThrowError('Unknown options: foo, bar.');
+    });
+
+    it('sets unknown options', () => {
+      expect(new Options({
+        foo: 123,
+        bar: 456,
+      }, factory, {
+        unknown: true,
+      })).toEqual(expect.objectContaining({
+        foo: 123,
+        bar: 456,
+      }));
+    });
+  });
+
+  describe('mutually exclusive', () => {
+    it('errors if config is not an array', () => {
+      expect(() => {
+        new Options({
+          context: 'foo',
+          entry: 'bar',
+        }, factory, {
+          exclusive: 123,
+        });
+      }).toThrowError('Configuration "exclusive" must be an array of array of options keys.');
+    });
+
+    it('errors for colliding options', () => {
+      expect(() => {
+        new Options({
+          context: 'foo',
+          entry: 'bar',
+        }, factory, {
+          exclusive: [
+            ['context', 'entry'],
+          ],
+        });
+      }).toThrowError('The options "context", "entry" are mutually exclusive and must not be used together.');
+    });
+
+    it('doesnt error if not used together', () => {
+      expect(new Options({
+        context: 'foo',
+      }, factory, {
+        exclusive: [
+          ['context', 'entry'],
+        ],
+      })).toEqual(expect.objectContaining({ context: 'foo' }));
+    });
   });
 });

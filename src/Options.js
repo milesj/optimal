@@ -29,6 +29,24 @@ function buildAndCheckOptions(
   const unknownOptions = { ...baseOptions };
   const options = {};
 
+  // Handle mutually exclusive
+  if (__DEV__) {
+    if (Array.isArray(config.exclusive)) {
+      config.exclusive.forEach((keys) => {
+        const count = keys.filter(key => (typeof baseOptions[key] !== 'undefined')).length;
+
+        if (count > 1) {
+          throw new Error(
+            `The options ${keys.map(key => `"${key}"`).join(', ')} are ` +
+            'mutually exclusive and must not be used together.',
+          );
+        }
+      });
+    } else if ('exclusive' in config) {
+      throw new TypeError('Configuration "exclusive" must be an array of array of options keys.');
+    }
+  }
+
   // Validate using the blueprint
   Object.keys(blueprint).forEach((key) => {
     const builder = blueprint[key];
@@ -71,6 +89,9 @@ export default function Options(baseOptions: Object, factory: Factory, config: C
   if (__DEV__) {
     if (!isObject(baseOptions)) {
       throw new TypeError(`Options require a plain object, found ${typeOf(baseOptions)}.`);
+
+    } else if (!isObject(config)) {
+      throw new TypeError('Option configuration must be a plain object.');
 
     } else if (typeof factory !== 'function') {
       throw new TypeError('An options factory function is required.');
