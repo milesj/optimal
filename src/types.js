@@ -46,7 +46,6 @@ export type FactoryMap = {
 export type Factory = (factories: FactoryMap) => Blueprint;
 
 export type Config = {
-  exclusive?: string[][],
   name?: string,
   unknown?: boolean,
 };

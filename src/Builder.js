@@ -48,6 +48,38 @@ export default class Builder<T> {
   }
 
   /**
+   * Map a list of option names that must be defined alongside this field.
+   */
+  and(...keys: string[]): this {
+    if (__DEV__) {
+      this.invariant(
+        (keys.length > 0),
+        'AND requires a list of option names.',
+      );
+    }
+
+    return this.nullable(false).addCheck(this.checkAnd, keys);
+  }
+
+  /**
+   * Validate that other options have been defined.
+   */
+  checkAnd(path: string, value: *, keys: string[]) {
+    if (__DEV__) {
+      const options = this.currentOptions;
+      const undefs = keys.filter(key => (
+        typeof options[key] === 'undefined' || options[key] === null
+      ));
+
+      this.invariant(
+        (undefs.length === 0),
+        `Additional options must be defined simultaneously: ${undefs.join(', ')}`,
+        path,
+      );
+    }
+  }
+
+  /**
    * Validate the value matches only the default value.
    */
   checkOnly(path: string, value: *) {
@@ -55,6 +87,24 @@ export default class Builder<T> {
       this.invariant(
         (value === this.defaultValue),
         `Value may only be "${String(this.defaultValue)}".`,
+        path,
+      );
+    }
+  }
+
+  /**
+   * Validate that other options have not been defined.
+   */
+  checkOr(path: string, value: *, keys: string[]) {
+    if (__DEV__) {
+      const options = this.currentOptions;
+      const defs = keys.filter(key => (
+        typeof options[key] !== 'undefined' && options[key] !== null
+      ));
+
+      this.invariant(
+        (defs.length === 0),
+        `Additional options are mutually exclusive and must not be defined: ${defs.join(', ')}`,
         path,
       );
     }
@@ -153,6 +203,20 @@ export default class Builder<T> {
     }
 
     return this.addCheck(this.checkOnly);
+  }
+
+  /**
+   * Map a list of option names that must not be defined alongside this field.
+   */
+  or(...keys: string[]): this {
+    if (__DEV__) {
+      this.invariant(
+        (keys.length > 0),
+        'OR requires a list of option names.',
+      );
+    }
+
+    return this.nullable(false).addCheck(this.checkOr, keys);
   }
 
   /**

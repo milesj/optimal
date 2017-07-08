@@ -44,6 +44,89 @@ describe('Builder', () => {
     });
   });
 
+  describe('and()', () => {
+    it('errors if no keys are defined', () => {
+      expect(() => {
+        builder.and();
+      }).toThrowError('AND requires a list of option names.');
+    });
+
+    it('adds a checker', () => {
+      builder.and('bar', 'baz');
+
+      expect(builder.checks[1]).toEqual({
+        func: builder.checkAnd,
+        args: [['bar', 'baz']],
+      });
+    });
+  });
+
+  describe('checkAnd()', () => {
+    it('errors if a sibling option is undefined', () => {
+      expect(() => {
+        builder.currentOptions = {
+          foo: 'a',
+          baz: 'c',
+        };
+
+        builder.checkAnd('foo', 'a', ['bar', 'baz']);
+      }).toThrowError('Invalid option "foo". Additional options must be defined simultaneously: bar');
+    });
+
+    it('doesnt error if all are defined', () => {
+      expect(() => {
+        builder.currentOptions = {
+          foo: 'a',
+          bar: 'b',
+          baz: 'c',
+        };
+
+        builder.checkAnd('foo', 'a', ['bar', 'baz']);
+      }).not.toThrowError('Invalid option "foo".');
+    });
+  });
+
+  describe('checkOnly()', () => {
+    beforeEach(() => {
+      builder.only();
+    });
+
+    it('errors if value doesnt match the default value', () => {
+      expect(() => {
+        builder.checkOnly('key', 'bar');
+      }).toThrowError('Invalid option "key". Value may only be "foo".');
+    });
+
+    it('doesnt error if value matches default value', () => {
+      expect(() => {
+        builder.checkOnly('key', 'foo');
+      }).not.toThrowError('Invalid option "key". Value may only be "foo".');
+    });
+  });
+
+  describe('checkOr()', () => {
+    it('errors if a sibling option is defined', () => {
+      expect(() => {
+        builder.currentOptions = {
+          foo: 'a',
+          baz: 'c',
+        };
+
+        builder.checkOr('foo', 'a', ['bar', 'baz']);
+      }).toThrowError('Invalid option "foo". Additional options are mutually exclusive and must not be defined: baz');
+    });
+
+    it('doesnt error if all are undefined', () => {
+      expect(() => {
+        builder.currentOptions = {
+          foo: 'a',
+        };
+
+        builder.checkOr('foo', 'a', ['bar', 'baz']);
+      }).not.toThrowError('Invalid option "foo".');
+    });
+  });
+
   describe('checkTypeOf()', () => {
     describe('array', () => {
       it('allows arrays', () => {
@@ -311,21 +394,20 @@ describe('Builder', () => {
     });
   });
 
-  describe('checkOnly()', () => {
-    beforeEach(() => {
-      builder.only();
+  describe('or()', () => {
+    it('errors if no keys are defined', () => {
+      expect(() => {
+        builder.or();
+      }).toThrowError('OR requires a list of option names.');
     });
 
-    it('errors if value doesnt match the default value', () => {
-      expect(() => {
-        builder.checkOnly('key', 'bar');
-      }).toThrowError('Invalid option "key". Value may only be "foo".');
-    });
+    it('adds a checker', () => {
+      builder.or('bar', 'baz');
 
-    it('doesnt error if value matches default value', () => {
-      expect(() => {
-        builder.checkOnly('key', 'foo');
-      }).not.toThrowError('Invalid option "key". Value may only be "foo".');
+      expect(builder.checks[1]).toEqual({
+        func: builder.checkOr,
+        args: [['bar', 'baz']],
+      });
     });
   });
 });
