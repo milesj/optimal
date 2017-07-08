@@ -9,16 +9,16 @@ describe('ObjectBuilder', () => {
   });
 
   describe('constructor()', () => {
-    it('errors if a builder is not passed', () => {
-      expect(() => {
-        builder = new ObjectBuilder();
-      }).toThrowError('A blueprint is required for object contents.');
-    });
-
     it('errors if a non-builder is passed', () => {
       expect(() => {
         builder = new ObjectBuilder(123);
       }).toThrowError('A blueprint is required for object contents.');
+    });
+
+    it('doesnt error if a builder is not passed', () => {
+      expect(() => {
+        builder = new ObjectBuilder();
+      }).not.toThrowError('A blueprint is required for object contents.');
     });
 
     it('doesnt error if a builder is passed', () => {
@@ -41,6 +41,13 @@ describe('ObjectBuilder', () => {
 
     it('errors if a non-object is passed', () => {
       expect(() => {
+        builder.runChecks('key', 'foo');
+      }).toThrowError('Invalid option "key". Must be a plain object.');
+    });
+
+    it('errors if a non-object is passed, when not using a builder', () => {
+      expect(() => {
+        builder = new ObjectBuilder();
         builder.runChecks('key', 'foo');
       }).toThrowError('Invalid option "key". Must be a plain object.');
     });

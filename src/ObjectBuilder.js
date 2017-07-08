@@ -7,17 +7,17 @@
 import Builder from './Builder';
 
 export default class ObjectBuilder<T> extends Builder<?{ [key: string]: T }> {
-  constructor(contents: Builder<T>, defaultValue: ?{ [key: string]: T } = {}) {
+  constructor(contents?: Builder<T>, defaultValue: ?{ [key: string]: T } = {}) {
     super('object', defaultValue);
 
-    if (__DEV__) {
-      this.invariant(
-        (contents instanceof Builder),
-        'A blueprint is required for object contents.',
-      );
-    }
+    if (contents) {
+      if (contents instanceof Builder) {
+        this.addCheck(this.checkContents, contents);
 
-    this.addCheck(this.checkContents, contents);
+      } else if (__DEV__) {
+        this.invariant(false, 'A blueprint is required for object contents.');
+      }
+    }
   }
 
   checkContents(path: string, value: *, contents: Builder<T>) {
@@ -44,7 +44,7 @@ export default class ObjectBuilder<T> extends Builder<?{ [key: string]: T }> {
 }
 
 export function object<T>(
-  contents: Builder<T>,
+  contents?: Builder<T>,
   defaultValue: ?{ [key: string]: T } = {},
 ): ObjectBuilder<T> {
   return new ObjectBuilder(contents, defaultValue);

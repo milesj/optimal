@@ -16,7 +16,7 @@ export default class StringBuilder extends Builder<string> {
   constructor(defaultValue: string = '') {
     super('string', defaultValue);
 
-    // Check emptiness
+    // Not empty by default
     this.addCheck(this.checkNotEmpty);
   }
 

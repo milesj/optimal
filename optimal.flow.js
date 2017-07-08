@@ -15,7 +15,7 @@ declare module 'optimal' {
     func: (defaultValue: ?Function) => Builder<?Function>,
     instance: (refClass: *) => Builder<?*>,
     number: (defaultValue: number) => Builder<number>,
-    object: (builder: Builder<*>, defaultValue: ?{ [key: string]: * }) => Builder<?Object>,
+    object: (builder?: Builder<*>, defaultValue: ?{ [key: string]: * }) => Builder<?Object>,
     regex: () => Builder<Class<RegExp>>,
     shape: (builders: { [key: string]: Builder<*> }, defaultValue: ?{ [key: string]: * }) => Builder<?Object>,
     string: (defaultValue: string) => Builder<string>,
