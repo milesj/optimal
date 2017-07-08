@@ -52,12 +52,15 @@ function buildAndCheckOptions(
     delete unknownOptions[key];
   });
 
-  // Throw errors for unknown options
-  if (__DEV__) {
+  // Handle unknown options
+  if (config.unknown) {
+    Object.assign(options, unknownOptions);
+
+  } else if (__DEV__) {
     const unknownKeys = Object.keys(unknownOptions);
 
-    if (!config.unknown && unknownKeys.length > 0) {
-      throw new Error(`Unknown options ${unknownKeys.join(', ')}.`);
+    if (unknownKeys.length > 0) {
+      throw new Error(`Unknown options: ${unknownKeys.join(', ')}.`);
     }
   }
 

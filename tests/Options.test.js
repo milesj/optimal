@@ -139,7 +139,7 @@ describe('Options', () => {
         foo: 123,
         bar: 456,
       }, factory);
-    }).toThrowError('Unknown options foo, bar.');
+    }).toThrowError('Unknown options: foo, bar.');
   });
 
   it('doesnt error for unknown options if `unknown` is true', () => {
@@ -150,7 +150,7 @@ describe('Options', () => {
       }, factory, {
         unknown: true,
       });
-    }).not.toThrowError('Unknown options foo, bar.');
+    }).not.toThrowError('Unknown options: foo, bar.');
   });
 
   it('sets object keys as class properties', () => {
@@ -203,6 +203,18 @@ describe('Options', () => {
       watch: false,
       node: {},
     });
+  });
+
+  it('sets unknown options', () => {
+    expect(new Options({
+      foo: 123,
+      bar: 456,
+    }, factory, {
+      unknown: true,
+    })).toEqual(expect.objectContaining({
+      foo: 123,
+      bar: 456,
+    }));
   });
 
   it('runs checks for root level values', () => {
