@@ -78,6 +78,138 @@ describe('NumberBuilder', () => {
     });
   });
 
+  describe('gt()', () => {
+    it('errors if min is a not a number', () => {
+      expect(() => {
+        builder.gt('foo');
+      }).toThrowError('number.gt() requires a minimum number.');
+    });
+
+    it('adds a checker', () => {
+      builder.gt(5);
+
+      expect(builder.checks[1]).toEqual({
+        func: builder.checkGreaterThan,
+        args: [5, false],
+      });
+    });
+  });
+
+  describe('gte()', () => {
+    it('errors if min is a not a number', () => {
+      expect(() => {
+        builder.gte('foo');
+      }).toThrowError('number.gt() requires a minimum number.');
+    });
+
+    it('adds a checker', () => {
+      builder.gte(5);
+
+      expect(builder.checks[1]).toEqual({
+        func: builder.checkGreaterThan,
+        args: [5, true],
+      });
+    });
+  });
+
+  describe('checkGreaterThan()', () => {
+    it('errors if value is not a number', () => {
+      expect(() => {
+        builder.checkGreaterThan('key', 'foo', 5);
+      }).toThrowError('Invalid option "key". Number must be greater than 5.');
+    });
+
+    it('errors if below minimum', () => {
+      expect(() => {
+        builder.checkGreaterThan('key', 3, 5);
+      }).toThrowError('Invalid option "key". Number must be greater than 5.');
+    });
+
+    it('errors if below minimum inclusive', () => {
+      expect(() => {
+        builder.checkGreaterThan('key', 3, 5, true);
+      }).toThrowError('Invalid option "key". Number must be greater than or equal to 5.');
+    });
+
+    it('doesnt error if above minimum', () => {
+      expect(() => {
+        builder.checkGreaterThan('key', 10, 5);
+      }).not.toThrowError('Invalid option "key". Number must be greater than 5.');
+    });
+
+    it('doesnt error if above minimum inclusive', () => {
+      expect(() => {
+        builder.checkGreaterThan('key', 5, 5, true);
+      }).not.toThrowError('Invalid option "key". Number must be greater than or equal to 5.');
+    });
+  });
+
+  describe('lt()', () => {
+    it('errors if max is a not a number', () => {
+      expect(() => {
+        builder.lt('foo');
+      }).toThrowError('number.lt() requires a maximum number.');
+    });
+
+    it('adds a checker', () => {
+      builder.lt(5);
+
+      expect(builder.checks[1]).toEqual({
+        func: builder.checkLessThan,
+        args: [5, false],
+      });
+    });
+  });
+
+  describe('lte()', () => {
+    it('errors if max is a not a number', () => {
+      expect(() => {
+        builder.lte('foo');
+      }).toThrowError('number.lt() requires a maximum number.');
+    });
+
+    it('adds a checker', () => {
+      builder.lte(5);
+
+      expect(builder.checks[1]).toEqual({
+        func: builder.checkLessThan,
+        args: [5, true],
+      });
+    });
+  });
+
+  describe('checkLessThan()', () => {
+    it('errors if value is not a number', () => {
+      expect(() => {
+        builder.checkLessThan('key', 'foo', 5);
+      }).toThrowError('Invalid option "key". Number must be less than 5.');
+    });
+
+    it('errors if above maximum', () => {
+      expect(() => {
+        builder.checkLessThan('key', 7, 5);
+      }).toThrowError('Invalid option "key". Number must be less than 5.');
+    });
+
+    it('errors if above maximum inclusive', () => {
+      expect(() => {
+        builder.checkLessThan('key', 7, 5, true);
+      }).toThrowError('Invalid option "key". Number must be less than or equal to 5.');
+    });
+
+    it('doesnt error if below maximum', () => {
+      expect(() => {
+        builder.checkLessThan('key', 3, 5);
+      }).not.toThrowError('Invalid option "key". Number must be less than 5.');
+    });
+
+    it('doesnt error if below maximum inclusive', () => {
+      expect(() => {
+        builder.checkLessThan('key', 5, 5, true);
+      }).not.toThrowError('Invalid option "key". Number must be less than or equal to 5.');
+    });
+  });
+
   describe('oneOf()', () => {
     it('errors if not an array', () => {
       expect(() => {

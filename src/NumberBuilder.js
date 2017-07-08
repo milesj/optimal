@@ -39,6 +39,66 @@ export default class NumberBuilder extends Builder<number> {
     }
   }
 
+  gt(min: number, inclusive: boolean = false): this {
+    if (__DEV__) {
+      this.invariant(isNumber(min), 'number.gt() requires a minimum number.');
+    }
+
+    return this.addCheck(this.checkGreaterThan, min, inclusive);
+  }
+
+  gte(min: number): this {
+    return this.gt(min, true);
+  }
+
+  checkGreaterThan(path: string, value: *, min: number, inclusive: boolean = false) {
+    if (__DEV__) {
+      if (inclusive) {
+        this.invariant(
+          (isNumber(value) && value >= min),
+          `Number must be greater than or equal to ${min}.`,
+          path,
+        );
+      } else {
+        this.invariant(
+          (isNumber(value) && value > min),
+          `Number must be greater than ${min}.`,
+          path,
+        );
+      }
+    }
+  }
+
+  lt(max: number, inclusive: boolean = false): this {
+    if (__DEV__) {
+      this.invariant(isNumber(max), 'number.lt() requires a maximum number.');
+    }
+
+    return this.addCheck(this.checkLessThan, max, inclusive);
+  }
+
+  lte(max: number): this {
+    return this.lt(max, true);
+  }
+
+  checkLessThan(path: string, value: *, max: number, inclusive: boolean = false) {
+    if (__DEV__) {
+      if (inclusive) {
+        this.invariant(
+          (isNumber(value) && value <= max),
+          `Number must be less than or equal to ${max}.`,
+          path,
+        );
+      } else {
+        this.invariant(
+          (isNumber(value) && value < max),
+          `Number must be less than ${max}.`,
+          path,
+        );
+      }
+    }
+  }
+
   oneOf(list: string[] = []): this {
     if (__DEV__) {
       this.invariant(
