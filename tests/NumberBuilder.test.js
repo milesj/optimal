@@ -27,13 +27,13 @@ describe('NumberBuilder', () => {
     it('errors if min is a not a number', () => {
       expect(() => {
         builder.between('foo', 5);
-      }).toThrowError('number.between() requires a minimum and maximum number.');
+      }).toThrowError('Between requires a minimum and maximum number.');
     });
 
     it('errors if max is a not a number', () => {
       expect(() => {
         builder.between(0, 'foo');
-      }).toThrowError('number.between() requires a minimum and maximum number.');
+      }).toThrowError('Between requires a minimum and maximum number.');
     });
 
     it('adds a checker', () => {
@@ -82,7 +82,7 @@ describe('NumberBuilder', () => {
     it('errors if min is a not a number', () => {
       expect(() => {
         builder.gt('foo');
-      }).toThrowError('number.gt() requires a minimum number.');
+      }).toThrowError('Greater-than requires a minimum number.');
     });
 
     it('adds a checker', () => {
@@ -99,7 +99,7 @@ describe('NumberBuilder', () => {
     it('errors if min is a not a number', () => {
       expect(() => {
         builder.gte('foo');
-      }).toThrowError('number.gt() requires a minimum number.');
+      }).toThrowError('Greater-than requires a minimum number.');
     });
 
     it('adds a checker', () => {
@@ -148,7 +148,7 @@ describe('NumberBuilder', () => {
     it('errors if max is a not a number', () => {
       expect(() => {
         builder.lt('foo');
-      }).toThrowError('number.lt() requires a maximum number.');
+      }).toThrowError('Less-than requires a maximum number.');
     });
 
     it('adds a checker', () => {
@@ -165,7 +165,7 @@ describe('NumberBuilder', () => {
     it('errors if max is a not a number', () => {
       expect(() => {
         builder.lte('foo');
-      }).toThrowError('number.lt() requires a maximum number.');
+      }).toThrowError('Less-than requires a maximum number.');
     });
 
     it('adds a checker', () => {
@@ -214,19 +214,19 @@ describe('NumberBuilder', () => {
     it('errors if not an array', () => {
       expect(() => {
         builder.oneOf(123);
-      }).toThrowError('number.oneOf() requires a non-empty array of numbers.');
+      }).toThrowError('One of requires a non-empty array of numbers.');
     });
 
     it('errors if array is empty', () => {
       expect(() => {
         builder.oneOf([]);
-      }).toThrowError('number.oneOf() requires a non-empty array of numbers.');
+      }).toThrowError('One of requires a non-empty array of numbers.');
     });
 
     it('errors if array contains a non-number', () => {
       expect(() => {
         builder.oneOf(['foo', 123]);
-      }).toThrowError('number.oneOf() requires a non-empty array of numbers.');
+      }).toThrowError('One of requires a non-empty array of numbers.');
     });
 
     it('adds a checker', () => {

@@ -188,6 +188,22 @@ describe('Builder', () => {
         builder.invariant(false, 'Failure', 'foo.bar');
       }).toThrowError('Invalid option "foo.bar". Failure');
     });
+
+    it('includes a class name', () => {
+      expect(() => {
+        builder.currentConfig.name = 'FooBar';
+
+        builder.invariant(false, 'Failure', 'foo.bar');
+      }).toThrowError('Invalid `FooBar` option "foo.bar". Failure');
+    });
+
+    it('includes a class name when no path', () => {
+      expect(() => {
+        builder.currentConfig.name = 'FooBar';
+
+        builder.invariant(false, 'Failure');
+      }).toThrowError('FooBar: Failure');
+    });
   });
 
   describe('message()', () => {
@@ -282,7 +298,7 @@ describe('Builder', () => {
 
       expect(() => {
         builder.only();
-      }).toThrowError('only() requires a default string value.');
+      }).toThrowError('Only requires a default string value.');
     });
 
     it('adds a checker', () => {

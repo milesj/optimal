@@ -27,13 +27,13 @@ describe('StringBuilder', () => {
     it('errors if token is not string', () => {
       expect(() => {
         builder.contains(123);
-      }).toThrowError('string.contains() requires a non-empty string.');
+      }).toThrowError('Contains requires a non-empty string.');
     });
 
     it('errors if token is an empty string', () => {
       expect(() => {
         builder.contains('');
-      }).toThrowError('string.contains() requires a non-empty string.');
+      }).toThrowError('Contains requires a non-empty string.');
     });
 
     it('adds a checker', () => {
@@ -64,7 +64,7 @@ describe('StringBuilder', () => {
     it('errors if pattern is not a regex', () => {
       expect(() => {
         builder.match(123);
-      }).toThrowError('string.match() requires a regular expression to match against.');
+      }).toThrowError('Match requires a regular expression to match against.');
     });
 
     it('adds a checker', () => {
@@ -117,19 +117,19 @@ describe('StringBuilder', () => {
     it('errors if not an array', () => {
       expect(() => {
         builder.oneOf(123);
-      }).toThrowError('string.oneOf() requires a non-empty array of strings.');
+      }).toThrowError('One of requires a non-empty array of strings.');
     });
 
     it('errors if array is empty', () => {
       expect(() => {
         builder.oneOf([]);
-      }).toThrowError('string.oneOf() requires a non-empty array of strings.');
+      }).toThrowError('One of requires a non-empty array of strings.');
     });
 
     it('errors if array contains a non-string', () => {
       expect(() => {
         builder.oneOf(['foo', 123]);
-      }).toThrowError('string.oneOf() requires a non-empty array of strings.');
+      }).toThrowError('One of requires a non-empty array of strings.');
     });
 
     it('adds a checker', () => {

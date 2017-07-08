@@ -33,7 +33,7 @@ export default class UnionBuilder extends Builder<*> {
       // Verify structure and usage
       builders.forEach((builder) => {
         if (usage[builder.type]) {
-          this.invariant(false, `Multiple instances of "${builder.type}" is not supported.`, path);
+          this.invariant(false, `Multiple instances of "${builder.type}" are not supported.`, path);
 
         } else if (builder.type === 'union') {
           this.invariant(false, 'Nested unions are not supported.', path);
@@ -60,7 +60,7 @@ export default class UnionBuilder extends Builder<*> {
         }
       });
 
-      this.invariant(checked, `Type must be one of ${Object.keys(usage).join(', ')}.`, path);
+      this.invariant(checked, `Type must be one of: ${Object.keys(usage).join(', ')}.`, path);
     }
   }
 }

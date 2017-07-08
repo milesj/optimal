@@ -106,6 +106,8 @@ export default class Builder<T> {
         } else {
           prefix += `Invalid option "${path}". `;
         }
+      } else if (name) {
+        prefix += `${name}: `;
       }
 
       throw new Error(`${prefix}${this.errorMessage || message}`);
@@ -145,7 +147,7 @@ export default class Builder<T> {
       this.invariant(
         // eslint-disable-next-line valid-typeof
         (typeof this.defaultValue === this.type),
-        `only() requires a default ${this.type} value.`,
+        `Only requires a default ${this.type} value.`,
       );
     }
 

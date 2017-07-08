@@ -24,7 +24,7 @@ export default class StringBuilder extends Builder<string> {
     if (__DEV__) {
       this.invariant(
         isString(token),
-        'string.contains() requires a non-empty string.',
+        'Contains requires a non-empty string.',
       );
     }
 
@@ -45,7 +45,7 @@ export default class StringBuilder extends Builder<string> {
     if (__DEV__) {
       this.invariant(
         (pattern instanceof RegExp),
-        'string.match() requires a regular expression to match against.',
+        'Match requires a regular expression to match against.',
       );
     }
 
@@ -84,7 +84,7 @@ export default class StringBuilder extends Builder<string> {
     if (__DEV__) {
       this.invariant(
         (Array.isArray(list) && list.length > 0 && list.every(isString)),
-        'string.oneOf() requires a non-empty array of strings.',
+        'One of requires a non-empty array of strings.',
       );
     }
 

@@ -19,7 +19,7 @@ export default class NumberBuilder extends Builder<number> {
     if (__DEV__) {
       this.invariant(
         (isNumber(min) && isNumber(max)),
-        'number.between() requires a minimum and maximum number.',
+        'Between requires a minimum and maximum number.',
       );
     }
 
@@ -41,7 +41,7 @@ export default class NumberBuilder extends Builder<number> {
 
   gt(min: number, inclusive: boolean = false): this {
     if (__DEV__) {
-      this.invariant(isNumber(min), 'number.gt() requires a minimum number.');
+      this.invariant(isNumber(min), 'Greater-than requires a minimum number.');
     }
 
     return this.addCheck(this.checkGreaterThan, min, inclusive);
@@ -71,7 +71,7 @@ export default class NumberBuilder extends Builder<number> {
 
   lt(max: number, inclusive: boolean = false): this {
     if (__DEV__) {
-      this.invariant(isNumber(max), 'number.lt() requires a maximum number.');
+      this.invariant(isNumber(max), 'Less-than requires a maximum number.');
     }
 
     return this.addCheck(this.checkLessThan, max, inclusive);
@@ -103,7 +103,7 @@ export default class NumberBuilder extends Builder<number> {
     if (__DEV__) {
       this.invariant(
         (Array.isArray(list) && list.length > 0 && list.every(isNumber)),
-        'number.oneOf() requires a non-empty array of numbers.',
+        'One of requires a non-empty array of numbers.',
       );
     }
 
