@@ -55,8 +55,13 @@ export default class UnionBuilder extends Builder<*> {
           (type === builder.type) ||
           (type === 'object' && builder.type === 'shape')
         ) {
-          builder.runChecks(path, value);
           checked = true;
+          builder.runChecks(
+            path,
+            value,
+            this.currentOptions,
+            this.currentConfig,
+          );
         }
       });
 

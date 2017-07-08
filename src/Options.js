@@ -29,37 +29,18 @@ function buildAndCheckOptions(
   const unknownOptions = { ...baseOptions };
   const options = {};
 
-  // Handle mutually exclusive
-  if (__DEV__) {
-    if (Array.isArray(config.exclusive)) {
-      config.exclusive.forEach((keys) => {
-        const count = keys.filter(key => (typeof baseOptions[key] !== 'undefined')).length;
-
-        if (count > 1) {
-          throw new Error(
-            `The options ${keys.map(key => `"${key}"`).join(', ')} are ` +
-            'mutually exclusive and must not be used together.',
-          );
-        }
-      });
-    } else if ('exclusive' in config) {
-      throw new TypeError('Configuration "exclusive" must be an array of array of options keys.');
-    }
-  }
-
   // Validate using the blueprint
   Object.keys(blueprint).forEach((key) => {
     const builder = blueprint[key];
-    const value = baseOptions[key];
     const path = parentPath ? `${parentPath}.${key}` : key;
 
     // Run validation checks
     if (builder instanceof Builder) {
-      options[key] = builder.runChecks(path, value, config);
+      options[key] = builder.runChecks(path, baseOptions[key], baseOptions, config);
 
     // Builder is a plain object, so let's recursively try again
     } else if (isObject(builder)) {
-      options[key] = buildAndCheckOptions(value || {}, builder, config, path);
+      options[key] = buildAndCheckOptions(baseOptions[key] || {}, builder, config, path);
 
     // Oops
     } else if (__DEV__) {

@@ -23,7 +23,12 @@ export default class ObjectBuilder<T> extends Builder<?{ [key: string]: T }> {
   checkContents(path: string, value: *, contents: Builder<T>) {
     if (__DEV__) {
       Object.keys(value).forEach((key) => {
-        contents.runChecks(`${path}.${key}`, value[key]);
+        contents.runChecks(
+          `${path}.${key}`,
+          value[key],
+          this.currentOptions,
+          this.currentConfig,
+        );
       });
     }
   }

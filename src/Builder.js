@@ -14,6 +14,7 @@ export default class Builder<T> {
     func: Checker,
   }[] = [];
   currentConfig: Config = {};
+  currentOptions: Object = {};
   defaultValue: T;
   errorMessage: string = '';
   isNullable: boolean = false;
@@ -166,8 +167,9 @@ export default class Builder<T> {
   /**
    * Run all validation checks that have been enqueued.
    */
-  runChecks(path: string, initialValue: *, config: Config = {}): * {
+  runChecks(path: string, initialValue: *, options: Object, config: Config = {}): * {
     this.currentConfig = config;
+    this.currentOptions = options;
 
     let value = initialValue;
 

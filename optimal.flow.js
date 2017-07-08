@@ -33,6 +33,7 @@ declare module 'optimal' {
       func: Checker,
     }[];
     currentConfig: Config;
+    currentOptions: Object;
     defaultValue: T;
     errorMessage: string;
     isNullable: boolean;
@@ -46,7 +47,7 @@ declare module 'optimal' {
     nullable(state: boolean): this;
     only(): this;
     required(state: boolean): this;
-    runChecks(path: string, initialValue: *, config: Config): *;
+    runChecks(path: string, value: *, options: Object, config: Config): *;
   }
 
   declare export default class Options {

@@ -23,7 +23,12 @@ export default class ArrayBuilder<T> extends Builder<?T[]> {
   checkContents(path: string, value: *, contents: Builder<T>) {
     if (__DEV__) {
       value.forEach((item, i) => {
-        contents.runChecks(`${path}[${i}]`, item);
+        contents.runChecks(
+          `${path}[${i}]`,
+          item,
+          this.currentOptions,
+          this.currentConfig,
+        );
       });
     }
   }
