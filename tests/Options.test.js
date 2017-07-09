@@ -261,9 +261,10 @@ describe('Options', () => {
         baz: string('c').and('foo', 'bar'),
       });
 
+      // Dont error if all are undefined
       expect(() => {
         new Options({}, and);
-      }).toThrowError('Invalid option "foo". All of these options must be defined: foo, bar, baz');
+      }).not.toThrowError('Invalid option "foo". All of these options must be defined: foo, bar, baz');
 
       expect(() => {
         new Options({
@@ -341,7 +342,7 @@ describe('Options', () => {
 
       expect(() => {
         new Options({}, xor);
-      }).not.toThrowError('Invalid option "foo". Only one of these options may be defined: foo, bar, baz');
+      }).toThrowError('Invalid option "foo". Only one of these options may be defined: foo, bar, baz');
 
       expect(() => {
         new Options({

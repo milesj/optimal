@@ -251,6 +251,14 @@ describe('Builder', () => {
   });
 
   describe('checkXor()', () => {
+    it('errors if no options are defined', () => {
+      expect(() => {
+        builder.currentOptions = {};
+
+        builder.checkXor('foo', 'a', ['bar', 'baz']);
+      }).toThrowError('Invalid option "foo". Only one of these options may be defined: foo, bar, baz');
+    });
+
     it('errors if more than 1 option is defined', () => {
       expect(() => {
         builder.currentOptions = {
@@ -260,14 +268,6 @@ describe('Builder', () => {
 
         builder.checkXor('foo', 'a', ['bar', 'baz']);
       }).toThrowError('Invalid option "foo". Only one of these options may be defined: foo, bar, baz');
-    });
-
-    it('doesnt error if no options are defined', () => {
-      expect(() => {
-        builder.currentOptions = {};
-
-        builder.checkXor('foo', 'a', ['bar', 'baz']);
-      }).not.toThrowError('Invalid option "foo".');
     });
 
     it('doesnt error if only 1 option is defined', () => {

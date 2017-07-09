@@ -73,6 +73,11 @@ export default class Builder<T> {
         typeof options[key] === 'undefined' || options[key] === null
       ));
 
+      // Only error once one of the options is defined
+      if (undefs.length === keys.length) {
+        return;
+      }
+
       this.invariant(
         (undefs.length === 0),
         `All of these options must be defined: ${keys.join(', ')}`,
@@ -307,7 +312,7 @@ export default class Builder<T> {
       ));
 
       this.invariant(
-        (defs.length <= 1),
+        (defs.length === 1),
         `Only one of these options may be defined: ${keys.join(', ')}`,
         path,
       );
