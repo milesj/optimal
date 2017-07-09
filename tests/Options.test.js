@@ -253,40 +253,121 @@ describe('Options', () => {
     });
   });
 
-  describe('mutually exclusive', () => {
-    // it('errors if config is not an array', () => {
-    //   expect(() => {
-    //     new Options({
-    //       context: 'foo',
-    //       entry: 'bar',
-    //     }, factory, {
-    //       exclusive: 123,
-    //     });
-    //   }).toThrowError('Configuration "exclusive" must be an array of array of options keys.');
-    // });
-    //
-    // it('errors for colliding options', () => {
-    //   expect(() => {
-    //     new Options({
-    //       context: 'foo',
-    //       entry: 'bar',
-    //     }, factory, {
-    //       exclusive: [
-    //         ['context', 'entry'],
-    //       ],
-    //     });
-    //   }).toThrowError('The options "context",
-    // "entry" are mutually exclusive and must not be used together.');
-    // });
-    //
-    // it('doesnt error if not used together', () => {
-    //   expect(new Options({
-    //     context: 'foo',
-    //   }, factory, {
-    //     exclusive: [
-    //       ['context', 'entry'],
-    //     ],
-    //   })).toEqual(expect.objectContaining({ context: 'foo' }));
-    // });
+  describe('logical operators', () => {
+    it('handles AND', () => {
+      const and = ({ string }) => ({
+        foo: string('a').and('bar', 'baz'),
+        bar: string('b').and('foo', 'baz'),
+        baz: string('c').and('foo', 'bar'),
+      });
+
+      expect(() => {
+        new Options({}, and);
+      }).toThrowError('Invalid option "foo". All of these options must be defined: foo, bar, baz');
+
+      expect(() => {
+        new Options({
+          foo: 'a',
+        }, and);
+      }).toThrowError('Invalid option "foo". All of these options must be defined: foo, bar, baz');
+
+      expect(() => {
+        new Options({
+          foo: 'a',
+          bar: 'b',
+        }, and);
+      }).toThrowError('Invalid option "foo". All of these options must be defined: foo, bar, baz');
+
+      expect(() => {
+        new Options({
+          foo: 'a',
+          baz: 'c',
+        }, and);
+      }).toThrowError('Invalid option "foo". All of these options must be defined: foo, bar, baz');
+
+      expect(() => {
+        new Options({
+          foo: 'a',
+          bar: 'b',
+          baz: 'c',
+        }, and);
+      }).not.toThrowError('Invalid option "foo". All of these options must be defined: foo, bar, baz');
+    });
+
+    it('handles OR', () => {
+      const or = ({ string }) => ({
+        foo: string('a').or('bar', 'baz'),
+        bar: string('b').or('foo', 'baz'),
+        baz: string('c').or('foo', 'bar'),
+      });
+
+      expect(() => {
+        new Options({}, or);
+      }).toThrowError('Invalid option "foo". At least one of these options must be defined: foo, bar, baz');
+
+      expect(() => {
+        new Options({
+          foo: 'a',
+        }, or);
+      }).not.toThrowError('Invalid option "foo". At least one of these options must be defined: foo, bar, baz');
+
+      expect(() => {
+        new Options({
+          bar: 'b',
+        }, or);
+      }).not.toThrowError('Invalid option "foo". At least one of these options must be defined: foo, bar, baz');
+
+      expect(() => {
+        new Options({
+          baz: 'c',
+        }, or);
+      }).not.toThrowError('Invalid option "foo". At least one of these options must be defined: foo, bar, baz');
+
+      expect(() => {
+        new Options({
+          foo: 'a',
+          bar: 'b',
+          baz: 'c',
+        }, or);
+      }).not.toThrowError('Invalid option "foo". At least one of these options must be defined: foo, bar, baz');
+    });
+
+    it('handles XOR', () => {
+      const xor = ({ string }) => ({
+        foo: string('a').xor('bar', 'baz'),
+        bar: string('b').xor('foo', 'baz'),
+        baz: string('c').xor('foo', 'bar'),
+      });
+
+      expect(() => {
+        new Options({}, xor);
+      }).not.toThrowError('Invalid option "foo". Only one of these options may be defined: foo, bar, baz');
+
+      expect(() => {
+        new Options({
+          foo: 'a',
+        }, xor);
+      }).not.toThrowError('Invalid option "foo". Only one of these options may be defined: foo, bar, baz');
+
+      expect(() => {
+        new Options({
+          bar: 'b',
+        }, xor);
+      }).not.toThrowError('Invalid option "foo". Only one of these options may be defined: foo, bar, baz');
+
+      expect(() => {
+        new Options({
+          baz: 'c',
+        }, xor);
+      }).not.toThrowError('Invalid option "foo". Only one of these options may be defined: foo, bar, baz');
+
+      expect(() => {
+        new Options({
+          foo: 'a',
+          bar: 'b',
+          baz: 'c',
+        }, xor);
+      }).toThrowError('Invalid option "foo". Only one of these options may be defined: foo, bar, baz');
+    });
   });
 });

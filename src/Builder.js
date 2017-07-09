@@ -82,39 +82,6 @@ export default class Builder<T> {
   }
 
   /**
-   * Validate the value matches only the default value.
-   */
-  checkOnly(path: string, value: *) {
-    if (__DEV__) {
-      this.invariant(
-        (value === this.defaultValue),
-        `Value may only be "${String(this.defaultValue)}".`,
-        path,
-      );
-    }
-  }
-
-  /**
-   * Validate that at least 1 option is defined.
-   */
-  checkOr(path: string, value: *, keys: string[]) {
-    if (__DEV__) {
-      keys.unshift(this.key(path));
-
-      const options = this.currentOptions;
-      const defs = keys.filter(key => (
-        typeof options[key] !== 'undefined' && options[key] !== null
-      ));
-
-      this.invariant(
-        (defs.length > 0),
-        `At least one of these options must be defined: ${keys.join(', ')}`,
-        path,
-      );
-    }
-  }
-
-  /**
    * Validate the type of value.
    */
   checkType(path: string, value: *) {
@@ -140,26 +107,6 @@ export default class Builder<T> {
           this.invariant((typeof value === this.type), `Must be a ${this.type}.`, path);
           break;
       }
-    }
-  }
-
-  /**
-   * Validate that only 1 option is defined.
-   */
-  checkXor(path: string, value: *, keys: string[]) {
-    if (__DEV__) {
-      keys.unshift(this.key(path));
-
-      const options = this.currentOptions;
-      const defs = keys.filter(key => (
-        typeof options[key] !== 'undefined' && options[key] !== null
-      ));
-
-      this.invariant(
-        (defs.length <= 1),
-        `Only one of these options may be defined: ${keys.join(', ')}`,
-        path,
-      );
     }
   }
 
@@ -239,6 +186,19 @@ export default class Builder<T> {
   }
 
   /**
+   * Validate the value matches only the default value.
+   */
+  checkOnly(path: string, value: *) {
+    if (__DEV__) {
+      this.invariant(
+        (value === this.defaultValue),
+        `Value may only be "${String(this.defaultValue)}".`,
+        path,
+      );
+    }
+  }
+
+  /**
    * Map a list of option names that must have at least 1 defined.
    */
   or(...keys: string[]): this {
@@ -250,6 +210,26 @@ export default class Builder<T> {
     }
 
     return this.addCheck(this.checkOr, keys);
+  }
+
+  /**
+   * Validate that at least 1 option is defined.
+   */
+  checkOr(path: string, value: *, keys: string[]) {
+    if (__DEV__) {
+      keys.unshift(this.key(path));
+
+      const options = this.currentOptions;
+      const defs = keys.filter(key => (
+        typeof options[key] !== 'undefined' && options[key] !== null
+      ));
+
+      this.invariant(
+        (defs.length > 0),
+        `At least one of these options must be defined: ${keys.join(', ')}`,
+        path,
+      );
+    }
   }
 
   /**
@@ -312,5 +292,25 @@ export default class Builder<T> {
     }
 
     return this.addCheck(this.checkXor, keys);
+  }
+
+  /**
+   * Validate that only 1 option is defined.
+   */
+  checkXor(path: string, value: *, keys: string[]) {
+    if (__DEV__) {
+      keys.unshift(this.key(path));
+
+      const options = this.currentOptions;
+      const defs = keys.filter(key => (
+        typeof options[key] !== 'undefined' && options[key] !== null
+      ));
+
+      this.invariant(
+        (defs.length <= 1),
+        `Only one of these options may be defined: ${keys.join(', ')}`,
+        path,
+      );
+    }
   }
 }
