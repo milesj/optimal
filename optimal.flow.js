@@ -44,12 +44,14 @@ declare module 'optimal' {
     addCheck(func: Checker, ...args: *[]): this;
     and(...keys: string[]): this;
     invariant(condition: boolean, message: string, path: string): void;
+    key(path: string): string;
     message(message: string): this;
     nullable(state: boolean): this;
     only(): this;
     or(...keys: string[]): this;
     required(state: boolean): this;
     runChecks(path: string, value: *, options: Object, config: Config): *;
+    xor(...keys: string[]): this;
   }
 
   declare export default class Options {

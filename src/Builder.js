@@ -32,7 +32,7 @@ export default class Builder<T> {
     this.defaultValue = defaultValue;
     this.type = type;
 
-    this.addCheck(this.checkTypeOf);
+    this.addCheck(this.checkType);
   }
 
   /**
@@ -58,14 +58,16 @@ export default class Builder<T> {
       );
     }
 
-    return this.nullable(false).addCheck(this.checkAnd, keys);
+    return this.addCheck(this.checkAnd, keys);
   }
 
   /**
-   * Validate that other options have been defined.
+   * Validate that all options have been defined.
    */
   checkAnd(path: string, value: *, keys: string[]) {
     if (__DEV__) {
+      keys.unshift(this.key(path));
+
       const options = this.currentOptions;
       const undefs = keys.filter(key => (
         typeof options[key] === 'undefined' || options[key] === null
@@ -73,7 +75,7 @@ export default class Builder<T> {
 
       this.invariant(
         (undefs.length === 0),
-        `Additional options must be defined simultaneously: ${undefs.join(', ')}`,
+        `All of these options must be defined: ${keys.join(', ')}`,
         path,
       );
     }
@@ -93,18 +95,20 @@ export default class Builder<T> {
   }
 
   /**
-   * Validate that other options have not been defined.
+   * Validate that at least 1 option is defined.
    */
   checkOr(path: string, value: *, keys: string[]) {
     if (__DEV__) {
+      keys.unshift(this.key(path));
+
       const options = this.currentOptions;
       const defs = keys.filter(key => (
         typeof options[key] !== 'undefined' && options[key] !== null
       ));
 
       this.invariant(
-        (defs.length === 0),
-        `Additional options are mutually exclusive and must not be defined: ${defs.join(', ')}`,
+        (defs.length > 0),
+        `At least one of these options must be defined: ${keys.join(', ')}`,
         path,
       );
     }
@@ -113,7 +117,7 @@ export default class Builder<T> {
   /**
    * Validate the type of value.
    */
-  checkTypeOf(path: string, value: *) {
+  checkType(path: string, value: *) {
     if (__DEV__) {
       switch (this.type) {
         case 'array':
@@ -140,6 +144,26 @@ export default class Builder<T> {
   }
 
   /**
+   * Validate that only 1 option is defined.
+   */
+  checkXor(path: string, value: *, keys: string[]) {
+    if (__DEV__) {
+      keys.unshift(this.key(path));
+
+      const options = this.currentOptions;
+      const defs = keys.filter(key => (
+        typeof options[key] !== 'undefined' && options[key] !== null
+      ));
+
+      this.invariant(
+        (defs.length <= 1),
+        `Only one of these options may be defined: ${keys.join(', ')}`,
+        path,
+      );
+    }
+  }
+
+  /**
    * Throw an error if the condition is falsy.
    */
   invariant(condition: boolean, message: string, path: string = '') {
@@ -153,7 +177,7 @@ export default class Builder<T> {
 
       if (path) {
         if (name) {
-          prefix += `Invalid \`${name}\` option "${path}". `;
+          prefix += `Invalid ${name} option "${path}". `;
         } else {
           prefix += `Invalid option "${path}". `;
         }
@@ -163,6 +187,15 @@ export default class Builder<T> {
 
       throw new Error(`${prefix}${this.errorMessage || message}`);
     }
+  }
+
+  /**
+   * Return the current key from a path.
+   */
+  key(path: string): string {
+    const index = path.lastIndexOf('.');
+
+    return (index > 0) ? path.slice(index + 1) : path;
   }
 
   /**
@@ -206,7 +239,7 @@ export default class Builder<T> {
   }
 
   /**
-   * Map a list of option names that must not be defined alongside this field.
+   * Map a list of option names that must have at least 1 defined.
    */
   or(...keys: string[]): this {
     if (__DEV__) {
@@ -216,7 +249,7 @@ export default class Builder<T> {
       );
     }
 
-    return this.nullable(false).addCheck(this.checkOr, keys);
+    return this.addCheck(this.checkOr, keys);
   }
 
   /**
@@ -265,5 +298,19 @@ export default class Builder<T> {
     }
 
     return value;
+  }
+
+  /**
+   * Map a list of option names that must not be defined alongside this field.
+   */
+  xor(...keys: string[]): this {
+    if (__DEV__) {
+      this.invariant(
+        (keys.length > 0),
+        'XOR requires a list of option names.',
+      );
+    }
+
+    return this.addCheck(this.checkXor, keys);
   }
 }

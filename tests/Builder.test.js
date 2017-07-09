@@ -22,7 +22,7 @@ describe('Builder', () => {
     it('adds a type of check', () => {
       expect(builder.checks).toEqual([
         {
-          func: builder.checkTypeOf,
+          func: builder.checkType,
           args: [],
         },
       ]);
@@ -62,7 +62,7 @@ describe('Builder', () => {
   });
 
   describe('checkAnd()', () => {
-    it('errors if a sibling option is undefined', () => {
+    it('errors if not all options are defined', () => {
       expect(() => {
         builder.currentOptions = {
           foo: 'a',
@@ -70,7 +70,7 @@ describe('Builder', () => {
         };
 
         builder.checkAnd('foo', 'a', ['bar', 'baz']);
-      }).toThrowError('Invalid option "foo". Additional options must be defined simultaneously: bar');
+      }).toThrowError('Invalid option "foo". All of these options must be defined: foo, bar, baz');
     });
 
     it('doesnt error if all are defined', () => {
@@ -105,18 +105,15 @@ describe('Builder', () => {
   });
 
   describe('checkOr()', () => {
-    it('errors if a sibling option is defined', () => {
+    it('errors if not 1 option is defined', () => {
       expect(() => {
-        builder.currentOptions = {
-          foo: 'a',
-          baz: 'c',
-        };
+        builder.currentOptions = {};
 
         builder.checkOr('foo', 'a', ['bar', 'baz']);
-      }).toThrowError('Invalid option "foo". Additional options are mutually exclusive and must not be defined: baz');
+      }).toThrowError('Invalid option "foo". At least one of these options must be defined: foo, bar, baz');
     });
 
-    it('doesnt error if all are undefined', () => {
+    it('doesnt error if at least 1 option is defined', () => {
       expect(() => {
         builder.currentOptions = {
           foo: 'a',
@@ -127,13 +124,13 @@ describe('Builder', () => {
     });
   });
 
-  describe('checkTypeOf()', () => {
+  describe('checkType()', () => {
     describe('array', () => {
       it('allows arrays', () => {
         builder.type = 'array';
 
         expect(() => {
-          builder.checkTypeOf('key', []);
+          builder.checkType('key', []);
         }).not.toThrowError('Invalid option "key". Must be an array.');
       });
 
@@ -141,7 +138,7 @@ describe('Builder', () => {
         builder.type = 'array';
 
         expect(() => {
-          builder.checkTypeOf('key', 123);
+          builder.checkType('key', 123);
         }).toThrowError('Invalid option "key". Must be an array.');
       });
     });
@@ -151,7 +148,7 @@ describe('Builder', () => {
         builder.type = 'boolean';
 
         expect(() => {
-          builder.checkTypeOf('key', true);
+          builder.checkType('key', true);
         }).not.toThrowError('Invalid option "key". Must be a boolean.');
       });
 
@@ -159,7 +156,7 @@ describe('Builder', () => {
         builder.type = 'boolean';
 
         expect(() => {
-          builder.checkTypeOf('key', 123);
+          builder.checkType('key', 123);
         }).toThrowError('Invalid option "key". Must be a boolean.');
       });
     });
@@ -169,7 +166,7 @@ describe('Builder', () => {
         builder.type = 'function';
 
         expect(() => {
-          builder.checkTypeOf('key', () => {});
+          builder.checkType('key', () => {});
         }).not.toThrowError('Invalid option "key". Must be a function.');
       });
 
@@ -177,7 +174,7 @@ describe('Builder', () => {
         builder.type = 'function';
 
         expect(() => {
-          builder.checkTypeOf('key', 'foo');
+          builder.checkType('key', 'foo');
         }).toThrowError('Invalid option "key". Must be a function.');
       });
     });
@@ -187,7 +184,7 @@ describe('Builder', () => {
         builder.type = 'number';
 
         expect(() => {
-          builder.checkTypeOf('key', 123);
+          builder.checkType('key', 123);
         }).not.toThrowError('Invalid option "key". Must be a number.');
       });
 
@@ -195,7 +192,7 @@ describe('Builder', () => {
         builder.type = 'number';
 
         expect(() => {
-          builder.checkTypeOf('key', 'foo');
+          builder.checkType('key', 'foo');
         }).toThrowError('Invalid option "key". Must be a number.');
       });
     });
@@ -205,7 +202,7 @@ describe('Builder', () => {
         builder.type = 'object';
 
         expect(() => {
-          builder.checkTypeOf('key', {});
+          builder.checkType('key', {});
         }).not.toThrowError('Invalid option "key". Must be a plain object.');
       });
 
@@ -213,7 +210,7 @@ describe('Builder', () => {
         builder.type = 'object';
 
         expect(() => {
-          builder.checkTypeOf('key', 123);
+          builder.checkType('key', 123);
         }).toThrowError('Invalid option "key". Must be a plain object.');
       });
 
@@ -221,7 +218,7 @@ describe('Builder', () => {
         builder.type = 'object';
 
         expect(() => {
-          builder.checkTypeOf('key', []);
+          builder.checkType('key', []);
         }).toThrowError('Invalid option "key". Must be a plain object.');
       });
 
@@ -229,7 +226,7 @@ describe('Builder', () => {
         builder.type = 'object';
 
         expect(() => {
-          builder.checkTypeOf('key', null);
+          builder.checkType('key', null);
         }).toThrowError('Invalid option "key". Must be a plain object.');
       });
     });
@@ -239,7 +236,7 @@ describe('Builder', () => {
         builder.type = 'string';
 
         expect(() => {
-          builder.checkTypeOf('key', 'foo');
+          builder.checkType('key', 'foo');
         }).not.toThrowError('Invalid option "key". Must be a string.');
       });
 
@@ -247,9 +244,40 @@ describe('Builder', () => {
         builder.type = 'string';
 
         expect(() => {
-          builder.checkTypeOf('key', 123);
+          builder.checkType('key', 123);
         }).toThrowError('Invalid option "key". Must be a string.');
       });
+    });
+  });
+
+  describe('checkXor()', () => {
+    it('errors if more than 1 option is defined', () => {
+      expect(() => {
+        builder.currentOptions = {
+          foo: 'a',
+          bar: 'b',
+        };
+
+        builder.checkXor('foo', 'a', ['bar', 'baz']);
+      }).toThrowError('Invalid option "foo". Only one of these options may be defined: foo, bar, baz');
+    });
+
+    it('doesnt error if no options are defined', () => {
+      expect(() => {
+        builder.currentOptions = {};
+
+        builder.checkXor('foo', 'a', ['bar', 'baz']);
+      }).not.toThrowError('Invalid option "foo".');
+    });
+
+    it('doesnt error if only 1 option is defined', () => {
+      expect(() => {
+        builder.currentOptions = {
+          foo: 'a',
+        };
+
+        builder.checkXor('foo', 'a', ['bar', 'baz']);
+      }).not.toThrowError('Invalid option "foo".');
     });
   });
 
@@ -277,7 +305,7 @@ describe('Builder', () => {
         builder.currentConfig.name = 'FooBar';
 
         builder.invariant(false, 'Failure', 'foo.bar');
-      }).toThrowError('Invalid `FooBar` option "foo.bar". Failure');
+      }).toThrowError('Invalid FooBar option "foo.bar". Failure');
     });
 
     it('includes a class name when no path', () => {
@@ -286,6 +314,16 @@ describe('Builder', () => {
 
         builder.invariant(false, 'Failure');
       }).toThrowError('FooBar: Failure');
+    });
+  });
+
+  describe('key()', () => {
+    it('returns as-is if not deep', () => {
+      expect(builder.key('foo')).toBe('foo');
+    });
+
+    it('returns last part of a deep path', () => {
+      expect(builder.key('foo.bar.baz')).toBe('baz');
     });
   });
 
@@ -406,6 +444,23 @@ describe('Builder', () => {
 
       expect(builder.checks[1]).toEqual({
         func: builder.checkOr,
+        args: [['bar', 'baz']],
+      });
+    });
+  });
+
+  describe('xor()', () => {
+    it('errors if no keys are defined', () => {
+      expect(() => {
+        builder.xor();
+      }).toThrowError('XOR requires a list of option names.');
+    });
+
+    it('adds a checker', () => {
+      builder.xor('bar', 'baz');
+
+      expect(builder.checks[1]).toEqual({
+        func: builder.checkXor,
         args: [['bar', 'baz']],
       });
     });
