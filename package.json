@@ -1,6 +1,6 @@
 {
   "name": "optimal",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Options object builder and validator.",
   "main": "./lib/index.js",
   "browser": "./lib/bundle.js",
