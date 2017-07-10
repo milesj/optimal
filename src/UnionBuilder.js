@@ -8,7 +8,7 @@ import Builder from './Builder';
 import typeOf from './typeOf';
 
 export default class UnionBuilder extends Builder<*> {
-  constructor(builders: Builder<*>[], defaultValue: * = null) {
+  constructor(builders: Builder<*>[], defaultValue?: * = null) {
     super('union', defaultValue);
 
     if (__DEV__) {
@@ -70,6 +70,6 @@ export default class UnionBuilder extends Builder<*> {
   }
 }
 
-export function union(builders: Builder<*>[], defaultValue: * = null): UnionBuilder {
+export function union(builders: Builder<*>[], defaultValue?: * = null): UnionBuilder {
   return new UnionBuilder(builders, defaultValue);
 }

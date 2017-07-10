@@ -10,12 +10,12 @@ function isNumber(value: *): boolean {
   return (typeof value === 'number');
 }
 
-export default class NumberBuilder extends Builder<number> {
-  constructor(defaultValue: number = 0) {
+export default class NumberBuilder extends Builder<?number> {
+  constructor(defaultValue?: ?number = 0) {
     super('number', defaultValue);
   }
 
-  between(min: number, max: number, inclusive: boolean = false): this {
+  between(min: number, max: number, inclusive?: boolean = false): this {
     if (__DEV__) {
       this.invariant(
         (isNumber(min) && isNumber(max)),
@@ -26,7 +26,7 @@ export default class NumberBuilder extends Builder<number> {
     return this.addCheck(this.checkBetween, min, max, inclusive);
   }
 
-  checkBetween(path: string, value: *, min: number, max: number, inclusive: boolean = false) {
+  checkBetween(path: string, value: *, min: number, max: number, inclusive?: boolean = false) {
     if (__DEV__) {
       this.invariant(
         (
@@ -39,7 +39,7 @@ export default class NumberBuilder extends Builder<number> {
     }
   }
 
-  gt(min: number, inclusive: boolean = false): this {
+  gt(min: number, inclusive?: boolean = false): this {
     if (__DEV__) {
       this.invariant(isNumber(min), 'Greater-than requires a minimum number.');
     }
@@ -51,7 +51,7 @@ export default class NumberBuilder extends Builder<number> {
     return this.gt(min, true);
   }
 
-  checkGreaterThan(path: string, value: *, min: number, inclusive: boolean = false) {
+  checkGreaterThan(path: string, value: *, min: number, inclusive?: boolean = false) {
     if (__DEV__) {
       if (inclusive) {
         this.invariant(
@@ -69,7 +69,7 @@ export default class NumberBuilder extends Builder<number> {
     }
   }
 
-  lt(max: number, inclusive: boolean = false): this {
+  lt(max: number, inclusive?: boolean = false): this {
     if (__DEV__) {
       this.invariant(isNumber(max), 'Less-than requires a maximum number.');
     }
@@ -81,7 +81,7 @@ export default class NumberBuilder extends Builder<number> {
     return this.lt(max, true);
   }
 
-  checkLessThan(path: string, value: *, max: number, inclusive: boolean = false) {
+  checkLessThan(path: string, value: *, max: number, inclusive?: boolean = false) {
     if (__DEV__) {
       if (inclusive) {
         this.invariant(
@@ -99,7 +99,7 @@ export default class NumberBuilder extends Builder<number> {
     }
   }
 
-  oneOf(list: string[] = []): this {
+  oneOf(list: number[]): this {
     if (__DEV__) {
       this.invariant(
         (Array.isArray(list) && list.length > 0 && list.every(isNumber)),
@@ -110,7 +110,7 @@ export default class NumberBuilder extends Builder<number> {
     return this.addCheck(this.checkOneOf, list);
   }
 
-  checkOneOf(path: string, value: *, list: string[] = []) {
+  checkOneOf(path: string, value: *, list: number[]) {
     if (__DEV__) {
       this.invariant(
         (list.indexOf(value) >= 0),
@@ -121,6 +121,6 @@ export default class NumberBuilder extends Builder<number> {
   }
 }
 
-export function number(defaultValue: number = 0): NumberBuilder {
+export function number(defaultValue?: ?number = 0): NumberBuilder {
   return new NumberBuilder(defaultValue);
 }

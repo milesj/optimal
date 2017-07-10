@@ -29,18 +29,18 @@ export type Checker = (path: string, value: *, ...args: *[]) => void;
 export type Blueprint = { [key: string]: Builder<*> | Blueprint };
 
 export type FactoryMap = {
-  array: (builder: Builder<*>, defaultValue: ?*[]) => ArrayBuilder<*>,
-  bool: (defaultValue: boolean) => BoolBuilder,
-  custom: (checker: Checker, defaultValue: *) => CustomBuilder,
+  array: (builder: Builder<*>, defaultValue?: ?*[]) => ArrayBuilder<*>,
+  bool: (defaultValue?: ?boolean) => BoolBuilder,
+  custom: (checker: Checker, defaultValue?: *) => CustomBuilder,
   date: () => InstanceBuilder<Class<Date>>,
-  func: (defaultValue: ?Function) => FuncBuilder,
+  func: (defaultValue?: ?Function) => FuncBuilder,
   instance: (refClass: *) => InstanceBuilder<*>,
-  number: (defaultValue: number) => NumberBuilder,
-  object: (builder?: Builder<*>, defaultValue: ?{ [key: string]: * }) => ObjectBuilder<*>,
+  number: (defaultValue?: ?number) => NumberBuilder,
+  object: (builder?: Builder<*>, defaultValue?: ?{ [key: string]: * }) => ObjectBuilder<*>,
   regex: () => InstanceBuilder<Class<RegExp>>,
-  shape: (builders: { [key: string]: Builder<*> }, defaultValue: ?{ [key: string]: * }) => ShapeBuilder,
-  string: (defaultValue: string) => StringBuilder,
-  union: (builders: Builder<*>[], defaultValue: *) => UnionBuilder,
+  shape: (builders: { [key: string]: Builder<*> }, defaultValue?: ?{ [key: string]: * }) => ShapeBuilder,
+  string: (defaultValue?: ?string) => StringBuilder,
+  union: (builders: Builder<*>[], defaultValue?: *) => UnionBuilder,
 };
 
 export type Factory = (factories: FactoryMap) => Blueprint;

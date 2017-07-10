@@ -9,7 +9,7 @@
 import Builder from './Builder';
 
 export default class FuncBuilder extends Builder<?Function> {
-  constructor(defaultValue: ?Function = null) {
+  constructor(defaultValue?: ?Function = null) {
     super('function', defaultValue);
 
     // Nullable by default
@@ -17,6 +17,6 @@ export default class FuncBuilder extends Builder<?Function> {
   }
 }
 
-export function func(defaultValue: ?Function = null): FuncBuilder {
+export function func(defaultValue?: ?Function = null): FuncBuilder {
   return new FuncBuilder(defaultValue);
 }

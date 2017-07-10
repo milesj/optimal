@@ -10,17 +10,17 @@ function isString(value: *): boolean {
   return (typeof value === 'string' && value !== '');
 }
 
-export default class StringBuilder extends Builder<string> {
+export default class StringBuilder extends Builder<?string> {
   allowEmpty: boolean = false;
 
-  constructor(defaultValue: string = '') {
+  constructor(defaultValue?: ?string = '') {
     super('string', defaultValue);
 
     // Not empty by default
     this.addCheck(this.checkNotEmpty);
   }
 
-  contains(token: string, index: number = 0): this {
+  contains(token: string, index?: number = 0): this {
     if (__DEV__) {
       this.invariant(
         isString(token),
@@ -31,7 +31,7 @@ export default class StringBuilder extends Builder<string> {
     return this.addCheck(this.checkContains, token, index);
   }
 
-  checkContains(path: string, value: *, token: string, index: number = 0) {
+  checkContains(path: string, value: *, token: string, index?: number = 0) {
     if (__DEV__) {
       this.invariant(
         (value.indexOf(token, index) >= 0),
@@ -80,7 +80,7 @@ export default class StringBuilder extends Builder<string> {
     }
   }
 
-  oneOf(list: string[] = []): this {
+  oneOf(list: string[]): this {
     if (__DEV__) {
       this.invariant(
         (Array.isArray(list) && list.length > 0 && list.every(isString)),
@@ -91,7 +91,7 @@ export default class StringBuilder extends Builder<string> {
     return this.addCheck(this.checkOneOf, list);
   }
 
-  checkOneOf(path: string, value: *, list: string[] = []) {
+  checkOneOf(path: string, value: *, list: string[]) {
     if (__DEV__) {
       this.invariant(
         (list.indexOf(value) >= 0),
@@ -102,6 +102,6 @@ export default class StringBuilder extends Builder<string> {
   }
 }
 
-export function string(defaultValue: string = ''): StringBuilder {
+export function string(defaultValue?: ?string = ''): StringBuilder {
   return new StringBuilder(defaultValue);
 }

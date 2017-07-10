@@ -11,7 +11,7 @@ type ShapeBlueprint = { [key: string]: Builder<*> };
 type Shape = { [key: string]: * };
 
 export default class ShapeBuilder extends Builder<?Shape> {
-  constructor(contents: ShapeBlueprint, defaultValue: ?Shape = {}) {
+  constructor(contents: ShapeBlueprint, defaultValue?: ?Shape = {}) {
     super('shape', defaultValue);
 
     if (__DEV__) {
@@ -47,6 +47,6 @@ export default class ShapeBuilder extends Builder<?Shape> {
   }
 }
 
-export function shape(contents: ShapeBlueprint, defaultValue: ?Shape = {}): ShapeBuilder {
+export function shape(contents: ShapeBlueprint, defaultValue?: ?Shape = {}): ShapeBuilder {
   return new ShapeBuilder(contents, defaultValue);
 }

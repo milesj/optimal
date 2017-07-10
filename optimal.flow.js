@@ -8,18 +8,18 @@ declare module 'optimal' {
   declare export type Blueprint = { [key: string]: Builder<*> | Blueprint };
 
   declare export type Factory = (factories: {
-    array: (builder: Builder<*>, defaultValue: ?*[]) => Builder<?*[]>,
-    bool: (defaultValue: boolean) => Builder<boolean>,
-    custom: (checker: Checker, defaultValue: *) => Builder<?*>,
-    date: () => Builder<Class<Date>>,
-    func: (defaultValue: ?Function) => Builder<?Function>,
-    instance: (refClass: *) => Builder<?*>,
-    number: (defaultValue: number) => Builder<number>,
-    object: (builder?: Builder<*>, defaultValue: ?{ [key: string]: * }) => Builder<?Object>,
-    regex: () => Builder<Class<RegExp>>,
-    shape: (builders: { [key: string]: Builder<*> }, defaultValue: ?{ [key: string]: * }) => Builder<?Object>,
-    string: (defaultValue: string) => Builder<string>,
-    union: (builders: Builder<*>[], defaultValue: *) => Builder<*>,
+    array: (builder: Builder<*>, defaultValue?: ?*[]) => ArrayBuilder<*>,
+    bool: (defaultValue?: ?boolean) => BoolBuilder,
+    custom: (checker: Checker, defaultValue?: *) => CustomBuilder,
+    date: () => InstanceBuilder<Class<Date>>,
+    func: (defaultValue?: ?Function) => FuncBuilder,
+    instance: (refClass: *) => InstanceBuilder<*>,
+    number: (defaultValue?: ?number) => NumberBuilder,
+    object: (builder?: Builder<*>, defaultValue?: ?{ [key: string]: * }) => ObjectBuilder<*>,
+    regex: () => InstanceBuilder<Class<RegExp>>,
+    shape: (builders: { [key: string]: Builder<*> }, defaultValue?: ?{ [key: string]: * }) => ShapeBuilder,
+    string: (defaultValue?: ?string) => StringBuilder,
+    union: (builders: Builder<*>[], defaultValue?: *) => UnionBuilder,
   }) => Blueprint;
 
   declare export type Config = {
@@ -39,22 +39,75 @@ declare module 'optimal' {
     isNullable: boolean;
     isRequired: boolean;
     type: SupportedType;
-
     constructor(type: SupportedType, defaultValue: T): void;
     addCheck(func: Checker, ...args: *[]): this;
     and(...keys: string[]): this;
-    invariant(condition: boolean, message: string, path: string): void;
+    invariant(condition: boolean, message: string, path?: string): void;
     key(path: string): string;
     message(message: string): this;
-    nullable(state: boolean): this;
+    nullable(state?: boolean): this;
     only(): this;
     or(...keys: string[]): this;
-    required(state: boolean): this;
-    runChecks(path: string, value: *, options: Object, config: Config): *;
+    required(state?: boolean): this;
+    runChecks(path: string, value: *, options: Object, config?: Config): *;
     xor(...keys: string[]): this;
   }
 
+  declare export class ArrayBuilder<T> extends Builder<?T[]> {
+    constructor(contents: Builder<T>, defaultValue?: ?T[]): void;
+    notEmpty(): this;
+  }
+
+  declare export class BoolBuilder extends Builder<?boolean> {
+    constructor(defaultValue?: ?boolean): void;
+  }
+
+  declare export class CustomBuilder extends Builder<*> {
+    constructor(callback: Checker, defaultValue?: *): void;
+  }
+
+  declare export class FuncBuilder extends Builder<?Function> {
+    constructor(defaultValue?: ?Function): void;
+  }
+
+  declare export class InstanceBuilder<T> extends Builder<?T> {
+    refClass: T;
+    constructor(refClass: T): void;
+  }
+
+  declare export class NumberBuilder extends Builder<?number> {
+    constructor(defaultValue?: ?number): void;
+    between(min: number, max: number, inclusive?: boolean): this;
+    gt(min: number, inclusive?: boolean): this;
+    gte(min: number): this;
+    lt(max: number, inclusive?: boolean): this;
+    lte(max: number): this;
+    oneOf(list: number[]): this;
+  }
+
+  declare export class ObjectBuilder<T> extends Builder<?{ [key: string]: T }> {
+    constructor(contents?: Builder<T>, defaultValue?: ?{ [key: string]: T }): void;
+    notEmpty(): this;
+  }
+
+  declare export class ShapeBuilder extends Builder<?{ [key: string]: * }> {
+    constructor(contents: { [key: string]: Builder<*> }, defaultValue?: ?{ [key: string]: * }): void;
+  }
+
+  declare export class StringBuilder extends Builder<?string> {
+    allowEmpty: boolean;
+    constructor(defaultValue?: ?string): void;
+    contains(token: string, index?: number): this;
+    match(pattern: RegExp): this;
+    empty(): this;
+    oneOf(list: number[]): this;
+  }
+
+  declare export class UnionBuilder extends Builder<*> {
+    constructor(builders: Builder<*>[], defaultValue?: *): void;
+  }
+
   declare export default class Options {
-    constructor(baseOptions: Object, factory: Factory, config: Config): void;
+    constructor(baseOptions: Object, factory: Factory, config?: Config): void;
   }
 }

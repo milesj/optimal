@@ -23,8 +23,8 @@ import type { Factory, Blueprint, Config } from './types';
 function buildAndCheckOptions(
   baseOptions: Object,
   blueprint: Blueprint,
-  config: Config = {},
-  parentPath: string = '',
+  config?: Config = {},
+  parentPath?: string = '',
 ) {
   const unknownOptions = { ...baseOptions };
   const options = {};
@@ -66,7 +66,11 @@ function buildAndCheckOptions(
   return options;
 }
 
-export default function Options(baseOptions: Object, factory: Factory, config: Config = {}) {
+export default function Options(
+  baseOptions: Object,
+  factory: Factory,
+  config?: Config = {},
+): Object {
   if (__DEV__) {
     if (!isObject(baseOptions)) {
       throw new TypeError(`Options require a plain object, found ${typeOf(baseOptions)}.`);

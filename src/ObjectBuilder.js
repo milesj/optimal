@@ -7,7 +7,7 @@
 import Builder from './Builder';
 
 export default class ObjectBuilder<T> extends Builder<?{ [key: string]: T }> {
-  constructor(contents?: Builder<T>, defaultValue: ?{ [key: string]: T } = {}) {
+  constructor(contents?: Builder<T>, defaultValue?: ?{ [key: string]: T } = {}) {
     super('object', defaultValue);
 
     if (contents) {
@@ -50,7 +50,7 @@ export default class ObjectBuilder<T> extends Builder<?{ [key: string]: T }> {
 
 export function object<T>(
   contents?: Builder<T>,
-  defaultValue: ?{ [key: string]: T } = {},
+  defaultValue?: ?{ [key: string]: T } = {},
 ): ObjectBuilder<T> {
   return new ObjectBuilder(contents, defaultValue);
 }

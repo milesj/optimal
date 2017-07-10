@@ -118,7 +118,7 @@ export default class Builder<T> {
   /**
    * Throw an error if the condition is falsy.
    */
-  invariant(condition: boolean, message: string, path: string = '') {
+  invariant(condition: boolean, message: string, path?: string = '') {
     if (__DEV__) {
       if (condition) {
         return;
@@ -240,7 +240,7 @@ export default class Builder<T> {
   /**
    * Disallow undefined values.
    */
-  required(state: boolean = true): this {
+  required(state?: boolean = true): this {
     this.isRequired = state;
 
     return this;
@@ -249,7 +249,7 @@ export default class Builder<T> {
   /**
    * Run all validation checks that have been enqueued.
    */
-  runChecks(path: string, initialValue: *, options: Object, config: Config = {}): * {
+  runChecks(path: string, initialValue: *, options: Object, config?: Config = {}): * {
     this.currentConfig = config;
     this.currentOptions = options;
 

@@ -7,7 +7,7 @@
 import Builder from './Builder';
 
 export default class ArrayBuilder<T> extends Builder<?T[]> {
-  constructor(contents: Builder<T>, defaultValue: ?T[] = []) {
+  constructor(contents: Builder<T>, defaultValue?: ?T[] = []) {
     super('array', defaultValue);
 
     if (__DEV__) {
@@ -48,6 +48,6 @@ export default class ArrayBuilder<T> extends Builder<?T[]> {
   }
 }
 
-export function array<T>(contents: Builder<T>, defaultValue: ?T[] = []): ArrayBuilder<T> {
+export function array<T>(contents: Builder<T>, defaultValue?: ?T[] = []): ArrayBuilder<T> {
   return new ArrayBuilder(contents, defaultValue);
 }

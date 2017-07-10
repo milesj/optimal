@@ -9,7 +9,7 @@ import Builder from './Builder';
 import type { Checker } from './types';
 
 export default class CustomBuilder extends Builder<*> {
-  constructor(callback: Checker, defaultValue: * = null) {
+  constructor(callback: Checker, defaultValue?: * = null) {
     super('custom', defaultValue);
 
     if (__DEV__) {
@@ -27,6 +27,6 @@ export default class CustomBuilder extends Builder<*> {
   }
 }
 
-export function custom(checker: Checker, defaultValue: * = null): CustomBuilder {
+export function custom(checker: Checker, defaultValue?: * = null): CustomBuilder {
   return new CustomBuilder(checker, defaultValue);
 }

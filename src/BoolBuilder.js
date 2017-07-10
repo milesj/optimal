@@ -6,12 +6,12 @@
 
 import Builder from './Builder';
 
-export default class BoolBuilder extends Builder<boolean> {
-  constructor(defaultValue: boolean = false) {
+export default class BoolBuilder extends Builder<?boolean> {
+  constructor(defaultValue?: ?boolean = false) {
     super('boolean', defaultValue);
   }
 }
 
-export function bool(defaultValue: boolean = false): BoolBuilder {
+export function bool(defaultValue?: ?boolean = false): BoolBuilder {
   return new BoolBuilder(defaultValue);
 }
