@@ -27,7 +27,7 @@ describe('CustomBuilder', () => {
 
   describe('runChecks()', () => {
     it('triggers callback function', () => {
-      builder = new CustomBuilder((path, value, invariant) => {
+      builder = new CustomBuilder((path, value, options, invariant) => {
         if (path === 'error') {
           invariant(false, 'This will error!', path);
         }
@@ -42,6 +42,20 @@ describe('CustomBuilder', () => {
       expect(() => {
         builder.runChecks('key', 123);
       }).not.toThrowError('Invalid option "error". This will error!');
+    });
+
+    it('is passed entire options object', () => {
+      builder = new CustomBuilder((path, value, options, invariant) => {
+        if (options.foo && options.bar) {
+          invariant(false, 'This will error!', path);
+        }
+
+        return value;
+      });
+
+      expect(() => {
+        builder.runChecks('error', 123, { foo: 123, bar: 456, error: '' });
+      }).toThrowError('Invalid option "error". This will error!');
     });
   });
 });

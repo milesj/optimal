@@ -9,6 +9,7 @@ import Builder from './Builder';
 export type CustomChecker = (
   path: string,
   value: *,
+  options: Object,
   invariant: (condition: boolean, message: string, path?: string) => void,
 ) => void;
 
@@ -27,7 +28,7 @@ export default class CustomBuilder extends Builder<*> {
   }
 
   checkCallback(path: string, value: *, callback: CustomChecker) {
-    callback(path, value, this.invariant.bind(this));
+    callback(path, value, this.currentOptions, this.invariant.bind(this));
   }
 }
 
