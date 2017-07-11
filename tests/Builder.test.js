@@ -70,7 +70,7 @@ describe('Builder', () => {
         };
 
         builder.checkAnd('foo', 'a', ['bar', 'baz']);
-      }).toThrowError('Invalid option "foo". All of these options must be defined: foo, bar, baz');
+      }).toThrowError('All of these options must be defined: foo, bar, baz');
     });
 
     it('doesnt error if all are defined', () => {
@@ -82,44 +82,6 @@ describe('Builder', () => {
         };
 
         builder.checkAnd('foo', 'a', ['bar', 'baz']);
-      }).not.toThrowError('Invalid option "foo".');
-    });
-  });
-
-  describe('checkOnly()', () => {
-    beforeEach(() => {
-      builder.only();
-    });
-
-    it('errors if value doesnt match the default value', () => {
-      expect(() => {
-        builder.checkOnly('key', 'bar');
-      }).toThrowError('Invalid option "key". Value may only be "foo".');
-    });
-
-    it('doesnt error if value matches default value', () => {
-      expect(() => {
-        builder.checkOnly('key', 'foo');
-      }).not.toThrowError('Invalid option "key". Value may only be "foo".');
-    });
-  });
-
-  describe('checkOr()', () => {
-    it('errors if not 1 option is defined', () => {
-      expect(() => {
-        builder.currentOptions = {};
-
-        builder.checkOr('foo', 'a', ['bar', 'baz']);
-      }).toThrowError('Invalid option "foo". At least one of these options must be defined: foo, bar, baz');
-    });
-
-    it('doesnt error if at least 1 option is defined', () => {
-      expect(() => {
-        builder.currentOptions = {
-          foo: 'a',
-        };
-
-        builder.checkOr('foo', 'a', ['bar', 'baz']);
       }).not.toThrowError('Invalid option "foo".');
     });
   });
@@ -247,37 +209,6 @@ describe('Builder', () => {
           builder.checkType('key', 123);
         }).toThrowError('Invalid option "key". Must be a string.');
       });
-    });
-  });
-
-  describe('checkXor()', () => {
-    it('errors if no options are defined', () => {
-      expect(() => {
-        builder.currentOptions = {};
-
-        builder.checkXor('foo', 'a', ['bar', 'baz']);
-      }).toThrowError('Invalid option "foo". Only one of these options may be defined: foo, bar, baz');
-    });
-
-    it('errors if more than 1 option is defined', () => {
-      expect(() => {
-        builder.currentOptions = {
-          foo: 'a',
-          bar: 'b',
-        };
-
-        builder.checkXor('foo', 'a', ['bar', 'baz']);
-      }).toThrowError('Invalid option "foo". Only one of these options may be defined: foo, bar, baz');
-    });
-
-    it('doesnt error if only 1 option is defined', () => {
-      expect(() => {
-        builder.currentOptions = {
-          foo: 'a',
-        };
-
-        builder.checkXor('foo', 'a', ['bar', 'baz']);
-      }).not.toThrowError('Invalid option "foo".');
     });
   });
 
@@ -432,6 +363,24 @@ describe('Builder', () => {
     });
   });
 
+  describe('checkOnly()', () => {
+    beforeEach(() => {
+      builder.only();
+    });
+
+    it('errors if value doesnt match the default value', () => {
+      expect(() => {
+        builder.checkOnly('key', 'bar');
+      }).toThrowError('Invalid option "key". Value may only be "foo".');
+    });
+
+    it('doesnt error if value matches default value', () => {
+      expect(() => {
+        builder.checkOnly('key', 'foo');
+      }).not.toThrowError('Invalid option "key". Value may only be "foo".');
+    });
+  });
+
   describe('or()', () => {
     it('errors if no keys are defined', () => {
       expect(() => {
@@ -449,6 +398,26 @@ describe('Builder', () => {
     });
   });
 
+  describe('checkOr()', () => {
+    it('errors if not 1 option is defined', () => {
+      expect(() => {
+        builder.currentOptions = {};
+
+        builder.checkOr('foo', 'a', ['bar', 'baz']);
+      }).toThrowError('At least one of these options must be defined: foo, bar, baz');
+    });
+
+    it('doesnt error if at least 1 option is defined', () => {
+      expect(() => {
+        builder.currentOptions = {
+          foo: 'a',
+        };
+
+        builder.checkOr('foo', 'a', ['bar', 'baz']);
+      }).not.toThrowError('Invalid option "foo".');
+    });
+  });
+
   describe('xor()', () => {
     it('errors if no keys are defined', () => {
       expect(() => {
@@ -463,6 +432,37 @@ describe('Builder', () => {
         func: builder.checkXor,
         args: [['bar', 'baz']],
       });
+    });
+  });
+
+  describe('checkXor()', () => {
+    it('errors if no options are defined', () => {
+      expect(() => {
+        builder.currentOptions = {};
+
+        builder.checkXor('foo', 'a', ['bar', 'baz']);
+      }).toThrowError('Only one of these options may be defined: foo, bar, baz');
+    });
+
+    it('errors if more than 1 option is defined', () => {
+      expect(() => {
+        builder.currentOptions = {
+          foo: 'a',
+          bar: 'b',
+        };
+
+        builder.checkXor('foo', 'a', ['bar', 'baz']);
+      }).toThrowError('Only one of these options may be defined: foo, bar, baz');
+    });
+
+    it('doesnt error if only 1 option is defined', () => {
+      expect(() => {
+        builder.currentOptions = {
+          foo: 'a',
+        };
+
+        builder.checkXor('foo', 'a', ['bar', 'baz']);
+      }).not.toThrowError('Invalid option "foo".');
     });
   });
 });

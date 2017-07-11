@@ -81,7 +81,6 @@ export default class Builder<T> {
       this.invariant(
         (undefs.length === 0),
         `All of these options must be defined: ${keys.join(', ')}`,
-        path,
       );
     }
   }
@@ -232,7 +231,6 @@ export default class Builder<T> {
       this.invariant(
         (defs.length > 0),
         `At least one of these options must be defined: ${keys.join(', ')}`,
-        path,
       );
     }
   }
@@ -314,7 +312,6 @@ export default class Builder<T> {
       this.invariant(
         (defs.length === 1),
         `Only one of these options may be defined: ${keys.join(', ')}`,
-        path,
       );
     }
   }

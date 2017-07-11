@@ -264,27 +264,27 @@ describe('Options', () => {
       // Dont error if all are undefined
       expect(() => {
         new Options({}, and);
-      }).not.toThrowError('Invalid option "foo". All of these options must be defined: foo, bar, baz');
+      }).not.toThrowError('All of these options must be defined: foo, bar, baz');
 
       expect(() => {
         new Options({
           foo: 'a',
         }, and);
-      }).toThrowError('Invalid option "foo". All of these options must be defined: foo, bar, baz');
+      }).toThrowError('All of these options must be defined: foo, bar, baz');
 
       expect(() => {
         new Options({
           foo: 'a',
           bar: 'b',
         }, and);
-      }).toThrowError('Invalid option "foo". All of these options must be defined: foo, bar, baz');
+      }).toThrowError('All of these options must be defined: foo, bar, baz');
 
       expect(() => {
         new Options({
           foo: 'a',
           baz: 'c',
         }, and);
-      }).toThrowError('Invalid option "foo". All of these options must be defined: foo, bar, baz');
+      }).toThrowError('All of these options must be defined: foo, bar, baz');
 
       expect(() => {
         new Options({
@@ -292,7 +292,7 @@ describe('Options', () => {
           bar: 'b',
           baz: 'c',
         }, and);
-      }).not.toThrowError('Invalid option "foo". All of these options must be defined: foo, bar, baz');
+      }).not.toThrowError('All of these options must be defined: foo, bar, baz');
     });
 
     it('handles OR', () => {
@@ -304,25 +304,25 @@ describe('Options', () => {
 
       expect(() => {
         new Options({}, or);
-      }).toThrowError('Invalid option "foo". At least one of these options must be defined: foo, bar, baz');
+      }).toThrowError('At least one of these options must be defined: foo, bar, baz');
 
       expect(() => {
         new Options({
           foo: 'a',
         }, or);
-      }).not.toThrowError('Invalid option "foo". At least one of these options must be defined: foo, bar, baz');
+      }).not.toThrowError('At least one of these options must be defined: foo, bar, baz');
 
       expect(() => {
         new Options({
           bar: 'b',
         }, or);
-      }).not.toThrowError('Invalid option "foo". At least one of these options must be defined: foo, bar, baz');
+      }).not.toThrowError('At least one of these options must be defined: foo, bar, baz');
 
       expect(() => {
         new Options({
           baz: 'c',
         }, or);
-      }).not.toThrowError('Invalid option "foo". At least one of these options must be defined: foo, bar, baz');
+      }).not.toThrowError('At least one of these options must be defined: foo, bar, baz');
 
       expect(() => {
         new Options({
@@ -330,7 +330,7 @@ describe('Options', () => {
           bar: 'b',
           baz: 'c',
         }, or);
-      }).not.toThrowError('Invalid option "foo". At least one of these options must be defined: foo, bar, baz');
+      }).not.toThrowError('At least one of these options must be defined: foo, bar, baz');
     });
 
     it('handles XOR', () => {
@@ -342,25 +342,25 @@ describe('Options', () => {
 
       expect(() => {
         new Options({}, xor);
-      }).toThrowError('Invalid option "foo". Only one of these options may be defined: foo, bar, baz');
+      }).toThrowError('Only one of these options may be defined: foo, bar, baz');
 
       expect(() => {
         new Options({
           foo: 'a',
         }, xor);
-      }).not.toThrowError('Invalid option "foo". Only one of these options may be defined: foo, bar, baz');
+      }).not.toThrowError('Only one of these options may be defined: foo, bar, baz');
 
       expect(() => {
         new Options({
           bar: 'b',
         }, xor);
-      }).not.toThrowError('Invalid option "foo". Only one of these options may be defined: foo, bar, baz');
+      }).not.toThrowError('Only one of these options may be defined: foo, bar, baz');
 
       expect(() => {
         new Options({
           baz: 'c',
         }, xor);
-      }).not.toThrowError('Invalid option "foo". Only one of these options may be defined: foo, bar, baz');
+      }).not.toThrowError('Only one of these options may be defined: foo, bar, baz');
 
       expect(() => {
         new Options({
@@ -368,7 +368,7 @@ describe('Options', () => {
           bar: 'b',
           baz: 'c',
         }, xor);
-      }).toThrowError('Invalid option "foo". Only one of these options may be defined: foo, bar, baz');
+      }).toThrowError('Only one of these options may be defined: foo, bar, baz');
     });
   });
 });
