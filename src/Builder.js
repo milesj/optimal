@@ -16,6 +16,7 @@ export default class Builder<T> {
   currentConfig: Config = {};
   currentOptions: Object = {};
   defaultValue: T;
+  deprecatedMessage: string = '';
   errorMessage: string = '';
   isNullable: boolean = false;
   isRequired: boolean = false;
@@ -112,6 +113,22 @@ export default class Builder<T> {
           break;
       }
     }
+  }
+
+  /**
+   * Set a message to log when this field is present.
+   */
+  deprecate(message: string): this {
+    if (__DEV__) {
+      this.invariant(
+        (typeof message === 'string' && !!message),
+        'A non-empty string is required for deprecated messages.',
+      );
+    }
+
+    this.deprecatedMessage = message;
+
+    return this;
   }
 
   /**
@@ -260,6 +277,11 @@ export default class Builder<T> {
 
       } else if (__DEV__) {
         this.invariant(false, 'Field is required and must be defined.', path);
+      }
+    } else if (this.deprecatedMessage) {
+      if (__DEV__) {
+        // eslint-disable-next-line no-console
+        console.info(`Option "${path}" is deprecated. ${this.deprecatedMessage}`);
       }
     }
 

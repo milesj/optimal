@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 import Builder from '../src/Builder';
 
 describe('Builder', () => {
@@ -278,6 +280,26 @@ describe('Builder', () => {
     });
   });
 
+  describe('deprecate()', () => {
+    it('errors for empty value', () => {
+      expect(() => {
+        builder.deprecate('');
+      }).toThrowError('A non-empty string is required for deprecated messages.');
+    });
+
+    it('errors for non-string value', () => {
+      expect(() => {
+        builder.deprecate(123);
+      }).toThrowError('A non-empty string is required for deprecated messages.');
+    });
+
+    it('sets message', () => {
+      builder.deprecate('foobar');
+
+      expect(builder.deprecatedMessage).toBe('foobar');
+    });
+  });
+
   describe('nullable()', () => {
     it('toggles nullable state', () => {
       expect(builder.isNullable).toBe(false);
@@ -341,6 +363,32 @@ describe('Builder', () => {
       expect(() => {
         builder.message('Oops, something is broken.').runChecks('key', 123);
       }).toThrowError('Invalid option "key". Oops, something is broken.');
+    });
+
+    describe('deprecation', () => {
+      const oldInfo = console.info;
+
+      beforeEach(() => {
+        console.info = jest.fn();
+      });
+
+      afterEach(() => {
+        console.info = oldInfo;
+      });
+
+      it('logs a message', () => {
+        builder.deprecate('Use something else.');
+        builder.runChecks('key', 'foo');
+
+        expect(console.info).toBeCalledWith('Option "key" is deprecated. Use something else.');
+      });
+
+      it('doesnt log if undefined', () => {
+        builder.deprecate('Use something else.');
+        builder.runChecks('key');
+
+        expect(console.info).not.toBeCalledWith('Option "key" is deprecated. Use something else.');
+      });
     });
   });
 

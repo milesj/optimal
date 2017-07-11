@@ -44,6 +44,7 @@ declare module 'optimal' {
     currentConfig: Config;
     currentOptions: Object;
     defaultValue: T;
+    deprecatedMessage: string;
     errorMessage: string;
     isNullable: boolean;
     isRequired: boolean;
@@ -51,6 +52,7 @@ declare module 'optimal' {
     constructor(type: SupportedType, defaultValue: T): void;
     addCheck(func: Checker, ...args: *[]): this;
     and(...keys: string[]): this;
+    deprecate(message: string): this;
     invariant(condition: boolean, message: string, path?: string): void;
     key(path: string): string;
     message(message: string): this;
