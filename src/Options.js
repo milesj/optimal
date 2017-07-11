@@ -25,7 +25,7 @@ function buildAndCheckOptions(
   blueprint: Blueprint,
   config?: Config = {},
   parentPath?: string = '',
-) {
+): Object {
   const unknownOptions = { ...baseOptions };
   const options = {};
 

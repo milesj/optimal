@@ -28,7 +28,7 @@ export type Checker = (path: string, value: *, ...args: *[]) => void;
 
 export type Blueprint = { [key: string]: Builder<*> | Blueprint };
 
-export type FactoryMap = {
+export type Builders = {
   array: (builder: Builder<*>, defaultValue?: ?*[]) => ArrayBuilder<*>,
   bool: (defaultValue?: ?boolean) => BoolBuilder,
   custom: (checker: Checker, defaultValue?: *) => CustomBuilder,
@@ -43,7 +43,7 @@ export type FactoryMap = {
   union: (builders: Builder<*>[], defaultValue?: *) => UnionBuilder,
 };
 
-export type Factory = (factories: FactoryMap) => Blueprint;
+export type Factory = (builders: Builders) => Blueprint;
 
 export type Config = {
   name?: string,

@@ -5,9 +5,15 @@ declare module 'optimal' {
 
   declare export type Checker = (path: string, value: *, ...args: *[]) => void;
 
+  declare export type CustomChecker = (
+    path: string,
+    value: *,
+    invariant: (condition: boolean, message: string, path?: string) => void,
+  ) => void;
+
   declare export type Blueprint = { [key: string]: Builder<*> | Blueprint };
 
-  declare export type Factory = (factories: {
+  declare export type Builders = {
     array: (builder: Builder<*>, defaultValue?: ?*[]) => ArrayBuilder<*>,
     bool: (defaultValue?: ?boolean) => BoolBuilder,
     custom: (checker: Checker, defaultValue?: *) => CustomBuilder,
@@ -20,7 +26,9 @@ declare module 'optimal' {
     shape: (builders: { [key: string]: Builder<*> }, defaultValue?: ?{ [key: string]: * }) => ShapeBuilder,
     string: (defaultValue?: ?string) => StringBuilder,
     union: (builders: Builder<*>[], defaultValue?: *) => UnionBuilder,
-  }) => Blueprint;
+  };
+
+  declare export type Factory = (builders: Builders) => Blueprint;
 
   declare export type Config = {
     name?: string,
@@ -63,7 +71,7 @@ declare module 'optimal' {
   }
 
   declare export class CustomBuilder extends Builder<*> {
-    constructor(callback: Checker, defaultValue?: *): void;
+    constructor(callback: CustomChecker, defaultValue?: *): void;
   }
 
   declare export class FuncBuilder extends Builder<?Function> {
@@ -100,14 +108,16 @@ declare module 'optimal' {
     contains(token: string, index?: number): this;
     match(pattern: RegExp): this;
     empty(): this;
-    oneOf(list: number[]): this;
+    oneOf(list: string[]): this;
   }
 
   declare export class UnionBuilder extends Builder<*> {
     constructor(builders: Builder<*>[], defaultValue?: *): void;
   }
 
-  declare export default class Options {
-    constructor(baseOptions: Object, factory: Factory, config?: Config): void;
-  }
+  declare export default function Options(
+    baseOptions: Object,
+    factory: Factory,
+    config?: Config,
+  ): Object;
 }

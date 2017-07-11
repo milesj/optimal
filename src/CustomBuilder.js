@@ -6,10 +6,14 @@
 
 import Builder from './Builder';
 
-import type { Checker } from './types';
+export type CustomChecker = (
+  path: string,
+  value: *,
+  invariant: (condition: boolean, message: string, path?: string) => void,
+) => void;
 
 export default class CustomBuilder extends Builder<*> {
-  constructor(callback: Checker, defaultValue?: * = null) {
+  constructor(callback: CustomChecker, defaultValue?: * = null) {
     super('custom', defaultValue);
 
     if (__DEV__) {
@@ -22,11 +26,11 @@ export default class CustomBuilder extends Builder<*> {
     this.addCheck(this.checkCallback, callback);
   }
 
-  checkCallback(path: string, value: *, callback: Checker) {
-    callback.call(this, path, value);
+  checkCallback(path: string, value: *, callback: CustomChecker) {
+    callback(path, value, this.invariant.bind(this));
   }
 }
 
-export function custom(checker: Checker, defaultValue?: * = null): CustomBuilder {
+export function custom(checker: CustomChecker, defaultValue?: * = null): CustomBuilder {
   return new CustomBuilder(checker, defaultValue);
 }

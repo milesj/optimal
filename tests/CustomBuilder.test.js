@@ -27,9 +27,9 @@ describe('CustomBuilder', () => {
 
   describe('runChecks()', () => {
     it('triggers callback function', () => {
-      builder = new CustomBuilder(function check(path, value) {
+      builder = new CustomBuilder((path, value, invariant) => {
         if (path === 'error') {
-          this.invariant(false, 'This will error!', path);
+          invariant(false, 'This will error!', path);
         }
 
         return value;
