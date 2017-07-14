@@ -11,16 +11,16 @@ declare module 'optimal' {
 
   declare export type Builders = {
     array: (builder: Builder<*>, defaultValue?: ?*[]) => ArrayBuilder<*>,
-    bool: (defaultValue?: ?boolean) => BoolBuilder,
+    bool: <T: boolean>(defaultValue?: ?T) => BoolBuilder<T>,
     custom: (callback: CustomCallback, defaultValue?: *) => Builder<*>,
     date: () => InstanceBuilder<Class<Date>>,
-    func: (defaultValue?: ?Function) => FuncBuilder,
+    func: <T: Function>(defaultValue?: ?T) => FuncBuilder<T>,
     instance: (refClass: *) => InstanceBuilder<*>,
-    number: (defaultValue?: ?number) => NumberBuilder,
+    number: <T: number>(defaultValue?: ?T) => NumberBuilder<T>,
     object: (builder?: Builder<*>, defaultValue?: ?{ [key: string]: * }) => ObjectBuilder<*>,
     regex: () => InstanceBuilder<Class<RegExp>>,
     shape: (builders: { [key: string]: Builder<*> }, defaultValue?: ?{ [key: string]: * }) => ShapeBuilder,
-    string: (defaultValue?: ?string) => StringBuilder,
+    string: <T: string>(defaultValue?: ?T) => StringBuilder<T>,
     union: (builders: Builder<*>[], defaultValue?: *) => UnionBuilder,
   };
 
@@ -65,12 +65,12 @@ declare module 'optimal' {
     notEmpty(): this;
   }
 
-  declare export class BoolBuilder extends Builder<?boolean> {
-    constructor(defaultValue?: ?boolean): void;
+  declare export class BoolBuilder<T: boolean> extends Builder<?T> {
+    constructor(defaultValue?: ?T): void;
   }
 
-  declare export class FuncBuilder extends Builder<?Function> {
-    constructor(defaultValue?: ?Function): void;
+  declare export class FuncBuilder<T: Function> extends Builder<?T> {
+    constructor(defaultValue?: ?T): void;
   }
 
   declare export class InstanceBuilder<T> extends Builder<?T> {
@@ -78,14 +78,14 @@ declare module 'optimal' {
     constructor(refClass: T): void;
   }
 
-  declare export class NumberBuilder extends Builder<?number> {
-    constructor(defaultValue?: ?number): void;
+  declare export class NumberBuilder<T: number> extends Builder<?T> {
+    constructor(defaultValue?: ?T): void;
     between(min: number, max: number, inclusive?: boolean): this;
     gt(min: number, inclusive?: boolean): this;
     gte(min: number): this;
     lt(max: number, inclusive?: boolean): this;
     lte(max: number): this;
-    oneOf(list: number[]): this;
+    oneOf(list: T[]): this;
   }
 
   declare export class ObjectBuilder<T> extends Builder<?{ [key: string]: T }> {
@@ -94,16 +94,19 @@ declare module 'optimal' {
   }
 
   declare export class ShapeBuilder extends Builder<?{ [key: string]: * }> {
-    constructor(contents: { [key: string]: Builder<*> }, defaultValue?: ?{ [key: string]: * }): void;
+    constructor(
+      contents: { [key: string]: Builder<*> },
+      defaultValue?: ?{ [key: string]: * },
+    ): void;
   }
 
-  declare export class StringBuilder extends Builder<?string> {
+  declare export class StringBuilder<T: string> extends Builder<?T> {
     allowEmpty: boolean;
-    constructor(defaultValue?: ?string): void;
+    constructor(defaultValue?: ?T): void;
     contains(token: string, index?: number): this;
     match(pattern: RegExp): this;
     empty(): this;
-    oneOf(list: string[]): this;
+    oneOf(list: T[]): this;
   }
 
   declare export class UnionBuilder extends Builder<*> {

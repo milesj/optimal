@@ -7,7 +7,7 @@
 .*\.test\.js
 
 [libs]
-./optimal.flow.js
+./optimal.js.flow
 
 [options]
 emoji=true
