@@ -5,14 +5,14 @@ declare module 'optimal' {
 
   declare export type Checker = (path: string, value: *, ...args: *[]) => void;
 
-  declare export type CustomChecker = (value: *, options: Object) => void
+  declare export type CustomCallback = (value: *, options: Object) => void;
 
   declare export type Blueprint = { [key: string]: Builder<*> | Blueprint };
 
   declare export type Builders = {
     array: (builder: Builder<*>, defaultValue?: ?*[]) => ArrayBuilder<*>,
     bool: (defaultValue?: ?boolean) => BoolBuilder,
-    custom: (checker: Checker, defaultValue?: *) => CustomBuilder,
+    custom: (callback: CustomCallback, defaultValue?: *) => Builder<*>,
     date: () => InstanceBuilder<Class<Date>>,
     func: (defaultValue?: ?Function) => FuncBuilder,
     instance: (refClass: *) => InstanceBuilder<*>,
@@ -47,6 +47,7 @@ declare module 'optimal' {
     constructor(type: SupportedType, defaultValue: T): void;
     addCheck(func: Checker, ...args: *[]): this;
     and(...keys: string[]): this;
+    custom(callback: CustomCallback): this;
     deprecate(message: string): this;
     invariant(condition: boolean, message: string, path?: string): void;
     key(path: string): string;
@@ -66,10 +67,6 @@ declare module 'optimal' {
 
   declare export class BoolBuilder extends Builder<?boolean> {
     constructor(defaultValue?: ?boolean): void;
-  }
-
-  declare export class CustomBuilder extends Builder<*> {
-    constructor(callback: CustomChecker, defaultValue?: *): void;
   }
 
   declare export class FuncBuilder extends Builder<?Function> {

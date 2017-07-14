@@ -6,7 +6,7 @@
 
 import isObject from './isObject';
 
-import type { SupportedType, Checker, Config } from './types';
+import type { SupportedType, Checker, Config, CustomCallback } from './types';
 
 export default class Builder<T> {
   checks: {
@@ -111,6 +111,33 @@ export default class Builder<T> {
           // eslint-disable-next-line valid-typeof
           this.invariant((typeof value === this.type), `Must be a ${this.type}.`, path);
           break;
+      }
+    }
+  }
+
+  /**
+   * Set a callback to run custom logic.
+   */
+  custom(callback: CustomCallback): this {
+    if (__DEV__) {
+      this.invariant(
+        (typeof callback === 'function'),
+        'Custom blueprints require a validation function.',
+      );
+    }
+
+    return this.addCheck(this.checkCustom, callback);
+  }
+
+  /**
+   * Validate the value using a custom callback.
+   */
+  checkCustom(path: string, value: *, callback: CustomCallback) {
+    if (__DEV__) {
+      try {
+        callback(value, this.currentOptions);
+      } catch (error) {
+        this.invariant(false, error.message, path);
       }
     }
   }
@@ -337,4 +364,8 @@ export default class Builder<T> {
       );
     }
   }
+}
+
+export function custom(callback: CustomCallback, defaultValue?: * = null): Builder<*> {
+  return new Builder('custom', defaultValue).custom(callback);
 }

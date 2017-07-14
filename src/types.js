@@ -9,7 +9,6 @@
 import type Builder from './Builder';
 import type ArrayBuilder from './ArrayBuilder';
 import type BoolBuilder from './BoolBuilder';
-import type CustomBuilder from './CustomBuilder';
 import type FuncBuilder from './FuncBuilder';
 import type InstanceBuilder from './InstanceBuilder';
 import type NumberBuilder from './NumberBuilder';
@@ -26,12 +25,14 @@ export type SupportedType =
 
 export type Checker = (path: string, value: *, ...args: *[]) => void;
 
+export type CustomCallback = (value: *, options: Object) => void;
+
 export type Blueprint = { [key: string]: Builder<*> | Blueprint };
 
 export type Builders = {
   array: (builder: Builder<*>, defaultValue?: ?*[]) => ArrayBuilder<*>,
   bool: (defaultValue?: ?boolean) => BoolBuilder,
-  custom: (checker: Checker, defaultValue?: *) => CustomBuilder,
+  custom: (callback: CustomCallback, defaultValue?: *) => Builder<*>,
   date: () => InstanceBuilder<Class<Date>>,
   func: (defaultValue?: ?Function) => FuncBuilder,
   instance: (refClass: *) => InstanceBuilder<*>,

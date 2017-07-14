@@ -4,10 +4,9 @@
  * @flow
  */
 
-import Builder from './Builder';
+import Builder, { custom } from './Builder';
 import { array } from './ArrayBuilder';
 import { bool } from './BoolBuilder';
-import { custom } from './CustomBuilder';
 import { func } from './FuncBuilder';
 import { instance, date, regex } from './InstanceBuilder';
 import { number } from './NumberBuilder';

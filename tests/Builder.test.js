@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-import Builder from '../src/Builder';
+import Builder, { custom } from '../src/Builder';
 
 describe('Builder', () => {
   let builder;
@@ -211,6 +211,48 @@ describe('Builder', () => {
           builder.checkType('key', 123);
         }).toThrowError('Invalid option "key". Must be a string.');
       });
+    });
+  });
+
+  describe('custom()', () => {
+    it('errors if no callback', () => {
+      expect(() => builder.custom())
+        .toThrowError('Custom blueprints require a validation function.');
+    });
+
+    it('errors if callback is not a function', () => {
+      expect(() => builder.custom(123))
+        .toThrowError('Custom blueprints require a validation function.');
+    });
+  });
+
+  describe('checkCustom()', () => {
+    it('triggers callback function', () => {
+      builder = custom((value, options) => {
+        if (value === 123) {
+          throw new Error('This will error!');
+        }
+      });
+
+      expect(() => {
+        builder.runChecks('error', 123);
+      }).toThrowError('Invalid option "error". This will error!');
+
+      expect(() => {
+        builder.runChecks('key', 456);
+      }).not.toThrowError('Invalid option "error". This will error!');
+    });
+
+    it('is passed entire options object', () => {
+      builder = custom((value, options) => {
+        if (options.foo && options.bar) {
+          throw new Error('This will error!');
+        }
+      });
+
+      expect(() => {
+        builder.runChecks('error', 123, { foo: 123, bar: 456, error: '' });
+      }).toThrowError('Invalid option "error". This will error!');
     });
   });
 
@@ -512,5 +554,17 @@ describe('Builder', () => {
         builder.checkXor('foo', 'a', ['bar', 'baz']);
       }).not.toThrowError('Invalid option "foo".');
     });
+  });
+});
+
+describe('custom()', () => {
+  it('returns a builder', () => {
+    expect(custom(() => {})).toBeInstanceOf(Builder);
+  });
+
+  it('sets default value', () => {
+    const builder = custom(() => {}, 123);
+
+    expect(builder.defaultValue).toBe(123);
   });
 });
