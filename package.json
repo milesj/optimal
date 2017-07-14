@@ -43,7 +43,7 @@
     "babel-runtime": "^6.23.0"
   },
   "devDependencies": {
-    "@milesj/build-tool-config": "^0.14.0"
+    "@milesj/build-tool-config": "^0.15.0"
   },
   "babel": {
     "extends": "./node_modules/@milesj/build-tool-config/babel.json5"
