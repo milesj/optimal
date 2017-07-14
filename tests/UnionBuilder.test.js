@@ -65,7 +65,7 @@ describe('UnionBuilder', () => {
           bool(),
         ]);
         builder.runChecks('key', []);
-      }).toThrowError('Invalid option "key". Type must be one of: string, number, boolean.');
+      }).toThrowError('Invalid option "key". Type must be one of: string, number, boolean');
     });
 
     it('errors if a nested union is used', () => {
@@ -102,6 +102,16 @@ describe('UnionBuilder', () => {
         ]);
         builder.runChecks('key', []);
       }).toThrowError('Multiple instances of "object" are not supported.');
+    });
+
+    it('errors with the class name for instance checks', () => {
+      expect(() => {
+        builder = new UnionBuilder([
+          number(),
+          instance(FormData),
+        ]);
+        builder.runChecks('key', {});
+      }).toThrowError('Invalid option "key". Type must be one of: number, FormData');
     });
 
     it('runs array check', () => {

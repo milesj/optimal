@@ -196,7 +196,7 @@ describe('Options', () => {
       options = new Options({
         entry: 123,
       }, factory);
-    }).toThrowError('Invalid option "entry". Type must be one of: string, array, object, function.');
+    }).toThrowError('Invalid option "entry". Type must be one of: string, array, object, function');
   });
 
   it('runs checks for nested level values', () => {
@@ -216,7 +216,7 @@ describe('Options', () => {
       }, factory, {
         name: 'FooBar',
       });
-    }).toThrowError('Invalid FooBar option "entry". Type must be one of: string, array, object, function.');
+    }).toThrowError('Invalid FooBar option "entry". Type must be one of: string, array, object, function');
   });
 
   describe('unknown options', () => {

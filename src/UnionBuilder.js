@@ -28,6 +28,7 @@ export default class UnionBuilder extends Builder<*> {
   checkUnions(path: string, value: *, builders: Builder<*>[]) {
     if (__DEV__) {
       const usage = {};
+      const keys = [];
       const type = typeOf(value);
 
       // Verify structure and usage
@@ -40,6 +41,7 @@ export default class UnionBuilder extends Builder<*> {
 
         } else {
           usage[builder.type] = true;
+          keys.push(builder.typeName());
         }
       });
 
@@ -65,7 +67,7 @@ export default class UnionBuilder extends Builder<*> {
         }
       });
 
-      this.invariant(checked, `Type must be one of: ${Object.keys(usage).join(', ')}.`, path);
+      this.invariant(checked, `Type must be one of: ${keys.join(', ')}`, path);
     }
   }
 }

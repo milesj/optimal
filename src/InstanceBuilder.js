@@ -30,11 +30,20 @@ export default class InstanceBuilder<T> extends Builder<?T> {
     if (__DEV__) {
       this.invariant(
         (value instanceof refClass),
-        // $FlowIgnore constructor check
-        `Must be an instance of "${refClass.name || refClass.constructor.name}".`,
+        `Must be an instance of "${this.typeName()}".`,
         path,
       );
     }
+  }
+
+  /**
+   * Return the class name if available.
+   */
+  typeName(): string {
+    const { refClass } = this;
+
+    // $FlowIgnore constructor check
+    return refClass ? (refClass.name || refClass.constructor.name) : this.type;
   }
 }
 

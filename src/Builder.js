@@ -333,6 +333,13 @@ export default class Builder<T> {
   }
 
   /**
+   * Return a human readable type name.
+   */
+  typeName(): string {
+    return this.type;
+  }
+
+  /**
    * Map a list of option names that must not be defined alongside this field.
    */
   xor(...keys: string[]): this {
