@@ -5,12 +5,7 @@ declare module 'optimal' {
 
   declare export type Checker = (path: string, value: *, ...args: *[]) => void;
 
-  declare export type CustomChecker = (
-    path: string,
-    value: *,
-    options: Object,
-    invariant: (condition: boolean, message: string, path?: string) => void,
-  ) => void;
+  declare export type CustomChecker = (value: *, options: Object) => void
 
   declare export type Blueprint = { [key: string]: Builder<*> | Blueprint };
 
