@@ -6,34 +6,46 @@
 /* eslint-disable flowtype/no-weak-types */
 
 import Builder from './Builder';
+import isObject from './isObject';
 
 export default class InstanceBuilder<T: Function> extends Builder<?T> {
-  refClass: T;
+  refClass: ?T;
 
-  constructor(refClass: T) {
+  constructor(refClass?: ?T = null) {
     super('instance', null);
 
     // Nullable by default
     this.nullable();
 
     if (__DEV__) {
-      this.invariant(
-        (typeof refClass === 'function'),
-        'A class reference is required.',
-      );
+      if (refClass) {
+        this.invariant(
+          (typeof refClass === 'function'),
+          'A class reference is required.',
+        );
+      }
     }
 
     this.refClass = refClass;
     this.addCheck(this.checkInstance, refClass);
   }
 
-  checkInstance(path: string, value: *, refClass: T) {
+  checkInstance(path: string, value: *, refClass: ?T) {
     if (__DEV__) {
-      this.invariant(
-        (value instanceof refClass),
-        `Must be an instance of "${this.typeAlias()}".`,
-        path,
-      );
+      if (refClass) {
+        this.invariant(
+          (value instanceof refClass),
+          `Must be an instance of "${this.typeAlias()}".`,
+          path,
+        );
+
+      } else {
+        this.invariant(
+          (isObject(value) && value.constructor !== Object),
+          'Must be a class instance.',
+          path,
+        );
+      }
     }
   }
 
@@ -47,7 +59,7 @@ export default class InstanceBuilder<T: Function> extends Builder<?T> {
   }
 }
 
-export function instance<T>(refClass: T): InstanceBuilder<T> {
+export function instance<T: Function>(refClass?: ?T = null): InstanceBuilder<T> {
   return new InstanceBuilder(refClass);
 }
 

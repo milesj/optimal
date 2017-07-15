@@ -67,8 +67,8 @@ declare module 'optimal' {
   }
 
   declare export class InstanceBuilder<T: Function> extends Builder<?T> {
-    refClass: T;
-    constructor(refClass: T): void;
+    refClass: ?T;
+    constructor(refClass?: ?T): void;
   }
 
   declare export class NumberBuilder<T: number> extends Builder<?T> {

@@ -10,12 +10,6 @@ describe('InstanceBuilder', () => {
   });
 
   describe('constructor()', () => {
-    it('errors if a class is not passed', () => {
-      expect(() => {
-        builder = new InstanceBuilder();
-      }).toThrowError('A class reference is required.');
-    });
-
     it('errors if a non-class is passed', () => {
       expect(() => {
         builder = new InstanceBuilder(123);
@@ -41,6 +35,24 @@ describe('InstanceBuilder', () => {
     });
 
     it('errors if a non-instance is passed', () => {
+      expect(() => {
+        instance().runChecks('key', 'foo');
+      }).toThrowError('Invalid option "key". Must be a class instance.');
+    });
+
+    it('errors if an object is passed when a class instance is required', () => {
+      expect(() => {
+        instance().runChecks('key', {});
+      }).toThrowError('Invalid option "key". Must be a class instance.');
+    });
+
+    it('doesnt error if a generic class instance is passed', () => {
+      expect(() => {
+        instance().runChecks('key', new Foo());
+      }).not.toThrowError('Invalid option "key". Must be a class instance.');
+    });
+
+    it('errors if a non-instance is passed when a class reference is set', () => {
       expect(() => {
         builder.runChecks('key', 'foo');
       }).toThrowError('Invalid option "key". Must be an instance of "Foo".');
