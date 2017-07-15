@@ -252,6 +252,12 @@ describe('NumberBuilder', () => {
       }).not.toThrowError('Invalid option "key". Number must be one of: 123, 456, 789');
     });
   });
+
+  describe('typeAlias()', () => {
+    it('returns the type name', () => {
+      expect(number().typeAlias()).toBe('Number');
+    });
+  });
 });
 
 describe('number()', () => {

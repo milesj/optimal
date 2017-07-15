@@ -64,7 +64,7 @@ describe('UnionBuilder', () => {
           bool(),
         ]);
         builder.runChecks('key', []);
-      }).toThrowError('Invalid option "key". Type must be one of: string, number, boolean');
+      }).toThrowError('Invalid option "key". Type must be one of: String, Number, Boolean');
     });
 
     it('errors if a nested union is used', () => {
@@ -110,7 +110,7 @@ describe('UnionBuilder', () => {
           instance(FormData),
         ]);
         builder.runChecks('key', {});
-      }).toThrowError('Invalid option "key". Type must be one of: number, FormData');
+      }).toThrowError('Invalid option "key". Type must be one of: Number, FormData');
     });
 
     it('runs array check', () => {
@@ -167,6 +167,16 @@ describe('UnionBuilder', () => {
       expect(builder.runChecks('key', 'foo')).toBe('foo');
       expect(builder.runChecks('key', 3)).toBe(3);
       expect(builder.runChecks('key', true)).toBe(true);
+    });
+  });
+
+  describe('typeAlias()', () => {
+    it('returns all the available type aliases separated by pipes', () => {
+      expect(union([
+        string(),
+        number(),
+        bool(),
+      ]).typeAlias()).toBe('String | Number | Boolean');
     });
   });
 });

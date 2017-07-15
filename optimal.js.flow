@@ -57,6 +57,7 @@ declare module 'optimal' {
     or(...keys: string[]): this;
     required(state?: boolean): this;
     runChecks(path: string, value: *, options: Object, config?: Config): *;
+    typeAlias(): string;
     xor(...keys: string[]): this;
   }
 
@@ -65,7 +66,7 @@ declare module 'optimal' {
     notEmpty(): this;
   }
 
-  declare export class InstanceBuilder<T> extends Builder<?T> {
+  declare export class InstanceBuilder<T: Function> extends Builder<?T> {
     refClass: T;
     constructor(refClass: T): void;
   }

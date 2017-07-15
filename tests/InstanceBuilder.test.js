@@ -52,6 +52,16 @@ describe('InstanceBuilder', () => {
       }).not.toThrowError('Invalid option "key". Must be an instance of "Foo".');
     });
   });
+
+  describe('typeAlias()', () => {
+    it('returns the word class when no reference class', () => {
+      expect(instance().typeAlias()).toBe('Class');
+    });
+
+    it('returns the class name when a reference class is defined', () => {
+      expect(instance(FormData).typeAlias()).toBe('FormData');
+    });
+  });
 });
 
 describe('instance()', () => {
@@ -65,11 +75,19 @@ describe('date()', () => {
     expect(date()).toBeInstanceOf(InstanceBuilder);
     expect(date().refClass).toBe(Date);
   });
+
+  it('returns the type alias', () => {
+    expect(date().typeAlias()).toBe('Date');
+  });
 });
 
 describe('regex()', () => {
   it('returns a builder for RegExp', () => {
     expect(regex()).toBeInstanceOf(InstanceBuilder);
     expect(regex().refClass).toBe(RegExp);
+  });
+
+  it('returns the type alias', () => {
+    expect(regex().typeAlias()).toBe('RegExp');
   });
 });

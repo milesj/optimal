@@ -135,6 +135,16 @@ describe('ShapeBuilder', () => {
       }).toThrowError('Invalid option "key.foo.c". Must be a string.');
     });
   });
+
+  describe('typeAlias()', () => {
+    it('returns the type name', () => {
+      expect(shape({
+        a: number(),
+        b: number(),
+        c: string(),
+      }).typeAlias()).toBe('Shape');
+    });
+  });
 });
 
 describe('shape()', () => {

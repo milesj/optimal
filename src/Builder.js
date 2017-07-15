@@ -336,8 +336,8 @@ export default class Builder<T> {
   /**
    * Return a human readable type name.
    */
-  typeName(): string {
-    return this.type;
+  typeAlias(): string {
+    return this.type[0].toUpperCase() + this.type.slice(1);
   }
 
   /**

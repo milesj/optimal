@@ -7,6 +7,8 @@
 import Builder from './Builder';
 
 export default class CollectionBuilder<T, TDefault> extends Builder<?TDefault> {
+  contents: ?Builder<T>;
+
   constructor(
     type: 'array' | 'object',
     contents?: Builder<T>,
@@ -16,6 +18,7 @@ export default class CollectionBuilder<T, TDefault> extends Builder<?TDefault> {
 
     if (contents) {
       if (contents instanceof Builder) {
+        this.contents = contents;
         this.addCheck(this.checkContents, contents);
 
       } else if (__DEV__) {
@@ -70,6 +73,16 @@ export default class CollectionBuilder<T, TDefault> extends Builder<?TDefault> {
         );
       }
     }
+  }
+
+  /**
+   * If contents are defined, return the type name using generics syntax.
+   */
+  typeAlias(): string {
+    const { contents } = this;
+    const alias = super.typeAlias();
+
+    return contents ? `${alias}<${contents.typeAlias()}>` : alias;
   }
 }
 

@@ -155,6 +155,12 @@ describe('StringBuilder', () => {
       }).not.toThrowError('Invalid option "key". String must be one of: foo, bar, baz');
     });
   });
+
+  describe('typeAlias()', () => {
+    it('returns the type name', () => {
+      expect(string().typeAlias()).toBe('String');
+    });
+  });
 });
 
 describe('string()', () => {

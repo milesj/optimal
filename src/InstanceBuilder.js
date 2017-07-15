@@ -3,10 +3,11 @@
  * @license     https://opensource.org/licenses/MIT
  * @flow
  */
+/* eslint-disable flowtype/no-weak-types */
 
 import Builder from './Builder';
 
-export default class InstanceBuilder<T> extends Builder<?T> {
+export default class InstanceBuilder<T: Function> extends Builder<?T> {
   refClass: T;
 
   constructor(refClass: T) {
@@ -30,20 +31,19 @@ export default class InstanceBuilder<T> extends Builder<?T> {
     if (__DEV__) {
       this.invariant(
         (value instanceof refClass),
-        `Must be an instance of "${this.typeName()}".`,
+        `Must be an instance of "${this.typeAlias()}".`,
         path,
       );
     }
   }
 
   /**
-   * Return the class name if available.
+   * If reference class is defined, return the class name if available.
    */
-  typeName(): string {
+  typeAlias(): string {
     const { refClass } = this;
 
-    // $FlowIgnore constructor check
-    return refClass ? (refClass.name || refClass.constructor.name) : this.type;
+    return refClass ? (refClass.name || refClass.constructor.name) : 'Class';
   }
 }
 

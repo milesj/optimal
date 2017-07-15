@@ -574,6 +574,10 @@ describe('bool()', () => {
       bool().runChecks('key', 123);
     }).toThrowError('Invalid option "key". Must be a boolean.');
   });
+
+  it('returns the type alias', () => {
+    expect(bool().typeAlias()).toBe('Boolean');
+  });
 });
 
 describe('custom()', () => {
@@ -586,6 +590,10 @@ describe('custom()', () => {
 
     expect(builder.type).toBe('custom');
     expect(builder.defaultValue).toBe(123);
+  });
+
+  it('returns the type alias', () => {
+    expect(custom(() => {}).typeAlias()).toBe('Custom');
   });
 });
 
@@ -606,5 +614,9 @@ describe('func()', () => {
     expect(() => {
       func().runChecks('key', 123);
     }).toThrowError('Invalid option "key". Must be a function.');
+  });
+
+  it('returns the type alias', () => {
+    expect(func().typeAlias()).toBe('Function');
   });
 });

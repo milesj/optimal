@@ -1,4 +1,5 @@
 import CollectionBuilder, { array, object } from '../src/CollectionBuilder';
+import { number } from '../src/NumberBuilder';
 import { string } from '../src/StringBuilder';
 
 describe('CollectionBuilder', () => {
@@ -110,6 +111,16 @@ describe('CollectionBuilder', () => {
         expect(() => {
           builder.checkNotEmpty('key', [123]);
         }).not.toThrowError('Invalid option "key". Array cannot be empty.');
+      });
+    });
+
+    describe('typeAlias()', () => {
+      it('returns the type name when no contents', () => {
+        expect(array().typeAlias()).toBe('Array');
+      });
+
+      it('returns the type name with contents type', () => {
+        expect(array(string()).typeAlias()).toBe('Array<String>');
       });
     });
   });
@@ -236,6 +247,16 @@ describe('CollectionBuilder', () => {
         expect(() => {
           builder.checkNotEmpty('key', { foo: 123 });
         }).not.toThrowError('Invalid option "key". Object cannot be empty.');
+      });
+    });
+
+    describe('typeAlias()', () => {
+      it('returns the type name when no contents', () => {
+        expect(object().typeAlias()).toBe('Object');
+      });
+
+      it('returns the type name with contents type', () => {
+        expect(object(number()).typeAlias()).toBe('Object<Number>');
       });
     });
   });

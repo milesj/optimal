@@ -8,6 +8,8 @@ import Builder from './Builder';
 import typeOf from './typeOf';
 
 export default class UnionBuilder extends Builder<*> {
+  builders: Builder<*>[];
+
   constructor(builders: Builder<*>[], defaultValue?: * = null) {
     super('union', defaultValue);
 
@@ -22,6 +24,7 @@ export default class UnionBuilder extends Builder<*> {
       );
     }
 
+    this.builders = builders;
     this.addCheck(this.checkUnions, builders);
   }
 
@@ -41,7 +44,7 @@ export default class UnionBuilder extends Builder<*> {
 
         } else {
           usage[builder.type] = true;
-          keys.push(builder.typeName());
+          keys.push(builder.typeAlias());
         }
       });
 
@@ -69,6 +72,13 @@ export default class UnionBuilder extends Builder<*> {
 
       this.invariant(checked, `Type must be one of: ${keys.join(', ')}`, path);
     }
+  }
+
+  /**
+   * Return the type name using generics syntax.
+   */
+  typeAlias(): string {
+    return this.builders.map(builder => builder.typeAlias()).join(' | ');
   }
 }
 
