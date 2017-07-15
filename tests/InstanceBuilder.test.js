@@ -2,36 +2,30 @@ import InstanceBuilder, { instance, date, regex } from '../src/InstanceBuilder';
 
 class Foo {}
 
-describe('InstanceBuilder', () => {
-  let builder;
-
-  beforeEach(() => {
-    builder = new InstanceBuilder(Foo);
-  });
-
+describe('instance()', () => {
   describe('constructor()', () => {
     it('errors if a non-class is passed', () => {
       expect(() => {
-        builder = new InstanceBuilder(123);
+        instance(123);
       }).toThrowError('A class reference is required.');
     });
 
     it('errors if an object is passed', () => {
       expect(() => {
-        builder = new InstanceBuilder({});
+        instance({});
       }).toThrowError('A class reference is required.');
     });
 
     it('doesnt error if a class is passed', () => {
       expect(() => {
-        builder = new InstanceBuilder(Foo);
+        instance(Foo);
       }).not.toThrowError('A class reference is required.');
     });
   });
 
   describe('runChecks()', () => {
     it('returns null for no data', () => {
-      expect(builder.runChecks('key')).toBe(null);
+      expect(instance(Foo).runChecks('key')).toBe(null);
     });
 
     it('errors if a non-instance is passed', () => {
@@ -54,13 +48,13 @@ describe('InstanceBuilder', () => {
 
     it('errors if a non-instance is passed when a class reference is set', () => {
       expect(() => {
-        builder.runChecks('key', 'foo');
+        instance(Foo).runChecks('key', 'foo');
       }).toThrowError('Invalid option "key". Must be an instance of "Foo".');
     });
 
     it('doesnt error if the correct instance is passed', () => {
       expect(() => {
-        builder.runChecks('key', new Foo());
+        instance(Foo).runChecks('key', new Foo());
       }).not.toThrowError('Invalid option "key". Must be an instance of "Foo".');
     });
   });
@@ -76,19 +70,13 @@ describe('InstanceBuilder', () => {
   });
 });
 
-describe('instance()', () => {
-  it('returns a builder', () => {
-    expect(instance(Foo)).toBeInstanceOf(InstanceBuilder);
-  });
-});
-
 describe('date()', () => {
   it('returns a builder for Date', () => {
     expect(date()).toBeInstanceOf(InstanceBuilder);
     expect(date().refClass).toBe(Date);
   });
 
-  it('returns the type alias', () => {
+  it('returns the class name for type alias', () => {
     expect(date().typeAlias()).toBe('Date');
   });
 });
@@ -99,7 +87,7 @@ describe('regex()', () => {
     expect(regex().refClass).toBe(RegExp);
   });
 
-  it('returns the type alias', () => {
+  it('returns the class name for type alias', () => {
     expect(regex().typeAlias()).toBe('RegExp');
   });
 });

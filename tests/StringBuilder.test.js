@@ -1,17 +1,15 @@
-import StringBuilder, { string } from '../src/StringBuilder';
+import { string } from '../src/StringBuilder';
 
 describe('StringBuilder', () => {
   let builder;
 
   beforeEach(() => {
-    builder = new StringBuilder('foo');
+    builder = string('foo');
   });
 
   describe('constructor()', () => {
     it('sets default value', () => {
-      builder = new StringBuilder('bar');
-
-      expect(builder.defaultValue).toBe('bar');
+      expect(string('bar').defaultValue).toBe('bar');
     });
   });
 
@@ -160,17 +158,5 @@ describe('StringBuilder', () => {
     it('returns the type name', () => {
       expect(string().typeAlias()).toBe('String');
     });
-  });
-});
-
-describe('string()', () => {
-  it('returns a builder', () => {
-    expect(string('foo')).toBeInstanceOf(StringBuilder);
-  });
-
-  it('sets default value', () => {
-    const builder = string('bar');
-
-    expect(builder.defaultValue).toBe('bar');
   });
 });

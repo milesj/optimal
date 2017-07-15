@@ -1,24 +1,22 @@
-import NumberBuilder, { number } from '../src/NumberBuilder';
+import { number } from '../src/NumberBuilder';
 
 describe('NumberBuilder', () => {
   let builder;
 
   beforeEach(() => {
-    builder = new NumberBuilder(123);
+    builder = number(123);
   });
 
   describe('constructor()', () => {
     it('sets default value', () => {
-      builder = new NumberBuilder(456);
-
-      expect(builder.defaultValue).toBe(456);
+      expect(number(456).defaultValue).toBe(456);
     });
   });
 
   describe('runChecks()', () => {
     it('errors if a non-number value is used', () => {
       expect(() => {
-        builder.runChecks('key', 'foo');
+        number().runChecks('key', 'foo');
       }).toThrowError('Invalid option "key". Must be a number.');
     });
   });
@@ -257,17 +255,5 @@ describe('NumberBuilder', () => {
     it('returns the type name', () => {
       expect(number().typeAlias()).toBe('Number');
     });
-  });
-});
-
-describe('number()', () => {
-  it('returns a builder', () => {
-    expect(number(123)).toBeInstanceOf(NumberBuilder);
-  });
-
-  it('sets default value', () => {
-    const builder = number(456);
-
-    expect(builder.defaultValue).toBe(456);
   });
 });

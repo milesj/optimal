@@ -1,13 +1,13 @@
-import ShapeBuilder, { shape } from '../src/ShapeBuilder';
+import { shape } from '../src/ShapeBuilder';
 import { bool } from '../src/Builder';
 import { number } from '../src/NumberBuilder';
 import { string } from '../src/StringBuilder';
 
-describe('ShapeBuilder', () => {
+describe('shape()', () => {
   let builder;
 
   beforeEach(() => {
-    builder = new ShapeBuilder({
+    builder = shape({
       foo: string(),
       bar: number(),
       baz: bool(),
@@ -17,32 +17,32 @@ describe('ShapeBuilder', () => {
   describe('constructor()', () => {
     it('errors if a non-object is not passed', () => {
       expect(() => {
-        builder = new ShapeBuilder('foo');
+        shape('foo');
       }).toThrowError('A non-empty object of properties to blueprints are required for a shape.');
     });
 
     it('errors if an empty object is passed', () => {
       expect(() => {
-        builder = new ShapeBuilder({});
+        shape({});
       }).toThrowError('A non-empty object of properties to blueprints are required for a shape.');
     });
 
     it('errors if an object with non-builders is passed', () => {
       expect(() => {
-        builder = new ShapeBuilder({ foo: 123 });
+        shape({ foo: 123 });
       }).toThrowError('A non-empty object of properties to blueprints are required for a shape.');
     });
 
     it('doesnt error if a builder object is passed', () => {
       expect(() => {
-        builder = new ShapeBuilder({
+        shape({
           foo: string(),
         });
       }).not.toThrowError('A non-empty object of properties to blueprints are required for a shape.');
     });
 
     it('sets default value', () => {
-      builder = new ShapeBuilder({
+      builder = shape({
         foo: string(),
       }, {
         foo: 'bar',
@@ -84,7 +84,7 @@ describe('ShapeBuilder', () => {
     });
 
     it('supports shapes of shapes', () => {
-      builder = new ShapeBuilder({
+      builder = shape({
         foo: shape({
           a: number(),
           b: number(),
@@ -103,7 +103,7 @@ describe('ShapeBuilder', () => {
     });
 
     it('supports nested required', () => {
-      builder = new ShapeBuilder({
+      builder = shape({
         foo: string(),
         bar: bool().required(),
       });
@@ -116,7 +116,7 @@ describe('ShapeBuilder', () => {
     });
 
     it('errors correctly for shapes in shapes', () => {
-      builder = new ShapeBuilder({
+      builder = shape({
         foo: shape({
           a: number(),
           b: number(),
@@ -143,26 +143,6 @@ describe('ShapeBuilder', () => {
         b: number(),
         c: string(),
       }).typeAlias()).toBe('Shape');
-    });
-  });
-});
-
-describe('shape()', () => {
-  it('returns a builder', () => {
-    expect(shape({
-      foo: string(),
-    })).toBeInstanceOf(ShapeBuilder);
-  });
-
-  it('sets default value', () => {
-    const builder = shape({
-      foo: string(),
-    }, {
-      foo: 'bar',
-    });
-
-    expect(builder.defaultValue).toEqual({
-      foo: 'bar',
     });
   });
 });

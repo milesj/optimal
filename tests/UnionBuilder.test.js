@@ -1,4 +1,4 @@
-import UnionBuilder, { union } from '../src/UnionBuilder';
+import { union } from '../src/UnionBuilder';
 import { bool } from '../src/Builder';
 import { array, object } from '../src/CollectionBuilder';
 import { instance } from '../src/InstanceBuilder';
@@ -13,7 +13,7 @@ describe('UnionBuilder', () => {
   let builder;
 
   beforeEach(() => {
-    builder = new UnionBuilder([
+    builder = union([
       array(string()),
       bool(true).only(),
       instance(Foo),
@@ -26,90 +26,83 @@ describe('UnionBuilder', () => {
   describe('constructor()', () => {
     it('errors if a non-array is not passed', () => {
       expect(() => {
-        builder = new UnionBuilder('foo');
+        union('foo');
       }).toThrowError('A non-empty array of blueprints are required for a union.');
     });
 
     it('errors if an empty array is passed', () => {
       expect(() => {
-        builder = new UnionBuilder([]);
+        union([]);
       }).toThrowError('A non-empty array of blueprints are required for a union.');
     });
 
     it('errors if an array with non-builders is passed', () => {
       expect(() => {
-        builder = new UnionBuilder([123]);
+        union([123]);
       }).toThrowError('A non-empty array of blueprints are required for a union.');
     });
 
     it('doesnt error if a builder array is passed', () => {
       expect(() => {
-        builder = new UnionBuilder([string()]);
+        union([string()]);
       }).not.toThrowError('A non-empty array of blueprints are required for a union.');
     });
 
     it('sets default value', () => {
-      builder = new UnionBuilder([string()], 'bar');
-
-      expect(builder.defaultValue).toBe('bar');
+      expect(union([string()], 'bar').defaultValue).toBe('bar');
     });
   });
 
   describe('runChecks()', () => {
     it('errors if a unsupported type is used', () => {
       expect(() => {
-        builder = new UnionBuilder([
+        union([
           string(),
           number(),
           bool(),
-        ]);
-        builder.runChecks('key', []);
+        ]).runChecks('key', []);
       }).toThrowError('Invalid option "key". Type must be one of: String, Number, Boolean');
     });
 
     it('errors if a nested union is used', () => {
       expect(() => {
-        builder = new UnionBuilder([
+        union([
           string('foo').oneOf(['foo', 'bar', 'baz']),
           union([
             number(),
             bool(),
           ]),
-        ]);
-        builder.runChecks('key', []);
+        ]).runChecks('key', []);
       }).toThrowError('Nested unions are not supported.');
     });
 
     it('errors if an object and shape are used', () => {
       expect(() => {
-        builder = new UnionBuilder([
+        union([
           object(string()),
           shape({
             foo: string(),
             bar: number(),
           }),
-        ]);
-        builder.runChecks('key', []);
+        ]).runChecks('key', []);
       }).toThrowError('Objects and shapes within the same union are not supported.');
     });
 
     it('errors if the same builder type is used multiple times', () => {
       expect(() => {
-        builder = new UnionBuilder([
+        union([
           object(string()),
           object(number()),
-        ]);
-        builder.runChecks('key', []);
+        ]).runChecks('key', []);
       }).toThrowError('Multiple instances of "object" are not supported.');
     });
 
     it('errors with the class name for instance checks', () => {
       expect(() => {
-        builder = new UnionBuilder([
+        union([
           number(),
           instance(FormData),
-        ]);
-        builder.runChecks('key', {});
+        ]).runChecks('key', {});
       }).toThrowError('Invalid option "key". Type must be one of: Number, FormData');
     });
 
@@ -145,13 +138,12 @@ describe('UnionBuilder', () => {
 
     it('runs shape check', () => {
       expect(() => {
-        builder = new UnionBuilder([
+        union([
           shape({
             foo: string(),
             bar: number(),
           }),
-        ]);
-        builder.runChecks('key', {
+        ]).runChecks('key', {
           foo: 123,
         });
       }).toThrowError('Invalid option "key.foo". Must be a string.');
@@ -178,19 +170,9 @@ describe('UnionBuilder', () => {
         bool(),
       ]).typeAlias()).toBe('String | Number | Boolean');
     });
-  });
-});
 
-describe('union()', () => {
-  it('returns a builder', () => {
-    expect(union([
-      string(),
-    ])).toBeInstanceOf(UnionBuilder);
-  });
-
-  it('sets default value', () => {
-    const builder = union([string()], 'bar');
-
-    expect(builder.defaultValue).toBe('bar');
+    it('supports complex structures', () => {
+      expect(builder.typeAlias()).toBe('Array<String> | Boolean | Foo | Number | Object<Number> | String');
+    });
   });
 });
