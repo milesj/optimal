@@ -10,14 +10,14 @@ declare module 'optimal' {
   declare export type Blueprint = { [key: string]: Builder<*> | Blueprint };
 
   declare export type Builders = {
-    array: (builder: Builder<*>, defaultValue?: ?*[]) => ArrayBuilder<*>,
+    array: (builder: Builder<*>, defaultValue?: ?*[]) => CollectionBuilder<*, *[]>,
     bool: <T: boolean>(defaultValue?: ?T) => BoolBuilder<T>,
     custom: (callback: CustomCallback, defaultValue?: *) => Builder<*>,
     date: () => InstanceBuilder<Class<Date>>,
     func: <T: Function>(defaultValue?: ?T) => FuncBuilder<T>,
     instance: (refClass: *) => InstanceBuilder<*>,
     number: <T: number>(defaultValue?: ?T) => NumberBuilder<T>,
-    object: (builder?: Builder<*>, defaultValue?: ?{ [key: string]: * }) => ObjectBuilder<*>,
+    object: (builder?: Builder<*>, defaultValue?: ?{ [key: string]: * }) => CollectionBuilder<*, { [key: string]: * }>,
     regex: () => InstanceBuilder<Class<RegExp>>,
     shape: (builders: { [key: string]: Builder<*> }, defaultValue?: ?{ [key: string]: * }) => ShapeBuilder,
     string: <T: string>(defaultValue?: ?T) => StringBuilder<T>,
@@ -60,13 +60,13 @@ declare module 'optimal' {
     xor(...keys: string[]): this;
   }
 
-  declare export class ArrayBuilder<T> extends Builder<?T[]> {
-    constructor(contents: Builder<T>, defaultValue?: ?T[]): void;
-    notEmpty(): this;
-  }
-
   declare export class BoolBuilder<T: boolean> extends Builder<?T> {
     constructor(defaultValue?: ?T): void;
+  }
+
+  declare export class CollectionBuilder<T, TDefault> extends Builder<?TDefault> {
+    constructor(type: 'array' | 'object', contents?: Builder<T>, defaultValue?: ?TDefault): void;
+    notEmpty(): this;
   }
 
   declare export class FuncBuilder<T: Function> extends Builder<?T> {
@@ -86,11 +86,6 @@ declare module 'optimal' {
     lt(max: number, inclusive?: boolean): this;
     lte(max: number): this;
     oneOf(list: T[]): this;
-  }
-
-  declare export class ObjectBuilder<T> extends Builder<?{ [key: string]: T }> {
-    constructor(contents?: Builder<T>, defaultValue?: ?{ [key: string]: T }): void;
-    notEmpty(): this;
   }
 
   declare export class ShapeBuilder extends Builder<?{ [key: string]: * }> {

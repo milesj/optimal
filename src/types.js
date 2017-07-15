@@ -7,12 +7,11 @@
 /* eslint-disable flowtype/no-weak-types, max-len */
 
 import type Builder from './Builder';
-import type ArrayBuilder from './ArrayBuilder';
 import type BoolBuilder from './BoolBuilder';
+import type CollectionBuilder from './CollectionBuilder';
 import type FuncBuilder from './FuncBuilder';
 import type InstanceBuilder from './InstanceBuilder';
 import type NumberBuilder from './NumberBuilder';
-import type ObjectBuilder from './ObjectBuilder';
 import type ShapeBuilder from './ShapeBuilder';
 import type StringBuilder from './StringBuilder';
 import type UnionBuilder from './UnionBuilder';
@@ -30,14 +29,14 @@ export type CustomCallback = (value: *, options: Object) => void;
 export type Blueprint = { [key: string]: Builder<*> | Blueprint };
 
 export type Builders = {
-  array: (builder: Builder<*>, defaultValue?: ?*[]) => ArrayBuilder<*>,
+  array: (builder: Builder<*>, defaultValue?: ?*[]) => CollectionBuilder<*, *[]>,
   bool: (defaultValue?: ?boolean) => BoolBuilder,
   custom: (callback: CustomCallback, defaultValue?: *) => Builder<*>,
   date: () => InstanceBuilder<Class<Date>>,
   func: (defaultValue?: ?Function) => FuncBuilder,
   instance: (refClass: *) => InstanceBuilder<*>,
   number: (defaultValue?: ?number) => NumberBuilder,
-  object: (builder?: Builder<*>, defaultValue?: ?{ [key: string]: * }) => ObjectBuilder<*>,
+  object: (builder?: Builder<*>, defaultValue?: ?{ [key: string]: * }) => CollectionBuilder<*, { [key: string]: * }>,
   regex: () => InstanceBuilder<Class<RegExp>>,
   shape: (builders: { [key: string]: Builder<*> }, defaultValue?: ?{ [key: string]: * }) => ShapeBuilder,
   string: (defaultValue?: ?string) => StringBuilder,

@@ -5,12 +5,11 @@
  */
 
 import Builder, { custom } from './Builder';
-import { array } from './ArrayBuilder';
+import { array, object } from './CollectionBuilder';
 import { bool } from './BoolBuilder';
 import { func } from './FuncBuilder';
 import { instance, date, regex } from './InstanceBuilder';
 import { number } from './NumberBuilder';
-import { object } from './ObjectBuilder';
 import { shape } from './ShapeBuilder';
 import { string } from './StringBuilder';
 import { union } from './UnionBuilder';

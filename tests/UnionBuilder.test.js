@@ -1,9 +1,8 @@
 import UnionBuilder, { union } from '../src/UnionBuilder';
-import { array } from '../src/ArrayBuilder';
 import { bool } from '../src/BoolBuilder';
+import { array, object } from '../src/CollectionBuilder';
 import { instance } from '../src/InstanceBuilder';
 import { number } from '../src/NumberBuilder';
-import { object } from '../src/ObjectBuilder';
 import { shape } from '../src/ShapeBuilder';
 import { string } from '../src/StringBuilder';
 
