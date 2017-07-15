@@ -16,13 +16,15 @@ export default class CollectionBuilder<T, TDefault> extends Builder<?TDefault> {
   ) {
     super(type, defaultValue);
 
-    if (contents) {
-      if (contents instanceof Builder) {
-        this.contents = contents;
-        this.addCheck(this.checkContents, contents);
+    if (__DEV__) {
+      if (contents) {
+        if (contents instanceof Builder) {
+          this.contents = contents;
+          this.addCheck(this.checkContents, contents);
 
-      } else if (__DEV__) {
-        this.invariant(false, `A blueprint is required for ${type} contents.`);
+        } else {
+          this.invariant(false, `A blueprint is required for ${type} contents.`);
+        }
       }
     }
   }

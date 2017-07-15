@@ -29,22 +29,24 @@ export default class Builder<T> {
         (typeof defaultValue !== 'undefined'),
         `A default value for type "${type}" is required.`,
       );
+
+      this.addCheck(this.checkType);
     }
 
     this.defaultValue = defaultValue;
     this.type = type;
-
-    this.addCheck(this.checkType);
   }
 
   /**
    * Add a checking function with optional arguments.
    */
   addCheck(checker: Checker, ...args: *[]): this {
-    this.checks.push({
-      args,
-      func: checker,
-    });
+    if (__DEV__) {
+      this.checks.push({
+        args,
+        func: checker,
+      });
+    }
 
     return this;
   }
@@ -152,9 +154,9 @@ export default class Builder<T> {
         (typeof message === 'string' && !!message),
         'A non-empty string is required for deprecated messages.',
       );
-    }
 
-    this.deprecatedMessage = message;
+      this.deprecatedMessage = message;
+    }
 
     return this;
   }
@@ -203,9 +205,9 @@ export default class Builder<T> {
         (typeof message === 'string' && !!message),
         'A non-empty string is required for custom messages.',
       );
-    }
 
-    this.errorMessage = message;
+      this.errorMessage = message;
+    }
 
     return this;
   }
@@ -214,7 +216,9 @@ export default class Builder<T> {
    * Allow null values.
    */
   nullable(state: boolean = true): this {
-    this.isNullable = state;
+    if (__DEV__) {
+      this.isNullable = state;
+    }
 
     return this;
   }
@@ -284,7 +288,9 @@ export default class Builder<T> {
    * Disallow undefined values.
    */
   required(state?: boolean = true): this {
-    this.isRequired = state;
+    if (__DEV__) {
+      this.isRequired = state;
+    }
 
     return this;
   }

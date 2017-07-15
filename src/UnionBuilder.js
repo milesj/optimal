@@ -22,10 +22,10 @@ export default class UnionBuilder extends Builder<*> {
         ),
         'A non-empty array of blueprints are required for a union.',
       );
-    }
 
-    this.builders = builders;
-    this.addCheck(this.checkUnions, builders);
+      this.builders = builders;
+      this.addCheck(this.checkUnions, builders);
+    }
   }
 
   checkUnions(path: string, value: *, builders: Builder<*>[]) {

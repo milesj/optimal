@@ -17,7 +17,9 @@ export default class StringBuilder extends Builder<?string> {
     super('string', defaultValue);
 
     // Not empty by default
-    this.addCheck(this.checkNotEmpty);
+    if (__DEV__) {
+      this.addCheck(this.checkNotEmpty);
+    }
   }
 
   contains(token: string, index?: number = 0): this {
@@ -63,7 +65,9 @@ export default class StringBuilder extends Builder<?string> {
   }
 
   empty(): this {
-    this.allowEmpty = true;
+    if (__DEV__) {
+      this.allowEmpty = true;
+    }
 
     return this;
   }

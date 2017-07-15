@@ -24,10 +24,10 @@ export default class InstanceBuilder<T: Function> extends Builder<?T> {
           'A class reference is required.',
         );
       }
-    }
 
-    this.refClass = refClass;
-    this.addCheck(this.checkInstance, refClass);
+      this.refClass = refClass;
+      this.addCheck(this.checkInstance, refClass);
+    }
   }
 
   checkInstance(path: string, value: *, refClass: ?T) {

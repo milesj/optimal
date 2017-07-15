@@ -59,6 +59,7 @@ export default class NumberBuilder extends Builder<?number> {
           `Number must be greater than or equal to ${min}.`,
           path,
         );
+
       } else {
         this.invariant(
           (isNumber(value) && value > min),
@@ -89,6 +90,7 @@ export default class NumberBuilder extends Builder<?number> {
           `Number must be less than or equal to ${max}.`,
           path,
         );
+
       } else {
         this.invariant(
           (isNumber(value) && value < max),

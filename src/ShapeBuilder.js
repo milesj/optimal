@@ -23,9 +23,9 @@ export default class ShapeBuilder extends Builder<?Shape> {
         ),
         'A non-empty object of properties to blueprints are required for a shape.',
       );
-    }
 
-    this.addCheck(this.checkContents, contents);
+      this.addCheck(this.checkContents, contents);
+    }
   }
 
   checkContents(path: string, object: *, contents: ShapeBlueprint) {
