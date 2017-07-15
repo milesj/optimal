@@ -62,7 +62,8 @@ declare module 'optimal' {
   }
 
   declare export class CollectionBuilder<T, TDefault> extends Builder<?TDefault> {
-    constructor(type: 'array' | 'object', contents?: Builder<T>, defaultValue?: ?TDefault): void;
+    contents: ?Builder<T>;
+    constructor(type: 'array' | 'object', contents?: ?Builder<T>, defaultValue?: ?TDefault): void;
     notEmpty(): this;
   }
 
@@ -98,6 +99,7 @@ declare module 'optimal' {
   }
 
   declare export class UnionBuilder extends Builder<*> {
+    builders: Builder<*>[];
     constructor(builders: Builder<*>[], defaultValue?: *): void;
   }
 

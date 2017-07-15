@@ -11,7 +11,7 @@ export default class CollectionBuilder<T, TDefault> extends Builder<?TDefault> {
 
   constructor(
     type: 'array' | 'object',
-    contents?: Builder<T>,
+    contents?: ?Builder<T> = null,
     defaultValue?: ?TDefault = null,
   ) {
     super(type, defaultValue);
@@ -89,14 +89,14 @@ export default class CollectionBuilder<T, TDefault> extends Builder<?TDefault> {
 }
 
 export function array<T>(
-  contents?: Builder<T>,
+  contents?: ?Builder<T> = null,
   defaultValue?: ?T[] = [],
 ): CollectionBuilder<T, T[]> {
   return new CollectionBuilder('array', contents, defaultValue);
 }
 
 export function object<T>(
-  contents?: Builder<T>,
+  contents?: ?Builder<T> = null,
   defaultValue?: ?{ [key: string]: T } = {},
 ): CollectionBuilder<T, { [key: string]: T }> {
   return new CollectionBuilder('object', contents, defaultValue);
