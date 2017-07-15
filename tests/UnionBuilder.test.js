@@ -1,5 +1,5 @@
 import { union } from '../src/UnionBuilder';
-import { bool } from '../src/Builder';
+import { bool, custom } from '../src/Builder';
 import { array, object } from '../src/CollectionBuilder';
 import { instance } from '../src/InstanceBuilder';
 import { number } from '../src/NumberBuilder';
@@ -116,6 +116,19 @@ describe('UnionBuilder', () => {
       expect(() => {
         builder.runChecks('key', false);
       }).toThrowError('Invalid option "key". Value may only be "true".');
+    });
+
+    it('runs custom check', () => {
+      expect(() => {
+        union([
+          string(),
+          custom((value) => {
+            if (typeof value === 'number') {
+              throw new TypeError('Encountered a number!');
+            }
+          }),
+        ]).runChecks('key', 123);
+      }).toThrowError('Invalid option "key". Encountered a number!');
     });
 
     it('runs instance check', () => {

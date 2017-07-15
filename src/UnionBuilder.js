@@ -58,7 +58,8 @@ export default class UnionBuilder extends Builder<*> {
       builders.forEach((builder) => {
         if (
           (type === builder.type) ||
-          (type === 'object' && builder.type === 'shape')
+          (type === 'object' && builder.type === 'shape') ||
+          (builder.type === 'custom')
         ) {
           checked = true;
           builder.runChecks(
