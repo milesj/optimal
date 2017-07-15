@@ -1,5 +1,5 @@
 import ShapeBuilder, { shape } from '../src/ShapeBuilder';
-import { bool } from '../src/BoolBuilder';
+import { bool } from '../src/Builder';
 import { number } from '../src/NumberBuilder';
 import { string } from '../src/StringBuilder';
 

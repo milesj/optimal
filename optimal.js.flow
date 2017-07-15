@@ -11,10 +11,10 @@ declare module 'optimal' {
 
   declare export type Builders = {
     array: (builder: Builder<*>, defaultValue?: ?*[]) => CollectionBuilder<*, *[]>,
-    bool: <T: boolean>(defaultValue?: ?T) => BoolBuilder<T>,
+    bool: <T: boolean>(defaultValue?: ?T) => Builder<?T>,
     custom: (callback: CustomCallback, defaultValue?: *) => Builder<*>,
     date: () => InstanceBuilder<Class<Date>>,
-    func: <T: Function>(defaultValue?: ?T) => FuncBuilder<T>,
+    func: <T: Function>(defaultValue?: ?T) => Builder<?T>,
     instance: (refClass: *) => InstanceBuilder<*>,
     number: <T: number>(defaultValue?: ?T) => NumberBuilder<T>,
     object: (builder?: Builder<*>, defaultValue?: ?{ [key: string]: * }) => CollectionBuilder<*, { [key: string]: * }>,
@@ -60,17 +60,9 @@ declare module 'optimal' {
     xor(...keys: string[]): this;
   }
 
-  declare export class BoolBuilder<T: boolean> extends Builder<?T> {
-    constructor(defaultValue?: ?T): void;
-  }
-
   declare export class CollectionBuilder<T, TDefault> extends Builder<?TDefault> {
     constructor(type: 'array' | 'object', contents?: Builder<T>, defaultValue?: ?TDefault): void;
     notEmpty(): this;
-  }
-
-  declare export class FuncBuilder<T: Function> extends Builder<?T> {
-    constructor(defaultValue?: ?T): void;
   }
 
   declare export class InstanceBuilder<T> extends Builder<?T> {

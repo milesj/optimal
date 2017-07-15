@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-import Builder, { custom } from '../src/Builder';
+import Builder, { bool, custom, func } from '../src/Builder';
 
 describe('Builder', () => {
   let builder;
@@ -33,15 +33,15 @@ describe('Builder', () => {
 
   describe('addCheck()', () => {
     it('enqueues a function with arguments', () => {
-      const func = () => {};
+      const callback = () => {};
 
       expect(builder.checks).toHaveLength(1);
 
-      builder.addCheck(func, 'foo', 'bar', 'baz');
+      builder.addCheck(callback, 'foo', 'bar', 'baz');
 
       expect(builder.checks[1]).toEqual({
-        func,
         args: ['foo', 'bar', 'baz'],
+        func: callback,
       });
     });
   });
@@ -557,14 +557,54 @@ describe('Builder', () => {
   });
 });
 
+describe('bool()', () => {
+  it('returns a builder', () => {
+    expect(bool(true)).toBeInstanceOf(Builder);
+  });
+
+  it('sets type and default value', () => {
+    const builder = bool(true);
+
+    expect(builder.type).toBe('boolean');
+    expect(builder.defaultValue).toBe(true);
+  });
+
+  it('errors if a non-boolean value is used', () => {
+    expect(() => {
+      bool().runChecks('key', 123);
+    }).toThrowError('Invalid option "key". Must be a boolean.');
+  });
+});
+
 describe('custom()', () => {
   it('returns a builder', () => {
     expect(custom(() => {})).toBeInstanceOf(Builder);
   });
 
-  it('sets default value', () => {
+  it('sets type and default value', () => {
     const builder = custom(() => {}, 123);
 
+    expect(builder.type).toBe('custom');
     expect(builder.defaultValue).toBe(123);
+  });
+});
+
+describe('func()', () => {
+  it('returns a builder', () => {
+    expect(func()).toBeInstanceOf(Builder);
+  });
+
+  it('sets type and default value', () => {
+    const noop = () => {};
+    const builder = func(noop);
+
+    expect(builder.type).toBe('function');
+    expect(builder.defaultValue).toBe(noop);
+  });
+
+  it('errors if a non-function value is used', () => {
+    expect(() => {
+      func().runChecks('key', 123);
+    }).toThrowError('Invalid option "key". Must be a function.');
   });
 });

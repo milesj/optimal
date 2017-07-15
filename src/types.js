@@ -7,9 +7,7 @@
 /* eslint-disable flowtype/no-weak-types, max-len */
 
 import type Builder from './Builder';
-import type BoolBuilder from './BoolBuilder';
 import type CollectionBuilder from './CollectionBuilder';
-import type FuncBuilder from './FuncBuilder';
 import type InstanceBuilder from './InstanceBuilder';
 import type NumberBuilder from './NumberBuilder';
 import type ShapeBuilder from './ShapeBuilder';
@@ -30,10 +28,10 @@ export type Blueprint = { [key: string]: Builder<*> | Blueprint };
 
 export type Builders = {
   array: (builder: Builder<*>, defaultValue?: ?*[]) => CollectionBuilder<*, *[]>,
-  bool: (defaultValue?: ?boolean) => BoolBuilder,
+  bool: (defaultValue?: ?boolean) => Builder<?boolean>,
   custom: (callback: CustomCallback, defaultValue?: *) => Builder<*>,
   date: () => InstanceBuilder<Class<Date>>,
-  func: (defaultValue?: ?Function) => FuncBuilder,
+  func: (defaultValue?: ?Function) => Builder<?Function>,
   instance: (refClass: *) => InstanceBuilder<*>,
   number: (defaultValue?: ?number) => NumberBuilder,
   object: (builder?: Builder<*>, defaultValue?: ?{ [key: string]: * }) => CollectionBuilder<*, { [key: string]: * }>,

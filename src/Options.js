@@ -4,10 +4,8 @@
  * @flow
  */
 
-import Builder, { custom } from './Builder';
+import Builder, { bool, custom, func } from './Builder';
 import { array, object } from './CollectionBuilder';
-import { bool } from './BoolBuilder';
-import { func } from './FuncBuilder';
 import { instance, date, regex } from './InstanceBuilder';
 import { number } from './NumberBuilder';
 import { shape } from './ShapeBuilder';

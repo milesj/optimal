@@ -1,5 +1,5 @@
 import UnionBuilder, { union } from '../src/UnionBuilder';
-import { bool } from '../src/BoolBuilder';
+import { bool } from '../src/Builder';
 import { array, object } from '../src/CollectionBuilder';
 import { instance } from '../src/InstanceBuilder';
 import { number } from '../src/NumberBuilder';

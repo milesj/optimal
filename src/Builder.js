@@ -3,6 +3,7 @@
  * @license     https://opensource.org/licenses/MIT
  * @flow
  */
+/* eslint-disable flowtype/no-weak-types */
 
 import isObject from './isObject';
 
@@ -39,10 +40,10 @@ export default class Builder<T> {
   /**
    * Add a checking function with optional arguments.
    */
-  addCheck(func: Checker, ...args: *[]): this {
+  addCheck(checker: Checker, ...args: *[]): this {
     this.checks.push({
       args,
-      func,
+      func: checker,
     });
 
     return this;
@@ -373,6 +374,14 @@ export default class Builder<T> {
   }
 }
 
+export function bool(defaultValue?: ?boolean = false): Builder<?boolean> {
+  return new Builder('boolean', defaultValue);
+}
+
 export function custom(callback: CustomCallback, defaultValue?: * = null): Builder<*> {
   return new Builder('custom', defaultValue).custom(callback);
+}
+
+export function func(defaultValue?: ?Function = null): Builder<?Function> {
+  return new Builder('function', defaultValue).nullable();
 }
