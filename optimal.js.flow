@@ -9,23 +9,6 @@ declare module 'optimal' {
 
   declare export type Blueprint = { [key: string]: Builder<*> | Blueprint };
 
-  declare export type Builders = {
-    array: (builder: Builder<*>, defaultValue?: ?*[]) => CollectionBuilder<*, *[]>,
-    bool: <T: boolean>(defaultValue?: ?T) => Builder<?T>,
-    custom: (callback: CustomCallback, defaultValue?: *) => Builder<*>,
-    date: () => InstanceBuilder<Class<Date>>,
-    func: <T: Function>(defaultValue?: ?T) => Builder<?T>,
-    instance: (refClass: *) => InstanceBuilder<*>,
-    number: <T: number>(defaultValue?: ?T) => NumberBuilder<T>,
-    object: (builder?: Builder<*>, defaultValue?: ?{ [key: string]: * }) => CollectionBuilder<*, { [key: string]: * }>,
-    regex: () => InstanceBuilder<Class<RegExp>>,
-    shape: (builders: { [key: string]: Builder<*> }, defaultValue?: ?{ [key: string]: * }) => ShapeBuilder,
-    string: <T: string>(defaultValue?: ?T) => StringBuilder<T>,
-    union: (builders: Builder<*>[], defaultValue?: *) => UnionBuilder,
-  };
-
-  declare export type Factory = (builders: Builders) => Blueprint;
-
   declare export type Config = {
     name?: string,
     unknown?: boolean,
@@ -103,9 +86,39 @@ declare module 'optimal' {
     constructor(builders: Builder<*>[], defaultValue?: *): void;
   }
 
+  declare export function array(
+    builder: Builder<*>,
+    defaultValue?: ?*[],
+  ): CollectionBuilder<*, *[]>;
+
+  declare export function bool<T: boolean>(defaultValue?: ?T): Builder<?T>;
+
+  declare export function custom(callback: CustomCallback, defaultValue?: *): Builder<*>;
+
+  declare export function date(): InstanceBuilder<Class<Date>>;
+
+  declare export function func<T: Function>(defaultValue?: ?T): Builder<?T>;
+
+  declare export function instance(refClass: *): InstanceBuilder<*>;
+
+  declare export function number<T: number>(defaultValue?: ?T): NumberBuilder<T>;
+
+  declare export function object(
+    builder?: Builder<*>,
+    defaultValue?: ?{ [key: string]: * },
+  ): CollectionBuilder<*, { [key: string]: * }>;
+
+  declare export function regex(): InstanceBuilder<Class<RegExp>>;
+
+  declare export function shape(builders: { [key: string]: Builder<*> }, defaultValue?: ?{ [key: string]: * }): ShapeBuilder;
+
+  declare export function string<T: string>(defaultValue?: ?T): StringBuilder<T>;
+
+  declare export function union(builders: Builder<*>[], defaultValue?: *): UnionBuilder;
+
   declare export default function Options(
-    baseOptions: Object,
-    factory: Factory,
+    options: Object,
+    blueprint: Blueprint,
     config?: Config,
   ): Object;
 }
