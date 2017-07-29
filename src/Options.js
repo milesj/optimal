@@ -4,17 +4,11 @@
  * @flow
  */
 
-import Builder, { bool, custom, func } from './Builder';
-import { array, object } from './CollectionBuilder';
-import { instance, date, regex } from './InstanceBuilder';
-import { number } from './NumberBuilder';
-import { shape } from './ShapeBuilder';
-import { string } from './StringBuilder';
-import { union } from './UnionBuilder';
+import Builder from './Builder';
 import isObject from './isObject';
 import typeOf from './typeOf';
 
-import type { Factory, Blueprint, Config } from './types';
+import type { Blueprint, Config } from './types';
 
 function buildAndCheckOptions(
   baseOptions: Object,
@@ -63,36 +57,21 @@ function buildAndCheckOptions(
 }
 
 export default function Options(
-  baseOptions: Object,
-  factory: Factory,
+  options: Object,
+  blueprint: Blueprint,
   config?: Config = {},
 ): Object {
   if (__DEV__) {
-    if (!isObject(baseOptions)) {
-      throw new TypeError(`Options require a plain object, found ${typeOf(baseOptions)}.`);
+    if (!isObject(options)) {
+      throw new TypeError(`Options require a plain object, found ${typeOf(options)}.`);
 
     } else if (!isObject(config)) {
       throw new TypeError('Option configuration must be a plain object.');
 
-    } else if (typeof factory !== 'function') {
-      throw new TypeError('An options factory function is required.');
+    } else if (!isObject(blueprint)) {
+      throw new TypeError('An options blueprint is required.');
     }
   }
 
-  // Generate the options blueprint based on the builders provided by the factory,
-  // and run validation checks on each property and value recursively.
-  return buildAndCheckOptions(baseOptions, factory({
-    array,
-    bool,
-    custom,
-    date,
-    func,
-    instance,
-    number,
-    object,
-    regex,
-    shape,
-    string,
-    union,
-  }), config);
+  return buildAndCheckOptions(options, blueprint, config);
 }

@@ -68,10 +68,9 @@ export default class Builder<T> {
   /**
    * Validate that all options have been defined.
    */
-  checkAnd(path: string, value: *, keys: string[]) {
+  checkAnd(path: string, value: *, otherKeys: string[]) {
     if (__DEV__) {
-      keys.unshift(this.key(path));
-
+      const keys = [this.key(path), ...otherKeys];
       const options = this.currentOptions;
       const undefs = keys.filter(key => (
         typeof options[key] === 'undefined' || options[key] === null
@@ -268,10 +267,9 @@ export default class Builder<T> {
   /**
    * Validate that at least 1 option is defined.
    */
-  checkOr(path: string, value: *, keys: string[]) {
+  checkOr(path: string, value: *, otherKeys: string[]) {
     if (__DEV__) {
-      keys.unshift(this.key(path));
-
+      const keys = [this.key(path), ...otherKeys];
       const options = this.currentOptions;
       const defs = keys.filter(key => (
         typeof options[key] !== 'undefined' && options[key] !== null
@@ -363,10 +361,9 @@ export default class Builder<T> {
   /**
    * Validate that only 1 option is defined.
    */
-  checkXor(path: string, value: *, keys: string[]) {
+  checkXor(path: string, value: *, otherKeys: string[]) {
     if (__DEV__) {
-      keys.unshift(this.key(path));
-
+      const keys = [this.key(path), ...otherKeys];
       const options = this.currentOptions;
       const defs = keys.filter(key => (
         typeof options[key] !== 'undefined' && options[key] !== null

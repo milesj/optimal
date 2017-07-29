@@ -5,27 +5,28 @@ Options object builder and validator.
 
 ## Usage
 
-Pass a plain object and a factory function to `Options`. The factory defines a
-blueprint for every property and value within the options object.
+Pass a plain object and a blueprint to `Options`. The blueprint defines every property,
+its type, and its value within the options object.
 
 The plain object is then validated, built, and returned.
 
 ```js
-const baseOptions = {
+import Options, { bool, string, number, func } from 'optimal';
+
+const options = new Options({
   bool: false,
   number: 10,
   object: {
-    foo: 'b',
+    foo: 'A',
   },
-};
-
-const options = new Options(baseOptions, (o) => ({
-  bool: o.bool(true),
-  string: o.string('foo'),
-  number: o.number(5).between(0, 10),
-  func: o.func(),
+}, {
+  bool: bool(true),
+  string: string('foo'),
+  number: number(5).between(0, 10),
+  func: func(),
   object: {
-    foo: o.string('a').oneOf(['a', 'b', 'c']),
+    foo: string('a').oneOf(['a', 'b', 'c']),
+    bar: string('b'),
   },
 }));
 
@@ -36,8 +37,9 @@ const options = new Options(baseOptions, (o) => ({
   number: 10,
   func: null,
   object: {
-    foo: 'b',
-  }
+    foo: 'A',
+    bar: 'b',
+  },
 }
 */
 
