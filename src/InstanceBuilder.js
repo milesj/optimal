@@ -3,7 +3,6 @@
  * @license     https://opensource.org/licenses/MIT
  * @flow
  */
-/* eslint-disable flowtype/no-weak-types */
 
 import Builder from './Builder';
 import isObject from './isObject';

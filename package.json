@@ -7,14 +7,15 @@
   "scripts": {
     "babel": "build-lib ./src -d ./lib",
     "coverage": "run-coverage",
-    "eslint": "run-linter ./bin ./src ./tests",
+    "eslint": "run-linter ./src ./tests",
     "flow": "type-check",
     "jest": "run-tests",
     "posttest": "yarn run flow",
     "pretest": "yarn run eslint",
-    "preversion": "yarn test && yarn run babel && yarn run rollup",
+    "preversion": "yarn test",
     "rollup": "NODE_ENV=production bundle-lib",
-    "test": "yarn run jest"
+    "test": "yarn run jest",
+    "postversion": "yarn run babel"
   },
   "repository": {
     "type": "git",
@@ -49,9 +50,17 @@
     "extends": "./node_modules/@milesj/build-tool-config/babel.json5"
   },
   "eslintConfig": {
-    "extends": "./node_modules/@milesj/build-tool-config/eslint.json5"
+    "extends": "./node_modules/@milesj/build-tool-config/eslint.json5",
+    "rules": {
+      "flowtype/no-weak-types": 0
+    }
   },
   "jest": {
     "preset": "@milesj/build-tool-config"
-  }
+  },
+  "eslintIgnore": [
+    "lib/",
+    "*.min.js",
+    "*.map"
+  ]
 }
