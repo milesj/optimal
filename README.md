@@ -1,50 +1,42 @@
-# Optimal v0.14.0
+# Optimal
 [![Build Status](https://travis-ci.org/milesj/optimal.svg?branch=master)](https://travis-ci.org/milesj/optimal)
 
-Options object builder and validator.
+Optimal, a system for building and validating options and configuration objects.
 
-## Usage
+* Recursively builds and validates nested structures
+* Supports common data types
+* Autofills missing fields with default values
+* Allows or restricts unknown fields
+* Mark fields as nullable or required
+* Utilize complex operators like AND, OR, and XOR
 
-Pass a plain object and a blueprint to `Options`. The blueprint defines every property,
-its type, and its value within the options object.
+## Documentation
 
-The plain object is then validated, built, and returned.
+* [Options Class](#options-class)
+  * [Blueprint](#predicate-blueprint)
+  * [Customization](#customization)
+* [Predicates](#predicates)
+  * [Array](#array)
+  * [Bool](#bool)
+  * [Custom](#custom)
+  * [Date](#date)
+  * [Function](#func)
+  * [Instance](#instance)
+  * [Number](#number)
+  * [Object](#object)
+  * [Regex](#regex)
+  * [Shape](#shape)
+  * [String](#string)
+  * [Union](#union)
 
-```js
-import Options, { bool, string, number, func } from 'optimal';
+### Options Class
 
-const options = new Options({
-  bool: false,
-  number: 10,
-  object: {
-    foo: 'A',
-  },
-}, {
-  bool: bool(true),
-  string: string('foo'),
-  number: number(5).between(0, 10),
-  func: func(),
-  object: {
-    foo: string('a').oneOf(['a', 'b', 'c']),
-    bar: string('b'),
-  },
-}));
+The core of Optimal is the `Options` class. It accepts a
 
-/*
-{
-  bool: false,
-  string: 'foo',
-  number: 10,
-  func: null,
-  object: {
-    foo: 'A',
-    bar: 'b',
-  },
-}
-*/
+#### Blueprint
 
-const {
-  string, // foo
-  number, // 10
-} = options;
-```
+### Predicates
+
+#### Array
+
+The `array` function will

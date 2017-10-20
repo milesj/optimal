@@ -13,13 +13,21 @@ export default class Builder<T> {
     args: *[],
     func: Checker,
   }[] = [];
+
   currentConfig: Config = {};
+
   currentOptions: Object = {};
+
   defaultValue: T;
+
   deprecatedMessage: string = '';
+
   errorMessage: string = '';
+
   isNullable: boolean = false;
+
   isRequired: boolean = false;
+
   type: SupportedType;
 
   constructor(type: SupportedType, defaultValue: T) {
