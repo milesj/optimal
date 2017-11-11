@@ -11,7 +11,7 @@ import Options, {
   shape,
   string,
   union,
-} from '../src/index';
+} from '../src';
 
 class Plugin {}
 

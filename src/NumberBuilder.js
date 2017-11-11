@@ -104,7 +104,7 @@ export default class NumberBuilder extends Builder<?number> {
   oneOf(list: number[]): this {
     if (__DEV__) {
       this.invariant(
-        (Array.isArray(list) && list.length > 0 && list.every(isNumber)),
+        (Array.isArray(list) && list.length > 0 && list.every(item => isNumber(item))),
         'One of requires a non-empty array of numbers.',
       );
     }

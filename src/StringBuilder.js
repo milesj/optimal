@@ -87,7 +87,7 @@ export default class StringBuilder extends Builder<?string> {
   oneOf(list: string[]): this {
     if (__DEV__) {
       this.invariant(
-        (Array.isArray(list) && list.length > 0 && list.every(isString)),
+        (Array.isArray(list) && list.length > 0 && list.every(item => isString(item))),
         'One of requires a non-empty array of strings.',
       );
     }

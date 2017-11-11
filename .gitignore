@@ -42,5 +42,6 @@ jspm_packages
 .node_repl_history
 
 # Custom paths
+esm/
 lib/
 tests/bundle.min.js

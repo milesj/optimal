@@ -3,17 +3,15 @@
   "version": "0.14.0",
   "description": "Options object builder and validator.",
   "main": "./lib/index.js",
-  "browser": "./lib/bundle.js",
   "scripts": {
-    "babel": "build-lib ./src -d ./lib",
+    "babel": "build-lib",
     "coverage": "run-coverage",
-    "eslint": "run-linter ./src ./tests",
+    "eslint": "run-linter",
     "flow": "type-check",
     "jest": "run-tests",
     "posttest": "yarn run flow",
     "pretest": "yarn run eslint",
     "preversion": "yarn test",
-    "rollup": "NODE_ENV=production bundle-lib",
     "test": "yarn run jest",
     "postversion": "yarn run babel"
   },
@@ -44,21 +42,19 @@
     "babel-runtime": "^6.26.0"
   },
   "devDependencies": {
-    "@milesj/build-tool-config": "^0.33.0"
+    "@milesj/build-tool-config": "^0.41.2"
   },
   "babel": {
-    "extends": "./node_modules/@milesj/build-tool-config/babel.json5"
+    "presets": "@milesj/build-tool-config/babel"
   },
   "eslintConfig": {
-    "extends": "./node_modules/@milesj/build-tool-config/eslint.json5",
+    "extends": "./node_modules/@milesj/build-tool-config/eslint.js",
     "rules": {
       "flowtype/no-weak-types": 0
     }
   },
-  "jest": {
-    "preset": "@milesj/build-tool-config"
-  },
   "eslintIgnore": [
+    "esm/",
     "lib/",
     "*.min.js",
     "*.map"
