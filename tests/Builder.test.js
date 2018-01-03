@@ -380,7 +380,7 @@ describe('Builder', () => {
     });
 
     it('returns null if value passed is null and builder is nullable', () => {
-      expect(builder.nullable().runChecks('key', null)).toBe(null);
+      expect(builder.nullable().runChecks('key', null)).toBeNull();
     });
 
     it('errors if value passed is undefined and builder is required', () => {

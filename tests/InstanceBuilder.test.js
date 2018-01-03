@@ -25,7 +25,7 @@ describe('instance()', () => {
 
   describe('runChecks()', () => {
     it('returns null for no data', () => {
-      expect(instance(Foo).runChecks('key')).toBe(null);
+      expect(instance(Foo).runChecks('key')).toBeNull();
     });
 
     it('errors if a non-instance is passed', () => {
