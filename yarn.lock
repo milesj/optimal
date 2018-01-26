@@ -61,19 +61,6 @@
     "@beemo/core" "^0.2.0"
     yargs "^11.0.0"
 
-"@beemo/core@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.npmjs.org/@beemo/core/-/core-0.1.0.tgz#478be33278b9d81e5b50fe5ebd842f59ba5abc64"
-  dependencies:
-    boost "^0.22.0"
-    chalk "^2.3.0"
-    copy "^0.3.1"
-    fs-extra "^5.0.0"
-    lodash "^4.17.4"
-    optimal "^0.14.0"
-    yargs "^11.0.0"
-    yargs-parser "^9.0.2"
-
 "@beemo/core@^0.2.0":
   version "0.2.0"
   resolved "https://registry.npmjs.org/@beemo/core/-/core-0.2.0.tgz#21aa32438fea63e963d28b205f2422ced8b19028"
@@ -86,36 +73,38 @@
     optimal "^0.14.0"
     yargs-parser "^9.0.2"
 
-"@beemo/driver-babel@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.npmjs.org/@beemo/driver-babel/-/driver-babel-0.1.0.tgz#83dc62d5562a998da4d150b0558b801b7f6d0829"
-
-"@beemo/driver-eslint@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.npmjs.org/@beemo/driver-eslint/-/driver-eslint-0.1.0.tgz#c88576de382eee01be34183da84fc2053acb6ceb"
-
-"@beemo/driver-flow@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.npmjs.org/@beemo/driver-flow/-/driver-flow-0.1.0.tgz#dbed271ee152e5adda661ff5c9bea43c9bd1eef5"
-
-"@beemo/driver-jest@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.npmjs.org/@beemo/driver-jest/-/driver-jest-0.1.0.tgz#71caeb3e8897e399e98ff2e82de73d866b62a852"
-
-"@beemo/driver-prettier@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.npmjs.org/@beemo/driver-prettier/-/driver-prettier-0.1.0.tgz#a7b25384d5c2374de455329c60a77e3395a3f425"
-
-"@milesj/build-tool-config@^0.51.0":
-  version "0.51.0"
-  resolved "https://registry.npmjs.org/@milesj/build-tool-config/-/build-tool-config-0.51.0.tgz#491d49c3b678371f132046026608f1fa03e37ae7"
+"@beemo/driver-babel@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.npmjs.org/@beemo/driver-babel/-/driver-babel-0.2.0.tgz#5bb53decd7cc2218dca29a2ec9f35c1cb15361b6"
   dependencies:
-    "@beemo/core" "^0.1.0"
-    "@beemo/driver-babel" "^0.1.0"
-    "@beemo/driver-eslint" "^0.1.0"
-    "@beemo/driver-flow" "^0.1.0"
-    "@beemo/driver-jest" "^0.1.0"
-    "@beemo/driver-prettier" "^0.1.0"
+    rimraf "^2.6.2"
+
+"@beemo/driver-eslint@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.npmjs.org/@beemo/driver-eslint/-/driver-eslint-0.2.0.tgz#447f4597c02b8165d95357b6a64cbb1681be6a55"
+
+"@beemo/driver-flow@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.npmjs.org/@beemo/driver-flow/-/driver-flow-0.2.0.tgz#6d2eca5b3f99e97b2947d6b3ca1f102301146572"
+
+"@beemo/driver-jest@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.npmjs.org/@beemo/driver-jest/-/driver-jest-0.2.0.tgz#49b079a6a8a46ff5afe14275ca58323562c991de"
+
+"@beemo/driver-prettier@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.npmjs.org/@beemo/driver-prettier/-/driver-prettier-0.2.0.tgz#14198764e3e02013c95d1553a47dbbe15dece97d"
+
+"@milesj/build-tool-config@^0.52.0":
+  version "0.52.0"
+  resolved "https://registry.npmjs.org/@milesj/build-tool-config/-/build-tool-config-0.52.0.tgz#6d098c93dc47ea5643d51eb92c073e0aec37a699"
+  dependencies:
+    "@beemo/core" "^0.2.0"
+    "@beemo/driver-babel" "^0.2.0"
+    "@beemo/driver-eslint" "^0.2.0"
+    "@beemo/driver-flow" "^0.2.0"
+    "@beemo/driver-jest" "^0.2.0"
+    "@beemo/driver-prettier" "^0.2.0"
     babel-cli "^6.26.0"
     babel-core "^6.26.0"
     babel-eslint "^8.2.1"
@@ -1342,22 +1331,6 @@ boom@5.x.x:
   resolved "https://registry.npmjs.org/boom/-/boom-5.2.0.tgz#5dd9da6ee3a5f302077436290cb717d3f4a54e02"
   dependencies:
     hoek "4.x.x"
-
-boost@^0.22.0:
-  version "0.22.0"
-  resolved "https://registry.npmjs.org/boost/-/boost-0.22.0.tgz#db01197531b2f045481d487cc46e7aba4e032269"
-  dependencies:
-    chalk "^2.3.0"
-    elegant-spinner "^1.0.1"
-    execa "^0.9.0"
-    figures "^2.0.0"
-    glob "^7.1.2"
-    json5 "^0.5.1"
-    lodash "^4.17.2"
-    log-update "^2.3.0"
-    optimal "^0.14.0"
-    pluralize "^7.0.0"
-    split "^1.0.1"
 
 boost@^0.23.0:
   version "0.23.0"
@@ -5159,7 +5132,7 @@ rimraf@2, rimraf@^2.2.8, rimraf@^2.5.1, rimraf@^2.6.1:
   dependencies:
     glob "^7.0.5"
 
-rimraf@^2.5.4:
+rimraf@^2.5.4, rimraf@^2.6.2:
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.6.2.tgz#2ed8150d24a16ea8651e6d6ef0f47c4158ce7a36"
   dependencies:

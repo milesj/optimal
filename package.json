@@ -4,11 +4,12 @@
   "description": "Options object builder and validator.",
   "main": "./lib/index.js",
   "scripts": {
-    "babel": "build-lib",
-    "coverage": "run-coverage",
-    "eslint": "run-linter",
-    "flow": "type-check",
-    "jest": "run-tests",
+    "babel": "beemo babel ./src --out-dir ./lib",
+    "coverage": "beemo jest --coverage",
+    "eslint": "beemo eslint",
+    "flow": "beemo flow check",
+    "jest": "beemo jest",
+    "prettier": "beemo prettier ./src",
     "posttest": "yarn run flow",
     "pretest": "yarn run eslint",
     "preversion": "yarn test",
@@ -43,15 +44,21 @@
   },
   "devDependencies": {
     "@beemo/cli": "^0.2.0",
-    "@milesj/build-tool-config": "^0.51.0"
+    "@milesj/build-tool-config": "^0.52.0"
   },
-  "babel": {
-    "presets": "@milesj/build-tool-config/babel"
-  },
-  "eslintConfig": {
-    "extends": "./node_modules/@milesj/build-tool-config/eslint.js",
-    "rules": {
-      "flowtype/no-weak-types": 0
+  "beemo": {
+    "config": "@milesj/build-tool-config",
+    "drivers": [
+      "babel",
+      "eslint",
+      "flow",
+      "jest",
+      "prettier"
+    ],
+    "eslint": {
+      "rules": {
+        "flowtype/no-weak-types": 0
+      }
     }
   },
   "eslintIgnore": [
