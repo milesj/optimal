@@ -18,10 +18,7 @@ export default class InstanceBuilder<T: Function> extends Builder<?T> {
 
     if (__DEV__) {
       if (refClass) {
-        this.invariant(
-          (typeof refClass === 'function'),
-          'A class reference is required.',
-        );
+        this.invariant(typeof refClass === 'function', 'A class reference is required.');
       }
 
       this.refClass = refClass;
@@ -33,14 +30,13 @@ export default class InstanceBuilder<T: Function> extends Builder<?T> {
     if (__DEV__) {
       if (refClass) {
         this.invariant(
-          (value instanceof refClass),
+          value instanceof refClass,
           `Must be an instance of "${this.typeAlias()}".`,
           path,
         );
-
       } else {
         this.invariant(
-          (isObject(value) && value.constructor !== Object),
+          isObject(value) && value.constructor !== Object,
           'Must be a class instance.',
           path,
         );
@@ -54,7 +50,7 @@ export default class InstanceBuilder<T: Function> extends Builder<?T> {
   typeAlias(): string {
     const { refClass } = this;
 
-    return refClass ? (refClass.name || refClass.constructor.name) : 'Class';
+    return refClass ? refClass.name || refClass.constructor.name : 'Class';
   }
 }
 

@@ -68,10 +68,7 @@ describe('array()', () => {
     it('supports arrays of arrays', () => {
       builder = array(array(string()));
 
-      const data = [
-        ['foo', 'bar'],
-        ['baz', 'qux'],
-      ];
+      const data = [['foo', 'bar'], ['baz', 'qux']];
 
       expect(builder.runChecks('key', data)).toEqual(data);
     });
@@ -80,10 +77,7 @@ describe('array()', () => {
       builder = array(array(string()));
 
       expect(() => {
-        builder.runChecks('key', [
-          ['foo', 'bar'],
-          ['baz', 123],
-        ]);
+        builder.runChecks('key', [['foo', 'bar'], ['baz', 123]]);
       }).toThrowError('Invalid option "key[1][1]". Must be a string.');
     });
   });

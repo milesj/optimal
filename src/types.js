@@ -9,8 +9,16 @@ import type Builder from './Builder';
 // Note: Keep in sync with flow definition!
 
 export type SupportedType =
-  'array' | 'boolean' | 'function' | 'instance' | 'number' |
-  'object' | 'shape' | 'string' | 'union' | 'custom';
+  | 'array'
+  | 'boolean'
+  | 'function'
+  | 'instance'
+  | 'number'
+  | 'object'
+  | 'shape'
+  | 'string'
+  | 'union'
+  | 'custom';
 
 export type Checker = (path: string, value: *, ...args: *[]) => void;
 

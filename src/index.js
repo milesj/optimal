@@ -12,19 +12,6 @@ import { shape } from './ShapeBuilder';
 import { string } from './StringBuilder';
 import { union } from './UnionBuilder';
 
-export {
-  array,
-  bool,
-  custom,
-  date,
-  func,
-  instance,
-  number,
-  object,
-  regex,
-  shape,
-  string,
-  union,
-};
+export { array, bool, custom, date, func, instance, number, object, regex, shape, string, union };
 
 export { default } from './Options';

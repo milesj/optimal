@@ -21,7 +21,6 @@ export default class CollectionBuilder<T, TDefault> extends Builder<?TDefault> {
         if (contents instanceof Builder) {
           this.contents = contents;
           this.addCheck(this.checkContents, contents);
-
         } else {
           this.invariant(false, `A blueprint is required for ${type} contents.`);
         }
@@ -33,22 +32,11 @@ export default class CollectionBuilder<T, TDefault> extends Builder<?TDefault> {
     if (__DEV__) {
       if (this.type === 'array') {
         value.forEach((item, i) => {
-          contents.runChecks(
-            `${path}[${i}]`,
-            item,
-            this.currentOptions,
-            this.currentConfig,
-          );
+          contents.runChecks(`${path}[${i}]`, item, this.currentOptions, this.currentConfig);
         });
-
       } else if (this.type === 'object') {
-        Object.keys(value).forEach((key) => {
-          contents.runChecks(
-            `${path}.${key}`,
-            value[key],
-            this.currentOptions,
-            this.currentConfig,
-          );
+        Object.keys(value).forEach(key => {
+          contents.runChecks(`${path}.${key}`, value[key], this.currentOptions, this.currentConfig);
         });
       }
     }
@@ -61,18 +49,9 @@ export default class CollectionBuilder<T, TDefault> extends Builder<?TDefault> {
   checkNotEmpty(path: string, value: *) {
     if (__DEV__) {
       if (this.type === 'array') {
-        this.invariant(
-          (value.length > 0),
-          'Array cannot be empty.',
-          path,
-        );
-
+        this.invariant(value.length > 0, 'Array cannot be empty.', path);
       } else if (this.type === 'object') {
-        this.invariant(
-          (Object.keys(value).length > 0),
-          'Object cannot be empty.',
-          path,
-        );
+        this.invariant(Object.keys(value).length > 0, 'Object cannot be empty.', path);
       }
     }
   }
@@ -90,7 +69,7 @@ export default class CollectionBuilder<T, TDefault> extends Builder<?TDefault> {
 
 export function array<T>(
   contents?: ?Builder<T> = null,
-  defaultValue?: ?T[] = [],
+  defaultValue?: ?(T[]) = [],
 ): CollectionBuilder<T, T[]> {
   return new CollectionBuilder('array', contents, defaultValue);
 }

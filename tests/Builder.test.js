@@ -216,13 +216,15 @@ describe('Builder', () => {
 
   describe('custom()', () => {
     it('errors if no callback', () => {
-      expect(() => builder.custom())
-        .toThrowError('Custom blueprints require a validation function.');
+      expect(() => builder.custom()).toThrowError(
+        'Custom blueprints require a validation function.',
+      );
     });
 
     it('errors if callback is not a function', () => {
-      expect(() => builder.custom(123))
-        .toThrowError('Custom blueprints require a validation function.');
+      expect(() => builder.custom(123)).toThrowError(
+        'Custom blueprints require a validation function.',
+      );
     });
   });
 

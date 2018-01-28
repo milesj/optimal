@@ -16,11 +16,9 @@ export default class ShapeBuilder extends Builder<?Shape> {
 
     if (__DEV__) {
       this.invariant(
-        (
-          isObject(contents) &&
+        isObject(contents) &&
           Object.keys(contents).length > 0 &&
-          Object.keys(contents).every(key => (contents[key] instanceof Builder))
-        ),
+          Object.keys(contents).every(key => contents[key] instanceof Builder),
         'A non-empty object of properties to blueprints are required for a shape.',
       );
 
@@ -30,17 +28,12 @@ export default class ShapeBuilder extends Builder<?Shape> {
 
   checkContents(path: string, object: *, contents: ShapeBlueprint) {
     if (__DEV__) {
-      Object.keys(contents).forEach((key) => {
+      Object.keys(contents).forEach(key => {
         const builder = contents[key];
 
         // Properties should be optional by default unless explicitly required
         if (builder.isRequired || typeof object[key] !== 'undefined') {
-          builder.runChecks(
-            `${path}.${key}`,
-            object[key],
-            object,
-            this.currentConfig,
-          );
+          builder.runChecks(`${path}.${key}`, object[key], object, this.currentConfig);
         }
       });
     }

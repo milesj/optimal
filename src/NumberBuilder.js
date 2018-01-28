@@ -7,7 +7,7 @@
 import Builder from './Builder';
 
 function isNumber(value: *): boolean {
-  return (typeof value === 'number');
+  return typeof value === 'number';
 }
 
 export default class NumberBuilder extends Builder<?number> {
@@ -18,7 +18,7 @@ export default class NumberBuilder extends Builder<?number> {
   between(min: number, max: number, inclusive?: boolean = false): this {
     if (__DEV__) {
       this.invariant(
-        (isNumber(min) && isNumber(max)),
+        isNumber(min) && isNumber(max),
         'Between requires a minimum and maximum number.',
       );
     }
@@ -29,10 +29,7 @@ export default class NumberBuilder extends Builder<?number> {
   checkBetween(path: string, value: *, min: number, max: number, inclusive?: boolean = false) {
     if (__DEV__) {
       this.invariant(
-        (
-          isNumber(value) &&
-          (inclusive ? (value >= min && value <= max) : (value > min && value < max))
-        ),
+        isNumber(value) && (inclusive ? value >= min && value <= max : value > min && value < max),
         `Number must be between ${min} and ${max}${inclusive ? ' inclusive' : ''}.`,
         path,
       );
@@ -55,17 +52,12 @@ export default class NumberBuilder extends Builder<?number> {
     if (__DEV__) {
       if (inclusive) {
         this.invariant(
-          (isNumber(value) && value >= min),
+          isNumber(value) && value >= min,
           `Number must be greater than or equal to ${min}.`,
           path,
         );
-
       } else {
-        this.invariant(
-          (isNumber(value) && value > min),
-          `Number must be greater than ${min}.`,
-          path,
-        );
+        this.invariant(isNumber(value) && value > min, `Number must be greater than ${min}.`, path);
       }
     }
   }
@@ -86,17 +78,12 @@ export default class NumberBuilder extends Builder<?number> {
     if (__DEV__) {
       if (inclusive) {
         this.invariant(
-          (isNumber(value) && value <= max),
+          isNumber(value) && value <= max,
           `Number must be less than or equal to ${max}.`,
           path,
         );
-
       } else {
-        this.invariant(
-          (isNumber(value) && value < max),
-          `Number must be less than ${max}.`,
-          path,
-        );
+        this.invariant(isNumber(value) && value < max, `Number must be less than ${max}.`, path);
       }
     }
   }
@@ -104,7 +91,7 @@ export default class NumberBuilder extends Builder<?number> {
   oneOf(list: number[]): this {
     if (__DEV__) {
       this.invariant(
-        (Array.isArray(list) && list.length > 0 && list.every(item => isNumber(item))),
+        Array.isArray(list) && list.length > 0 && list.every(item => isNumber(item)),
         'One of requires a non-empty array of numbers.',
       );
     }
@@ -114,11 +101,7 @@ export default class NumberBuilder extends Builder<?number> {
 
   checkOneOf(path: string, value: *, list: number[]) {
     if (__DEV__) {
-      this.invariant(
-        (list.indexOf(value) >= 0),
-        `Number must be one of: ${list.join(', ')}`,
-        path,
-      );
+      this.invariant(list.indexOf(value) >= 0, `Number must be one of: ${list.join(', ')}`, path);
     }
   }
 }

@@ -38,15 +38,20 @@ describe('shape()', () => {
         shape({
           foo: string(),
         });
-      }).not.toThrowError('A non-empty object of properties to blueprints are required for a shape.');
+      }).not.toThrowError(
+        'A non-empty object of properties to blueprints are required for a shape.',
+      );
     });
 
     it('sets default value', () => {
-      builder = shape({
-        foo: string(),
-      }, {
-        foo: 'bar',
-      });
+      builder = shape(
+        {
+          foo: string(),
+        },
+        {
+          foo: 'bar',
+        },
+      );
 
       expect(builder.defaultValue).toEqual({
         foo: 'bar',
@@ -138,11 +143,13 @@ describe('shape()', () => {
 
   describe('typeAlias()', () => {
     it('returns the type name', () => {
-      expect(shape({
-        a: number(),
-        b: number(),
-        c: string(),
-      }).typeAlias()).toBe('Shape');
+      expect(
+        shape({
+          a: number(),
+          b: number(),
+          c: string(),
+        }).typeAlias(),
+      ).toBe('Shape');
     });
   });
 });

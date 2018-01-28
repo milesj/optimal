@@ -15,11 +15,9 @@ export default class UnionBuilder extends Builder<*> {
 
     if (__DEV__) {
       this.invariant(
-        (
-          Array.isArray(builders) &&
+        Array.isArray(builders) &&
           builders.length > 0 &&
-          builders.every(builder => (builder instanceof Builder))
-        ),
+          builders.every(builder => builder instanceof Builder),
         'A non-empty array of blueprints are required for a union.',
       );
 
@@ -35,13 +33,11 @@ export default class UnionBuilder extends Builder<*> {
       const type = typeOf(value);
 
       // Verify structure and usage
-      builders.forEach((builder) => {
+      builders.forEach(builder => {
         if (usage[builder.type]) {
           this.invariant(false, `Multiple instances of "${builder.type}" are not supported.`, path);
-
         } else if (builder.type === 'union') {
           this.invariant(false, 'Nested unions are not supported.', path);
-
         } else {
           usage[builder.type] = true;
           keys.push(builder.typeAlias());
@@ -55,19 +51,14 @@ export default class UnionBuilder extends Builder<*> {
       // Run checks on value
       let checked = false;
 
-      builders.forEach((builder) => {
+      builders.forEach(builder => {
         if (
-          (type === builder.type) ||
+          type === builder.type ||
           (type === 'object' && builder.type === 'shape') ||
-          (builder.type === 'custom')
+          builder.type === 'custom'
         ) {
           checked = true;
-          builder.runChecks(
-            path,
-            value,
-            this.currentOptions,
-            this.currentConfig,
-          );
+          builder.runChecks(path, value, this.currentOptions, this.currentConfig);
         }
       });
 
