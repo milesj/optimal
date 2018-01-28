@@ -9,7 +9,7 @@
     "eslint": "beemo eslint ./src ./tests",
     "flow": "beemo flow check",
     "jest": "beemo jest",
-    "prettier": "beemo prettier ./src",
+    "prettier": "beemo prettier --write ./{src,tests}/**/*.{js,json,md}",
     "posttest": "yarn run flow",
     "pretest": "yarn run eslint",
     "preversion": "yarn test",
@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "@beemo/cli": "^0.4.0",
-    "@milesj/build-tool-config": "^0.54.0"
+    "@milesj/build-tool-config": "^0.55.0"
   },
   "beemo": {
     "config": "@milesj/build-tool-config",
