@@ -4,9 +4,9 @@
   "description": "Options object builder and validator.",
   "main": "./lib/index.js",
   "scripts": {
-    "babel": "beemo babel ./src --out-dir ./lib",
+    "babel": "beemo babel ./src --out-dir ./lib --cjs && beemo babel ./src --out-dir ./esm --esm",
     "coverage": "beemo jest --coverage",
-    "eslint": "beemo eslint",
+    "eslint": "beemo eslint ./src ./tests",
     "flow": "beemo flow check",
     "jest": "beemo jest",
     "prettier": "beemo prettier ./src",
@@ -43,8 +43,8 @@
     "babel-runtime": "^6.26.0"
   },
   "devDependencies": {
-    "@beemo/cli": "^0.3.0",
-    "@milesj/build-tool-config": "^0.53.0"
+    "@beemo/cli": "^0.4.0",
+    "@milesj/build-tool-config": "^0.54.0"
   },
   "beemo": {
     "config": "@milesj/build-tool-config",
