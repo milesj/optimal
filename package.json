@@ -10,10 +10,10 @@
     "flow": "beemo flow check",
     "jest": "beemo jest",
     "prettier": "beemo prettier --write ./{src,tests}/**/*.{js,json,md}",
-    "posttest": "yarn run flow",
-    "pretest": "yarn run eslint",
+    "posttest": "yarn run flow --silent",
+    "pretest": "yarn run eslint --silent",
     "preversion": "yarn test",
-    "test": "yarn run jest",
+    "test": "yarn run jest --silent",
     "postversion": "yarn run babel"
   },
   "repository": {
@@ -43,8 +43,8 @@
     "babel-runtime": "^6.26.0"
   },
   "devDependencies": {
-    "@beemo/cli": "^0.4.0",
-    "@milesj/build-tool-config": "^0.55.0"
+    "@beemo/cli": "^0.5.0",
+    "@milesj/build-tool-config": "^0.56.0"
   },
   "beemo": {
     "config": "@milesj/build-tool-config",

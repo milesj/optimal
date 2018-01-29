@@ -54,18 +54,18 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
-"@beemo/cli@^0.4.0":
-  version "0.4.0"
-  resolved "https://registry.npmjs.org/@beemo/cli/-/cli-0.4.0.tgz#c410f944c56017b01a89d81792459330a1bde769"
+"@beemo/cli@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.npmjs.org/@beemo/cli/-/cli-0.5.0.tgz#c47416b113bae363d98f9c29074a918acebbb7f6"
   dependencies:
-    "@beemo/core" "^0.4.0"
+    "@beemo/core" "^0.5.0"
     yargs "^11.0.0"
 
-"@beemo/core@^0.4.0":
-  version "0.4.0"
-  resolved "https://registry.npmjs.org/@beemo/core/-/core-0.4.0.tgz#286d440aec299bbede73eb7492b35ad7acb2e802"
+"@beemo/core@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.npmjs.org/@beemo/core/-/core-0.5.0.tgz#71c8a6e587c7b3aae1d115377579edc7a5f187ce"
   dependencies:
-    boost "^0.25.0"
+    boost "^0.26.0"
     chalk "^2.3.0"
     copy "^0.3.1"
     fs-extra "^5.0.0"
@@ -73,38 +73,38 @@
     optimal "^0.14.0"
     yargs-parser "^9.0.2"
 
-"@beemo/driver-babel@^0.4.0":
-  version "0.4.0"
-  resolved "https://registry.npmjs.org/@beemo/driver-babel/-/driver-babel-0.4.0.tgz#5dcf4014ef61b76ea8e6bbd686afdfc396dfb289"
+"@beemo/driver-babel@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.npmjs.org/@beemo/driver-babel/-/driver-babel-0.5.0.tgz#9bca26a71d8079d8141d7c0c055edef9310372bf"
   dependencies:
     rimraf "^2.6.2"
 
-"@beemo/driver-eslint@^0.4.0":
-  version "0.4.0"
-  resolved "https://registry.npmjs.org/@beemo/driver-eslint/-/driver-eslint-0.4.0.tgz#da535a402ef224424ec74ea850a33302262a338a"
+"@beemo/driver-eslint@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.npmjs.org/@beemo/driver-eslint/-/driver-eslint-0.5.0.tgz#7f599f06b75438c5536fc4742a4eea73be07ba90"
 
-"@beemo/driver-flow@^0.4.0":
-  version "0.4.0"
-  resolved "https://registry.npmjs.org/@beemo/driver-flow/-/driver-flow-0.4.0.tgz#1a19dbb36689f5cd24601c3f6b99aa1f50bb4ac6"
+"@beemo/driver-flow@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.npmjs.org/@beemo/driver-flow/-/driver-flow-0.5.0.tgz#96db61759e8d69904005b7ba301e3f66dfe10dfc"
 
-"@beemo/driver-jest@^0.4.0":
-  version "0.4.0"
-  resolved "https://registry.npmjs.org/@beemo/driver-jest/-/driver-jest-0.4.0.tgz#142419d870af39eb2b28123a0044bef45397e965"
+"@beemo/driver-jest@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.npmjs.org/@beemo/driver-jest/-/driver-jest-0.5.0.tgz#2e0afc11cd76be5ca7a4440f4f1bca3eb3970e29"
 
-"@beemo/driver-prettier@^0.4.0":
-  version "0.4.0"
-  resolved "https://registry.npmjs.org/@beemo/driver-prettier/-/driver-prettier-0.4.0.tgz#f58c75a9d5bc9b90b65c5fb9ebb11470896e5bdd"
+"@beemo/driver-prettier@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.npmjs.org/@beemo/driver-prettier/-/driver-prettier-0.5.0.tgz#b8755693919ff8204cf13a97b5f29ff35c634da4"
 
-"@milesj/build-tool-config@^0.55.0":
-  version "0.55.0"
-  resolved "https://registry.npmjs.org/@milesj/build-tool-config/-/build-tool-config-0.55.0.tgz#85348c4eddbf12b665bc8278dea3bc9222ad975f"
+"@milesj/build-tool-config@^0.56.0":
+  version "0.56.0"
+  resolved "https://registry.npmjs.org/@milesj/build-tool-config/-/build-tool-config-0.56.0.tgz#8409ab00f524d5886d1e9a939de7101f9833406a"
   dependencies:
-    "@beemo/core" "^0.4.0"
-    "@beemo/driver-babel" "^0.4.0"
-    "@beemo/driver-eslint" "^0.4.0"
-    "@beemo/driver-flow" "^0.4.0"
-    "@beemo/driver-jest" "^0.4.0"
-    "@beemo/driver-prettier" "^0.4.0"
+    "@beemo/core" "^0.5.0"
+    "@beemo/driver-babel" "^0.5.0"
+    "@beemo/driver-eslint" "^0.5.0"
+    "@beemo/driver-flow" "^0.5.0"
+    "@beemo/driver-jest" "^0.5.0"
+    "@beemo/driver-prettier" "^0.5.0"
     babel-cli "^6.26.0"
     babel-core "^6.26.0"
     babel-eslint "^8.2.1"
@@ -1333,9 +1333,9 @@ boom@5.x.x:
   dependencies:
     hoek "4.x.x"
 
-boost@^0.25.0:
-  version "0.25.0"
-  resolved "https://registry.npmjs.org/boost/-/boost-0.25.0.tgz#20d930655c486956aa466deaad3c9fc979ac8d7a"
+boost@^0.26.0:
+  version "0.26.0"
+  resolved "https://registry.npmjs.org/boost/-/boost-0.26.0.tgz#77846c5a10516f51e2b08afbcdf5fd6c7b78f0f6"
   dependencies:
     chalk "^2.3.0"
     elegant-spinner "^1.0.1"
