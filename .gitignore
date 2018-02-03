@@ -17,3 +17,11 @@ node_modules/
 # Custom
 tests/bundle.min.js
 *.map
+
+# Configs
+.babelrc
+.eslintrc
+.flowconfig
+jest.json
+.prettierrc
+webpack.config.js

@@ -377,6 +377,7 @@ export function custom(callback: CustomCallback, defaultValue?: * = null): Build
   return new Builder('custom', defaultValue).custom(callback);
 }
 
+// eslint-disable-next-line flowtype/no-weak-types
 export function func(defaultValue?: ?Function = null): Builder<?Function> {
   return new Builder('function', defaultValue).nullable();
 }

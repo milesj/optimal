@@ -1,0 +1,4 @@
+esm/
+lib/
+*.min.js
+*.map

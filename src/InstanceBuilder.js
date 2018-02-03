@@ -7,6 +7,7 @@
 import Builder from './Builder';
 import isObject from './isObject';
 
+// eslint-disable-next-line flowtype/no-weak-types
 export default class InstanceBuilder<T: Function> extends Builder<?T> {
   refClass: ?T;
 
@@ -54,6 +55,7 @@ export default class InstanceBuilder<T: Function> extends Builder<?T> {
   }
 }
 
+// eslint-disable-next-line flowtype/no-weak-types
 export function instance<T: Function>(refClass?: ?T = null): InstanceBuilder<T> {
   return new InstanceBuilder(refClass);
 }

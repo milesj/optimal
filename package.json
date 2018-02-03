@@ -3,13 +3,16 @@
   "version": "0.14.0",
   "description": "Options object builder and validator.",
   "main": "./lib/index.js",
+  "module": "./esm/index.js",
   "scripts": {
-    "babel": "beemo babel ./src --out-dir ./lib --cjs && beemo babel ./src --out-dir ./esm --esm",
-    "coverage": "beemo jest --coverage",
-    "eslint": "beemo eslint ./src ./tests",
+    "babel": "yarn run babel:cjs && yarn run babel:esm",
+    "babel:cjs": "beemo babel ./src --out-dir ./lib --copy-files --cjs",
+    "babel:esm": "beemo babel ./src --out-dir ./esm --copy-files --esm",
+    "coverage": "yarn run jest --coverage",
+    "eslint": "beemo eslint --color --report-unused-disable-directives ./src ./tests",
     "flow": "beemo flow check",
-    "jest": "beemo jest",
-    "prettier": "beemo prettier --write ./{src,tests}/**/*.{js,json,md}",
+    "jest": "beemo jest --colors --logHeapUsage",
+    "prettier": "beemo prettier --write ./README.md ./{src,tests}/**/*.{js,json,md}",
     "posttest": "yarn run flow --silent",
     "pretest": "yarn run eslint --silent",
     "preversion": "yarn test",
@@ -43,8 +46,7 @@
     "babel-runtime": "^6.26.0"
   },
   "devDependencies": {
-    "@beemo/cli": "^0.5.0",
-    "@milesj/build-tool-config": "^0.56.0"
+    "@milesj/build-tool-config": "^0.59.2"
   },
   "beemo": {
     "config": "@milesj/build-tool-config",
@@ -55,16 +57,8 @@
       "jest",
       "prettier"
     ],
-    "eslint": {
-      "rules": {
-        "flowtype/no-weak-types": 0
-      }
+    "execute": {
+      "cleanup": false
     }
-  },
-  "eslintIgnore": [
-    "esm/",
-    "lib/",
-    "*.min.js",
-    "*.map"
-  ]
+  }
 }
