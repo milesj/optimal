@@ -12,7 +12,7 @@
     "eslint": "beemo eslint --color --report-unused-disable-directives ./src ./tests",
     "flow": "beemo flow check",
     "jest": "beemo jest --colors --logHeapUsage",
-    "prettier": "beemo prettier --write ./README.md ./{src,tests}/**/*.{js,json,md}",
+    "prettier": "beemo prettier --write ./README.md \"./{bin,src,tests}/**/*.js\" \"./*.{md,json}\"",
     "posttest": "yarn run flow --silent",
     "pretest": "yarn run eslint --silent",
     "preversion": "yarn test",
@@ -46,19 +46,16 @@
     "babel-runtime": "^6.26.0"
   },
   "devDependencies": {
-    "@milesj/build-tool-config": "^0.60.0"
+    "@milesj/build-tool-config": "^0.66.1"
   },
   "beemo": {
-    "config": "@milesj/build-tool-config",
+    "module": "@milesj/build-tool-config",
     "drivers": [
       "babel",
       "eslint",
       "flow",
       "jest",
       "prettier"
-    ],
-    "execute": {
-      "cleanup": false
-    }
+    ]
   }
 }

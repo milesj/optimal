@@ -1,5 +1,7 @@
+_book/
 coverage/
 flow-typed/
+src/
 tests/
 .babelrc
 .eslintcache
@@ -9,6 +11,7 @@ tests/
 .flowconfig
 .gitignore
 .npmignore
+.prettierrc
 .travis.yml
 .yarnclean
 jest.json

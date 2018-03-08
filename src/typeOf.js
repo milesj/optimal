@@ -15,6 +15,6 @@ export default function typeOf(value: *): SupportedType {
     return value.constructor === Object ? 'object' : 'instance';
   }
 
-  // $FlowIgnore
+  // $FlowFixMe
   return typeof value;
 }
