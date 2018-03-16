@@ -11,8 +11,8 @@
     "type": "beemo typescript",
     "jest": "beemo jest --colors --logHeapUsage",
     "prettier": "beemo prettier --write ./README.md \"./{bin,src,tests}/**/*.{ts,js}\" \"./*.{md,json}\"",
-    "posttest": "yarn run type --silent",
-    "pretest": "yarn run eslint --silent",
+    "posttest": "yarn run eslint --silent",
+    "pretest": "yarn run type --silent",
     "preversion": "yarn test",
     "test": "yarn run jest --silent",
     "postversion": "yarn run babel"
@@ -44,7 +44,7 @@
     "babel-runtime": "^6.26.0"
   },
   "devDependencies": {
-    "@milesj/build-tool-config": "^0.70.0"
+    "@milesj/build-tool-config": "^0.72.0"
   },
   "beemo": {
     "module": "@milesj/build-tool-config",
@@ -54,11 +54,6 @@
       "jest",
       "prettier",
       "typescript"
-    ],
-    "typescript": {
-      "compilerOptions": {
-        "lib": ["ESNext"]
-      }
-    }
+    ]
   }
 }

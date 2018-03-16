@@ -230,7 +230,7 @@ describe('Builder', () => {
 
   describe('checkCustom()', () => {
     it('triggers callback function', () => {
-      builder = custom((value, options) => {
+      builder = custom((value) => {
         if (value === 123) {
           throw new Error('This will error!');
         }
