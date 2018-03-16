@@ -1,19 +1,18 @@
 /**
  * @copyright   2017, Miles Johnson
  * @license     https://opensource.org/licenses/MIT
- * @flow
  */
 
 import Builder from './Builder';
 
-function isString(value: *): boolean {
+function isString(value: any): boolean {
   return typeof value === 'string' && value !== '';
 }
 
-export default class StringBuilder extends Builder<?string> {
+export default class StringBuilder extends Builder<string | null> {
   allowEmpty: boolean = false;
 
-  constructor(defaultValue?: ?string = '') {
+  constructor(defaultValue: string | null = '') {
     super('string', defaultValue);
 
     // Not empty by default
@@ -22,7 +21,7 @@ export default class StringBuilder extends Builder<?string> {
     }
   }
 
-  contains(token: string, index?: number = 0): this {
+  contains(token: string, index: number = 0): this {
     if (__DEV__) {
       this.invariant(isString(token), 'Contains requires a non-empty string.');
     }
@@ -30,7 +29,7 @@ export default class StringBuilder extends Builder<?string> {
     return this.addCheck(this.checkContains, token, index);
   }
 
-  checkContains(path: string, value: *, token: string, index?: number = 0) {
+  checkContains(path: string, value: any, token: string, index: number = 0) {
     if (__DEV__) {
       this.invariant(value.indexOf(token, index) >= 0, `String does not include "${token}".`, path);
     }
@@ -47,7 +46,7 @@ export default class StringBuilder extends Builder<?string> {
     return this.addCheck(this.checkMatch, pattern);
   }
 
-  checkMatch(path: string, value: *, pattern: RegExp) {
+  checkMatch(path: string, value: any, pattern: RegExp) {
     if (__DEV__) {
       this.invariant(
         value.match(pattern),
@@ -65,7 +64,7 @@ export default class StringBuilder extends Builder<?string> {
     return this;
   }
 
-  checkNotEmpty(path: string, value: *) {
+  checkNotEmpty(path: string, value: any) {
     if (__DEV__) {
       if (!this.allowEmpty) {
         this.invariant(isString(value), 'String cannot be empty.', path);
@@ -84,13 +83,13 @@ export default class StringBuilder extends Builder<?string> {
     return this.addCheck(this.checkOneOf, list);
   }
 
-  checkOneOf(path: string, value: *, list: string[]) {
+  checkOneOf(path: string, value: any, list: string[]) {
     if (__DEV__) {
       this.invariant(list.indexOf(value) >= 0, `String must be one of: ${list.join(', ')}`, path);
     }
   }
 }
 
-export function string(defaultValue?: ?string = ''): StringBuilder {
+export function string(defaultValue: string | null = ''): StringBuilder {
   return new StringBuilder(defaultValue);
 }

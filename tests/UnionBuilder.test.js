@@ -6,11 +6,11 @@ import { number } from '../src/NumberBuilder';
 import { shape } from '../src/ShapeBuilder';
 import { string } from '../src/StringBuilder';
 
-class Foo {}
-class Bar {}
-
 describe('UnionBuilder', () => {
   let builder;
+
+  class Foo {}
+  class Bar {}
 
   beforeEach(() => {
     builder = union([

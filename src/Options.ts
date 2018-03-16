@@ -1,23 +1,21 @@
 /**
  * @copyright   2017, Miles Johnson
  * @license     https://opensource.org/licenses/MIT
- * @flow
  */
 
 import Builder from './Builder';
 import isObject from './isObject';
 import typeOf from './typeOf';
-
-import type { Blueprint, Config } from './types';
+import { Blueprint, Config, Options } from './types';
 
 function buildAndCheckOptions(
-  baseOptions: Object,
+  baseOptions: Options,
   blueprint: Blueprint,
-  config?: Config = {},
-  parentPath?: string = '',
-): Object {
-  const unknownOptions = { ...baseOptions };
-  const options = {};
+  config: Config = {},
+  parentPath: string = '',
+): Options {
+  const unknownOptions: Options = { ...baseOptions };
+  const options: Options = {};
 
   // Validate using the blueprint
   Object.keys(blueprint).forEach(key => {
@@ -55,11 +53,11 @@ function buildAndCheckOptions(
   return options;
 }
 
-export default function Options(
-  options: Object,
+export default function parseOptions(
+  options: Options,
   blueprint: Blueprint,
-  config?: Config = {},
-): Object {
+  config: Config = {},
+): Options {
   if (__DEV__) {
     if (!isObject(options)) {
       throw new TypeError(`Options require a plain object, found ${typeOf(options)}.`);

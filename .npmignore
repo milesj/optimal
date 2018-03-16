@@ -12,8 +12,10 @@ tests/
 .gitignore
 .npmignore
 .prettierrc
+.prettierignore
 .travis.yml
 .yarnclean
 jest.json
 lerna.json
+tsconfig.json
 yarn-error.log

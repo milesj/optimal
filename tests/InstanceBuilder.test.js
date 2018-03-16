@@ -1,8 +1,8 @@
 import InstanceBuilder, { instance, date, regex } from '../src/InstanceBuilder';
 
-class Foo {}
-
 describe('instance()', () => {
+  class Foo {}
+
   describe('constructor()', () => {
     it('errors if a non-class is passed', () => {
       expect(() => {

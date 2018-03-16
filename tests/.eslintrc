@@ -1,9 +1,5 @@
 {
   "env": {
     "node": true
-  },
-  "rules": {
-    "no-magic-numbers": 0,
-    "sort-keys": 0
   }
 }

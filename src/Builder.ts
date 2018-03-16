@@ -1,22 +1,22 @@
 /**
  * @copyright   2017, Miles Johnson
  * @license     https://opensource.org/licenses/MIT
- * @flow
  */
 
 import isObject from './isObject';
+import { SupportedType, Checker, Config, CustomCallback, Options } from './types';
 
-import type { SupportedType, Checker, Config, CustomCallback } from './types';
+interface Check {
+  args: any[];
+  callback: Checker;
+}
 
 export default class Builder<T> {
-  checks: {
-    args: *[],
-    func: Checker,
-  }[] = [];
+  checks: Check[] = [];
 
   currentConfig: Config = {};
 
-  currentOptions: Object = {};
+  currentOptions: Options = {};
 
   defaultValue: T;
 
@@ -47,11 +47,11 @@ export default class Builder<T> {
   /**
    * Add a checking function with optional arguments.
    */
-  addCheck(checker: Checker, ...args: *[]): this {
+  addCheck(checker: Checker, ...args: any[]): this {
     if (__DEV__) {
       this.checks.push({
         args,
-        func: checker,
+        callback: checker,
       });
     }
 
@@ -72,7 +72,7 @@ export default class Builder<T> {
   /**
    * Validate that all options have been defined.
    */
-  checkAnd(path: string, value: *, otherKeys: string[]) {
+  checkAnd(path: string, value: any, otherKeys: string[]) {
     if (__DEV__) {
       const keys = [this.key(path), ...otherKeys];
       const options = this.currentOptions;
@@ -95,7 +95,7 @@ export default class Builder<T> {
   /**
    * Validate the type of value.
    */
-  checkType(path: string, value: *) {
+  checkType(path: string, value: any) {
     if (__DEV__) {
       switch (this.type) {
         case 'array':
@@ -138,7 +138,7 @@ export default class Builder<T> {
   /**
    * Validate the value using a custom callback.
    */
-  checkCustom(path: string, value: *, callback: CustomCallback) {
+  checkCustom(path: string, value: any, callback: CustomCallback) {
     if (__DEV__) {
       try {
         callback(value, this.currentOptions);
@@ -167,7 +167,7 @@ export default class Builder<T> {
   /**
    * Throw an error if the condition is falsy.
    */
-  invariant(condition: boolean, message: string, path?: string = '') {
+  invariant(condition: boolean, message: string, path: string = '') {
     if (__DEV__) {
       if (condition) {
         return;
@@ -244,7 +244,7 @@ export default class Builder<T> {
   /**
    * Validate the value matches only the default value.
    */
-  checkOnly(path: string, value: *) {
+  checkOnly(path: string, value: any) {
     if (__DEV__) {
       this.invariant(
         value === this.defaultValue,
@@ -268,7 +268,7 @@ export default class Builder<T> {
   /**
    * Validate that at least 1 option is defined.
    */
-  checkOr(path: string, value: *, otherKeys: string[]) {
+  checkOr(path: string, value: any, otherKeys: string[]) {
     if (__DEV__) {
       const keys = [this.key(path), ...otherKeys];
       const options = this.currentOptions;
@@ -284,7 +284,7 @@ export default class Builder<T> {
   /**
    * Disallow undefined values.
    */
-  required(state?: boolean = true): this {
+  required(state: boolean = true): this {
     if (__DEV__) {
       this.isRequired = state;
     }
@@ -295,7 +295,7 @@ export default class Builder<T> {
   /**
    * Run all validation checks that have been enqueued.
    */
-  runChecks(path: string, initialValue: *, options: Object, config?: Config = {}): * {
+  runChecks(path: string, initialValue: any, options: Object, config: Config = {}): any {
     this.currentConfig = config;
     this.currentOptions = options;
 
@@ -327,7 +327,7 @@ export default class Builder<T> {
     // Run all checks against the value
     if (__DEV__) {
       this.checks.forEach(checker => {
-        checker.func.call(this, path, value, ...checker.args);
+        checker.callback.call(this, path, value, ...checker.args);
       });
     }
 
@@ -355,7 +355,7 @@ export default class Builder<T> {
   /**
    * Validate that only 1 option is defined.
    */
-  checkXor(path: string, value: *, otherKeys: string[]) {
+  checkXor(path: string, value: any, otherKeys: string[]) {
     if (__DEV__) {
       const keys = [this.key(path), ...otherKeys];
       const options = this.currentOptions;
@@ -369,15 +369,17 @@ export default class Builder<T> {
   }
 }
 
-export function bool(defaultValue?: ?boolean = false): Builder<?boolean> {
+export function bool(defaultValue: boolean | null = false): Builder<boolean | null> {
   return new Builder('boolean', defaultValue);
 }
 
-export function custom(callback: CustomCallback, defaultValue?: * = null): Builder<*> {
+export function custom<T>(
+  callback: CustomCallback,
+  defaultValue: T | null = null,
+): Builder<T | null> {
   return new Builder('custom', defaultValue).custom(callback);
 }
 
-// eslint-disable-next-line flowtype/no-weak-types
-export function func(defaultValue?: ?Function = null): Builder<?Function> {
+export function func(defaultValue: Function | null = null): Builder<Function | null> {
   return new Builder('function', defaultValue).nullable();
 }

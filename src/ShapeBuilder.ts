@@ -1,17 +1,16 @@
 /**
  * @copyright   2017, Miles Johnson
  * @license     https://opensource.org/licenses/MIT
- * @flow
  */
 
 import Builder from './Builder';
 import isObject from './isObject';
 
-type ShapeBlueprint = { [key: string]: Builder<*> };
-type Shape = { [key: string]: * };
+type ShapeBlueprint = { [key: string]: Builder<any> };
+type Shape = { [key: string]: any };
 
-export default class ShapeBuilder extends Builder<?Shape> {
-  constructor(contents: ShapeBlueprint, defaultValue?: ?Shape = {}) {
+export default class ShapeBuilder extends Builder<Shape | null> {
+  constructor(contents: ShapeBlueprint, defaultValue: Shape | null = {}) {
     super('shape', defaultValue);
 
     if (__DEV__) {
@@ -26,7 +25,7 @@ export default class ShapeBuilder extends Builder<?Shape> {
     }
   }
 
-  checkContents(path: string, object: *, contents: ShapeBlueprint) {
+  checkContents(path: string, object: any, contents: ShapeBlueprint) {
     if (__DEV__) {
       Object.keys(contents).forEach(key => {
         const builder = contents[key];
@@ -40,6 +39,6 @@ export default class ShapeBuilder extends Builder<?Shape> {
   }
 }
 
-export function shape(contents: ShapeBlueprint, defaultValue?: ?Shape = {}): ShapeBuilder {
+export function shape(contents: ShapeBlueprint, defaultValue: Shape | null = {}): ShapeBuilder {
   return new ShapeBuilder(contents, defaultValue);
 }

@@ -1,17 +1,15 @@
 /**
  * @copyright   2017, Miles Johnson
  * @license     https://opensource.org/licenses/MIT
- * @flow
  */
 
 import Builder from './Builder';
 import isObject from './isObject';
 
-// eslint-disable-next-line flowtype/no-weak-types
-export default class InstanceBuilder<T: Function> extends Builder<?T> {
-  refClass: ?T;
+export default class InstanceBuilder<T> extends Builder<T | null> {
+  refClass: T | null = null;
 
-  constructor(refClass?: ?T = null) {
+  constructor(refClass: T | null = null) {
     super('instance', null);
 
     // Nullable by default
@@ -27,11 +25,11 @@ export default class InstanceBuilder<T: Function> extends Builder<?T> {
     }
   }
 
-  checkInstance(path: string, value: *, refClass: ?T) {
+  checkInstance(path: string, value: any, refClass: T | null) {
     if (__DEV__) {
       if (refClass) {
         this.invariant(
-          value instanceof refClass,
+          typeof refClass === 'function' && value instanceof refClass,
           `Must be an instance of "${this.typeAlias()}".`,
           path,
         );
@@ -51,19 +49,19 @@ export default class InstanceBuilder<T: Function> extends Builder<?T> {
   typeAlias(): string {
     const { refClass } = this;
 
+    // @ts-ignore
     return refClass ? refClass.name || refClass.constructor.name : 'Class';
   }
 }
 
-// eslint-disable-next-line flowtype/no-weak-types
-export function instance<T: Function>(refClass?: ?T = null): InstanceBuilder<T> {
+export function instance<T>(refClass: T | null = null): InstanceBuilder<T> {
   return new InstanceBuilder(refClass);
 }
 
-export function regex(): InstanceBuilder<Class<RegExp>> {
+export function regex(): InstanceBuilder<Function> {
   return instance(RegExp);
 }
 
-export function date(): InstanceBuilder<Class<Date>> {
+export function date(): InstanceBuilder<Function> {
   return instance(Date);
 }

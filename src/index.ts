@@ -1,7 +1,6 @@
 /**
  * @copyright   2017, Miles Johnson
  * @license     https://opensource.org/licenses/MIT
- * @flow
  */
 
 import { bool, custom, func } from './Builder';

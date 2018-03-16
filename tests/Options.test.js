@@ -18,10 +18,8 @@ class Plugin {}
 describe('Options', () => {
   let options;
 
-  /*
-   * This blueprint is based on Webpack's configuration: https://webpack.js.org/configuration/
-   * Webpack provides a pretty robust example of how to use this library.
-   */
+  // This blueprint is based on Webpack's configuration: https://webpack.js.org/configuration/
+  // Webpack provides a pretty robust example of how to use this library.
   const primitive = union([string(), number(), bool()]);
 
   const condition = union([string(), regex(), func(), array(regex()), object(regex())]);

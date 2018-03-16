@@ -1,16 +1,15 @@
 /**
  * @copyright   2017, Miles Johnson
  * @license     https://opensource.org/licenses/MIT
- * @flow
  */
 
 import Builder from './Builder';
 import typeOf from './typeOf';
 
-export default class UnionBuilder extends Builder<*> {
-  builders: Builder<*>[];
+export default class UnionBuilder extends Builder<any> {
+  builders: Builder<any>[] = [];
 
-  constructor(builders: Builder<*>[], defaultValue?: * = null) {
+  constructor(builders: Builder<any>[], defaultValue: any | null = null) {
     super('union', defaultValue);
 
     if (__DEV__) {
@@ -26,10 +25,10 @@ export default class UnionBuilder extends Builder<*> {
     }
   }
 
-  checkUnions(path: string, value: *, builders: Builder<*>[]) {
+  checkUnions(path: string, value: any, builders: Builder<any>[]) {
     if (__DEV__) {
-      const usage = {};
-      const keys = [];
+      const usage: { [type: string]: boolean } = {};
+      const keys: string[] = [];
       const type = typeOf(value);
 
       // Verify structure and usage
@@ -74,6 +73,6 @@ export default class UnionBuilder extends Builder<*> {
   }
 }
 
-export function union(builders: Builder<*>[], defaultValue?: * = null): UnionBuilder {
+export function union(builders: Builder<any>[], defaultValue: any | null = null): UnionBuilder {
   return new UnionBuilder(builders, defaultValue);
 }
