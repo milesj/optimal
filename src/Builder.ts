@@ -6,7 +6,7 @@
 import isObject from './isObject';
 import { SupportedType, Checker, Config, CustomCallback, Options } from './types';
 
-interface Check {
+export interface Check {
   args: any[];
   callback: Checker;
 }

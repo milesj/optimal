@@ -6,8 +6,13 @@
 import Builder from './Builder';
 import isObject from './isObject';
 
-type ShapeBlueprint = { [key: string]: Builder<any> };
-type Shape = { [key: string]: any };
+export interface ShapeBlueprint {
+  [key: string]: Builder<any>;
+}
+
+export interface Shape {
+  [key: string]: any;
+}
 
 export default class ShapeBuilder extends Builder<Shape | null> {
   constructor(contents: ShapeBlueprint, defaultValue: Shape | null = {}) {

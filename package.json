@@ -5,17 +5,18 @@
   "main": "./lib/index.js",
   "module": "./esm/index.js",
   "scripts": {
-    "babel": "yarn run babel:cjs && yarn run babel:esm",
+    "build": "beemo typescript",
+    "build:dts": "beemo run-script generate-dts",
     "coverage": "yarn run jest --coverage",
-    "eslint": "beemo eslint --color --report-unused-disable-directives --typescript --ext .ts,.js ./src ./tests",
-    "type": "beemo typescript",
-    "jest": "beemo jest --colors --logHeapUsage",
-    "prettier": "beemo prettier --write ./README.md \"./{bin,src,tests}/**/*.{ts,js}\" \"./*.{md,json}\"",
+    "eslint": "beemo eslint",
+    "type": "beemo typescript --noEmit",
+    "jest": "beemo jest",
+    "prettier": "beemo prettier",
     "posttest": "yarn run eslint --silent",
     "pretest": "yarn run type --silent",
     "preversion": "yarn test",
     "test": "yarn run jest --silent",
-    "postversion": "yarn run babel"
+    "postversion": "yarn run build && yarn run build:dts"
   },
   "repository": {
     "type": "git",
@@ -44,7 +45,7 @@
     "babel-runtime": "^6.26.0"
   },
   "devDependencies": {
-    "@milesj/build-tool-config": "^0.72.0"
+    "@milesj/build-tool-config": "^0.73.1"
   },
   "beemo": {
     "module": "@milesj/build-tool-config",
