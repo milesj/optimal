@@ -253,7 +253,7 @@ describe('NumberBuilder', () => {
 
   describe('typeAlias()', () => {
     it('returns the type name', () => {
-      expect(number().typeAlias()).toBe('Number');
+      expect(number().typeAlias()).toBe('number');
     });
   });
 });

@@ -57,7 +57,7 @@ describe('UnionBuilder', () => {
     it('errors if a unsupported type is used', () => {
       expect(() => {
         union([string(), number(), bool()]).runChecks('key', []);
-      }).toThrowError('Invalid option "key". Type must be one of: String, Number, Boolean');
+      }).toThrowError('Invalid option "key". Type must be one of: string, number, boolean');
     });
 
     it('errors if a nested union is used', () => {
@@ -90,7 +90,7 @@ describe('UnionBuilder', () => {
     it('errors with the class name for instance checks', () => {
       expect(() => {
         union([number(), instance(FormData)]).runChecks('key', {});
-      }).toThrowError('Invalid option "key". Type must be one of: Number, FormData');
+      }).toThrowError('Invalid option "key". Type must be one of: number, FormData');
     });
 
     it('runs array check', () => {
@@ -164,12 +164,12 @@ describe('UnionBuilder', () => {
 
   describe('typeAlias()', () => {
     it('returns all the available type aliases separated by pipes', () => {
-      expect(union([string(), number(), bool()]).typeAlias()).toBe('String | Number | Boolean');
+      expect(union([string(), number(), bool()]).typeAlias()).toBe('string | number | boolean');
     });
 
     it('supports complex structures', () => {
       expect(builder.typeAlias()).toBe(
-        'Array<String> | Boolean | Foo | Number | Object<Number> | String',
+        'array<string> | boolean | Foo | number | object<number> | string',
       );
     });
   });

@@ -149,7 +149,7 @@ describe('shape()', () => {
           b: number(),
           c: string(),
         }).typeAlias(),
-      ).toBe('Shape');
+      ).toBe('shape');
     });
   });
 });

@@ -50,7 +50,7 @@ export default class InstanceBuilder<T> extends Builder<T | null> {
     const { refClass } = this;
 
     // @ts-ignore
-    return refClass ? refClass.name || refClass.constructor.name : 'Class';
+    return refClass ? refClass.name || refClass.constructor.name : 'class';
   }
 }
 

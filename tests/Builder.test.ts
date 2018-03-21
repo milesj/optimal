@@ -578,7 +578,7 @@ describe('bool()', () => {
   });
 
   it('returns the type alias', () => {
-    expect(bool().typeAlias()).toBe('Boolean');
+    expect(bool().typeAlias()).toBe('boolean');
   });
 });
 
@@ -595,7 +595,7 @@ describe('custom()', () => {
   });
 
   it('returns the type alias', () => {
-    expect(custom(() => {}).typeAlias()).toBe('Custom');
+    expect(custom(() => {}).typeAlias()).toBe('custom');
   });
 });
 
@@ -619,6 +619,6 @@ describe('func()', () => {
   });
 
   it('returns the type alias', () => {
-    expect(func().typeAlias()).toBe('Function');
+    expect(func().typeAlias()).toBe('function');
   });
 });

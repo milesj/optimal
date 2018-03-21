@@ -191,7 +191,7 @@ describe('Options', () => {
         blueprint,
       );
     }).toThrowError(
-      'Invalid option "entry". Type must be one of: String, Array<String>, Object<String | Array<String>>, Function',
+      'Invalid option "entry". Type must be one of: string, array<string>, object<string | array<string>>, function',
     );
   });
 
@@ -222,7 +222,7 @@ describe('Options', () => {
         },
       );
     }).toThrowError(
-      'Invalid FooBar option "entry". Type must be one of: String, Array<String>, Object<String | Array<String>>, Function',
+      'Invalid FooBar option "entry". Type must be one of: string, array<string>, object<string | array<string>>, function',
     );
   });
 

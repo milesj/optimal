@@ -109,11 +109,11 @@ describe('array()', () => {
 
   describe('typeAlias()', () => {
     it('returns the type name when no contents', () => {
-      expect(array().typeAlias()).toBe('Array');
+      expect(array().typeAlias()).toBe('array');
     });
 
     it('returns the type name with contents type', () => {
-      expect(array(string()).typeAlias()).toBe('Array<String>');
+      expect(array(string()).typeAlias()).toBe('array<string>');
     });
   });
 });
@@ -247,11 +247,11 @@ describe('object()', () => {
 
   describe('typeAlias()', () => {
     it('returns the type name when no contents', () => {
-      expect(object().typeAlias()).toBe('Object');
+      expect(object().typeAlias()).toBe('object');
     });
 
     it('returns the type name with contents type', () => {
-      expect(object(number()).typeAlias()).toBe('Object<Number>');
+      expect(object(number()).typeAlias()).toBe('object<number>');
     });
   });
 });

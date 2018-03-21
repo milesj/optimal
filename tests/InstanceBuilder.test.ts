@@ -61,7 +61,7 @@ describe('instance()', () => {
 
   describe('typeAlias()', () => {
     it('returns the word class when no reference class', () => {
-      expect(instance().typeAlias()).toBe('Class');
+      expect(instance().typeAlias()).toBe('class');
     });
 
     it('returns the class name when a reference class is defined', () => {

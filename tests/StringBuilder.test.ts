@@ -156,7 +156,7 @@ describe('StringBuilder', () => {
 
   describe('typeAlias()', () => {
     it('returns the type name', () => {
-      expect(string().typeAlias()).toBe('String');
+      expect(string().typeAlias()).toBe('string');
     });
   });
 });
