@@ -8,14 +8,14 @@ import isObject from './isObject';
 import typeOf from './typeOf';
 import { Blueprint, Config, Options } from './types';
 
-function buildAndCheckOptions(
+function buildAndCheckOptions<T extends Options>(
   baseOptions: Options,
   blueprint: Blueprint,
   config: Config = {},
   parentPath: string = '',
-): Options {
+): T {
   const unknownOptions: Options = { ...baseOptions };
-  const options: Options = {};
+  const options = {} as T;
 
   // Validate using the blueprint
   Object.keys(blueprint).forEach(key => {
@@ -53,11 +53,11 @@ function buildAndCheckOptions(
   return options;
 }
 
-export default function parseOptions(
+export default function parseOptions<T extends Options>(
   options: Options,
   blueprint: Blueprint,
   config: Config = {},
-): Options {
+): T {
   if (process.env.NODE_ENV !== 'production') {
     if (!isObject(options)) {
       throw new TypeError(`Options require a plain object, found ${typeOf(options)}.`);

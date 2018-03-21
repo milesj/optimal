@@ -19,7 +19,7 @@ export type SupportedType =
 
 export type Checker = (path: string, value: any, ...args: any[]) => void;
 
-export type CustomCallback = (value: any, options: object) => void;
+export type CustomCallback = (value: any, options: Options) => void;
 
 export interface Blueprint {
   [field: string]: Builder<any> | Blueprint;

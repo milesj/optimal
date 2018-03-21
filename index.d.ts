@@ -6,7 +6,7 @@ declare module 'optimal/lib/types' {
   import Builder from 'optimal/lib/Builder';
   export type SupportedType = 'array' | 'boolean' | 'function' | 'instance' | 'number' | 'object' | 'shape' | 'string' | 'union' | 'custom';
   export type Checker = (path: string, value: any, ...args: any[]) => void;
-  export type CustomCallback = (value: any, options: object) => void;
+  export type CustomCallback = (value: any, options: Options) => void;
   export interface Blueprint {
       [field: string]: Builder<any> | Blueprint;
   }
@@ -52,7 +52,7 @@ declare module 'optimal/lib/Builder' {
       or(...keys: string[]): this;
       checkOr(path: string, value: any, otherKeys: string[]): void;
       required(state?: boolean): this;
-      runChecks(path: string, initialValue: any, options: Object, config?: Config): any;
+      runChecks(path: string, initialValue: any, options: Options, config?: Config): any;
       typeAlias(): string;
       xor(...keys: string[]): this;
       checkXor(path: string, value: any, otherKeys: string[]): void;
@@ -161,18 +161,22 @@ declare module 'optimal/lib/UnionBuilder' {
 }
 declare module 'optimal/lib/Options' {
   import { Blueprint, Config, Options } from 'optimal/lib/types';
-  export default function parseOptions(options: Options, blueprint: Blueprint, config?: Config): Options;
+  export default function parseOptions<T extends Options>(options: Options, blueprint: Blueprint, config?: Config): T;
 
 }
-declare module 'optimal/lib/index' {
-  import { bool, custom, func } from 'optimal/lib/Builder';
-  import { array, object } from 'optimal/lib/CollectionBuilder';
-  import { instance, date, regex } from 'optimal/lib/InstanceBuilder';
-  import { number } from 'optimal/lib/NumberBuilder';
-  import { shape } from 'optimal/lib/ShapeBuilder';
-  import { string } from 'optimal/lib/StringBuilder';
-  import { union } from 'optimal/lib/UnionBuilder';
+declare module 'optimal' {
+  import Builder, { bool, custom, func } from 'optimal/lib/Builder';
+  import CollectionBuilder, { array, object } from 'optimal/lib/CollectionBuilder';
+  import InstanceBuilder, { instance, date, regex } from 'optimal/lib/InstanceBuilder';
+  import NumberBuilder, { number } from 'optimal/lib/NumberBuilder';
+  import ShapeBuilder, { shape } from 'optimal/lib/ShapeBuilder';
+  import StringBuilder, { string } from 'optimal/lib/StringBuilder';
+  import UnionBuilder, { union } from 'optimal/lib/UnionBuilder';
+  import parseOptions from 'optimal/lib/Options';
+  import { Blueprint, Checker, Config, CustomCallback, Options, SupportedType } from 'optimal/lib/types';
   export { array, bool, custom, date, func, instance, number, object, regex, shape, string, union };
-  export { default } from 'optimal/lib/Options';
+  export { Builder, CollectionBuilder, InstanceBuilder, NumberBuilder, ShapeBuilder, StringBuilder, UnionBuilder };
+  export { Blueprint, Checker, Config, CustomCallback, Options, SupportedType };
+  export default parseOptions;
 
 }

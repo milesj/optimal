@@ -6,7 +6,7 @@
   "module": "./esm/index.js",
   "scripts": {
     "build": "beemo typescript",
-    "build:dts": "beemo run-script generate-dts --name optimal/lib",
+    "build:dts": "beemo run-script generate-dts",
     "coverage": "yarn run jest --coverage",
     "eslint": "beemo eslint",
     "type": "beemo typescript --noEmit",
@@ -45,7 +45,7 @@
     "babel-runtime": "^6.26.0"
   },
   "devDependencies": {
-    "@milesj/build-tool-config": "^0.75.1"
+    "@milesj/build-tool-config": "^0.75.2"
   },
   "beemo": {
     "module": "@milesj/build-tool-config",

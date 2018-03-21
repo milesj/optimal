@@ -54,9 +54,9 @@
   version "0.4.1"
   resolved "https://registry.npmjs.org/@beemo/driver-typescript/-/driver-typescript-0.4.1.tgz#e5f2beef935d2c4c66b0a5ef5169ac046983d3eb"
 
-"@milesj/build-tool-config@^0.75.1":
-  version "0.75.1"
-  resolved "https://registry.npmjs.org/@milesj/build-tool-config/-/build-tool-config-0.75.1.tgz#a02bfa1e2e754ba0d2727b614ffd6bdc248e425a"
+"@milesj/build-tool-config@^0.75.2":
+  version "0.75.2"
+  resolved "https://registry.npmjs.org/@milesj/build-tool-config/-/build-tool-config-0.75.2.tgz#623bcc8c2f1e69358bde220dd634b28683ab71fc"
   dependencies:
     "@beemo/cli" "^0.15.0"
     "@beemo/core" "^0.15.0"

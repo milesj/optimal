@@ -295,7 +295,7 @@ export default class Builder<T> {
   /**
    * Run all validation checks that have been enqueued.
    */
-  runChecks(path: string, initialValue: any, options: Object, config: Config = {}): any {
+  runChecks(path: string, initialValue: any, options: Options, config: Config = {}): any {
     this.currentConfig = config;
     this.currentOptions = options;
 
