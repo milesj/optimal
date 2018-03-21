@@ -38,7 +38,7 @@ describe('NumberBuilder', () => {
       builder.between(0, 5);
 
       expect(builder.checks[1]).toEqual({
-        func: builder.checkBetween,
+        callback: builder.checkBetween,
         args: [0, 5, false],
       });
     });
@@ -87,7 +87,7 @@ describe('NumberBuilder', () => {
       builder.gt(5);
 
       expect(builder.checks[1]).toEqual({
-        func: builder.checkGreaterThan,
+        callback: builder.checkGreaterThan,
         args: [5, false],
       });
     });
@@ -104,7 +104,7 @@ describe('NumberBuilder', () => {
       builder.gte(5);
 
       expect(builder.checks[1]).toEqual({
-        func: builder.checkGreaterThan,
+        callback: builder.checkGreaterThan,
         args: [5, true],
       });
     });
@@ -153,7 +153,7 @@ describe('NumberBuilder', () => {
       builder.lt(5);
 
       expect(builder.checks[1]).toEqual({
-        func: builder.checkLessThan,
+        callback: builder.checkLessThan,
         args: [5, false],
       });
     });
@@ -170,7 +170,7 @@ describe('NumberBuilder', () => {
       builder.lte(5);
 
       expect(builder.checks[1]).toEqual({
-        func: builder.checkLessThan,
+        callback: builder.checkLessThan,
         args: [5, true],
       });
     });
@@ -231,7 +231,7 @@ describe('NumberBuilder', () => {
       builder.oneOf([123, 456, 789]);
 
       expect(builder.checks[1]).toEqual({
-        func: builder.checkOneOf,
+        callback: builder.checkOneOf,
         args: [[123, 456, 789]],
       });
     });

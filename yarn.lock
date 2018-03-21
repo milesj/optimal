@@ -10,17 +10,17 @@
     esutils "^2.0.2"
     js-tokens "^3.0.0"
 
-"@beemo/cli@^0.14.0":
-  version "0.14.0"
-  resolved "https://registry.npmjs.org/@beemo/cli/-/cli-0.14.0.tgz#d2c2c658a733ccdd5b88c23feb07d5d22d02c241"
+"@beemo/cli@^0.15.0":
+  version "0.15.0"
+  resolved "https://registry.npmjs.org/@beemo/cli/-/cli-0.15.0.tgz#01bb524db9bb3b6d9b1d8a1c7c6e36039f4aba8d"
   dependencies:
     chalk "^2.3.2"
     semver "^5.5.0"
     yargs "^11.0.0"
 
-"@beemo/core@^0.14.0":
-  version "0.14.0"
-  resolved "https://registry.npmjs.org/@beemo/core/-/core-0.14.0.tgz#40dead5318f1b4a9fdebdc4c2daa74bf1f186312"
+"@beemo/core@^0.15.0":
+  version "0.15.0"
+  resolved "https://registry.npmjs.org/@beemo/core/-/core-0.15.0.tgz#8f777639bacd432430f0139d8f93f412f25c0694"
   dependencies:
     boost "^0.35.1"
     chalk "^2.3.2"
@@ -32,39 +32,39 @@
     optimal "^0.14.0"
     yargs-parser "^9.0.2"
 
-"@beemo/driver-babel@^0.14.0":
-  version "0.14.0"
-  resolved "https://registry.npmjs.org/@beemo/driver-babel/-/driver-babel-0.14.0.tgz#a6da99b053c8d8856411569fe8de70fe197ad5fd"
+"@beemo/driver-babel@^0.15.1":
+  version "0.15.1"
+  resolved "https://registry.npmjs.org/@beemo/driver-babel/-/driver-babel-0.15.1.tgz#8571a73fa3708ed972c4cee853f9adfe6d58a81e"
   dependencies:
     rimraf "^2.6.2"
 
-"@beemo/driver-eslint@^0.14.0":
-  version "0.14.0"
-  resolved "https://registry.npmjs.org/@beemo/driver-eslint/-/driver-eslint-0.14.0.tgz#dcde270d63e0484ce013169ea8399d808380e44b"
+"@beemo/driver-eslint@^0.15.0":
+  version "0.15.0"
+  resolved "https://registry.npmjs.org/@beemo/driver-eslint/-/driver-eslint-0.15.0.tgz#fa2a75997203182d8962689e697c155afdf8d909"
 
-"@beemo/driver-jest@^0.14.0":
-  version "0.14.0"
-  resolved "https://registry.npmjs.org/@beemo/driver-jest/-/driver-jest-0.14.0.tgz#6bbb49b647e2615b35e7f9c203bc5a88b965120a"
+"@beemo/driver-jest@^0.15.0":
+  version "0.15.0"
+  resolved "https://registry.npmjs.org/@beemo/driver-jest/-/driver-jest-0.15.0.tgz#2c4fed2a36b6408b25b5d763e225ede81c533619"
 
-"@beemo/driver-prettier@^0.14.0":
-  version "0.14.0"
-  resolved "https://registry.npmjs.org/@beemo/driver-prettier/-/driver-prettier-0.14.0.tgz#4f3c86a0e5efddbc5383f1506a21068c4a4eb5cb"
+"@beemo/driver-prettier@^0.15.0":
+  version "0.15.0"
+  resolved "https://registry.npmjs.org/@beemo/driver-prettier/-/driver-prettier-0.15.0.tgz#8433592b6db62b3901c5262a6b4bd919ce4df9fe"
 
-"@beemo/driver-typescript@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.npmjs.org/@beemo/driver-typescript/-/driver-typescript-0.3.0.tgz#6202128b9b21f24fcc0d5014a977f10b49decd0e"
+"@beemo/driver-typescript@^0.4.1":
+  version "0.4.1"
+  resolved "https://registry.npmjs.org/@beemo/driver-typescript/-/driver-typescript-0.4.1.tgz#e5f2beef935d2c4c66b0a5ef5169ac046983d3eb"
 
-"@milesj/build-tool-config@^0.73.1":
-  version "0.73.1"
-  resolved "https://registry.npmjs.org/@milesj/build-tool-config/-/build-tool-config-0.73.1.tgz#c55f118142c86b629a83d955f52a096ffbb33aee"
+"@milesj/build-tool-config@^0.75.1":
+  version "0.75.1"
+  resolved "https://registry.npmjs.org/@milesj/build-tool-config/-/build-tool-config-0.75.1.tgz#a02bfa1e2e754ba0d2727b614ffd6bdc248e425a"
   dependencies:
-    "@beemo/cli" "^0.14.0"
-    "@beemo/core" "^0.14.0"
-    "@beemo/driver-babel" "^0.14.0"
-    "@beemo/driver-eslint" "^0.14.0"
-    "@beemo/driver-jest" "^0.14.0"
-    "@beemo/driver-prettier" "^0.14.0"
-    "@beemo/driver-typescript" "^0.3.0"
+    "@beemo/cli" "^0.15.0"
+    "@beemo/core" "^0.15.0"
+    "@beemo/driver-babel" "^0.15.1"
+    "@beemo/driver-eslint" "^0.15.0"
+    "@beemo/driver-jest" "^0.15.0"
+    "@beemo/driver-prettier" "^0.15.0"
+    "@beemo/driver-typescript" "^0.4.1"
     "@types/enzyme" "^3.1.9"
     "@types/jest" "^22.2.0"
     "@types/node" "^9.4.7"
@@ -88,6 +88,7 @@
     eslint "^4.19.0"
     eslint-config-airbnb "^16.1.0"
     eslint-config-prettier "^2.9.0"
+    eslint-plugin-babel "^4.1.2"
     eslint-plugin-compat "^2.2.0"
     eslint-plugin-import "^2.9.0"
     eslint-plugin-jest "^21.15.0"
@@ -2712,6 +2713,10 @@ eslint-module-utils@^2.1.1:
   dependencies:
     debug "^2.6.8"
     pkg-dir "^1.0.0"
+
+eslint-plugin-babel@^4.1.2:
+  version "4.1.2"
+  resolved "https://registry.npmjs.org/eslint-plugin-babel/-/eslint-plugin-babel-4.1.2.tgz#79202a0e35757dd92780919b2336f1fa2fe53c1e"
 
 eslint-plugin-compat@^2.2.0:
   version "2.2.0"

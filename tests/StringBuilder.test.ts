@@ -38,7 +38,7 @@ describe('StringBuilder', () => {
       builder.contains('oo');
 
       expect(builder.checks[2]).toEqual({
-        func: builder.checkContains,
+        callback: builder.checkContains,
         args: ['oo', 0],
       });
     });
@@ -69,7 +69,7 @@ describe('StringBuilder', () => {
       builder.match(/oo/);
 
       expect(builder.checks[2]).toEqual({
-        func: builder.checkMatch,
+        callback: builder.checkMatch,
         args: [/oo/],
       });
     });
@@ -134,7 +134,7 @@ describe('StringBuilder', () => {
       builder.oneOf(['foo', 'bar', 'baz']);
 
       expect(builder.checks[2]).toEqual({
-        func: builder.checkOneOf,
+        callback: builder.checkOneOf,
         args: [['foo', 'bar', 'baz']],
       });
     });

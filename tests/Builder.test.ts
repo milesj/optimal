@@ -24,7 +24,7 @@ describe('Builder', () => {
     it('adds a type of check', () => {
       expect(builder.checks).toEqual([
         {
-          func: builder.checkType,
+          callback: builder.checkType,
           args: [],
         },
       ]);
@@ -41,7 +41,7 @@ describe('Builder', () => {
 
       expect(builder.checks[1]).toEqual({
         args: ['foo', 'bar', 'baz'],
-        func: callback,
+        callback,
       });
     });
   });
@@ -57,7 +57,7 @@ describe('Builder', () => {
       builder.and('bar', 'baz');
 
       expect(builder.checks[1]).toEqual({
-        func: builder.checkAnd,
+        callback: builder.checkAnd,
         args: [['bar', 'baz']],
       });
     });
@@ -449,7 +449,7 @@ describe('Builder', () => {
       builder.only();
 
       expect(builder.checks[1]).toEqual({
-        func: builder.checkOnly,
+        callback: builder.checkOnly,
         args: [],
       });
     });
@@ -484,7 +484,7 @@ describe('Builder', () => {
       builder.or('bar', 'baz');
 
       expect(builder.checks[1]).toEqual({
-        func: builder.checkOr,
+        callback: builder.checkOr,
         args: [['bar', 'baz']],
       });
     });
@@ -521,7 +521,7 @@ describe('Builder', () => {
       builder.xor('bar', 'baz');
 
       expect(builder.checks[1]).toEqual({
-        func: builder.checkXor,
+        callback: builder.checkXor,
         args: [['bar', 'baz']],
       });
     });

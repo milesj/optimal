@@ -87,7 +87,7 @@ describe('array()', () => {
       builder.notEmpty();
 
       expect(builder.checks[2]).toEqual({
-        func: builder.checkNotEmpty,
+        callback: builder.checkNotEmpty,
         args: [],
       });
     });
@@ -225,7 +225,7 @@ describe('object()', () => {
       builder.notEmpty();
 
       expect(builder.checks[2]).toEqual({
-        func: builder.checkNotEmpty,
+        callback: builder.checkNotEmpty,
         args: [],
       });
     });

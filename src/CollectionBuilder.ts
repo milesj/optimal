@@ -8,8 +8,6 @@ import Builder from './Builder';
 export default class CollectionBuilder<T, TDefault> extends Builder<TDefault | null> {
   contents: Builder<T> | null = null;
 
-  type: 'array' | 'object' = 'array';
-
   constructor(
     type: 'array' | 'object',
     contents: Builder<T> | null = null,
