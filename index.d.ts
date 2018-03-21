@@ -1,9 +1,9 @@
-declare module 'optimal/isObject' {
+declare module 'optimal/lib/isObject' {
   export default function isObject(value: any): boolean;
 
 }
-declare module 'optimal/types' {
-  import Builder from 'optimal/Builder';
+declare module 'optimal/lib/types' {
+  import Builder from 'optimal/lib/Builder';
   export type SupportedType = 'array' | 'boolean' | 'function' | 'instance' | 'number' | 'object' | 'shape' | 'string' | 'union' | 'custom';
   export type Checker = (path: string, value: any, ...args: any[]) => void;
   export type CustomCallback = (value: any, options: object) => void;
@@ -19,8 +19,8 @@ declare module 'optimal/types' {
   }
 
 }
-declare module 'optimal/Builder' {
-  import { SupportedType, Checker, Config, CustomCallback, Options } from 'optimal/types';
+declare module 'optimal/lib/Builder' {
+  import { SupportedType, Checker, Config, CustomCallback, Options } from 'optimal/lib/types';
   export interface Check {
       args: any[];
       callback: Checker;
@@ -62,11 +62,10 @@ declare module 'optimal/Builder' {
   export function func(defaultValue?: Function | null): Builder<Function | null>;
 
 }
-declare module 'optimal/CollectionBuilder' {
-  import Builder from 'optimal/Builder';
+declare module 'optimal/lib/CollectionBuilder' {
+  import Builder from 'optimal/lib/Builder';
   export default class CollectionBuilder<T, TDefault> extends Builder<TDefault | null> {
       contents: Builder<T> | null;
-      type: 'array' | 'object';
       constructor(type: 'array' | 'object', contents?: Builder<T> | null, defaultValue?: TDefault | null);
       checkContents(path: string, value: any, contents: Builder<T>): void;
       notEmpty(): this;
@@ -81,8 +80,8 @@ declare module 'optimal/CollectionBuilder' {
   }>;
 
 }
-declare module 'optimal/InstanceBuilder' {
-  import Builder from 'optimal/Builder';
+declare module 'optimal/lib/InstanceBuilder' {
+  import Builder from 'optimal/lib/Builder';
   export default class InstanceBuilder<T> extends Builder<T | null> {
       refClass: T | null;
       constructor(refClass?: T | null);
@@ -94,8 +93,8 @@ declare module 'optimal/InstanceBuilder' {
   export function date(): InstanceBuilder<Function>;
 
 }
-declare module 'optimal/NumberBuilder' {
-  import Builder from 'optimal/Builder';
+declare module 'optimal/lib/NumberBuilder' {
+  import Builder from 'optimal/lib/Builder';
   export default class NumberBuilder extends Builder<number | null> {
       constructor(defaultValue?: number | null);
       between(min: number, max: number, inclusive?: boolean): this;
@@ -112,8 +111,8 @@ declare module 'optimal/NumberBuilder' {
   export function number(defaultValue?: number | null): NumberBuilder;
 
 }
-declare module 'optimal/ShapeBuilder' {
-  import Builder from 'optimal/Builder';
+declare module 'optimal/lib/ShapeBuilder' {
+  import Builder from 'optimal/lib/Builder';
   export interface ShapeBlueprint {
       [key: string]: Builder<any>;
   }
@@ -127,8 +126,8 @@ declare module 'optimal/ShapeBuilder' {
   export function shape(contents: ShapeBlueprint, defaultValue?: Shape | null): ShapeBuilder;
 
 }
-declare module 'optimal/StringBuilder' {
-  import Builder from 'optimal/Builder';
+declare module 'optimal/lib/StringBuilder' {
+  import Builder from 'optimal/lib/Builder';
   export default class StringBuilder extends Builder<string | null> {
       allowEmpty: boolean;
       constructor(defaultValue?: string | null);
@@ -144,13 +143,13 @@ declare module 'optimal/StringBuilder' {
   export function string(defaultValue?: string | null): StringBuilder;
 
 }
-declare module 'optimal/typeOf' {
-  import { SupportedType } from 'optimal/types';
+declare module 'optimal/lib/typeOf' {
+  import { SupportedType } from 'optimal/lib/types';
   export default function typeOf(value: any): SupportedType;
 
 }
-declare module 'optimal/UnionBuilder' {
-  import Builder from 'optimal/Builder';
+declare module 'optimal/lib/UnionBuilder' {
+  import Builder from 'optimal/lib/Builder';
   export default class UnionBuilder extends Builder<any> {
       builders: Builder<any>[];
       constructor(builders: Builder<any>[], defaultValue?: any | null);
@@ -160,21 +159,20 @@ declare module 'optimal/UnionBuilder' {
   export function union(builders: Builder<any>[], defaultValue?: any | null): UnionBuilder;
 
 }
-declare module 'optimal/Options' {
-  import { Blueprint, Config, Options } from 'optimal/types';
+declare module 'optimal/lib/Options' {
+  import { Blueprint, Config, Options } from 'optimal/lib/types';
   export default function parseOptions(options: Options, blueprint: Blueprint, config?: Config): Options;
 
 }
-declare module 'optimal/index' {
-  import { bool, custom, func } from 'optimal/Builder';
-  import { array, object } from 'optimal/CollectionBuilder';
-  import { instance, date, regex } from 'optimal/InstanceBuilder';
-  import { number } from 'optimal/NumberBuilder';
-  import { shape } from 'optimal/ShapeBuilder';
-  import { string } from 'optimal/StringBuilder';
-  import { union } from 'optimal/UnionBuilder';
+declare module 'optimal/lib/index' {
+  import { bool, custom, func } from 'optimal/lib/Builder';
+  import { array, object } from 'optimal/lib/CollectionBuilder';
+  import { instance, date, regex } from 'optimal/lib/InstanceBuilder';
+  import { number } from 'optimal/lib/NumberBuilder';
+  import { shape } from 'optimal/lib/ShapeBuilder';
+  import { string } from 'optimal/lib/StringBuilder';
+  import { union } from 'optimal/lib/UnionBuilder';
   export { array, bool, custom, date, func, instance, number, object, regex, shape, string, union };
-  export { default } from 'optimal/Options';
+  export { default } from 'optimal/lib/Options';
 
 }
-declare var __DEV__: boolean;

@@ -15,7 +15,7 @@ export default class InstanceBuilder<T> extends Builder<T | null> {
     // Nullable by default
     this.nullable();
 
-    if (__DEV__) {
+    if (process.env.NODE_ENV !== 'production') {
       if (refClass) {
         this.invariant(typeof refClass === 'function', 'A class reference is required.');
       }
@@ -26,7 +26,7 @@ export default class InstanceBuilder<T> extends Builder<T | null> {
   }
 
   checkInstance(path: string, value: any, refClass: T | null) {
-    if (__DEV__) {
+    if (process.env.NODE_ENV !== 'production') {
       if (refClass) {
         this.invariant(
           typeof refClass === 'function' && value instanceof refClass,

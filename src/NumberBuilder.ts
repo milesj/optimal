@@ -15,7 +15,7 @@ export default class NumberBuilder extends Builder<number | null> {
   }
 
   between(min: number, max: number, inclusive: boolean = false): this {
-    if (__DEV__) {
+    if (process.env.NODE_ENV !== 'production') {
       this.invariant(
         isNumber(min) && isNumber(max),
         'Between requires a minimum and maximum number.',
@@ -26,7 +26,7 @@ export default class NumberBuilder extends Builder<number | null> {
   }
 
   checkBetween(path: string, value: any, min: number, max: number, inclusive: boolean = false) {
-    if (__DEV__) {
+    if (process.env.NODE_ENV !== 'production') {
       this.invariant(
         isNumber(value) && (inclusive ? value >= min && value <= max : value > min && value < max),
         `Number must be between ${min} and ${max}${inclusive ? ' inclusive' : ''}.`,
@@ -36,7 +36,7 @@ export default class NumberBuilder extends Builder<number | null> {
   }
 
   gt(min: number, inclusive: boolean = false): this {
-    if (__DEV__) {
+    if (process.env.NODE_ENV !== 'production') {
       this.invariant(isNumber(min), 'Greater-than requires a minimum number.');
     }
 
@@ -48,7 +48,7 @@ export default class NumberBuilder extends Builder<number | null> {
   }
 
   checkGreaterThan(path: string, value: any, min: number, inclusive: boolean = false) {
-    if (__DEV__) {
+    if (process.env.NODE_ENV !== 'production') {
       if (inclusive) {
         this.invariant(
           isNumber(value) && value >= min,
@@ -62,7 +62,7 @@ export default class NumberBuilder extends Builder<number | null> {
   }
 
   lt(max: number, inclusive: boolean = false): this {
-    if (__DEV__) {
+    if (process.env.NODE_ENV !== 'production') {
       this.invariant(isNumber(max), 'Less-than requires a maximum number.');
     }
 
@@ -74,7 +74,7 @@ export default class NumberBuilder extends Builder<number | null> {
   }
 
   checkLessThan(path: string, value: any, max: number, inclusive: boolean = false) {
-    if (__DEV__) {
+    if (process.env.NODE_ENV !== 'production') {
       if (inclusive) {
         this.invariant(
           isNumber(value) && value <= max,
@@ -88,7 +88,7 @@ export default class NumberBuilder extends Builder<number | null> {
   }
 
   oneOf(list: number[]): this {
-    if (__DEV__) {
+    if (process.env.NODE_ENV !== 'production') {
       this.invariant(
         Array.isArray(list) && list.length > 0 && list.every(item => isNumber(item)),
         'One of requires a non-empty array of numbers.',
@@ -99,7 +99,7 @@ export default class NumberBuilder extends Builder<number | null> {
   }
 
   checkOneOf(path: string, value: any, list: number[]) {
-    if (__DEV__) {
+    if (process.env.NODE_ENV !== 'production') {
       this.invariant(list.indexOf(value) >= 0, `Number must be one of: ${list.join(', ')}`, path);
     }
   }

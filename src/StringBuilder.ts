@@ -16,13 +16,13 @@ export default class StringBuilder extends Builder<string | null> {
     super('string', defaultValue);
 
     // Not empty by default
-    if (__DEV__) {
+    if (process.env.NODE_ENV !== 'production') {
       this.addCheck(this.checkNotEmpty);
     }
   }
 
   contains(token: string, index: number = 0): this {
-    if (__DEV__) {
+    if (process.env.NODE_ENV !== 'production') {
       this.invariant(isString(token), 'Contains requires a non-empty string.');
     }
 
@@ -30,13 +30,13 @@ export default class StringBuilder extends Builder<string | null> {
   }
 
   checkContains(path: string, value: any, token: string, index: number = 0) {
-    if (__DEV__) {
+    if (process.env.NODE_ENV !== 'production') {
       this.invariant(value.indexOf(token, index) >= 0, `String does not include "${token}".`, path);
     }
   }
 
   match(pattern: RegExp): this {
-    if (__DEV__) {
+    if (process.env.NODE_ENV !== 'production') {
       this.invariant(
         pattern instanceof RegExp,
         'Match requires a regular expression to match against.',
@@ -47,7 +47,7 @@ export default class StringBuilder extends Builder<string | null> {
   }
 
   checkMatch(path: string, value: any, pattern: RegExp) {
-    if (__DEV__) {
+    if (process.env.NODE_ENV !== 'production') {
       this.invariant(
         value.match(pattern),
         `String does not match pattern "${pattern.source}".`,
@@ -57,7 +57,7 @@ export default class StringBuilder extends Builder<string | null> {
   }
 
   empty(): this {
-    if (__DEV__) {
+    if (process.env.NODE_ENV !== 'production') {
       this.allowEmpty = true;
     }
 
@@ -65,7 +65,7 @@ export default class StringBuilder extends Builder<string | null> {
   }
 
   checkNotEmpty(path: string, value: any) {
-    if (__DEV__) {
+    if (process.env.NODE_ENV !== 'production') {
       if (!this.allowEmpty) {
         this.invariant(isString(value), 'String cannot be empty.', path);
       }
@@ -73,7 +73,7 @@ export default class StringBuilder extends Builder<string | null> {
   }
 
   oneOf(list: string[]): this {
-    if (__DEV__) {
+    if (process.env.NODE_ENV !== 'production') {
       this.invariant(
         Array.isArray(list) && list.length > 0 && list.every(item => isString(item)),
         'One of requires a non-empty array of strings.',
@@ -84,7 +84,7 @@ export default class StringBuilder extends Builder<string | null> {
   }
 
   checkOneOf(path: string, value: any, list: string[]) {
-    if (__DEV__) {
+    if (process.env.NODE_ENV !== 'production') {
       this.invariant(list.indexOf(value) >= 0, `String must be one of: ${list.join(', ')}`, path);
     }
   }

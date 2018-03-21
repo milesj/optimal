@@ -31,7 +31,7 @@ function buildAndCheckOptions(
       options[key] = buildAndCheckOptions(baseOptions[key] || {}, builder, config, path);
 
       // Oops
-    } else if (__DEV__) {
+    } else if (process.env.NODE_ENV !== 'production') {
       throw new Error('Unknown blueprint option. Must be a builder or plain object.');
     }
 
@@ -42,7 +42,7 @@ function buildAndCheckOptions(
   // Handle unknown options
   if (config.unknown) {
     Object.assign(options, unknownOptions);
-  } else if (__DEV__) {
+  } else if (process.env.NODE_ENV !== 'production') {
     const unknownKeys = Object.keys(unknownOptions);
 
     if (unknownKeys.length > 0) {
@@ -58,7 +58,7 @@ export default function parseOptions(
   blueprint: Blueprint,
   config: Config = {},
 ): Options {
-  if (__DEV__) {
+  if (process.env.NODE_ENV !== 'production') {
     if (!isObject(options)) {
       throw new TypeError(`Options require a plain object, found ${typeOf(options)}.`);
     } else if (!isObject(config)) {

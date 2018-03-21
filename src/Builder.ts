@@ -31,7 +31,7 @@ export default class Builder<T> {
   type: SupportedType;
 
   constructor(type: SupportedType, defaultValue: T) {
-    if (__DEV__) {
+    if (process.env.NODE_ENV !== 'production') {
       this.invariant(
         typeof defaultValue !== 'undefined',
         `A default value for type "${type}" is required.`,
@@ -48,7 +48,7 @@ export default class Builder<T> {
    * Add a checking function with optional arguments.
    */
   addCheck(checker: Checker, ...args: any[]): this {
-    if (__DEV__) {
+    if (process.env.NODE_ENV !== 'production') {
       this.checks.push({
         args,
         callback: checker,
@@ -62,7 +62,7 @@ export default class Builder<T> {
    * Map a list of option names that must be defined alongside this field.
    */
   and(...keys: string[]): this {
-    if (__DEV__) {
+    if (process.env.NODE_ENV !== 'production') {
       this.invariant(keys.length > 0, 'AND requires a list of option names.');
     }
 
@@ -73,7 +73,7 @@ export default class Builder<T> {
    * Validate that all options have been defined.
    */
   checkAnd(path: string, value: any, otherKeys: string[]) {
-    if (__DEV__) {
+    if (process.env.NODE_ENV !== 'production') {
       const keys = [this.key(path), ...otherKeys];
       const options = this.currentOptions;
       const undefs = keys.filter(
@@ -96,7 +96,7 @@ export default class Builder<T> {
    * Validate the type of value.
    */
   checkType(path: string, value: any) {
-    if (__DEV__) {
+    if (process.env.NODE_ENV !== 'production') {
       switch (this.type) {
         case 'array':
           this.invariant(Array.isArray(value), 'Must be an array.', path);
@@ -125,7 +125,7 @@ export default class Builder<T> {
    * Set a callback to run custom logic.
    */
   custom(callback: CustomCallback): this {
-    if (__DEV__) {
+    if (process.env.NODE_ENV !== 'production') {
       this.invariant(
         typeof callback === 'function',
         'Custom blueprints require a validation function.',
@@ -139,7 +139,7 @@ export default class Builder<T> {
    * Validate the value using a custom callback.
    */
   checkCustom(path: string, value: any, callback: CustomCallback) {
-    if (__DEV__) {
+    if (process.env.NODE_ENV !== 'production') {
       try {
         callback(value, this.currentOptions);
       } catch (error) {
@@ -152,7 +152,7 @@ export default class Builder<T> {
    * Set a message to log when this field is present.
    */
   deprecate(message: string): this {
-    if (__DEV__) {
+    if (process.env.NODE_ENV !== 'production') {
       this.invariant(
         typeof message === 'string' && !!message,
         'A non-empty string is required for deprecated messages.',
@@ -168,7 +168,7 @@ export default class Builder<T> {
    * Throw an error if the condition is falsy.
    */
   invariant(condition: boolean, message: string, path: string = '') {
-    if (__DEV__) {
+    if (process.env.NODE_ENV !== 'production') {
       if (condition) {
         return;
       }
@@ -203,7 +203,7 @@ export default class Builder<T> {
    * Set a custom error message for all checks.
    */
   message(message: string): this {
-    if (__DEV__) {
+    if (process.env.NODE_ENV !== 'production') {
       this.invariant(
         typeof message === 'string' && !!message,
         'A non-empty string is required for custom messages.',
@@ -219,7 +219,7 @@ export default class Builder<T> {
    * Allow null values.
    */
   nullable(state: boolean = true): this {
-    if (__DEV__) {
+    if (process.env.NODE_ENV !== 'production') {
       this.isNullable = state;
     }
 
@@ -230,7 +230,7 @@ export default class Builder<T> {
    * Mark a field as only the default value can be used.
    */
   only(): this {
-    if (__DEV__) {
+    if (process.env.NODE_ENV !== 'production') {
       this.invariant(
         // eslint-disable-next-line valid-typeof
         typeof this.defaultValue === this.type,
@@ -245,7 +245,7 @@ export default class Builder<T> {
    * Validate the value matches only the default value.
    */
   checkOnly(path: string, value: any) {
-    if (__DEV__) {
+    if (process.env.NODE_ENV !== 'production') {
       this.invariant(
         value === this.defaultValue,
         `Value may only be "${String(this.defaultValue)}".`,
@@ -258,7 +258,7 @@ export default class Builder<T> {
    * Map a list of option names that must have at least 1 defined.
    */
   or(...keys: string[]): this {
-    if (__DEV__) {
+    if (process.env.NODE_ENV !== 'production') {
       this.invariant(keys.length > 0, 'OR requires a list of option names.');
     }
 
@@ -269,7 +269,7 @@ export default class Builder<T> {
    * Validate that at least 1 option is defined.
    */
   checkOr(path: string, value: any, otherKeys: string[]) {
-    if (__DEV__) {
+    if (process.env.NODE_ENV !== 'production') {
       const keys = [this.key(path), ...otherKeys];
       const options = this.currentOptions;
       const defs = keys.filter(key => typeof options[key] !== 'undefined' && options[key] !== null);
@@ -285,7 +285,7 @@ export default class Builder<T> {
    * Disallow undefined values.
    */
   required(state: boolean = true): this {
-    if (__DEV__) {
+    if (process.env.NODE_ENV !== 'production') {
       this.isRequired = state;
     }
 
@@ -305,11 +305,11 @@ export default class Builder<T> {
     if (typeof value === 'undefined') {
       if (!this.isRequired) {
         value = this.defaultValue;
-      } else if (__DEV__) {
+      } else if (process.env.NODE_ENV !== 'production') {
         this.invariant(false, 'Field is required and must be defined.', path);
       }
     } else if (this.deprecatedMessage) {
-      if (__DEV__) {
+      if (process.env.NODE_ENV !== 'production') {
         // eslint-disable-next-line no-console
         console.info(`Option "${path}" is deprecated. ${this.deprecatedMessage}`);
       }
@@ -319,13 +319,13 @@ export default class Builder<T> {
     if (value === null) {
       if (this.isNullable) {
         return value;
-      } else if (__DEV__) {
+      } else if (process.env.NODE_ENV !== 'production') {
         this.invariant(false, 'Null is not allowed.', path);
       }
     }
 
     // Run all checks against the value
-    if (__DEV__) {
+    if (process.env.NODE_ENV !== 'production') {
       this.checks.forEach(checker => {
         checker.callback.call(this, path, value, ...checker.args);
       });
@@ -345,7 +345,7 @@ export default class Builder<T> {
    * Map a list of option names that must not be defined alongside this field.
    */
   xor(...keys: string[]): this {
-    if (__DEV__) {
+    if (process.env.NODE_ENV !== 'production') {
       this.invariant(keys.length > 0, 'XOR requires a list of option names.');
     }
 
@@ -356,7 +356,7 @@ export default class Builder<T> {
    * Validate that only 1 option is defined.
    */
   checkXor(path: string, value: any, otherKeys: string[]) {
-    if (__DEV__) {
+    if (process.env.NODE_ENV !== 'production') {
       const keys = [this.key(path), ...otherKeys];
       const options = this.currentOptions;
       const defs = keys.filter(key => typeof options[key] !== 'undefined' && options[key] !== null);

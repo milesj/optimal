@@ -6,7 +6,7 @@
   "module": "./esm/index.js",
   "scripts": {
     "build": "beemo typescript",
-    "build:dts": "beemo run-script generate-dts",
+    "build:dts": "beemo run-script generate-dts --name optimal/lib",
     "coverage": "yarn run jest --coverage",
     "eslint": "beemo eslint",
     "type": "beemo typescript --noEmit",

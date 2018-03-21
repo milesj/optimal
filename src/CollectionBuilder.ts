@@ -15,7 +15,7 @@ export default class CollectionBuilder<T, TDefault> extends Builder<TDefault | n
   ) {
     super(type, defaultValue);
 
-    if (__DEV__) {
+    if (process.env.NODE_ENV !== 'production') {
       if (contents) {
         if (contents instanceof Builder) {
           this.contents = contents;
@@ -28,7 +28,7 @@ export default class CollectionBuilder<T, TDefault> extends Builder<TDefault | n
   }
 
   checkContents(path: string, value: any, contents: Builder<T>) {
-    if (__DEV__) {
+    if (process.env.NODE_ENV !== 'production') {
       if (this.type === 'array') {
         value.forEach((item: T, i: number) => {
           contents.runChecks(`${path}[${i}]`, item, this.currentOptions, this.currentConfig);
@@ -46,7 +46,7 @@ export default class CollectionBuilder<T, TDefault> extends Builder<TDefault | n
   }
 
   checkNotEmpty(path: string, value: any) {
-    if (__DEV__) {
+    if (process.env.NODE_ENV !== 'production') {
       if (this.type === 'array') {
         this.invariant(value.length > 0, 'Array cannot be empty.', path);
       } else if (this.type === 'object') {
