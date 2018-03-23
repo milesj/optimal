@@ -279,7 +279,7 @@ describe('Builder', () => {
 
     it('includes a class name', () => {
       expect(() => {
-        builder.currentConfig.name = 'FooBar';
+        builder.optimalOptions.name = 'FooBar';
 
         builder.invariant(false, 'Failure', 'foo.bar');
       }).toThrowError('Invalid FooBar option "foo.bar". Failure');
@@ -287,7 +287,7 @@ describe('Builder', () => {
 
     it('includes a class name when no path', () => {
       expect(() => {
-        builder.currentConfig.name = 'FooBar';
+        builder.optimalOptions.name = 'FooBar';
 
         builder.invariant(false, 'Failure');
       }).toThrowError('FooBar: Failure');

@@ -1,6 +1,4 @@
-/* eslint-disable no-new */
-
-import Options, {
+import optimal, {
   array,
   bool,
   func,
@@ -88,31 +86,31 @@ describe('Options', () => {
 
   it('errors if a non-object is passed', () => {
     expect(() => {
-      new Options([]);
+      optimal([]);
     }).toThrowError('Options require a plain object, found array.');
 
     expect(() => {
-      new Options(123);
+      optimal(123);
     }).toThrowError('Options require a plain object, found number.');
 
     expect(() => {
-      new Options('foo');
+      optimal('foo');
     }).toThrowError('Options require a plain object, found string.');
 
     expect(() => {
-      new Options(() => {});
+      optimal(() => {});
     }).toThrowError('Options require a plain object, found function.');
   });
 
   it('errors if a non-object is passed as a blueprint', () => {
     expect(() => {
-      new Options({}, 123);
+      optimal({}, 123);
     }).toThrowError('An options blueprint is required.');
   });
 
   it('errors if a non-builder is passed within the blueprint', () => {
     expect(() => {
-      new Options(
+      optimal(
         {},
         {
           foo: 123,
@@ -123,12 +121,12 @@ describe('Options', () => {
 
   it('errors if a non-object config is passed', () => {
     expect(() => {
-      new Options({}, blueprint, 123);
-    }).toThrowError('Option configuration must be a plain object.');
+      optimal({}, blueprint, 123);
+    }).toThrowError('Optimal options must be a plain object.');
   });
 
   it('sets object keys as class properties', () => {
-    options = new Options(
+    options = optimal(
       {
         foo: 123,
         bar: true,
@@ -151,7 +149,7 @@ describe('Options', () => {
   });
 
   it('sets default values', () => {
-    options = new Options({}, blueprint);
+    options = optimal({}, blueprint);
 
     expect(options).toEqual({
       context: process.cwd(),
@@ -184,7 +182,7 @@ describe('Options', () => {
 
   it('runs checks for root level values', () => {
     expect(() => {
-      options = new Options(
+      options = optimal(
         {
           entry: 123,
         },
@@ -197,7 +195,7 @@ describe('Options', () => {
 
   it('runs checks for nested level values', () => {
     expect(() => {
-      options = new Options(
+      options = optimal(
         {
           output: {
             crossOriginLoading: 'not-anonymous',
@@ -212,7 +210,7 @@ describe('Options', () => {
 
   it('includes a custom `name` in the error message', () => {
     expect(() => {
-      options = new Options(
+      options = optimal(
         {
           entry: 123,
         },
@@ -229,7 +227,7 @@ describe('Options', () => {
   describe('unknown options', () => {
     it('errors for unknown options', () => {
       expect(() => {
-        new Options(
+        optimal(
           {
             foo: 123,
             bar: 456,
@@ -241,7 +239,7 @@ describe('Options', () => {
 
     it('doesnt error for unknown options if `unknown` is true', () => {
       expect(() => {
-        new Options(
+        optimal(
           {
             foo: 123,
             bar: 456,
@@ -256,7 +254,7 @@ describe('Options', () => {
 
     it('sets unknown options', () => {
       expect(
-        new Options(
+        optimal(
           {
             foo: 123,
             bar: 456,
@@ -285,11 +283,11 @@ describe('Options', () => {
 
       // Dont error if all are undefined
       expect(() => {
-        new Options({}, and);
+        optimal({}, and);
       }).not.toThrowError('All of these options must be defined: foo, bar, baz');
 
       expect(() => {
-        new Options(
+        optimal(
           {
             foo: 'a',
           },
@@ -298,7 +296,7 @@ describe('Options', () => {
       }).toThrowError('All of these options must be defined: foo, bar, baz');
 
       expect(() => {
-        new Options(
+        optimal(
           {
             foo: 'a',
             bar: 'b',
@@ -308,7 +306,7 @@ describe('Options', () => {
       }).toThrowError('All of these options must be defined: foo, bar, baz');
 
       expect(() => {
-        new Options(
+        optimal(
           {
             foo: 'a',
             baz: 'c',
@@ -318,7 +316,7 @@ describe('Options', () => {
       }).toThrowError('All of these options must be defined: foo, bar, baz');
 
       expect(() => {
-        new Options(
+        optimal(
           {
             foo: 'a',
             bar: 'b',
@@ -337,11 +335,11 @@ describe('Options', () => {
       };
 
       expect(() => {
-        new Options({}, or);
+        optimal({}, or);
       }).toThrowError('At least one of these options must be defined: foo, bar, baz');
 
       expect(() => {
-        new Options(
+        optimal(
           {
             foo: 'a',
           },
@@ -350,7 +348,7 @@ describe('Options', () => {
       }).not.toThrowError('At least one of these options must be defined: foo, bar, baz');
 
       expect(() => {
-        new Options(
+        optimal(
           {
             bar: 'b',
           },
@@ -359,7 +357,7 @@ describe('Options', () => {
       }).not.toThrowError('At least one of these options must be defined: foo, bar, baz');
 
       expect(() => {
-        new Options(
+        optimal(
           {
             baz: 'c',
           },
@@ -368,7 +366,7 @@ describe('Options', () => {
       }).not.toThrowError('At least one of these options must be defined: foo, bar, baz');
 
       expect(() => {
-        new Options(
+        optimal(
           {
             foo: 'a',
             bar: 'b',
@@ -387,11 +385,11 @@ describe('Options', () => {
       };
 
       expect(() => {
-        new Options({}, xor);
+        optimal({}, xor);
       }).toThrowError('Only one of these options may be defined: foo, bar, baz');
 
       expect(() => {
-        new Options(
+        optimal(
           {
             foo: 'a',
           },
@@ -400,7 +398,7 @@ describe('Options', () => {
       }).not.toThrowError('Only one of these options may be defined: foo, bar, baz');
 
       expect(() => {
-        new Options(
+        optimal(
           {
             bar: 'b',
           },
@@ -409,7 +407,7 @@ describe('Options', () => {
       }).not.toThrowError('Only one of these options may be defined: foo, bar, baz');
 
       expect(() => {
-        new Options(
+        optimal(
           {
             baz: 'c',
           },
@@ -418,7 +416,7 @@ describe('Options', () => {
       }).not.toThrowError('Only one of these options may be defined: foo, bar, baz');
 
       expect(() => {
-        new Options(
+        optimal(
           {
             foo: 'a',
             bar: 'b',

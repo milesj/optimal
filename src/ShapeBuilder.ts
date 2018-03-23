@@ -33,8 +33,11 @@ export default class ShapeBuilder extends Builder<Shape | null> {
         const builder = contents[key];
 
         // Properties should be optional by default unless explicitly required
-        if (builder instanceof Builder && (builder.isRequired || typeof object[key] !== 'undefined')) {
-          builder.runChecks(`${path}.${key}`, object[key], object, this.currentConfig);
+        if (
+          builder instanceof Builder &&
+          (builder.isRequired || typeof object[key] !== 'undefined')
+        ) {
+          builder.runChecks(`${path}.${key}`, object[key], object, this.optimalOptions);
         }
       });
     }

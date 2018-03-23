@@ -54,7 +54,7 @@ export default class InstanceBuilder<T> extends Builder<T | null> {
   }
 }
 
-export function instance<T>(refClass: T | null = null): InstanceBuilder<T> {
+export function instance<T extends Function>(refClass: T | null = null): InstanceBuilder<T> {
   return new InstanceBuilder(refClass);
 }
 

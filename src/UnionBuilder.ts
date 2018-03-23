@@ -57,7 +57,7 @@ export default class UnionBuilder extends Builder<any> {
           builder.type === 'custom'
         ) {
           checked = true;
-          builder.runChecks(path, value, this.currentOptions, this.currentConfig);
+          builder.runChecks(path, value, this.currentOptions, this.optimalOptions);
         }
       });
 

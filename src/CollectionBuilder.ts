@@ -31,11 +31,16 @@ export default class CollectionBuilder<T, TDefault> extends Builder<TDefault | n
     if (process.env.NODE_ENV !== 'production') {
       if (this.type === 'array') {
         value.forEach((item: T, i: number) => {
-          contents.runChecks(`${path}[${i}]`, item, this.currentOptions, this.currentConfig);
+          contents.runChecks(`${path}[${i}]`, item, this.currentOptions, this.optimalOptions);
         });
       } else if (this.type === 'object') {
         Object.keys(value).forEach(key => {
-          contents.runChecks(`${path}.${key}`, value[key], this.currentOptions, this.currentConfig);
+          contents.runChecks(
+            `${path}.${key}`,
+            value[key],
+            this.currentOptions,
+            this.optimalOptions,
+          );
         });
       }
     }

@@ -4,7 +4,7 @@
  */
 
 import isObject from './isObject';
-import { SupportedType, Checker, CustomCallback, OptionsBag, OptionsConfig } from './types';
+import { SupportedType, Checker, CustomCallback, Options, OptimalOptions } from './types';
 
 export interface Check {
   args: any[];
@@ -14,9 +14,7 @@ export interface Check {
 export default class Builder<T> {
   checks: Check[] = [];
 
-  currentConfig: OptionsConfig = {};
-
-  currentOptions: OptionsBag = {};
+  currentOptions: Options = {};
 
   defaultValue: T;
 
@@ -27,6 +25,8 @@ export default class Builder<T> {
   isNullable: boolean = false;
 
   isRequired: boolean = false;
+
+  optimalOptions: OptimalOptions = {};
 
   type: SupportedType;
 
@@ -173,7 +173,7 @@ export default class Builder<T> {
         return;
       }
 
-      const { name } = this.currentConfig;
+      const { name } = this.optimalOptions;
       let prefix = '';
 
       if (path) {
@@ -295,9 +295,14 @@ export default class Builder<T> {
   /**
    * Run all validation checks that have been enqueued.
    */
-  runChecks(path: string, initialValue: any, options: OptionsBag, config: OptionsConfig = {}): any {
-    this.currentConfig = config;
+  runChecks(
+    path: string,
+    initialValue: any,
+    options: Options,
+    optimalOptions: OptimalOptions = {},
+  ): any {
     this.currentOptions = options;
+    this.optimalOptions = optimalOptions;
 
     let value = initialValue;
 

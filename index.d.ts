@@ -8,11 +8,11 @@ declare module 'optimal/lib/types' {
       [field: string]: Builder<any> | Blueprint;
   }
   export type Checker = (path: string, value: any, ...args: any[]) => void;
-  export type CustomCallback = (value: any, options: OptionsBag) => void;
-  export interface OptionsBag {
+  export type CustomCallback = (value: any, options: Options) => void;
+  export interface Options {
       [key: string]: any;
   }
-  export interface OptionsConfig {
+  export interface OptimalOptions extends Options {
       name?: string;
       unknown?: boolean;
   }
@@ -20,20 +20,20 @@ declare module 'optimal/lib/types' {
 
 }
 declare module 'optimal/lib/Builder' {
-  import { SupportedType, Checker, CustomCallback, OptionsBag, OptionsConfig } from 'optimal/lib/types';
+  import { SupportedType, Checker, CustomCallback, Options, OptimalOptions } from 'optimal/lib/types';
   export interface Check {
       args: any[];
       callback: Checker;
   }
   export default class Builder<T> {
       checks: Check[];
-      currentConfig: OptionsConfig;
-      currentOptions: OptionsBag;
+      currentOptions: Options;
       defaultValue: T;
       deprecatedMessage: string;
       errorMessage: string;
       isNullable: boolean;
       isRequired: boolean;
+      optimalOptions: OptimalOptions;
       type: SupportedType;
       constructor(type: SupportedType, defaultValue: T);
       addCheck(checker: Checker, ...args: any[]): this;
@@ -52,7 +52,7 @@ declare module 'optimal/lib/Builder' {
       or(...keys: string[]): this;
       checkOr(path: string, value: any, otherKeys: string[]): void;
       required(state?: boolean): this;
-      runChecks(path: string, initialValue: any, options: OptionsBag, config?: OptionsConfig): any;
+      runChecks(path: string, initialValue: any, options: Options, optimalOptions?: OptimalOptions): any;
       typeAlias(): string;
       xor(...keys: string[]): this;
       checkXor(path: string, value: any, otherKeys: string[]): void;
@@ -85,11 +85,9 @@ declare module 'optimal/lib/typeOf' {
   export default function typeOf(value: any): SupportedType;
 
 }
-declare module 'optimal/lib/Options' {
-  import { Blueprint, OptionsBag, OptionsConfig } from 'optimal/lib/types';
-  export default class Options implements OptionsBag {
-      constructor(options: OptionsBag, blueprint: Blueprint, config?: OptionsConfig);
-  }
+declare module 'optimal/lib/optimal' {
+  import { Blueprint, Options, OptimalOptions } from 'optimal/lib/types';
+  export default function optimal<T extends Options>(stagedOptions: Options, blueprint: Blueprint, options?: OptimalOptions): T;
 
 }
 declare module 'optimal/lib/InstanceBuilder' {
@@ -100,7 +98,7 @@ declare module 'optimal/lib/InstanceBuilder' {
       checkInstance(path: string, value: any, refClass: T | null): void;
       typeAlias(): string;
   }
-  export function instance<T>(refClass?: T | null): InstanceBuilder<T>;
+  export function instance<T extends Function>(refClass?: T | null): InstanceBuilder<T>;
   export function regex(): InstanceBuilder<Function>;
   export function date(): InstanceBuilder<Function>;
 
@@ -165,7 +163,7 @@ declare module 'optimal/lib/UnionBuilder' {
 
 }
 declare module 'optimal' {
-  import Options from 'optimal/lib/Options';
+  import optimal from 'optimal/lib/optimal';
   import Builder, { bool, custom, func } from 'optimal/lib/Builder';
   import CollectionBuilder, { array, object } from 'optimal/lib/CollectionBuilder';
   import InstanceBuilder, { instance, date, regex } from 'optimal/lib/InstanceBuilder';
@@ -173,10 +171,10 @@ declare module 'optimal' {
   import ShapeBuilder, { shape } from 'optimal/lib/ShapeBuilder';
   import StringBuilder, { string } from 'optimal/lib/StringBuilder';
   import UnionBuilder, { union } from 'optimal/lib/UnionBuilder';
-  import { Blueprint, Checker, CustomCallback, OptionsBag, OptionsConfig, SupportedType } from 'optimal/lib/types';
+  import { Blueprint, Checker, CustomCallback, Options, OptimalOptions, SupportedType } from 'optimal/lib/types';
   export { array, bool, custom, date, func, instance, number, object, regex, shape, string, union };
   export { Builder, CollectionBuilder, InstanceBuilder, NumberBuilder, ShapeBuilder, StringBuilder, UnionBuilder };
-  export { Blueprint, Checker, CustomCallback, OptionsBag, OptionsConfig, SupportedType };
-  export default Options;
+  export { Blueprint, Checker, CustomCallback, Options, OptimalOptions, SupportedType };
+  export default optimal;
 
 }

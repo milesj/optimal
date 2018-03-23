@@ -11,15 +11,14 @@ export interface Blueprint {
 
 export type Checker = (path: string, value: any, ...args: any[]) => void;
 
-export type CustomCallback = (value: any, options: OptionsBag) => void;
+export type CustomCallback = (value: any, options: Options) => void;
 
-export interface OptionsBag {
+export interface Options {
   [key: string]: any;
 }
 
-export interface OptionsConfig {
-  // eslint-disable-next-line no-restricted-globals
-  name?: string;
+export interface OptimalOptions extends Options {
+  name?: string; // eslint-disable-line no-restricted-globals
   unknown?: boolean;
 }
 
