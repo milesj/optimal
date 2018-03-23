@@ -5,6 +5,24 @@
 
 import Builder from './Builder';
 
+export interface Blueprint {
+  [field: string]: Builder<any> | Blueprint;
+}
+
+export type Checker = (path: string, value: any, ...args: any[]) => void;
+
+export type CustomCallback = (value: any, options: OptionsBag) => void;
+
+export interface OptionsBag {
+  [key: string]: any;
+}
+
+export interface OptionsConfig {
+  // eslint-disable-next-line no-restricted-globals
+  name?: string;
+  unknown?: boolean;
+}
+
 export type SupportedType =
   | 'array'
   | 'boolean'
@@ -16,21 +34,3 @@ export type SupportedType =
   | 'string'
   | 'union'
   | 'custom';
-
-export type Checker = (path: string, value: any, ...args: any[]) => void;
-
-export type CustomCallback = (value: any, options: Options) => void;
-
-export interface Blueprint {
-  [field: string]: Builder<any> | Blueprint;
-}
-
-export interface Config {
-  // eslint-disable-next-line no-restricted-globals
-  name?: string;
-  unknown?: boolean;
-}
-
-export interface Options {
-  [key: string]: any;
-}

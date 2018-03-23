@@ -6,16 +6,16 @@
 import Builder from './Builder';
 import isObject from './isObject';
 import typeOf from './typeOf';
-import { Blueprint, Config, Options } from './types';
+import { Blueprint, OptionsBag, OptionsConfig } from './types';
 
-function buildAndCheckOptions<T extends Options>(
-  baseOptions: Options,
+function buildAndCheckOptions(
+  baseOptions: OptionsBag,
   blueprint: Blueprint,
-  config: Config = {},
+  config: OptionsConfig = {},
   parentPath: string = '',
-): T {
-  const unknownOptions: Options = { ...baseOptions };
-  const options = {} as T;
+): OptionsBag {
+  const unknownOptions: OptionsBag = { ...baseOptions };
+  const options: OptionsBag = {};
 
   // Validate using the blueprint
   Object.keys(blueprint).forEach(key => {
@@ -53,20 +53,27 @@ function buildAndCheckOptions<T extends Options>(
   return options;
 }
 
-export default function parseOptions<T extends Options>(
-  options: Options,
-  blueprint: Blueprint,
-  config: Config = {},
-): T {
-  if (process.env.NODE_ENV !== 'production') {
-    if (!isObject(options)) {
-      throw new TypeError(`Options require a plain object, found ${typeOf(options)}.`);
-    } else if (!isObject(config)) {
-      throw new TypeError('Option configuration must be a plain object.');
-    } else if (!isObject(blueprint)) {
-      throw new TypeError('An options blueprint is required.');
+export default class Options implements OptionsBag {
+  constructor(
+    options: OptionsBag,
+    blueprint: Blueprint,
+    config: OptionsConfig = {},
+  ) {
+    if (process.env.NODE_ENV !== 'production') {
+      if (!isObject(options)) {
+        throw new TypeError(`Options require a plain object, found ${typeOf(options)}.`);
+      } else if (!isObject(config)) {
+        throw new TypeError('Option configuration must be a plain object.');
+      } else if (!isObject(blueprint)) {
+        throw new TypeError('An options blueprint is required.');
+      }
     }
-  }
 
-  return buildAndCheckOptions(options, blueprint, config);
+    const builtOptions = buildAndCheckOptions(options, blueprint, config);
+
+    Object.keys(builtOptions).forEach(key => {
+      // @ts-ignore
+      this[key] = builtOptions[key];
+    });
+  }
 }

@@ -5,17 +5,14 @@
 
 import Builder from './Builder';
 import isObject from './isObject';
-
-export interface ShapeBlueprint {
-  [key: string]: Builder<any>;
-}
+import { Blueprint } from './types';
 
 export interface Shape {
   [key: string]: any;
 }
 
 export default class ShapeBuilder extends Builder<Shape | null> {
-  constructor(contents: ShapeBlueprint, defaultValue: Shape | null = {}) {
+  constructor(contents: Blueprint, defaultValue: Shape | null = {}) {
     super('shape', defaultValue);
 
     if (process.env.NODE_ENV !== 'production') {
@@ -30,13 +27,13 @@ export default class ShapeBuilder extends Builder<Shape | null> {
     }
   }
 
-  checkContents(path: string, object: any, contents: ShapeBlueprint) {
+  checkContents(path: string, object: any, contents: Blueprint) {
     if (process.env.NODE_ENV !== 'production') {
       Object.keys(contents).forEach(key => {
         const builder = contents[key];
 
         // Properties should be optional by default unless explicitly required
-        if (builder.isRequired || typeof object[key] !== 'undefined') {
+        if (builder instanceof Builder && (builder.isRequired || typeof object[key] !== 'undefined')) {
           builder.runChecks(`${path}.${key}`, object[key], object, this.currentConfig);
         }
       });
@@ -44,6 +41,6 @@ export default class ShapeBuilder extends Builder<Shape | null> {
   }
 }
 
-export function shape(contents: ShapeBlueprint, defaultValue: Shape | null = {}): ShapeBuilder {
+export function shape(contents: Blueprint, defaultValue: Shape | null = {}): ShapeBuilder {
   return new ShapeBuilder(contents, defaultValue);
 }

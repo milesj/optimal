@@ -4,31 +4,31 @@ declare module 'optimal/lib/isObject' {
 }
 declare module 'optimal/lib/types' {
   import Builder from 'optimal/lib/Builder';
-  export type SupportedType = 'array' | 'boolean' | 'function' | 'instance' | 'number' | 'object' | 'shape' | 'string' | 'union' | 'custom';
-  export type Checker = (path: string, value: any, ...args: any[]) => void;
-  export type CustomCallback = (value: any, options: Options) => void;
   export interface Blueprint {
       [field: string]: Builder<any> | Blueprint;
   }
-  export interface Config {
+  export type Checker = (path: string, value: any, ...args: any[]) => void;
+  export type CustomCallback = (value: any, options: OptionsBag) => void;
+  export interface OptionsBag {
+      [key: string]: any;
+  }
+  export interface OptionsConfig {
       name?: string;
       unknown?: boolean;
   }
-  export interface Options {
-      [key: string]: any;
-  }
+  export type SupportedType = 'array' | 'boolean' | 'function' | 'instance' | 'number' | 'object' | 'shape' | 'string' | 'union' | 'custom';
 
 }
 declare module 'optimal/lib/Builder' {
-  import { SupportedType, Checker, Config, CustomCallback, Options } from 'optimal/lib/types';
+  import { SupportedType, Checker, CustomCallback, OptionsBag, OptionsConfig } from 'optimal/lib/types';
   export interface Check {
       args: any[];
       callback: Checker;
   }
   export default class Builder<T> {
       checks: Check[];
-      currentConfig: Config;
-      currentOptions: Options;
+      currentConfig: OptionsConfig;
+      currentOptions: OptionsBag;
       defaultValue: T;
       deprecatedMessage: string;
       errorMessage: string;
@@ -52,7 +52,7 @@ declare module 'optimal/lib/Builder' {
       or(...keys: string[]): this;
       checkOr(path: string, value: any, otherKeys: string[]): void;
       required(state?: boolean): this;
-      runChecks(path: string, initialValue: any, options: Options, config?: Config): any;
+      runChecks(path: string, initialValue: any, options: OptionsBag, config?: OptionsConfig): any;
       typeAlias(): string;
       xor(...keys: string[]): this;
       checkXor(path: string, value: any, otherKeys: string[]): void;
@@ -78,6 +78,18 @@ declare module 'optimal/lib/CollectionBuilder' {
   } | null): CollectionBuilder<T, {
       [key: string]: T;
   }>;
+
+}
+declare module 'optimal/lib/typeOf' {
+  import { SupportedType } from 'optimal/lib/types';
+  export default function typeOf(value: any): SupportedType;
+
+}
+declare module 'optimal/lib/Options' {
+  import { Blueprint, OptionsBag, OptionsConfig } from 'optimal/lib/types';
+  export default class Options implements OptionsBag {
+      constructor(options: OptionsBag, blueprint: Blueprint, config?: OptionsConfig);
+  }
 
 }
 declare module 'optimal/lib/InstanceBuilder' {
@@ -113,17 +125,15 @@ declare module 'optimal/lib/NumberBuilder' {
 }
 declare module 'optimal/lib/ShapeBuilder' {
   import Builder from 'optimal/lib/Builder';
-  export interface ShapeBlueprint {
-      [key: string]: Builder<any>;
-  }
+  import { Blueprint } from 'optimal/lib/types';
   export interface Shape {
       [key: string]: any;
   }
   export default class ShapeBuilder extends Builder<Shape | null> {
-      constructor(contents: ShapeBlueprint, defaultValue?: Shape | null);
-      checkContents(path: string, object: any, contents: ShapeBlueprint): void;
+      constructor(contents: Blueprint, defaultValue?: Shape | null);
+      checkContents(path: string, object: any, contents: Blueprint): void;
   }
-  export function shape(contents: ShapeBlueprint, defaultValue?: Shape | null): ShapeBuilder;
+  export function shape(contents: Blueprint, defaultValue?: Shape | null): ShapeBuilder;
 
 }
 declare module 'optimal/lib/StringBuilder' {
@@ -143,11 +153,6 @@ declare module 'optimal/lib/StringBuilder' {
   export function string(defaultValue?: string | null): StringBuilder;
 
 }
-declare module 'optimal/lib/typeOf' {
-  import { SupportedType } from 'optimal/lib/types';
-  export default function typeOf(value: any): SupportedType;
-
-}
 declare module 'optimal/lib/UnionBuilder' {
   import Builder from 'optimal/lib/Builder';
   export default class UnionBuilder extends Builder<any> {
@@ -159,12 +164,8 @@ declare module 'optimal/lib/UnionBuilder' {
   export function union(builders: Builder<any>[], defaultValue?: any | null): UnionBuilder;
 
 }
-declare module 'optimal/lib/Options' {
-  import { Blueprint, Config, Options } from 'optimal/lib/types';
-  export default function parseOptions<T extends Options>(options: Options, blueprint: Blueprint, config?: Config): T;
-
-}
 declare module 'optimal' {
+  import Options from 'optimal/lib/Options';
   import Builder, { bool, custom, func } from 'optimal/lib/Builder';
   import CollectionBuilder, { array, object } from 'optimal/lib/CollectionBuilder';
   import InstanceBuilder, { instance, date, regex } from 'optimal/lib/InstanceBuilder';
@@ -172,11 +173,10 @@ declare module 'optimal' {
   import ShapeBuilder, { shape } from 'optimal/lib/ShapeBuilder';
   import StringBuilder, { string } from 'optimal/lib/StringBuilder';
   import UnionBuilder, { union } from 'optimal/lib/UnionBuilder';
-  import parseOptions from 'optimal/lib/Options';
-  import { Blueprint, Checker, Config, CustomCallback, Options, SupportedType } from 'optimal/lib/types';
+  import { Blueprint, Checker, CustomCallback, OptionsBag, OptionsConfig, SupportedType } from 'optimal/lib/types';
   export { array, bool, custom, date, func, instance, number, object, regex, shape, string, union };
   export { Builder, CollectionBuilder, InstanceBuilder, NumberBuilder, ShapeBuilder, StringBuilder, UnionBuilder };
-  export { Blueprint, Checker, Config, CustomCallback, Options, SupportedType };
-  export default parseOptions;
+  export { Blueprint, Checker, CustomCallback, OptionsBag, OptionsConfig, SupportedType };
+  export default Options;
 
 }

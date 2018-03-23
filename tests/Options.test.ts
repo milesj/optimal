@@ -1,4 +1,6 @@
-import parseOptions, {
+/* eslint-disable no-new */
+
+import Options, {
   array,
   bool,
   func,
@@ -86,31 +88,31 @@ describe('Options', () => {
 
   it('errors if a non-object is passed', () => {
     expect(() => {
-      parseOptions([]);
+      new Options([]);
     }).toThrowError('Options require a plain object, found array.');
 
     expect(() => {
-      parseOptions(123);
+      new Options(123);
     }).toThrowError('Options require a plain object, found number.');
 
     expect(() => {
-      parseOptions('foo');
+      new Options('foo');
     }).toThrowError('Options require a plain object, found string.');
 
     expect(() => {
-      parseOptions(() => {});
+      new Options(() => {});
     }).toThrowError('Options require a plain object, found function.');
   });
 
   it('errors if a non-object is passed as a blueprint', () => {
     expect(() => {
-      parseOptions({}, 123);
+      new Options({}, 123);
     }).toThrowError('An options blueprint is required.');
   });
 
   it('errors if a non-builder is passed within the blueprint', () => {
     expect(() => {
-      parseOptions(
+      new Options(
         {},
         {
           foo: 123,
@@ -121,12 +123,12 @@ describe('Options', () => {
 
   it('errors if a non-object config is passed', () => {
     expect(() => {
-      parseOptions({}, blueprint, 123);
+      new Options({}, blueprint, 123);
     }).toThrowError('Option configuration must be a plain object.');
   });
 
   it('sets object keys as class properties', () => {
-    options = parseOptions(
+    options = new Options(
       {
         foo: 123,
         bar: true,
@@ -149,7 +151,7 @@ describe('Options', () => {
   });
 
   it('sets default values', () => {
-    options = parseOptions({}, blueprint);
+    options = new Options({}, blueprint);
 
     expect(options).toEqual({
       context: process.cwd(),
@@ -182,7 +184,7 @@ describe('Options', () => {
 
   it('runs checks for root level values', () => {
     expect(() => {
-      options = parseOptions(
+      options = new Options(
         {
           entry: 123,
         },
@@ -195,7 +197,7 @@ describe('Options', () => {
 
   it('runs checks for nested level values', () => {
     expect(() => {
-      options = parseOptions(
+      options = new Options(
         {
           output: {
             crossOriginLoading: 'not-anonymous',
@@ -210,7 +212,7 @@ describe('Options', () => {
 
   it('includes a custom `name` in the error message', () => {
     expect(() => {
-      options = parseOptions(
+      options = new Options(
         {
           entry: 123,
         },
@@ -227,7 +229,7 @@ describe('Options', () => {
   describe('unknown options', () => {
     it('errors for unknown options', () => {
       expect(() => {
-        parseOptions(
+        new Options(
           {
             foo: 123,
             bar: 456,
@@ -239,7 +241,7 @@ describe('Options', () => {
 
     it('doesnt error for unknown options if `unknown` is true', () => {
       expect(() => {
-        parseOptions(
+        new Options(
           {
             foo: 123,
             bar: 456,
@@ -254,7 +256,7 @@ describe('Options', () => {
 
     it('sets unknown options', () => {
       expect(
-        parseOptions(
+        new Options(
           {
             foo: 123,
             bar: 456,
@@ -283,11 +285,11 @@ describe('Options', () => {
 
       // Dont error if all are undefined
       expect(() => {
-        parseOptions({}, and);
+        new Options({}, and);
       }).not.toThrowError('All of these options must be defined: foo, bar, baz');
 
       expect(() => {
-        parseOptions(
+        new Options(
           {
             foo: 'a',
           },
@@ -296,7 +298,7 @@ describe('Options', () => {
       }).toThrowError('All of these options must be defined: foo, bar, baz');
 
       expect(() => {
-        parseOptions(
+        new Options(
           {
             foo: 'a',
             bar: 'b',
@@ -306,7 +308,7 @@ describe('Options', () => {
       }).toThrowError('All of these options must be defined: foo, bar, baz');
 
       expect(() => {
-        parseOptions(
+        new Options(
           {
             foo: 'a',
             baz: 'c',
@@ -316,7 +318,7 @@ describe('Options', () => {
       }).toThrowError('All of these options must be defined: foo, bar, baz');
 
       expect(() => {
-        parseOptions(
+        new Options(
           {
             foo: 'a',
             bar: 'b',
@@ -335,11 +337,11 @@ describe('Options', () => {
       };
 
       expect(() => {
-        parseOptions({}, or);
+        new Options({}, or);
       }).toThrowError('At least one of these options must be defined: foo, bar, baz');
 
       expect(() => {
-        parseOptions(
+        new Options(
           {
             foo: 'a',
           },
@@ -348,7 +350,7 @@ describe('Options', () => {
       }).not.toThrowError('At least one of these options must be defined: foo, bar, baz');
 
       expect(() => {
-        parseOptions(
+        new Options(
           {
             bar: 'b',
           },
@@ -357,7 +359,7 @@ describe('Options', () => {
       }).not.toThrowError('At least one of these options must be defined: foo, bar, baz');
 
       expect(() => {
-        parseOptions(
+        new Options(
           {
             baz: 'c',
           },
@@ -366,7 +368,7 @@ describe('Options', () => {
       }).not.toThrowError('At least one of these options must be defined: foo, bar, baz');
 
       expect(() => {
-        parseOptions(
+        new Options(
           {
             foo: 'a',
             bar: 'b',
@@ -385,11 +387,11 @@ describe('Options', () => {
       };
 
       expect(() => {
-        parseOptions({}, xor);
+        new Options({}, xor);
       }).toThrowError('Only one of these options may be defined: foo, bar, baz');
 
       expect(() => {
-        parseOptions(
+        new Options(
           {
             foo: 'a',
           },
@@ -398,7 +400,7 @@ describe('Options', () => {
       }).not.toThrowError('Only one of these options may be defined: foo, bar, baz');
 
       expect(() => {
-        parseOptions(
+        new Options(
           {
             bar: 'b',
           },
@@ -407,7 +409,7 @@ describe('Options', () => {
       }).not.toThrowError('Only one of these options may be defined: foo, bar, baz');
 
       expect(() => {
-        parseOptions(
+        new Options(
           {
             baz: 'c',
           },
@@ -416,7 +418,7 @@ describe('Options', () => {
       }).not.toThrowError('Only one of these options may be defined: foo, bar, baz');
 
       expect(() => {
-        parseOptions(
+        new Options(
           {
             foo: 'a',
             bar: 'b',
