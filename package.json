@@ -16,9 +16,9 @@
     "prettier": "beemo prettier",
     "prerelease": "yarn run package",
     "release": "np --yolo",
-    "pretest": "yarn run type --silent",
-    "test": "yarn run jest --silent",
-    "posttest": "yarn run eslint --silent",
+    "pretest": "yarn run type",
+    "test": "yarn run jest",
+    "posttest": "yarn run eslint",
     "type": "beemo typescript --noEmit"
   },
   "repository": {
