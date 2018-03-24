@@ -6,10 +6,12 @@
 import Builder from './Builder';
 import isObject from './isObject';
 
-export default class InstanceBuilder<T> extends Builder<T | null> {
-  refClass: T | null = null;
+export type Constructor<T> = new (...args: any[]) => T;
 
-  constructor(refClass: T | null = null) {
+export default class InstanceBuilder<T> extends Builder<T | null> {
+  refClass: Constructor<T> | null = null;
+
+  constructor(refClass: Constructor<T> | null = null) {
     super('instance', null);
 
     // Nullable by default
@@ -54,14 +56,14 @@ export default class InstanceBuilder<T> extends Builder<T | null> {
   }
 }
 
-export function instance<T extends Function>(refClass: T | null = null): InstanceBuilder<T> {
+export function instance<T>(refClass: Constructor<T> | null = null): InstanceBuilder<T> {
   return new InstanceBuilder(refClass);
 }
 
-export function regex(): InstanceBuilder<Function> {
+export function regex(): InstanceBuilder<RegExp> {
   return instance(RegExp);
 }
 
-export function date(): InstanceBuilder<Function> {
+export function date(): InstanceBuilder<Date> {
   return instance(Date);
 }

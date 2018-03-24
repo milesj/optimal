@@ -18,7 +18,7 @@ export interface Options {
 }
 
 export interface OptimalOptions extends Options {
-  name?: string; // eslint-disable-line no-restricted-globals
+  name?: string;
   unknown?: boolean;
 }
 

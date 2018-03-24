@@ -92,15 +92,16 @@ declare module 'optimal/lib/optimal' {
 }
 declare module 'optimal/lib/InstanceBuilder' {
   import Builder from 'optimal/lib/Builder';
+  export type Constructor<T> = new (...args: any[]) => T;
   export default class InstanceBuilder<T> extends Builder<T | null> {
-      refClass: T | null;
-      constructor(refClass?: T | null);
+      refClass: Constructor<T> | null;
+      constructor(refClass?: Constructor<T> | null);
       checkInstance(path: string, value: any, refClass: T | null): void;
       typeAlias(): string;
   }
-  export function instance<T extends Function>(refClass?: T | null): InstanceBuilder<T>;
-  export function regex(): InstanceBuilder<Function>;
-  export function date(): InstanceBuilder<Function>;
+  export function instance<T>(refClass?: Constructor<T> | null): InstanceBuilder<T>;
+  export function regex(): InstanceBuilder<RegExp>;
+  export function date(): InstanceBuilder<Date>;
 
 }
 declare module 'optimal/lib/NumberBuilder' {
