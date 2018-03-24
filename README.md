@@ -13,7 +13,7 @@ Optimal, a system for building and validating options and configuration objects.
 
 ## Documentation
 
-* [Options Class](#options-class)
+* [Options](#options)
   * [Blueprint](#predicate-blueprint)
   * [Customization](#customization)
 * [Predicates](#predicates)

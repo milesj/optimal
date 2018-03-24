@@ -5,18 +5,21 @@
   "main": "./lib/index.js",
   "module": "./esm/index.js",
   "scripts": {
-    "build": "beemo typescript",
+    "babel": "beemo typescript",
+    "build": "yarn run babel && yarn run build:dts",
     "build:dts": "beemo run-script generate-dts",
+    "clean": "rimraf ./{lib,esm}/",
     "coverage": "yarn run jest --coverage",
     "eslint": "beemo eslint",
-    "type": "beemo typescript --noEmit",
     "jest": "beemo jest",
+    "package": "yarn run clean && yarn run build && yarn test",
     "prettier": "beemo prettier",
-    "posttest": "yarn run eslint --silent",
+    "prerelease": "yarn run package",
+    "release": "np --yolo",
     "pretest": "yarn run type --silent",
-    "preversion": "yarn test",
     "test": "yarn run jest --silent",
-    "postversion": "yarn run build && yarn run build:dts"
+    "posttest": "yarn run eslint --silent",
+    "type": "beemo typescript --noEmit"
   },
   "repository": {
     "type": "git",
@@ -45,7 +48,7 @@
     "babel-runtime": "^6.26.0"
   },
   "devDependencies": {
-    "@milesj/build-tool-config": "^0.76.2"
+    "@milesj/build-tool-config": "^0.78.0"
   },
   "beemo": {
     "module": "@milesj/build-tool-config",
@@ -56,5 +59,8 @@
       "prettier",
       "typescript"
     ]
-  }
+  },
+  "browserslist": [
+    "ie 10"
+  ]
 }
