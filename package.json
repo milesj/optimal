@@ -1,6 +1,6 @@
 {
   "name": "optimal",
-  "version": "0.17.2",
+  "version": "0.17.3",
   "description": "Options object builder and validator.",
   "main": "./lib/index.js",
   "module": "./esm/index.js",
