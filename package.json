@@ -1,7 +1,7 @@
 {
   "name": "optimal",
   "version": "0.17.3",
-  "description": "Options object builder and validator.",
+  "description": "A system for building and validating defined object structures",
   "main": "./lib/index.js",
   "module": "./esm/index.js",
   "scripts": {
@@ -10,12 +10,15 @@
     "build:dts": "beemo run-script generate-dts",
     "clean": "rimraf ./{lib,esm}/",
     "coverage": "yarn run jest --coverage",
+    "docs": "gitbook build --debug",
+    "docs:serve": "gitbook serve",
+    "docs:install": "gitbook install",
     "eslint": "beemo eslint",
     "jest": "beemo jest",
     "package": "yarn run clean && yarn run build && yarn test",
     "prettier": "beemo prettier",
     "prerelease": "yarn run package",
-    "release": "np --yolo",
+    "release": "np --yolo --no-yarn",
     "pretest": "yarn run type",
     "test": "yarn run jest",
     "posttest": "yarn run eslint",
@@ -33,7 +36,8 @@
     "config",
     "defaults",
     "object",
-    "params"
+    "params",
+    "struct"
   ],
   "author": {
     "name": "Miles Johnson",
