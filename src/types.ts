@@ -9,27 +9,29 @@ export interface Blueprint {
   [field: string]: Builder<any> | Blueprint;
 }
 
-export type Checker = (path: string, value: any, ...args: any[]) => void;
+export type CheckerCallback = (path: string, value: any, ...args: any[]) => void;
 
-export type CustomCallback = (value: any, options: Options) => void;
+export type CustomCallback = (value: any, struct: Struct) => void;
 
-export interface Options {
-  [key: string]: any;
+export interface Struct<T = any> {
+  [key: string]: T;
 }
 
-export interface OptimalOptions extends Options {
+export interface OptimalOptions extends Struct {
   name?: string;
   unknown?: boolean;
 }
 
-export type SupportedType =
-  | 'array'
-  | 'boolean'
-  | 'function'
-  | 'instance'
-  | 'number'
-  | 'object'
-  | 'shape'
-  | 'string'
-  | 'union'
-  | 'custom';
+export enum SupportedType {
+  Array = 'array',
+  Boolean = 'boolean',
+  Custom = 'custom',
+  Function = 'function',
+  Instance = 'instance',
+  Number = 'number',
+  Object = 'object',
+  Shape = 'shape',
+  String = 'string',
+  Union = 'union',
+  Unknown = 'unknown',
+}

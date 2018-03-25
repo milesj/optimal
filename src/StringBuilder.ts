@@ -4,6 +4,7 @@
  */
 
 import Builder from './Builder';
+import { SupportedType } from './types';
 
 function isString(value: any): boolean {
   return typeof value === 'string' && value !== '';
@@ -13,7 +14,7 @@ export default class StringBuilder extends Builder<string | null> {
   allowEmpty: boolean = false;
 
   constructor(defaultValue: string | null = '') {
-    super('string', defaultValue);
+    super(SupportedType.String, defaultValue);
 
     // Not empty by default
     if (process.env.NODE_ENV !== 'production') {

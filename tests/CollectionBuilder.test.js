@@ -44,25 +44,25 @@ describe('array()', () => {
     it('errors if a non-array is passed', () => {
       expect(() => {
         builder.runChecks('key', 'foo');
-      }).toThrowError('Invalid option "key". Must be an array.');
+      }).toThrowError('Invalid field "key". Must be an array.');
     });
 
     it('errors if a non-array is passed, when not using a builder', () => {
       expect(() => {
         array().runChecks('key', 'foo');
-      }).toThrowError('Invalid option "key". Must be an array.');
+      }).toThrowError('Invalid field "key". Must be an array.');
     });
 
     it('checks each item in the array', () => {
       expect(() => {
         builder.runChecks('key', ['foo', 'bar', 'baz', 123]);
-      }).toThrowError('Invalid option "key[3]". Must be a string.');
+      }).toThrowError('Invalid field "key[3]". Must be a string.');
     });
 
     it('errors if an array item is invalid; persists path with index', () => {
       expect(() => {
         builder.runChecks('key', [123]);
-      }).toThrowError('Invalid option "key[0]". Must be a string.');
+      }).toThrowError('Invalid field "key[0]". Must be a string.');
     });
 
     it('supports arrays of arrays', () => {
@@ -78,7 +78,7 @@ describe('array()', () => {
 
       expect(() => {
         builder.runChecks('key', [['foo', 'bar'], ['baz', 123]]);
-      }).toThrowError('Invalid option "key[1][1]". Must be a string.');
+      }).toThrowError('Invalid field "key[1][1]". Must be a string.');
     });
   });
 
@@ -97,13 +97,13 @@ describe('array()', () => {
     it('errors if value is empty', () => {
       expect(() => {
         builder.checkNotEmpty('key', []);
-      }).toThrowError('Invalid option "key". Array cannot be empty.');
+      }).toThrowError('Invalid field "key". Array cannot be empty.');
     });
 
     it('doesnt error if not empty', () => {
       expect(() => {
         builder.checkNotEmpty('key', [123]);
-      }).not.toThrowError('Invalid option "key". Array cannot be empty.');
+      }).not.toThrowError('Invalid field "key". Array cannot be empty.');
     });
   });
 
@@ -160,13 +160,13 @@ describe('object()', () => {
     it('errors if a non-object is passed', () => {
       expect(() => {
         builder.runChecks('key', 'foo');
-      }).toThrowError('Invalid option "key". Must be a plain object.');
+      }).toThrowError('Invalid field "key". Must be a plain object.');
     });
 
     it('errors if a non-object is passed, when not using a builder', () => {
       expect(() => {
         object().runChecks('key', 'foo');
-      }).toThrowError('Invalid option "key". Must be a plain object.');
+      }).toThrowError('Invalid field "key". Must be a plain object.');
     });
 
     it('checks each item in the object', () => {
@@ -176,7 +176,7 @@ describe('object()', () => {
           b: 'bar',
           c: 123,
         });
-      }).toThrowError('Invalid option "key.c". Must be a string.');
+      }).toThrowError('Invalid field "key.c". Must be a string.');
     });
 
     it('errors if an object item is invalid; persists path with index', () => {
@@ -184,7 +184,7 @@ describe('object()', () => {
         builder.runChecks('key', {
           foo: 123,
         });
-      }).toThrowError('Invalid option "key.foo". Must be a string.');
+      }).toThrowError('Invalid field "key.foo". Must be a string.');
     });
 
     it('supports objects of objects', () => {
@@ -216,7 +216,7 @@ describe('object()', () => {
             baz: '789',
           },
         });
-      }).toThrowError('Invalid option "key.a.bar". Must be a string.');
+      }).toThrowError('Invalid field "key.a.bar". Must be a string.');
     });
   });
 
@@ -235,13 +235,13 @@ describe('object()', () => {
     it('errors if value is empty', () => {
       expect(() => {
         builder.checkNotEmpty('key', {});
-      }).toThrowError('Invalid option "key". Object cannot be empty.');
+      }).toThrowError('Invalid field "key". Object cannot be empty.');
     });
 
     it('doesnt error if not empty', () => {
       expect(() => {
         builder.checkNotEmpty('key', { foo: 123 });
-      }).not.toThrowError('Invalid option "key". Object cannot be empty.');
+      }).not.toThrowError('Invalid field "key". Object cannot be empty.');
     });
   });
 

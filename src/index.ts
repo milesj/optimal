@@ -13,10 +13,10 @@ import StringBuilder, { string } from './StringBuilder';
 import UnionBuilder, { union } from './UnionBuilder';
 import {
   Blueprint,
-  Checker,
+  CheckerCallback,
   CustomCallback,
-  Options,
   OptimalOptions,
+  Struct,
   SupportedType,
 } from './types';
 
@@ -32,6 +32,6 @@ export {
   UnionBuilder,
 };
 
-export { Blueprint, Checker, CustomCallback, Options, OptimalOptions, SupportedType };
+export { Blueprint, CheckerCallback, CustomCallback, OptimalOptions, Struct, SupportedType };
 
 export default optimal;

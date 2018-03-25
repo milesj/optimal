@@ -13,7 +13,7 @@ import optimal, {
 
 class Plugin {}
 
-describe('Options', () => {
+describe('Optimal', () => {
   let options;
 
   // This blueprint is based on Webpack's configuration: https://webpack.js.org/configuration/
@@ -87,25 +87,25 @@ describe('Options', () => {
   it('errors if a non-object is passed', () => {
     expect(() => {
       optimal([]);
-    }).toThrowError('Options require a plain object, found array.');
+    }).toThrowError('Optimal requires a plain object, found array.');
 
     expect(() => {
       optimal(123);
-    }).toThrowError('Options require a plain object, found number.');
+    }).toThrowError('Optimal requires a plain object, found number.');
 
     expect(() => {
       optimal('foo');
-    }).toThrowError('Options require a plain object, found string.');
+    }).toThrowError('Optimal requires a plain object, found string.');
 
     expect(() => {
       optimal(() => {});
-    }).toThrowError('Options require a plain object, found function.');
+    }).toThrowError('Optimal requires a plain object, found function.');
   });
 
   it('errors if a non-object is passed as a blueprint', () => {
     expect(() => {
       optimal({}, 123);
-    }).toThrowError('An options blueprint is required.');
+    }).toThrowError('A blueprint is required.');
   });
 
   it('errors if a non-builder is passed within the blueprint', () => {
@@ -116,7 +116,7 @@ describe('Options', () => {
           foo: 123,
         },
       );
-    }).toThrowError('Unknown blueprint option. Must be a builder or plain object.');
+    }).toThrowError('Unknown blueprint. Must be a builder or plain object.');
   });
 
   it('errors if a non-object config is passed', () => {
@@ -189,7 +189,7 @@ describe('Options', () => {
         blueprint,
       );
     }).toThrowError(
-      'Invalid option "entry". Type must be one of: string, array<string>, object<string | array<string>>, function',
+      'Invalid field "entry". Type must be one of: string, array<string>, object<string | array<string>>, function',
     );
   });
 
@@ -204,7 +204,7 @@ describe('Options', () => {
         blueprint,
       );
     }).toThrowError(
-      'Invalid option "output.crossOriginLoading". String must be one of: anonymous, use-credentials',
+      'Invalid field "output.crossOriginLoading". String must be one of: anonymous, use-credentials',
     );
   });
 
@@ -220,12 +220,12 @@ describe('Options', () => {
         },
       );
     }).toThrowError(
-      'Invalid FooBar option "entry". Type must be one of: string, array<string>, object<string | array<string>>, function',
+      'Invalid FooBar field "entry". Type must be one of: string, array<string>, object<string | array<string>>, function',
     );
   });
 
-  describe('unknown options', () => {
-    it('errors for unknown options', () => {
+  describe('unknown fields', () => {
+    it('errors for unknown fields', () => {
       expect(() => {
         optimal(
           {
@@ -234,10 +234,10 @@ describe('Options', () => {
           },
           blueprint,
         );
-      }).toThrowError('Unknown options: foo, bar.');
+      }).toThrowError('Unknown fields: foo, bar.');
     });
 
-    it('doesnt error for unknown options if `unknown` is true', () => {
+    it('doesnt error for unknown fields if `unknown` is true', () => {
       expect(() => {
         optimal(
           {
@@ -249,10 +249,10 @@ describe('Options', () => {
             unknown: true,
           },
         );
-      }).not.toThrowError('Unknown options: foo, bar.');
+      }).not.toThrowError('Unknown fields: foo, bar.');
     });
 
-    it('sets unknown options', () => {
+    it('sets unknown fields', () => {
       expect(
         optimal(
           {
@@ -284,7 +284,7 @@ describe('Options', () => {
       // Dont error if all are undefined
       expect(() => {
         optimal({}, and);
-      }).not.toThrowError('All of these options must be defined: foo, bar, baz');
+      }).not.toThrowError('All of these fields must be defined: foo, bar, baz');
 
       expect(() => {
         optimal(
@@ -293,7 +293,7 @@ describe('Options', () => {
           },
           and,
         );
-      }).toThrowError('All of these options must be defined: foo, bar, baz');
+      }).toThrowError('All of these fields must be defined: foo, bar, baz');
 
       expect(() => {
         optimal(
@@ -303,7 +303,7 @@ describe('Options', () => {
           },
           and,
         );
-      }).toThrowError('All of these options must be defined: foo, bar, baz');
+      }).toThrowError('All of these fields must be defined: foo, bar, baz');
 
       expect(() => {
         optimal(
@@ -313,7 +313,7 @@ describe('Options', () => {
           },
           and,
         );
-      }).toThrowError('All of these options must be defined: foo, bar, baz');
+      }).toThrowError('All of these fields must be defined: foo, bar, baz');
 
       expect(() => {
         optimal(
@@ -324,7 +324,7 @@ describe('Options', () => {
           },
           and,
         );
-      }).not.toThrowError('All of these options must be defined: foo, bar, baz');
+      }).not.toThrowError('All of these fields must be defined: foo, bar, baz');
     });
 
     it('handles OR', () => {
@@ -336,7 +336,7 @@ describe('Options', () => {
 
       expect(() => {
         optimal({}, or);
-      }).toThrowError('At least one of these options must be defined: foo, bar, baz');
+      }).toThrowError('At least one of these fields must be defined: foo, bar, baz');
 
       expect(() => {
         optimal(
@@ -345,7 +345,7 @@ describe('Options', () => {
           },
           or,
         );
-      }).not.toThrowError('At least one of these options must be defined: foo, bar, baz');
+      }).not.toThrowError('At least one of these fields must be defined: foo, bar, baz');
 
       expect(() => {
         optimal(
@@ -354,7 +354,7 @@ describe('Options', () => {
           },
           or,
         );
-      }).not.toThrowError('At least one of these options must be defined: foo, bar, baz');
+      }).not.toThrowError('At least one of these fields must be defined: foo, bar, baz');
 
       expect(() => {
         optimal(
@@ -363,7 +363,7 @@ describe('Options', () => {
           },
           or,
         );
-      }).not.toThrowError('At least one of these options must be defined: foo, bar, baz');
+      }).not.toThrowError('At least one of these fields must be defined: foo, bar, baz');
 
       expect(() => {
         optimal(
@@ -374,7 +374,7 @@ describe('Options', () => {
           },
           or,
         );
-      }).not.toThrowError('At least one of these options must be defined: foo, bar, baz');
+      }).not.toThrowError('At least one of these fields must be defined: foo, bar, baz');
     });
 
     it('handles XOR', () => {
@@ -386,7 +386,7 @@ describe('Options', () => {
 
       expect(() => {
         optimal({}, xor);
-      }).toThrowError('Only one of these options may be defined: foo, bar, baz');
+      }).toThrowError('Only one of these fields may be defined: foo, bar, baz');
 
       expect(() => {
         optimal(
@@ -395,7 +395,7 @@ describe('Options', () => {
           },
           xor,
         );
-      }).not.toThrowError('Only one of these options may be defined: foo, bar, baz');
+      }).not.toThrowError('Only one of these fields may be defined: foo, bar, baz');
 
       expect(() => {
         optimal(
@@ -404,7 +404,7 @@ describe('Options', () => {
           },
           xor,
         );
-      }).not.toThrowError('Only one of these options may be defined: foo, bar, baz');
+      }).not.toThrowError('Only one of these fields may be defined: foo, bar, baz');
 
       expect(() => {
         optimal(
@@ -413,7 +413,7 @@ describe('Options', () => {
           },
           xor,
         );
-      }).not.toThrowError('Only one of these options may be defined: foo, bar, baz');
+      }).not.toThrowError('Only one of these fields may be defined: foo, bar, baz');
 
       expect(() => {
         optimal(
@@ -424,7 +424,7 @@ describe('Options', () => {
           },
           xor,
         );
-      }).toThrowError('Only one of these options may be defined: foo, bar, baz');
+      }).toThrowError('Only one of these fields may be defined: foo, bar, baz');
     });
   });
 });

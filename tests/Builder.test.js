@@ -50,7 +50,7 @@ describe('Builder', () => {
     it('errors if no keys are defined', () => {
       expect(() => {
         builder.and();
-      }).toThrowError('AND requires a list of option names.');
+      }).toThrowError('AND requires a list of field names.');
     });
 
     it('adds a checker', () => {
@@ -66,25 +66,25 @@ describe('Builder', () => {
   describe('checkAnd()', () => {
     it('errors if not all options are defined', () => {
       expect(() => {
-        builder.currentOptions = {
+        builder.currentStruct = {
           foo: 'a',
           baz: 'c',
         };
 
         builder.checkAnd('foo', 'a', ['bar', 'baz']);
-      }).toThrowError('All of these options must be defined: foo, bar, baz');
+      }).toThrowError('All of these fields must be defined: foo, bar, baz');
     });
 
     it('doesnt error if all are defined', () => {
       expect(() => {
-        builder.currentOptions = {
+        builder.currentStruct = {
           foo: 'a',
           bar: 'b',
           baz: 'c',
         };
 
         builder.checkAnd('foo', 'a', ['bar', 'baz']);
-      }).not.toThrowError('Invalid option "foo".');
+      }).not.toThrowError('Invalid field "foo".');
     });
   });
 
@@ -95,7 +95,7 @@ describe('Builder', () => {
 
         expect(() => {
           builder.checkType('key', []);
-        }).not.toThrowError('Invalid option "key". Must be an array.');
+        }).not.toThrowError('Invalid field "key". Must be an array.');
       });
 
       it('errors on non-arrays', () => {
@@ -103,7 +103,7 @@ describe('Builder', () => {
 
         expect(() => {
           builder.checkType('key', 123);
-        }).toThrowError('Invalid option "key". Must be an array.');
+        }).toThrowError('Invalid field "key". Must be an array.');
       });
     });
 
@@ -113,7 +113,7 @@ describe('Builder', () => {
 
         expect(() => {
           builder.checkType('key', true);
-        }).not.toThrowError('Invalid option "key". Must be a boolean.');
+        }).not.toThrowError('Invalid field "key". Must be a boolean.');
       });
 
       it('errors on non-booleans', () => {
@@ -121,7 +121,7 @@ describe('Builder', () => {
 
         expect(() => {
           builder.checkType('key', 123);
-        }).toThrowError('Invalid option "key". Must be a boolean.');
+        }).toThrowError('Invalid field "key". Must be a boolean.');
       });
     });
 
@@ -131,7 +131,7 @@ describe('Builder', () => {
 
         expect(() => {
           builder.checkType('key', () => {});
-        }).not.toThrowError('Invalid option "key". Must be a function.');
+        }).not.toThrowError('Invalid field "key". Must be a function.');
       });
 
       it('errors on non-functions', () => {
@@ -139,7 +139,7 @@ describe('Builder', () => {
 
         expect(() => {
           builder.checkType('key', 'foo');
-        }).toThrowError('Invalid option "key". Must be a function.');
+        }).toThrowError('Invalid field "key". Must be a function.');
       });
     });
 
@@ -149,7 +149,7 @@ describe('Builder', () => {
 
         expect(() => {
           builder.checkType('key', 123);
-        }).not.toThrowError('Invalid option "key". Must be a number.');
+        }).not.toThrowError('Invalid field "key". Must be a number.');
       });
 
       it('errors on non-numbers', () => {
@@ -157,7 +157,7 @@ describe('Builder', () => {
 
         expect(() => {
           builder.checkType('key', 'foo');
-        }).toThrowError('Invalid option "key". Must be a number.');
+        }).toThrowError('Invalid field "key". Must be a number.');
       });
     });
 
@@ -167,7 +167,7 @@ describe('Builder', () => {
 
         expect(() => {
           builder.checkType('key', {});
-        }).not.toThrowError('Invalid option "key". Must be a plain object.');
+        }).not.toThrowError('Invalid field "key". Must be a plain object.');
       });
 
       it('errors on non-objects', () => {
@@ -175,7 +175,7 @@ describe('Builder', () => {
 
         expect(() => {
           builder.checkType('key', 123);
-        }).toThrowError('Invalid option "key". Must be a plain object.');
+        }).toThrowError('Invalid field "key". Must be a plain object.');
       });
 
       it('errors on arrays', () => {
@@ -183,7 +183,7 @@ describe('Builder', () => {
 
         expect(() => {
           builder.checkType('key', []);
-        }).toThrowError('Invalid option "key". Must be a plain object.');
+        }).toThrowError('Invalid field "key". Must be a plain object.');
       });
 
       it('errors on nulls', () => {
@@ -191,7 +191,7 @@ describe('Builder', () => {
 
         expect(() => {
           builder.checkType('key', null);
-        }).toThrowError('Invalid option "key". Must be a plain object.');
+        }).toThrowError('Invalid field "key". Must be a plain object.');
       });
     });
 
@@ -201,7 +201,7 @@ describe('Builder', () => {
 
         expect(() => {
           builder.checkType('key', 'foo');
-        }).not.toThrowError('Invalid option "key". Must be a string.');
+        }).not.toThrowError('Invalid field "key". Must be a string.');
       });
 
       it('errors on non-strings', () => {
@@ -209,7 +209,7 @@ describe('Builder', () => {
 
         expect(() => {
           builder.checkType('key', 123);
-        }).toThrowError('Invalid option "key". Must be a string.');
+        }).toThrowError('Invalid field "key". Must be a string.');
       });
     });
   });
@@ -238,11 +238,11 @@ describe('Builder', () => {
 
       expect(() => {
         builder.runChecks('error', 123);
-      }).toThrowError('Invalid option "error". This will error!');
+      }).toThrowError('Invalid field "error". This will error!');
 
       expect(() => {
         builder.runChecks('key', 456);
-      }).not.toThrowError('Invalid option "error". This will error!');
+      }).not.toThrowError('Invalid field "error". This will error!');
     });
 
     it('is passed entire options object', () => {
@@ -254,7 +254,7 @@ describe('Builder', () => {
 
       expect(() => {
         builder.runChecks('error', 123, { foo: 123, bar: 456, error: '' });
-      }).toThrowError('Invalid option "error". This will error!');
+      }).toThrowError('Invalid field "error". This will error!');
     });
   });
 
@@ -274,20 +274,20 @@ describe('Builder', () => {
     it('includes an option path', () => {
       expect(() => {
         builder.invariant(false, 'Failure', 'foo.bar');
-      }).toThrowError('Invalid option "foo.bar". Failure');
+      }).toThrowError('Invalid field "foo.bar". Failure');
     });
 
     it('includes a class name', () => {
       expect(() => {
-        builder.optimalOptions.name = 'FooBar';
+        builder.options.name = 'FooBar';
 
         builder.invariant(false, 'Failure', 'foo.bar');
-      }).toThrowError('Invalid FooBar option "foo.bar". Failure');
+      }).toThrowError('Invalid FooBar field "foo.bar". Failure');
     });
 
     it('includes a class name when no path', () => {
       expect(() => {
-        builder.optimalOptions.name = 'FooBar';
+        builder.options.name = 'FooBar';
 
         builder.invariant(false, 'Failure');
       }).toThrowError('FooBar: Failure');
@@ -388,25 +388,25 @@ describe('Builder', () => {
     it('errors if value passed is undefined and builder is required', () => {
       expect(() => {
         builder.required().runChecks('key');
-      }).toThrowError('Invalid option "key". Field is required and must be defined.');
+      }).toThrowError('Invalid field "key". Field is required and must be defined.');
     });
 
     it('errors if value passed is null and builder is non-nullable', () => {
       expect(() => {
         builder.runChecks('key', null);
-      }).toThrowError('Invalid option "key". Null is not allowed.');
+      }).toThrowError('Invalid field "key". Null is not allowed.');
     });
 
     it('runs default type of check', () => {
       expect(() => {
         builder.runChecks('key', 123);
-      }).toThrowError('Invalid option "key". Must be a string.');
+      }).toThrowError('Invalid field "key". Must be a string.');
     });
 
     it('uses custom message', () => {
       expect(() => {
         builder.message('Oops, something is broken.').runChecks('key', 123);
-      }).toThrowError('Invalid option "key". Oops, something is broken.');
+      }).toThrowError('Invalid field "key". Oops, something is broken.');
     });
 
     describe('deprecation', () => {
@@ -424,14 +424,14 @@ describe('Builder', () => {
         builder.deprecate('Use something else.');
         builder.runChecks('key', 'foo');
 
-        expect(console.info).toBeCalledWith('Option "key" is deprecated. Use something else.');
+        expect(console.info).toBeCalledWith('Field "key" is deprecated. Use something else.');
       });
 
       it('doesnt log if undefined', () => {
         builder.deprecate('Use something else.');
         builder.runChecks('key');
 
-        expect(console.info).not.toBeCalledWith('Option "key" is deprecated. Use something else.');
+        expect(console.info).not.toBeCalledWith('Field "key" is deprecated. Use something else.');
       });
     });
   });
@@ -463,13 +463,13 @@ describe('Builder', () => {
     it('errors if value doesnt match the default value', () => {
       expect(() => {
         builder.checkOnly('key', 'bar');
-      }).toThrowError('Invalid option "key". Value may only be "foo".');
+      }).toThrowError('Invalid field "key". Value may only be "foo".');
     });
 
     it('doesnt error if value matches default value', () => {
       expect(() => {
         builder.checkOnly('key', 'foo');
-      }).not.toThrowError('Invalid option "key". Value may only be "foo".');
+      }).not.toThrowError('Invalid field "key". Value may only be "foo".');
     });
   });
 
@@ -477,7 +477,7 @@ describe('Builder', () => {
     it('errors if no keys are defined', () => {
       expect(() => {
         builder.or();
-      }).toThrowError('OR requires a list of option names.');
+      }).toThrowError('OR requires a list of field names.');
     });
 
     it('adds a checker', () => {
@@ -493,20 +493,20 @@ describe('Builder', () => {
   describe('checkOr()', () => {
     it('errors if not 1 option is defined', () => {
       expect(() => {
-        builder.currentOptions = {};
+        builder.currentStruct = {};
 
         builder.checkOr('foo', 'a', ['bar', 'baz']);
-      }).toThrowError('At least one of these options must be defined: foo, bar, baz');
+      }).toThrowError('At least one of these fields must be defined: foo, bar, baz');
     });
 
     it('doesnt error if at least 1 option is defined', () => {
       expect(() => {
-        builder.currentOptions = {
+        builder.currentStruct = {
           foo: 'a',
         };
 
         builder.checkOr('foo', 'a', ['bar', 'baz']);
-      }).not.toThrowError('Invalid option "foo".');
+      }).not.toThrowError('Invalid field "foo".');
     });
   });
 
@@ -514,7 +514,7 @@ describe('Builder', () => {
     it('errors if no keys are defined', () => {
       expect(() => {
         builder.xor();
-      }).toThrowError('XOR requires a list of option names.');
+      }).toThrowError('XOR requires a list of field names.');
     });
 
     it('adds a checker', () => {
@@ -530,31 +530,31 @@ describe('Builder', () => {
   describe('checkXor()', () => {
     it('errors if no options are defined', () => {
       expect(() => {
-        builder.currentOptions = {};
+        builder.currentStruct = {};
 
         builder.checkXor('foo', 'a', ['bar', 'baz']);
-      }).toThrowError('Only one of these options may be defined: foo, bar, baz');
+      }).toThrowError('Only one of these fields may be defined: foo, bar, baz');
     });
 
     it('errors if more than 1 option is defined', () => {
       expect(() => {
-        builder.currentOptions = {
+        builder.currentStruct = {
           foo: 'a',
           bar: 'b',
         };
 
         builder.checkXor('foo', 'a', ['bar', 'baz']);
-      }).toThrowError('Only one of these options may be defined: foo, bar, baz');
+      }).toThrowError('Only one of these fields may be defined: foo, bar, baz');
     });
 
     it('doesnt error if only 1 option is defined', () => {
       expect(() => {
-        builder.currentOptions = {
+        builder.currentStruct = {
           foo: 'a',
         };
 
         builder.checkXor('foo', 'a', ['bar', 'baz']);
-      }).not.toThrowError('Invalid option "foo".');
+      }).not.toThrowError('Invalid field "foo".');
     });
   });
 });
@@ -574,7 +574,7 @@ describe('bool()', () => {
   it('errors if a non-boolean value is used', () => {
     expect(() => {
       bool().runChecks('key', 123);
-    }).toThrowError('Invalid option "key". Must be a boolean.');
+    }).toThrowError('Invalid field "key". Must be a boolean.');
   });
 
   it('returns the type alias', () => {
@@ -615,7 +615,7 @@ describe('func()', () => {
   it('errors if a non-function value is used', () => {
     expect(() => {
       func().runChecks('key', 123);
-    }).toThrowError('Invalid option "key". Must be a function.');
+    }).toThrowError('Invalid field "key". Must be a function.');
   });
 
   it('returns the type alias', () => {

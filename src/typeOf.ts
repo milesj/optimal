@@ -6,13 +6,28 @@
 import isObject from './isObject';
 import { SupportedType } from './types';
 
+// Not supported: Shape, Custom
 export default function typeOf(value: any): SupportedType {
   if (Array.isArray(value)) {
-    return 'array';
-  } else if (isObject(value)) {
-    return value.constructor === Object ? 'object' : 'instance';
+    return value.every(item => typeof item === typeof value[0])
+      ? SupportedType.Array
+      : SupportedType.Union;
   }
 
-  // @ts-ignore
-  return typeof value;
+  if (isObject(value)) {
+    return value.constructor === Object ? SupportedType.Object : SupportedType.Instance;
+  }
+
+  switch (typeof value) {
+    case 'boolean':
+      return SupportedType.Boolean;
+    case 'function':
+      return SupportedType.Function;
+    case 'number':
+      return SupportedType.Number;
+    case 'string':
+      return SupportedType.String;
+    default:
+      return SupportedType.Unknown;
+  }
 }

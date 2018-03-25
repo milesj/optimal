@@ -5,6 +5,7 @@
 
 import Builder from './Builder';
 import isObject from './isObject';
+import { SupportedType } from './types';
 
 export type Constructor<T> = new (...args: any[]) => T;
 
@@ -12,7 +13,7 @@ export default class InstanceBuilder<T> extends Builder<T | null> {
   refClass: Constructor<T> | null = null;
 
   constructor(refClass: Constructor<T> | null = null) {
-    super('instance', null);
+    super(SupportedType.Instance, null);
 
     // Nullable by default
     this.nullable();

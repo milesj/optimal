@@ -57,7 +57,7 @@ describe('UnionBuilder', () => {
     it('errors if a unsupported type is used', () => {
       expect(() => {
         union([string(), number(), bool()]).runChecks('key', []);
-      }).toThrowError('Invalid option "key". Type must be one of: string, number, boolean');
+      }).toThrowError('Invalid field "key". Type must be one of: string, number, boolean');
     });
 
     it('errors if a nested union is used', () => {
@@ -90,19 +90,19 @@ describe('UnionBuilder', () => {
     it('errors with the class name for instance checks', () => {
       expect(() => {
         union([number(), instance(FormData)]).runChecks('key', {});
-      }).toThrowError('Invalid option "key". Type must be one of: number, FormData');
+      }).toThrowError('Invalid field "key". Type must be one of: number, FormData');
     });
 
     it('runs array check', () => {
       expect(() => {
         builder.runChecks('key', [123]);
-      }).toThrowError('Invalid option "key[0]". Must be a string.');
+      }).toThrowError('Invalid field "key[0]". Must be a string.');
     });
 
     it('runs boolean check', () => {
       expect(() => {
         builder.runChecks('key', false);
-      }).toThrowError('Invalid option "key". Value may only be "true".');
+      }).toThrowError('Invalid field "key". Value may only be "true".');
     });
 
     it('runs custom check', () => {
@@ -115,25 +115,25 @@ describe('UnionBuilder', () => {
             }
           }),
         ]).runChecks('key', 123);
-      }).toThrowError('Invalid option "key". Encountered a number!');
+      }).toThrowError('Invalid field "key". Encountered a number!');
     });
 
     it('runs instance check', () => {
       expect(() => {
         builder.runChecks('key', new Bar());
-      }).toThrowError('Invalid option "key". Must be an instance of "Foo".');
+      }).toThrowError('Invalid field "key". Must be an instance of "Foo".');
     });
 
     it('runs number check', () => {
       expect(() => {
         builder.runChecks('key', 10);
-      }).toThrowError('Invalid option "key". Number must be between 0 and 5.');
+      }).toThrowError('Invalid field "key". Number must be between 0 and 5.');
     });
 
     it('runs object check', () => {
       expect(() => {
         builder.runChecks('key', { foo: 'foo' });
-      }).toThrowError('Invalid option "key.foo". Must be a number.');
+      }).toThrowError('Invalid field "key.foo". Must be a number.');
     });
 
     it('runs shape check', () => {
@@ -146,13 +146,13 @@ describe('UnionBuilder', () => {
         ]).runChecks('key', {
           foo: 123,
         });
-      }).toThrowError('Invalid option "key.foo". Must be a string.');
+      }).toThrowError('Invalid field "key.foo". Must be a string.');
     });
 
     it('runs string check', () => {
       expect(() => {
         builder.runChecks('key', 'qux');
-      }).toThrowError('Invalid option "key". String must be one of: foo, bar, baz');
+      }).toThrowError('Invalid field "key". String must be one of: foo, bar, baz');
     });
 
     it('runs correctly for valid values', () => {

@@ -6,16 +6,16 @@
 import Builder from './Builder';
 import isObject from './isObject';
 import typeOf from './typeOf';
-import { Blueprint, Options, OptimalOptions } from './types';
+import { Blueprint, OptimalOptions, Struct } from './types';
 
-function buildAndCheckOptions<T extends Options>(
-  stagedOptions: Options,
+function buildAndCheck<T extends Struct>(
+  struct: Struct,
   blueprint: Blueprint,
   options: OptimalOptions = {},
   parentPath: string = '',
 ): T {
-  const unknownOptions: Options = { ...stagedOptions };
-  const builtOptions = {} as T;
+  const unknownFields: Struct = { ...struct };
+  const builtStruct = {} as T;
 
   // Validate using the blueprint
   Object.keys(blueprint).forEach(key => {
@@ -24,49 +24,49 @@ function buildAndCheckOptions<T extends Options>(
 
     // Run validation checks
     if (builder instanceof Builder) {
-      builtOptions[key] = builder.runChecks(path, stagedOptions[key], stagedOptions, options);
+      builtStruct[key] = builder.runChecks(path, struct[key], struct, options);
 
       // Builder is a plain object, so let's recursively try again
     } else if (isObject(builder)) {
-      builtOptions[key] = buildAndCheckOptions(stagedOptions[key] || {}, builder, options, path);
+      builtStruct[key] = buildAndCheck(struct[key] || {}, builder, options, path);
 
       // Oops
     } else if (process.env.NODE_ENV !== 'production') {
-      throw new Error('Unknown blueprint option. Must be a builder or plain object.');
+      throw new Error('Unknown blueprint. Must be a builder or plain object.');
     }
 
     // Delete the prop and mark it as known
-    delete unknownOptions[key];
+    delete unknownFields[key];
   });
 
   // Handle unknown options
   if (options.unknown) {
-    Object.assign(builtOptions, unknownOptions);
+    Object.assign(builtStruct, unknownFields);
   } else if (process.env.NODE_ENV !== 'production') {
-    const unknownKeys = Object.keys(unknownOptions);
+    const unknownKeys = Object.keys(unknownFields);
 
     if (unknownKeys.length > 0) {
-      throw new Error(`Unknown options: ${unknownKeys.join(', ')}.`);
+      throw new Error(`Unknown fields: ${unknownKeys.join(', ')}.`);
     }
   }
 
-  return builtOptions;
+  return builtStruct;
 }
 
-export default function optimal<T extends Options>(
-  stagedOptions: Options,
+export default function optimal<T extends Struct>(
+  struct: Struct,
   blueprint: Blueprint,
   options: OptimalOptions = {},
 ): T {
   if (process.env.NODE_ENV !== 'production') {
-    if (!isObject(stagedOptions)) {
-      throw new TypeError(`Options require a plain object, found ${typeOf(stagedOptions)}.`);
+    if (!isObject(struct)) {
+      throw new TypeError(`Optimal requires a plain object, found ${typeOf(struct)}.`);
     } else if (!isObject(options)) {
       throw new TypeError('Optimal options must be a plain object.');
     } else if (!isObject(blueprint)) {
-      throw new TypeError('An options blueprint is required.');
+      throw new TypeError('A blueprint is required.');
     }
   }
 
-  return buildAndCheckOptions(stagedOptions, blueprint, options);
+  return buildAndCheck(struct, blueprint, options);
 }

@@ -17,7 +17,7 @@ describe('StringBuilder', () => {
     it('errors if a non-string value is used', () => {
       expect(() => {
         builder.runChecks('key', 123);
-      }).toThrowError('Invalid option "key". Must be a string.');
+      }).toThrowError('Invalid field "key". Must be a string.');
     });
   });
 
@@ -48,13 +48,13 @@ describe('StringBuilder', () => {
     it('errors if value does not contain token', () => {
       expect(() => {
         builder.checkContains('key', 'bar', 'oo');
-      }).toThrowError('Invalid option "key". String does not include "oo".');
+      }).toThrowError('Invalid field "key". String does not include "oo".');
     });
 
     it('doesnt error if value contains token', () => {
       expect(() => {
         builder.checkContains('key', 'foo', 'oo');
-      }).not.toThrowError('Invalid option "key". String does not include "oo".');
+      }).not.toThrowError('Invalid field "key". String does not include "oo".');
     });
   });
 
@@ -79,13 +79,13 @@ describe('StringBuilder', () => {
     it('errors if value does not match pattern', () => {
       expect(() => {
         builder.checkMatch('key', 'bar', /oo/);
-      }).toThrowError('Invalid option "key". String does not match pattern "oo".');
+      }).toThrowError('Invalid field "key". String does not match pattern "oo".');
     });
 
     it('doesnt error if value matches pattern', () => {
       expect(() => {
         builder.checkMatch('key', 'foo', /oo/);
-      }).not.toThrowError('Invalid option "key". String does not match pattern "oo".');
+      }).not.toThrowError('Invalid field "key". String does not match pattern "oo".');
     });
   });
 
@@ -101,13 +101,13 @@ describe('StringBuilder', () => {
     it('errors if value is empty', () => {
       expect(() => {
         builder.checkNotEmpty('key', '');
-      }).toThrowError('Invalid option "key". String cannot be empty.');
+      }).toThrowError('Invalid field "key". String cannot be empty.');
     });
 
     it('doesnt error if allow empty', () => {
       expect(() => {
         builder.empty().checkNotEmpty('key', '');
-      }).not.toThrowError('Invalid option "key". String cannot be empty.');
+      }).not.toThrowError('Invalid field "key". String cannot be empty.');
     });
   });
 
@@ -144,13 +144,13 @@ describe('StringBuilder', () => {
     it('errors if value is not in the list', () => {
       expect(() => {
         builder.checkOneOf('key', 'qux', ['foo', 'bar', 'baz']);
-      }).toThrowError('Invalid option "key". String must be one of: foo, bar, baz');
+      }).toThrowError('Invalid field "key". String must be one of: foo, bar, baz');
     });
 
     it('doesnt error if value contains token', () => {
       expect(() => {
         builder.checkOneOf('key', 'foo', ['foo', 'bar', 'baz']);
-      }).not.toThrowError('Invalid option "key". String must be one of: foo, bar, baz');
+      }).not.toThrowError('Invalid field "key". String must be one of: foo, bar, baz');
     });
   });
 

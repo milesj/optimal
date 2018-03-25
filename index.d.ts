@@ -7,36 +7,48 @@ declare module 'optimal/lib/types' {
   export interface Blueprint {
       [field: string]: Builder<any> | Blueprint;
   }
-  export type Checker = (path: string, value: any, ...args: any[]) => void;
-  export type CustomCallback = (value: any, options: Options) => void;
-  export interface Options {
-      [key: string]: any;
+  export type CheckerCallback = (path: string, value: any, ...args: any[]) => void;
+  export type CustomCallback = (value: any, struct: Struct) => void;
+  export interface Struct<T = any> {
+      [key: string]: T;
   }
-  export interface OptimalOptions extends Options {
+  export interface OptimalOptions extends Struct {
       name?: string;
       unknown?: boolean;
   }
-  export type SupportedType = 'array' | 'boolean' | 'function' | 'instance' | 'number' | 'object' | 'shape' | 'string' | 'union' | 'custom';
+  export enum SupportedType {
+      Array = "array",
+      Boolean = "boolean",
+      Custom = "custom",
+      Function = "function",
+      Instance = "instance",
+      Number = "number",
+      Object = "object",
+      Shape = "shape",
+      String = "string",
+      Union = "union",
+      Unknown = "unknown",
+  }
 
 }
 declare module 'optimal/lib/Builder' {
-  import { SupportedType, Checker, CustomCallback, Options, OptimalOptions } from 'optimal/lib/types';
+  import { SupportedType, CheckerCallback, CustomCallback, OptimalOptions, Struct } from 'optimal/lib/types';
   export interface Check {
       args: any[];
-      callback: Checker;
+      callback: CheckerCallback;
   }
   export default class Builder<T> {
       checks: Check[];
-      currentOptions: Options;
+      currentStruct: Struct;
       defaultValue: T;
       deprecatedMessage: string;
       errorMessage: string;
       isNullable: boolean;
       isRequired: boolean;
-      optimalOptions: OptimalOptions;
+      options: OptimalOptions;
       type: SupportedType;
       constructor(type: SupportedType, defaultValue: T);
-      addCheck(checker: Checker, ...args: any[]): this;
+      addCheck(checker: CheckerCallback, ...args: any[]): this;
       and(...keys: string[]): this;
       checkAnd(path: string, value: any, otherKeys: string[]): void;
       checkType(path: string, value: any): void;
@@ -52,7 +64,7 @@ declare module 'optimal/lib/Builder' {
       or(...keys: string[]): this;
       checkOr(path: string, value: any, otherKeys: string[]): void;
       required(state?: boolean): this;
-      runChecks(path: string, initialValue: any, options: Options, optimalOptions?: OptimalOptions): any;
+      runChecks(path: string, initialValue: any, struct: Struct, options?: OptimalOptions): any;
       typeAlias(): string;
       xor(...keys: string[]): this;
       checkXor(path: string, value: any, otherKeys: string[]): void;
@@ -64,9 +76,10 @@ declare module 'optimal/lib/Builder' {
 }
 declare module 'optimal/lib/CollectionBuilder' {
   import Builder from 'optimal/lib/Builder';
+  import { SupportedType } from 'optimal/lib/types';
   export default class CollectionBuilder<T, TDefault> extends Builder<TDefault | null> {
       contents: Builder<T> | null;
-      constructor(type: 'array' | 'object', contents?: Builder<T> | null, defaultValue?: TDefault | null);
+      constructor(type: SupportedType.Array | SupportedType.Object, contents?: Builder<T> | null, defaultValue?: TDefault | null);
       checkContents(path: string, value: any, contents: Builder<T>): void;
       notEmpty(): this;
       checkNotEmpty(path: string, value: any): void;
@@ -86,8 +99,8 @@ declare module 'optimal/lib/typeOf' {
 
 }
 declare module 'optimal/lib/optimal' {
-  import { Blueprint, Options, OptimalOptions } from 'optimal/lib/types';
-  export default function optimal<T extends Options>(stagedOptions: Options, blueprint: Blueprint, options?: OptimalOptions): T;
+  import { Blueprint, OptimalOptions, Struct } from 'optimal/lib/types';
+  export default function optimal<T extends Struct>(struct: Struct, blueprint: Blueprint, options?: OptimalOptions): T;
 
 }
 declare module 'optimal/lib/InstanceBuilder' {
@@ -172,10 +185,10 @@ declare module 'optimal' {
   import ShapeBuilder, { shape } from 'optimal/lib/ShapeBuilder';
   import StringBuilder, { string } from 'optimal/lib/StringBuilder';
   import UnionBuilder, { union } from 'optimal/lib/UnionBuilder';
-  import { Blueprint, Checker, CustomCallback, Options, OptimalOptions, SupportedType } from 'optimal/lib/types';
+  import { Blueprint, CheckerCallback, CustomCallback, OptimalOptions, Struct, SupportedType } from 'optimal/lib/types';
   export { array, bool, custom, date, func, instance, number, object, regex, shape, string, union };
   export { Builder, CollectionBuilder, InstanceBuilder, NumberBuilder, ShapeBuilder, StringBuilder, UnionBuilder };
-  export { Blueprint, Checker, CustomCallback, Options, OptimalOptions, SupportedType };
+  export { Blueprint, CheckerCallback, CustomCallback, OptimalOptions, Struct, SupportedType };
   export default optimal;
 
 }

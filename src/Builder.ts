@@ -4,17 +4,17 @@
  */
 
 import isObject from './isObject';
-import { SupportedType, Checker, CustomCallback, Options, OptimalOptions } from './types';
+import { SupportedType, CheckerCallback, CustomCallback, OptimalOptions, Struct } from './types';
 
 export interface Check {
   args: any[];
-  callback: Checker;
+  callback: CheckerCallback;
 }
 
 export default class Builder<T> {
   checks: Check[] = [];
 
-  currentOptions: Options = {};
+  currentStruct: Struct = {};
 
   defaultValue: T;
 
@@ -26,7 +26,7 @@ export default class Builder<T> {
 
   isRequired: boolean = false;
 
-  optimalOptions: OptimalOptions = {};
+  options: OptimalOptions = {};
 
   type: SupportedType;
 
@@ -47,7 +47,7 @@ export default class Builder<T> {
   /**
    * Add a checking function with optional arguments.
    */
-  addCheck(checker: Checker, ...args: any[]): this {
+  addCheck(checker: CheckerCallback, ...args: any[]): this {
     if (process.env.NODE_ENV !== 'production') {
       this.checks.push({
         args,
@@ -59,35 +59,33 @@ export default class Builder<T> {
   }
 
   /**
-   * Map a list of option names that must be defined alongside this field.
+   * Map a list of names that must be defined alongside this field.
    */
   and(...keys: string[]): this {
     if (process.env.NODE_ENV !== 'production') {
-      this.invariant(keys.length > 0, 'AND requires a list of option names.');
+      this.invariant(keys.length > 0, 'AND requires a list of field names.');
     }
 
     return this.addCheck(this.checkAnd, keys);
   }
 
   /**
-   * Validate that all options have been defined.
+   * Validate that all fields have been defined.
    */
   checkAnd(path: string, value: any, otherKeys: string[]) {
     if (process.env.NODE_ENV !== 'production') {
       const keys = [this.key(path), ...otherKeys];
-      const options = this.currentOptions;
-      const undefs = keys.filter(
-        key => typeof options[key] === 'undefined' || options[key] === null,
-      );
+      const struct = this.currentStruct;
+      const undefs = keys.filter(key => typeof struct[key] === 'undefined' || struct[key] === null);
 
-      // Only error once one of the options is defined
+      // Only error once one of the struct is defined
       if (undefs.length === keys.length) {
         return;
       }
 
       this.invariant(
         undefs.length === 0,
-        `All of these options must be defined: ${keys.join(', ')}`,
+        `All of these fields must be defined: ${keys.join(', ')}`,
       );
     }
   }
@@ -141,7 +139,7 @@ export default class Builder<T> {
   checkCustom(path: string, value: any, callback: CustomCallback) {
     if (process.env.NODE_ENV !== 'production') {
       try {
-        callback(value, this.currentOptions);
+        callback(value, this.currentStruct);
       } catch (error) {
         this.invariant(false, error.message, path);
       }
@@ -173,14 +171,14 @@ export default class Builder<T> {
         return;
       }
 
-      const { name } = this.optimalOptions;
+      const { name } = this.options;
       let prefix = '';
 
       if (path) {
         if (name) {
-          prefix += `Invalid ${name} option "${path}". `;
+          prefix += `Invalid ${name} field "${path}". `;
         } else {
-          prefix += `Invalid option "${path}". `;
+          prefix += `Invalid field "${path}". `;
         }
       } else if (name) {
         prefix += `${name}: `;
@@ -255,28 +253,28 @@ export default class Builder<T> {
   }
 
   /**
-   * Map a list of option names that must have at least 1 defined.
+   * Map a list of field names that must have at least 1 defined.
    */
   or(...keys: string[]): this {
     if (process.env.NODE_ENV !== 'production') {
-      this.invariant(keys.length > 0, 'OR requires a list of option names.');
+      this.invariant(keys.length > 0, 'OR requires a list of field names.');
     }
 
     return this.addCheck(this.checkOr, keys);
   }
 
   /**
-   * Validate that at least 1 option is defined.
+   * Validate that at least 1 field is defined.
    */
   checkOr(path: string, value: any, otherKeys: string[]) {
     if (process.env.NODE_ENV !== 'production') {
       const keys = [this.key(path), ...otherKeys];
-      const options = this.currentOptions;
-      const defs = keys.filter(key => typeof options[key] !== 'undefined' && options[key] !== null);
+      const struct = this.currentStruct;
+      const defs = keys.filter(key => typeof struct[key] !== 'undefined' && struct[key] !== null);
 
       this.invariant(
         defs.length > 0,
-        `At least one of these options must be defined: ${keys.join(', ')}`,
+        `At least one of these fields must be defined: ${keys.join(', ')}`,
       );
     }
   }
@@ -295,14 +293,9 @@ export default class Builder<T> {
   /**
    * Run all validation checks that have been enqueued.
    */
-  runChecks(
-    path: string,
-    initialValue: any,
-    options: Options,
-    optimalOptions: OptimalOptions = {},
-  ): any {
-    this.currentOptions = options;
-    this.optimalOptions = optimalOptions;
+  runChecks(path: string, initialValue: any, struct: Struct, options: OptimalOptions = {}): any {
+    this.currentStruct = struct;
+    this.options = options;
 
     let value = initialValue;
 
@@ -316,7 +309,7 @@ export default class Builder<T> {
     } else if (this.deprecatedMessage) {
       if (process.env.NODE_ENV !== 'production') {
         // eslint-disable-next-line no-console
-        console.info(`Option "${path}" is deprecated. ${this.deprecatedMessage}`);
+        console.info(`Field "${path}" is deprecated. ${this.deprecatedMessage}`);
       }
     }
 
@@ -347,44 +340,44 @@ export default class Builder<T> {
   }
 
   /**
-   * Map a list of option names that must not be defined alongside this field.
+   * Map a list of field names that must not be defined alongside this field.
    */
   xor(...keys: string[]): this {
     if (process.env.NODE_ENV !== 'production') {
-      this.invariant(keys.length > 0, 'XOR requires a list of option names.');
+      this.invariant(keys.length > 0, 'XOR requires a list of field names.');
     }
 
     return this.addCheck(this.checkXor, keys);
   }
 
   /**
-   * Validate that only 1 option is defined.
+   * Validate that only 1 field is defined.
    */
   checkXor(path: string, value: any, otherKeys: string[]) {
     if (process.env.NODE_ENV !== 'production') {
       const keys = [this.key(path), ...otherKeys];
-      const options = this.currentOptions;
-      const defs = keys.filter(key => typeof options[key] !== 'undefined' && options[key] !== null);
+      const struct = this.currentStruct;
+      const defs = keys.filter(key => typeof struct[key] !== 'undefined' && struct[key] !== null);
 
       this.invariant(
         defs.length === 1,
-        `Only one of these options may be defined: ${keys.join(', ')}`,
+        `Only one of these fields may be defined: ${keys.join(', ')}`,
       );
     }
   }
 }
 
 export function bool(defaultValue: boolean | null = false): Builder<boolean | null> {
-  return new Builder('boolean', defaultValue);
+  return new Builder(SupportedType.Boolean, defaultValue);
 }
 
 export function custom<T>(
   callback: CustomCallback,
   defaultValue: T | null = null,
 ): Builder<T | null> {
-  return new Builder('custom', defaultValue).custom(callback);
+  return new Builder(SupportedType.Custom, defaultValue).custom(callback);
 }
 
 export function func(defaultValue: Function | null = null): Builder<Function | null> {
-  return new Builder('function', defaultValue).nullable();
+  return new Builder(SupportedType.Function, defaultValue).nullable();
 }

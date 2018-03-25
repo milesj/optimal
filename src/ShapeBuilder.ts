@@ -5,7 +5,7 @@
 
 import Builder from './Builder';
 import isObject from './isObject';
-import { Blueprint } from './types';
+import { Blueprint, SupportedType } from './types';
 
 export interface Shape {
   [key: string]: any;
@@ -13,7 +13,7 @@ export interface Shape {
 
 export default class ShapeBuilder extends Builder<Shape | null> {
   constructor(contents: Blueprint, defaultValue: Shape | null = {}) {
-    super('shape', defaultValue);
+    super(SupportedType.Shape, defaultValue);
 
     if (process.env.NODE_ENV !== 'production') {
       this.invariant(
@@ -32,12 +32,12 @@ export default class ShapeBuilder extends Builder<Shape | null> {
       Object.keys(contents).forEach(key => {
         const builder = contents[key];
 
-        // Properties should be optional by default unless explicitly required
+        // Fields should be optional by default unless explicitly required
         if (
           builder instanceof Builder &&
           (builder.isRequired || typeof object[key] !== 'undefined')
         ) {
-          builder.runChecks(`${path}.${key}`, object[key], object, this.optimalOptions);
+          builder.runChecks(`${path}.${key}`, object[key], object, this.options);
         }
       });
     }

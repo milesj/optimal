@@ -17,7 +17,7 @@ describe('NumberBuilder', () => {
     it('errors if a non-number value is used', () => {
       expect(() => {
         number().runChecks('key', 'foo');
-      }).toThrowError('Invalid option "key". Must be a number.');
+      }).toThrowError('Invalid field "key". Must be a number.');
     });
   });
 
@@ -48,31 +48,31 @@ describe('NumberBuilder', () => {
     it('errors if value is not a number', () => {
       expect(() => {
         builder.checkBetween('key', 'foo', 0, 5);
-      }).toThrowError('Invalid option "key". Number must be between 0 and 5.');
+      }).toThrowError('Invalid field "key". Number must be between 0 and 5.');
     });
 
     it('errors if out of range', () => {
       expect(() => {
         builder.checkBetween('key', 10, 0, 5);
-      }).toThrowError('Invalid option "key". Number must be between 0 and 5.');
+      }).toThrowError('Invalid field "key". Number must be between 0 and 5.');
     });
 
     it('errors if out of range inclusive', () => {
       expect(() => {
         builder.checkBetween('key', 10, 0, 5, true);
-      }).toThrowError('Invalid option "key". Number must be between 0 and 5 inclusive.');
+      }).toThrowError('Invalid field "key". Number must be between 0 and 5 inclusive.');
     });
 
     it('doesnt error if in range', () => {
       expect(() => {
         builder.checkBetween('key', 3, 0, 5);
-      }).not.toThrowError('Invalid option "key". Number must be between 0 and 5.');
+      }).not.toThrowError('Invalid field "key". Number must be between 0 and 5.');
     });
 
     it('doesnt error if in range inclusive', () => {
       expect(() => {
         builder.checkBetween('key', 5, 0, 5, true);
-      }).not.toThrowError('Invalid option "key". Number must be between 0 and 5 inclusive.');
+      }).not.toThrowError('Invalid field "key". Number must be between 0 and 5 inclusive.');
     });
   });
 
@@ -114,31 +114,31 @@ describe('NumberBuilder', () => {
     it('errors if value is not a number', () => {
       expect(() => {
         builder.checkGreaterThan('key', 'foo', 5);
-      }).toThrowError('Invalid option "key". Number must be greater than 5.');
+      }).toThrowError('Invalid field "key". Number must be greater than 5.');
     });
 
     it('errors if below minimum', () => {
       expect(() => {
         builder.checkGreaterThan('key', 3, 5);
-      }).toThrowError('Invalid option "key". Number must be greater than 5.');
+      }).toThrowError('Invalid field "key". Number must be greater than 5.');
     });
 
     it('errors if below minimum inclusive', () => {
       expect(() => {
         builder.checkGreaterThan('key', 3, 5, true);
-      }).toThrowError('Invalid option "key". Number must be greater than or equal to 5.');
+      }).toThrowError('Invalid field "key". Number must be greater than or equal to 5.');
     });
 
     it('doesnt error if above minimum', () => {
       expect(() => {
         builder.checkGreaterThan('key', 10, 5);
-      }).not.toThrowError('Invalid option "key". Number must be greater than 5.');
+      }).not.toThrowError('Invalid field "key". Number must be greater than 5.');
     });
 
     it('doesnt error if above minimum inclusive', () => {
       expect(() => {
         builder.checkGreaterThan('key', 5, 5, true);
-      }).not.toThrowError('Invalid option "key". Number must be greater than or equal to 5.');
+      }).not.toThrowError('Invalid field "key". Number must be greater than or equal to 5.');
     });
   });
 
@@ -180,31 +180,31 @@ describe('NumberBuilder', () => {
     it('errors if value is not a number', () => {
       expect(() => {
         builder.checkLessThan('key', 'foo', 5);
-      }).toThrowError('Invalid option "key". Number must be less than 5.');
+      }).toThrowError('Invalid field "key". Number must be less than 5.');
     });
 
     it('errors if above maximum', () => {
       expect(() => {
         builder.checkLessThan('key', 7, 5);
-      }).toThrowError('Invalid option "key". Number must be less than 5.');
+      }).toThrowError('Invalid field "key". Number must be less than 5.');
     });
 
     it('errors if above maximum inclusive', () => {
       expect(() => {
         builder.checkLessThan('key', 7, 5, true);
-      }).toThrowError('Invalid option "key". Number must be less than or equal to 5.');
+      }).toThrowError('Invalid field "key". Number must be less than or equal to 5.');
     });
 
     it('doesnt error if below maximum', () => {
       expect(() => {
         builder.checkLessThan('key', 3, 5);
-      }).not.toThrowError('Invalid option "key". Number must be less than 5.');
+      }).not.toThrowError('Invalid field "key". Number must be less than 5.');
     });
 
     it('doesnt error if below maximum inclusive', () => {
       expect(() => {
         builder.checkLessThan('key', 5, 5, true);
-      }).not.toThrowError('Invalid option "key". Number must be less than or equal to 5.');
+      }).not.toThrowError('Invalid field "key". Number must be less than or equal to 5.');
     });
   });
 
@@ -241,13 +241,13 @@ describe('NumberBuilder', () => {
     it('errors if value is not in the list', () => {
       expect(() => {
         builder.checkOneOf('key', 666, [123, 456, 789]);
-      }).toThrowError('Invalid option "key". Number must be one of: 123, 456, 789');
+      }).toThrowError('Invalid field "key". Number must be one of: 123, 456, 789');
     });
 
     it('doesnt error if value contains token', () => {
       expect(() => {
         builder.checkOneOf('key', 123, [123, 456, 789]);
-      }).not.toThrowError('Invalid option "key". Number must be one of: 123, 456, 789');
+      }).not.toThrowError('Invalid field "key". Number must be one of: 123, 456, 789');
     });
   });
 

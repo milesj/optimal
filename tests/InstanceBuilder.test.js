@@ -31,31 +31,31 @@ describe('instance()', () => {
     it('errors if a non-instance is passed', () => {
       expect(() => {
         instance().runChecks('key', 'foo');
-      }).toThrowError('Invalid option "key". Must be a class instance.');
+      }).toThrowError('Invalid field "key". Must be a class instance.');
     });
 
     it('errors if an object is passed when a class instance is required', () => {
       expect(() => {
         instance().runChecks('key', {});
-      }).toThrowError('Invalid option "key". Must be a class instance.');
+      }).toThrowError('Invalid field "key". Must be a class instance.');
     });
 
     it('doesnt error if a generic class instance is passed', () => {
       expect(() => {
         instance().runChecks('key', new Foo());
-      }).not.toThrowError('Invalid option "key". Must be a class instance.');
+      }).not.toThrowError('Invalid field "key". Must be a class instance.');
     });
 
     it('errors if a non-instance is passed when a class reference is set', () => {
       expect(() => {
         instance(Foo).runChecks('key', 'foo');
-      }).toThrowError('Invalid option "key". Must be an instance of "Foo".');
+      }).toThrowError('Invalid field "key". Must be an instance of "Foo".');
     });
 
     it('doesnt error if the correct instance is passed', () => {
       expect(() => {
         instance(Foo).runChecks('key', new Foo());
-      }).not.toThrowError('Invalid option "key". Must be an instance of "Foo".');
+      }).not.toThrowError('Invalid field "key". Must be an instance of "Foo".');
     });
   });
 

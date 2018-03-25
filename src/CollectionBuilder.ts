@@ -4,12 +4,13 @@
  */
 
 import Builder from './Builder';
+import { SupportedType } from './types';
 
 export default class CollectionBuilder<T, TDefault> extends Builder<TDefault | null> {
   contents: Builder<T> | null = null;
 
   constructor(
-    type: 'array' | 'object',
+    type: SupportedType.Array | SupportedType.Object,
     contents: Builder<T> | null = null,
     defaultValue: TDefault | null = null,
   ) {
@@ -31,16 +32,11 @@ export default class CollectionBuilder<T, TDefault> extends Builder<TDefault | n
     if (process.env.NODE_ENV !== 'production') {
       if (this.type === 'array') {
         value.forEach((item: T, i: number) => {
-          contents.runChecks(`${path}[${i}]`, item, this.currentOptions, this.optimalOptions);
+          contents.runChecks(`${path}[${i}]`, item, this.currentStruct, this.options);
         });
       } else if (this.type === 'object') {
         Object.keys(value).forEach(key => {
-          contents.runChecks(
-            `${path}.${key}`,
-            value[key],
-            this.currentOptions,
-            this.optimalOptions,
-          );
+          contents.runChecks(`${path}.${key}`, value[key], this.currentStruct, this.options);
         });
       }
     }
@@ -75,12 +71,12 @@ export function array<T>(
   contents: Builder<T> | null = null,
   defaultValue: T[] | null = [],
 ): CollectionBuilder<T, T[]> {
-  return new CollectionBuilder('array', contents, defaultValue);
+  return new CollectionBuilder(SupportedType.Array, contents, defaultValue);
 }
 
 export function object<T>(
   contents: Builder<T> | null = null,
   defaultValue: { [key: string]: T } | null = {},
 ): CollectionBuilder<T, { [key: string]: T }> {
-  return new CollectionBuilder('object', contents, defaultValue);
+  return new CollectionBuilder(SupportedType.Object, contents, defaultValue);
 }
