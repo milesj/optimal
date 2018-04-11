@@ -3,11 +3,11 @@
   "version": "0.18.0",
   "description": "A system for building and validating defined object structures",
   "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "module": "./esm/index.js",
   "scripts": {
-    "babel": "beemo typescript",
-    "build": "yarn run babel && yarn run build:dts",
-    "build:dts": "beemo run-script generate-dts",
+    "babel": "beemo typescript --declaration",
+    "build": "yarn run babel",
     "clean": "rimraf ./{lib,esm}/",
     "coverage": "yarn run jest --coverage",
     "docs": "gitbook build --debug",
@@ -48,11 +48,8 @@
     "url": "https://github.com/milesj/optimal/issues"
   },
   "homepage": "https://github.com/milesj/optimal#readme",
-  "dependencies": {
-    "babel-runtime": "^6.26.0"
-  },
   "devDependencies": {
-    "@milesj/build-tool-config": "^0.80.0"
+    "@milesj/build-tool-config": "^0.82.2"
   },
   "beemo": {
     "module": "@milesj/build-tool-config",

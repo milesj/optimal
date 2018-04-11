@@ -11,14 +11,6 @@ import NumberBuilder, { number } from './NumberBuilder';
 import ShapeBuilder, { shape } from './ShapeBuilder';
 import StringBuilder, { string } from './StringBuilder';
 import UnionBuilder, { union } from './UnionBuilder';
-import {
-  Blueprint,
-  CheckerCallback,
-  CustomCallback,
-  OptimalOptions,
-  Struct,
-  SupportedType,
-} from './types';
 
 export { array, bool, custom, date, func, instance, number, object, regex, shape, string, union };
 
@@ -32,6 +24,6 @@ export {
   UnionBuilder,
 };
 
-export { Blueprint, CheckerCallback, CustomCallback, OptimalOptions, Struct, SupportedType };
+export * from './types';
 
 export default optimal;
