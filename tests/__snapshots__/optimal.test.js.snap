@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Optimal errors if a non-builder is passed within the blueprint 1`] = `"Unknown blueprint. Must be a builder or plain object."`;
+
+exports[`Optimal errors if a non-object config is passed 1`] = `"Optimal options must be a plain object."`;
+
+exports[`Optimal errors if a non-object is passed 1`] = `"Optimal requires a plain object, found array."`;
+
+exports[`Optimal errors if a non-object is passed 2`] = `"Optimal requires a plain object, found number."`;
+
+exports[`Optimal errors if a non-object is passed 3`] = `"Optimal requires a plain object, found string."`;
+
+exports[`Optimal errors if a non-object is passed 4`] = `"Optimal requires a plain object, found function."`;
+
+exports[`Optimal errors if a non-object is passed as a blueprint 1`] = `"A blueprint is required."`;
+
+exports[`Optimal logical operators handles AND 1`] = `"All of these fields must be defined: foo, bar, baz"`;
+
+exports[`Optimal logical operators handles AND 2`] = `"All of these fields must be defined: foo, bar, baz"`;
+
+exports[`Optimal logical operators handles AND 3`] = `"All of these fields must be defined: foo, bar, baz"`;
+
+exports[`Optimal logical operators handles OR 1`] = `"At least one of these fields must be defined: foo, bar, baz"`;
+
+exports[`Optimal logical operators handles XOR 1`] = `"Only one of these fields may be defined: foo, bar, baz"`;
+
+exports[`Optimal logical operators handles XOR 2`] = `"Only one of these fields may be defined: foo, bar, baz"`;
+
+exports[`Optimal unknown fields errors for unknown fields 1`] = `"Unknown fields: foo, bar."`;

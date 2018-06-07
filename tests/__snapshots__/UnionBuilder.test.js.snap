@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UnionBuilder constructor() errors if a non-array is not passed 1`] = `"A non-empty array of blueprints are required for a union."`;
+
+exports[`UnionBuilder constructor() errors if an array with non-builders is passed 1`] = `"A non-empty array of blueprints are required for a union."`;
+
+exports[`UnionBuilder constructor() errors if an empty array is passed 1`] = `"A non-empty array of blueprints are required for a union."`;
+
+exports[`UnionBuilder runChecks() errors if a nested union is used 1`] = `"Invalid field \\"key\\". Nested unions are not supported."`;
+
+exports[`UnionBuilder runChecks() errors if a unsupported type is used 1`] = `"Invalid field \\"key\\". Type must be one of: string, number, boolean"`;
+
+exports[`UnionBuilder runChecks() errors if an object and shape are used 1`] = `"Invalid field \\"key\\". Objects and shapes within the same union are not supported."`;
+
+exports[`UnionBuilder runChecks() errors if the same builder type is used multiple times 1`] = `"Invalid field \\"key\\". Multiple instances of \\"object\\" are not supported."`;
+
+exports[`UnionBuilder runChecks() errors with the class name for instance checks 1`] = `"Invalid field \\"key\\". Type must be one of: number, FormData"`;
+
+exports[`UnionBuilder runChecks() runs array check 1`] = `"Invalid field \\"key[0]\\". Must be a string."`;
+
+exports[`UnionBuilder runChecks() runs boolean check 1`] = `"Invalid field \\"key\\". Value may only be \\"true\\"."`;
+
+exports[`UnionBuilder runChecks() runs custom check 1`] = `"Invalid field \\"key\\". Encountered a number!"`;
+
+exports[`UnionBuilder runChecks() runs instance check 1`] = `"Invalid field \\"key\\". Must be an instance of \\"Foo\\"."`;
+
+exports[`UnionBuilder runChecks() runs number check 1`] = `"Invalid field \\"key\\". Number must be between 0 and 5."`;
+
+exports[`UnionBuilder runChecks() runs object check 1`] = `"Invalid field \\"key.foo\\". Must be a number."`;
+
+exports[`UnionBuilder runChecks() runs shape check 1`] = `"Invalid field \\"key.foo\\". Must be a string."`;
+
+exports[`UnionBuilder runChecks() runs string check 1`] = `"Invalid field \\"key\\". String must be one of: foo, bar, baz"`;

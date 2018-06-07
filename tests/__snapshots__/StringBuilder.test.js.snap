@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StringBuilder checkContains() errors if value does not contain token 1`] = `"Invalid field \\"key\\". String does not include \\"oo\\"."`;
+
+exports[`StringBuilder checkMatch() errors if value does not match pattern 1`] = `"Invalid field \\"key\\". String does not match pattern \\"oo\\"."`;
+
+exports[`StringBuilder checkNotEmpty() errors if value is empty 1`] = `"Invalid field \\"key\\". String cannot be empty."`;
+
+exports[`StringBuilder checkOneOf() errors if value is not in the list 1`] = `"Invalid field \\"key\\". String must be one of: foo, bar, baz"`;
+
+exports[`StringBuilder contains() errors if token is an empty string 1`] = `"Contains requires a non-empty string."`;
+
+exports[`StringBuilder contains() errors if token is not string 1`] = `"Contains requires a non-empty string."`;
+
+exports[`StringBuilder match() errors if pattern is not a regex 1`] = `"Match requires a regular expression to match against."`;
+
+exports[`StringBuilder oneOf() errors if array contains a non-string 1`] = `"One of requires a non-empty array of strings."`;
+
+exports[`StringBuilder oneOf() errors if array is empty 1`] = `"One of requires a non-empty array of strings."`;
+
+exports[`StringBuilder oneOf() errors if not an array 1`] = `"One of requires a non-empty array of strings."`;
+
+exports[`StringBuilder runChecks() errors if a non-string value is used 1`] = `"Invalid field \\"key\\". Must be a string."`;

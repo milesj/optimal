@@ -5,13 +5,12 @@
 
 import Builder from './Builder';
 import typeOf from './typeOf';
-import { SupportedType } from './types';
 
 export default class UnionBuilder extends Builder<any> {
   builders: Builder<any>[] = [];
 
   constructor(builders: Builder<any>[], defaultValue: any | null = null) {
-    super(SupportedType.Union, defaultValue);
+    super('union', defaultValue);
 
     if (process.env.NODE_ENV !== 'production') {
       this.invariant(

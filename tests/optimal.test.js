@@ -87,25 +87,25 @@ describe('Optimal', () => {
   it('errors if a non-object is passed', () => {
     expect(() => {
       optimal([]);
-    }).toThrowError('Optimal requires a plain object, found array.');
+    }).toThrowErrorMatchingSnapshot();
 
     expect(() => {
       optimal(123);
-    }).toThrowError('Optimal requires a plain object, found number.');
+    }).toThrowErrorMatchingSnapshot();
 
     expect(() => {
       optimal('foo');
-    }).toThrowError('Optimal requires a plain object, found string.');
+    }).toThrowErrorMatchingSnapshot();
 
     expect(() => {
       optimal(() => {});
-    }).toThrowError('Optimal requires a plain object, found function.');
+    }).toThrowErrorMatchingSnapshot();
   });
 
   it('errors if a non-object is passed as a blueprint', () => {
     expect(() => {
       optimal({}, 123);
-    }).toThrowError('A blueprint is required.');
+    }).toThrowErrorMatchingSnapshot();
   });
 
   it('errors if a non-builder is passed within the blueprint', () => {
@@ -116,13 +116,13 @@ describe('Optimal', () => {
           foo: 123,
         },
       );
-    }).toThrowError('Unknown blueprint. Must be a builder or plain object.');
+    }).toThrowErrorMatchingSnapshot();
   });
 
   it('errors if a non-object config is passed', () => {
     expect(() => {
       optimal({}, blueprint, 123);
-    }).toThrowError('Optimal options must be a plain object.');
+    }).toThrowErrorMatchingSnapshot();
   });
 
   it('sets object keys as class properties', () => {
@@ -234,7 +234,7 @@ describe('Optimal', () => {
           },
           blueprint,
         );
-      }).toThrowError('Unknown fields: foo, bar.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('doesnt error for unknown fields if `unknown` is true', () => {
@@ -293,7 +293,7 @@ describe('Optimal', () => {
           },
           and,
         );
-      }).toThrowError('All of these fields must be defined: foo, bar, baz');
+      }).toThrowErrorMatchingSnapshot();
 
       expect(() => {
         optimal(
@@ -303,7 +303,7 @@ describe('Optimal', () => {
           },
           and,
         );
-      }).toThrowError('All of these fields must be defined: foo, bar, baz');
+      }).toThrowErrorMatchingSnapshot();
 
       expect(() => {
         optimal(
@@ -313,7 +313,7 @@ describe('Optimal', () => {
           },
           and,
         );
-      }).toThrowError('All of these fields must be defined: foo, bar, baz');
+      }).toThrowErrorMatchingSnapshot();
 
       expect(() => {
         optimal(
@@ -336,7 +336,7 @@ describe('Optimal', () => {
 
       expect(() => {
         optimal({}, or);
-      }).toThrowError('At least one of these fields must be defined: foo, bar, baz');
+      }).toThrowErrorMatchingSnapshot();
 
       expect(() => {
         optimal(
@@ -386,7 +386,7 @@ describe('Optimal', () => {
 
       expect(() => {
         optimal({}, xor);
-      }).toThrowError('Only one of these fields may be defined: foo, bar, baz');
+      }).toThrowErrorMatchingSnapshot();
 
       expect(() => {
         optimal(
@@ -424,7 +424,7 @@ describe('Optimal', () => {
           },
           xor,
         );
-      }).toThrowError('Only one of these fields may be defined: foo, bar, baz');
+      }).toThrowErrorMatchingSnapshot();
     });
   });
 });

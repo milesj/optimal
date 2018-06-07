@@ -5,7 +5,7 @@
 
 import Builder from './Builder';
 import isObject from './isObject';
-import { Blueprint, SupportedType } from './types';
+import { Blueprint } from './types';
 
 export interface Shape {
   [key: string]: any;
@@ -13,7 +13,7 @@ export interface Shape {
 
 export default class ShapeBuilder extends Builder<Shape | null> {
   constructor(contents: Blueprint, defaultValue: Shape | null = {}) {
-    super(SupportedType.Shape, defaultValue);
+    super('shape', defaultValue);
 
     if (process.env.NODE_ENV !== 'production') {
       this.invariant(

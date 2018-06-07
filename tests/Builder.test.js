@@ -13,7 +13,7 @@ describe('Builder', () => {
     it('errors if default value is undefined', () => {
       expect(() => {
         builder = new Builder('string');
-      }).toThrowError('A default value for type "string" is required.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('sets the type and default value', () => {
@@ -50,7 +50,7 @@ describe('Builder', () => {
     it('errors if no keys are defined', () => {
       expect(() => {
         builder.and();
-      }).toThrowError('AND requires a list of field names.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('adds a checker', () => {
@@ -72,7 +72,7 @@ describe('Builder', () => {
         };
 
         builder.checkAnd('foo', 'a', ['bar', 'baz']);
-      }).toThrowError('All of these fields must be defined: foo, bar, baz');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('doesnt error if all are defined', () => {
@@ -103,7 +103,7 @@ describe('Builder', () => {
 
         expect(() => {
           builder.checkType('key', 123);
-        }).toThrowError('Invalid field "key". Must be an array.');
+        }).toThrowErrorMatchingSnapshot();
       });
     });
 
@@ -121,7 +121,7 @@ describe('Builder', () => {
 
         expect(() => {
           builder.checkType('key', 123);
-        }).toThrowError('Invalid field "key". Must be a boolean.');
+        }).toThrowErrorMatchingSnapshot();
       });
     });
 
@@ -139,7 +139,7 @@ describe('Builder', () => {
 
         expect(() => {
           builder.checkType('key', 'foo');
-        }).toThrowError('Invalid field "key". Must be a function.');
+        }).toThrowErrorMatchingSnapshot();
       });
     });
 
@@ -157,7 +157,7 @@ describe('Builder', () => {
 
         expect(() => {
           builder.checkType('key', 'foo');
-        }).toThrowError('Invalid field "key". Must be a number.');
+        }).toThrowErrorMatchingSnapshot();
       });
     });
 
@@ -175,7 +175,7 @@ describe('Builder', () => {
 
         expect(() => {
           builder.checkType('key', 123);
-        }).toThrowError('Invalid field "key". Must be a plain object.');
+        }).toThrowErrorMatchingSnapshot();
       });
 
       it('errors on arrays', () => {
@@ -183,7 +183,7 @@ describe('Builder', () => {
 
         expect(() => {
           builder.checkType('key', []);
-        }).toThrowError('Invalid field "key". Must be a plain object.');
+        }).toThrowErrorMatchingSnapshot();
       });
 
       it('errors on nulls', () => {
@@ -191,7 +191,7 @@ describe('Builder', () => {
 
         expect(() => {
           builder.checkType('key', null);
-        }).toThrowError('Invalid field "key". Must be a plain object.');
+        }).toThrowErrorMatchingSnapshot();
       });
     });
 
@@ -209,7 +209,7 @@ describe('Builder', () => {
 
         expect(() => {
           builder.checkType('key', 123);
-        }).toThrowError('Invalid field "key". Must be a string.');
+        }).toThrowErrorMatchingSnapshot();
       });
     });
   });
@@ -238,7 +238,7 @@ describe('Builder', () => {
 
       expect(() => {
         builder.runChecks('error', 123);
-      }).toThrowError('Invalid field "error". This will error!');
+      }).toThrowErrorMatchingSnapshot();
 
       expect(() => {
         builder.runChecks('key', 456);
@@ -254,7 +254,7 @@ describe('Builder', () => {
 
       expect(() => {
         builder.runChecks('error', 123, { foo: 123, bar: 456, error: '' });
-      }).toThrowError('Invalid field "error". This will error!');
+      }).toThrowErrorMatchingSnapshot();
     });
   });
 
@@ -268,13 +268,13 @@ describe('Builder', () => {
     it('errors if condition is false', () => {
       expect(() => {
         builder.invariant(false, 'Failure');
-      }).toThrowError('Failure');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('includes an option path', () => {
       expect(() => {
         builder.invariant(false, 'Failure', 'foo.bar');
-      }).toThrowError('Invalid field "foo.bar". Failure');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('includes a class name', () => {
@@ -282,7 +282,7 @@ describe('Builder', () => {
         builder.options.name = 'FooBar';
 
         builder.invariant(false, 'Failure', 'foo.bar');
-      }).toThrowError('Invalid FooBar field "foo.bar". Failure');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('includes a class name when no path', () => {
@@ -290,7 +290,7 @@ describe('Builder', () => {
         builder.options.name = 'FooBar';
 
         builder.invariant(false, 'Failure');
-      }).toThrowError('FooBar: Failure');
+      }).toThrowErrorMatchingSnapshot();
     });
   });
 
@@ -308,13 +308,13 @@ describe('Builder', () => {
     it('errors for empty value', () => {
       expect(() => {
         builder.message('');
-      }).toThrowError('A non-empty string is required for custom messages.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors for non-string value', () => {
       expect(() => {
         builder.message(123);
-      }).toThrowError('A non-empty string is required for custom messages.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('sets message', () => {
@@ -328,13 +328,13 @@ describe('Builder', () => {
     it('errors for empty value', () => {
       expect(() => {
         builder.deprecate('');
-      }).toThrowError('A non-empty string is required for deprecated messages.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors for non-string value', () => {
       expect(() => {
         builder.deprecate(123);
-      }).toThrowError('A non-empty string is required for deprecated messages.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('sets message', () => {
@@ -388,25 +388,25 @@ describe('Builder', () => {
     it('errors if value passed is undefined and builder is required', () => {
       expect(() => {
         builder.required().runChecks('key');
-      }).toThrowError('Invalid field "key". Field is required and must be defined.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if value passed is null and builder is non-nullable', () => {
       expect(() => {
         builder.runChecks('key', null);
-      }).toThrowError('Invalid field "key". Null is not allowed.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('runs default type of check', () => {
       expect(() => {
         builder.runChecks('key', 123);
-      }).toThrowError('Invalid field "key". Must be a string.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('uses custom message', () => {
       expect(() => {
         builder.message('Oops, something is broken.').runChecks('key', 123);
-      }).toThrowError('Invalid field "key". Oops, something is broken.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     describe('deprecation', () => {
@@ -442,7 +442,7 @@ describe('Builder', () => {
 
       expect(() => {
         builder.only();
-      }).toThrowError('Only requires a default string value.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('adds a checker', () => {
@@ -463,7 +463,7 @@ describe('Builder', () => {
     it('errors if value doesnt match the default value', () => {
       expect(() => {
         builder.checkOnly('key', 'bar');
-      }).toThrowError('Invalid field "key". Value may only be "foo".');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('doesnt error if value matches default value', () => {
@@ -477,7 +477,7 @@ describe('Builder', () => {
     it('errors if no keys are defined', () => {
       expect(() => {
         builder.or();
-      }).toThrowError('OR requires a list of field names.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('adds a checker', () => {
@@ -496,7 +496,7 @@ describe('Builder', () => {
         builder.currentStruct = {};
 
         builder.checkOr('foo', 'a', ['bar', 'baz']);
-      }).toThrowError('At least one of these fields must be defined: foo, bar, baz');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('doesnt error if at least 1 option is defined', () => {
@@ -514,7 +514,7 @@ describe('Builder', () => {
     it('errors if no keys are defined', () => {
       expect(() => {
         builder.xor();
-      }).toThrowError('XOR requires a list of field names.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('adds a checker', () => {
@@ -533,7 +533,7 @@ describe('Builder', () => {
         builder.currentStruct = {};
 
         builder.checkXor('foo', 'a', ['bar', 'baz']);
-      }).toThrowError('Only one of these fields may be defined: foo, bar, baz');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if more than 1 option is defined', () => {
@@ -544,7 +544,7 @@ describe('Builder', () => {
         };
 
         builder.checkXor('foo', 'a', ['bar', 'baz']);
-      }).toThrowError('Only one of these fields may be defined: foo, bar, baz');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('doesnt error if only 1 option is defined', () => {
@@ -574,7 +574,7 @@ describe('bool()', () => {
   it('errors if a non-boolean value is used', () => {
     expect(() => {
       bool().runChecks('key', 123);
-    }).toThrowError('Invalid field "key". Must be a boolean.');
+    }).toThrowErrorMatchingSnapshot();
   });
 
   it('returns the type alias', () => {
@@ -615,7 +615,7 @@ describe('func()', () => {
   it('errors if a non-function value is used', () => {
     expect(() => {
       func().runChecks('key', 123);
-    }).toThrowError('Invalid field "key". Must be a function.');
+    }).toThrowErrorMatchingSnapshot();
   });
 
   it('returns the type alias', () => {

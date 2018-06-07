@@ -4,7 +4,6 @@
  */
 
 import Builder from './Builder';
-import { SupportedType } from './types';
 
 function isNumber(value: any): boolean {
   return typeof value === 'number';
@@ -12,7 +11,7 @@ function isNumber(value: any): boolean {
 
 export default class NumberBuilder extends Builder<number | null> {
   constructor(defaultValue: number | null = 0) {
-    super(SupportedType.Number, defaultValue);
+    super('number', defaultValue);
   }
 
   between(min: number, max: number, inclusive: boolean = false): this {

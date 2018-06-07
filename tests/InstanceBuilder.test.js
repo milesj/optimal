@@ -7,13 +7,13 @@ describe('instance()', () => {
     it('errors if a non-class is passed', () => {
       expect(() => {
         instance(123);
-      }).toThrowError('A class reference is required.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if an object is passed', () => {
       expect(() => {
         instance({});
-      }).toThrowError('A class reference is required.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('doesnt error if a class is passed', () => {
@@ -31,13 +31,13 @@ describe('instance()', () => {
     it('errors if a non-instance is passed', () => {
       expect(() => {
         instance().runChecks('key', 'foo');
-      }).toThrowError('Invalid field "key". Must be a class instance.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if an object is passed when a class instance is required', () => {
       expect(() => {
         instance().runChecks('key', {});
-      }).toThrowError('Invalid field "key". Must be a class instance.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('doesnt error if a generic class instance is passed', () => {
@@ -49,7 +49,7 @@ describe('instance()', () => {
     it('errors if a non-instance is passed when a class reference is set', () => {
       expect(() => {
         instance(Foo).runChecks('key', 'foo');
-      }).toThrowError('Invalid field "key". Must be an instance of "Foo".');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('doesnt error if the correct instance is passed', () => {

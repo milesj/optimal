@@ -368,16 +368,16 @@ export default class Builder<T> {
 }
 
 export function bool(defaultValue: boolean | null = false): Builder<boolean | null> {
-  return new Builder(SupportedType.Boolean, defaultValue);
+  return new Builder('boolean', defaultValue);
 }
 
 export function custom<T>(
   callback: CustomCallback,
   defaultValue: T | null = null,
 ): Builder<T | null> {
-  return new Builder(SupportedType.Custom, defaultValue).custom(callback);
+  return new Builder('custom', defaultValue).custom(callback);
 }
 
 export function func(defaultValue: Function | null = null): Builder<Function | null> {
-  return new Builder(SupportedType.Function, defaultValue).nullable();
+  return new Builder('function', defaultValue).nullable();
 }

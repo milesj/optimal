@@ -27,19 +27,19 @@ describe('UnionBuilder', () => {
     it('errors if a non-array is not passed', () => {
       expect(() => {
         union('foo');
-      }).toThrowError('A non-empty array of blueprints are required for a union.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if an empty array is passed', () => {
       expect(() => {
         union([]);
-      }).toThrowError('A non-empty array of blueprints are required for a union.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if an array with non-builders is passed', () => {
       expect(() => {
         union([123]);
-      }).toThrowError('A non-empty array of blueprints are required for a union.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('doesnt error if a builder array is passed', () => {
@@ -57,7 +57,7 @@ describe('UnionBuilder', () => {
     it('errors if a unsupported type is used', () => {
       expect(() => {
         union([string(), number(), bool()]).runChecks('key', []);
-      }).toThrowError('Invalid field "key". Type must be one of: string, number, boolean');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if a nested union is used', () => {
@@ -66,7 +66,7 @@ describe('UnionBuilder', () => {
           'key',
           [],
         );
-      }).toThrowError('Nested unions are not supported.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if an object and shape are used', () => {
@@ -78,31 +78,31 @@ describe('UnionBuilder', () => {
             bar: number(),
           }),
         ]).runChecks('key', []);
-      }).toThrowError('Objects and shapes within the same union are not supported.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if the same builder type is used multiple times', () => {
       expect(() => {
         union([object(string()), object(number())]).runChecks('key', []);
-      }).toThrowError('Multiple instances of "object" are not supported.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors with the class name for instance checks', () => {
       expect(() => {
         union([number(), instance(FormData)]).runChecks('key', {});
-      }).toThrowError('Invalid field "key". Type must be one of: number, FormData');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('runs array check', () => {
       expect(() => {
         builder.runChecks('key', [123]);
-      }).toThrowError('Invalid field "key[0]". Must be a string.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('runs boolean check', () => {
       expect(() => {
         builder.runChecks('key', false);
-      }).toThrowError('Invalid field "key". Value may only be "true".');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('runs custom check', () => {
@@ -115,25 +115,25 @@ describe('UnionBuilder', () => {
             }
           }),
         ]).runChecks('key', 123);
-      }).toThrowError('Invalid field "key". Encountered a number!');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('runs instance check', () => {
       expect(() => {
         builder.runChecks('key', new Bar());
-      }).toThrowError('Invalid field "key". Must be an instance of "Foo".');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('runs number check', () => {
       expect(() => {
         builder.runChecks('key', 10);
-      }).toThrowError('Invalid field "key". Number must be between 0 and 5.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('runs object check', () => {
       expect(() => {
         builder.runChecks('key', { foo: 'foo' });
-      }).toThrowError('Invalid field "key.foo". Must be a number.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('runs shape check', () => {
@@ -146,13 +146,13 @@ describe('UnionBuilder', () => {
         ]).runChecks('key', {
           foo: 123,
         });
-      }).toThrowError('Invalid field "key.foo". Must be a string.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('runs string check', () => {
       expect(() => {
         builder.runChecks('key', 'qux');
-      }).toThrowError('Invalid field "key". String must be one of: foo, bar, baz');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('runs correctly for valid values', () => {

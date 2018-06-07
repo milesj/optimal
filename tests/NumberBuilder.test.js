@@ -17,7 +17,7 @@ describe('NumberBuilder', () => {
     it('errors if a non-number value is used', () => {
       expect(() => {
         number().runChecks('key', 'foo');
-      }).toThrowError('Invalid field "key". Must be a number.');
+      }).toThrowErrorMatchingSnapshot();
     });
   });
 
@@ -25,13 +25,13 @@ describe('NumberBuilder', () => {
     it('errors if min is a not a number', () => {
       expect(() => {
         builder.between('foo', 5);
-      }).toThrowError('Between requires a minimum and maximum number.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if max is a not a number', () => {
       expect(() => {
         builder.between(0, 'foo');
-      }).toThrowError('Between requires a minimum and maximum number.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('adds a checker', () => {
@@ -48,19 +48,19 @@ describe('NumberBuilder', () => {
     it('errors if value is not a number', () => {
       expect(() => {
         builder.checkBetween('key', 'foo', 0, 5);
-      }).toThrowError('Invalid field "key". Number must be between 0 and 5.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if out of range', () => {
       expect(() => {
         builder.checkBetween('key', 10, 0, 5);
-      }).toThrowError('Invalid field "key". Number must be between 0 and 5.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if out of range inclusive', () => {
       expect(() => {
         builder.checkBetween('key', 10, 0, 5, true);
-      }).toThrowError('Invalid field "key". Number must be between 0 and 5 inclusive.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('doesnt error if in range', () => {
@@ -80,7 +80,7 @@ describe('NumberBuilder', () => {
     it('errors if min is a not a number', () => {
       expect(() => {
         builder.gt('foo');
-      }).toThrowError('Greater-than requires a minimum number.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('adds a checker', () => {
@@ -97,7 +97,7 @@ describe('NumberBuilder', () => {
     it('errors if min is a not a number', () => {
       expect(() => {
         builder.gte('foo');
-      }).toThrowError('Greater-than requires a minimum number.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('adds a checker', () => {
@@ -114,19 +114,19 @@ describe('NumberBuilder', () => {
     it('errors if value is not a number', () => {
       expect(() => {
         builder.checkGreaterThan('key', 'foo', 5);
-      }).toThrowError('Invalid field "key". Number must be greater than 5.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if below minimum', () => {
       expect(() => {
         builder.checkGreaterThan('key', 3, 5);
-      }).toThrowError('Invalid field "key". Number must be greater than 5.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if below minimum inclusive', () => {
       expect(() => {
         builder.checkGreaterThan('key', 3, 5, true);
-      }).toThrowError('Invalid field "key". Number must be greater than or equal to 5.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('doesnt error if above minimum', () => {
@@ -146,7 +146,7 @@ describe('NumberBuilder', () => {
     it('errors if max is a not a number', () => {
       expect(() => {
         builder.lt('foo');
-      }).toThrowError('Less-than requires a maximum number.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('adds a checker', () => {
@@ -163,7 +163,7 @@ describe('NumberBuilder', () => {
     it('errors if max is a not a number', () => {
       expect(() => {
         builder.lte('foo');
-      }).toThrowError('Less-than requires a maximum number.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('adds a checker', () => {
@@ -180,19 +180,19 @@ describe('NumberBuilder', () => {
     it('errors if value is not a number', () => {
       expect(() => {
         builder.checkLessThan('key', 'foo', 5);
-      }).toThrowError('Invalid field "key". Number must be less than 5.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if above maximum', () => {
       expect(() => {
         builder.checkLessThan('key', 7, 5);
-      }).toThrowError('Invalid field "key". Number must be less than 5.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if above maximum inclusive', () => {
       expect(() => {
         builder.checkLessThan('key', 7, 5, true);
-      }).toThrowError('Invalid field "key". Number must be less than or equal to 5.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('doesnt error if below maximum', () => {
@@ -212,19 +212,19 @@ describe('NumberBuilder', () => {
     it('errors if not an array', () => {
       expect(() => {
         builder.oneOf(123);
-      }).toThrowError('One of requires a non-empty array of numbers.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if array is empty', () => {
       expect(() => {
         builder.oneOf([]);
-      }).toThrowError('One of requires a non-empty array of numbers.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if array contains a non-number', () => {
       expect(() => {
         builder.oneOf(['foo', 123]);
-      }).toThrowError('One of requires a non-empty array of numbers.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('adds a checker', () => {
@@ -241,7 +241,7 @@ describe('NumberBuilder', () => {
     it('errors if value is not in the list', () => {
       expect(() => {
         builder.checkOneOf('key', 666, [123, 456, 789]);
-      }).toThrowError('Invalid field "key". Number must be one of: 123, 456, 789');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('doesnt error if value contains token', () => {

@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NumberBuilder between() errors if max is a not a number 1`] = `"Between requires a minimum and maximum number."`;
+
+exports[`NumberBuilder between() errors if min is a not a number 1`] = `"Between requires a minimum and maximum number."`;
+
+exports[`NumberBuilder checkBetween() errors if out of range 1`] = `"Invalid field \\"key\\". Number must be between 0 and 5."`;
+
+exports[`NumberBuilder checkBetween() errors if out of range inclusive 1`] = `"Invalid field \\"key\\". Number must be between 0 and 5 inclusive."`;
+
+exports[`NumberBuilder checkBetween() errors if value is not a number 1`] = `"Invalid field \\"key\\". Number must be between 0 and 5."`;
+
+exports[`NumberBuilder checkGreaterThan() errors if below minimum 1`] = `"Invalid field \\"key\\". Number must be greater than 5."`;
+
+exports[`NumberBuilder checkGreaterThan() errors if below minimum inclusive 1`] = `"Invalid field \\"key\\". Number must be greater than or equal to 5."`;
+
+exports[`NumberBuilder checkGreaterThan() errors if value is not a number 1`] = `"Invalid field \\"key\\". Number must be greater than 5."`;
+
+exports[`NumberBuilder checkLessThan() errors if above maximum 1`] = `"Invalid field \\"key\\". Number must be less than 5."`;
+
+exports[`NumberBuilder checkLessThan() errors if above maximum inclusive 1`] = `"Invalid field \\"key\\". Number must be less than or equal to 5."`;
+
+exports[`NumberBuilder checkLessThan() errors if value is not a number 1`] = `"Invalid field \\"key\\". Number must be less than 5."`;
+
+exports[`NumberBuilder checkOneOf() errors if value is not in the list 1`] = `"Invalid field \\"key\\". Number must be one of: 123, 456, 789"`;
+
+exports[`NumberBuilder gt() errors if min is a not a number 1`] = `"Greater-than requires a minimum number."`;
+
+exports[`NumberBuilder gte() errors if min is a not a number 1`] = `"Greater-than requires a minimum number."`;
+
+exports[`NumberBuilder lt() errors if max is a not a number 1`] = `"Less-than requires a maximum number."`;
+
+exports[`NumberBuilder lte() errors if max is a not a number 1`] = `"Less-than requires a maximum number."`;
+
+exports[`NumberBuilder oneOf() errors if array contains a non-number 1`] = `"One of requires a non-empty array of numbers."`;
+
+exports[`NumberBuilder oneOf() errors if array is empty 1`] = `"One of requires a non-empty array of numbers."`;
+
+exports[`NumberBuilder oneOf() errors if not an array 1`] = `"One of requires a non-empty array of numbers."`;
+
+exports[`NumberBuilder runChecks() errors if a non-number value is used 1`] = `"Invalid field \\"key\\". Must be a number."`;

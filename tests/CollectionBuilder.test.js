@@ -13,7 +13,7 @@ describe('array()', () => {
     it('errors if a non-builder is passed', () => {
       expect(() => {
         builder = array(123);
-      }).toThrowError('A blueprint is required for array contents.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('doesnt error if a builder is not passed', () => {
@@ -44,25 +44,25 @@ describe('array()', () => {
     it('errors if a non-array is passed', () => {
       expect(() => {
         builder.runChecks('key', 'foo');
-      }).toThrowError('Invalid field "key". Must be an array.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if a non-array is passed, when not using a builder', () => {
       expect(() => {
         array().runChecks('key', 'foo');
-      }).toThrowError('Invalid field "key". Must be an array.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('checks each item in the array', () => {
       expect(() => {
         builder.runChecks('key', ['foo', 'bar', 'baz', 123]);
-      }).toThrowError('Invalid field "key[3]". Must be a string.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if an array item is invalid; persists path with index', () => {
       expect(() => {
         builder.runChecks('key', [123]);
-      }).toThrowError('Invalid field "key[0]". Must be a string.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('supports arrays of arrays', () => {
@@ -78,7 +78,7 @@ describe('array()', () => {
 
       expect(() => {
         builder.runChecks('key', [['foo', 'bar'], ['baz', 123]]);
-      }).toThrowError('Invalid field "key[1][1]". Must be a string.');
+      }).toThrowErrorMatchingSnapshot();
     });
   });
 
@@ -97,7 +97,7 @@ describe('array()', () => {
     it('errors if value is empty', () => {
       expect(() => {
         builder.checkNotEmpty('key', []);
-      }).toThrowError('Invalid field "key". Array cannot be empty.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('doesnt error if not empty', () => {
@@ -129,7 +129,7 @@ describe('object()', () => {
     it('errors if a non-builder is passed', () => {
       expect(() => {
         builder = object(123);
-      }).toThrowError('A blueprint is required for object contents.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('doesnt error if a builder is not passed', () => {
@@ -160,13 +160,13 @@ describe('object()', () => {
     it('errors if a non-object is passed', () => {
       expect(() => {
         builder.runChecks('key', 'foo');
-      }).toThrowError('Invalid field "key". Must be a plain object.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if a non-object is passed, when not using a builder', () => {
       expect(() => {
         object().runChecks('key', 'foo');
-      }).toThrowError('Invalid field "key". Must be a plain object.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('checks each item in the object', () => {
@@ -176,7 +176,7 @@ describe('object()', () => {
           b: 'bar',
           c: 123,
         });
-      }).toThrowError('Invalid field "key.c". Must be a string.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if an object item is invalid; persists path with index', () => {
@@ -184,7 +184,7 @@ describe('object()', () => {
         builder.runChecks('key', {
           foo: 123,
         });
-      }).toThrowError('Invalid field "key.foo". Must be a string.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('supports objects of objects', () => {
@@ -216,7 +216,7 @@ describe('object()', () => {
             baz: '789',
           },
         });
-      }).toThrowError('Invalid field "key.a.bar". Must be a string.');
+      }).toThrowErrorMatchingSnapshot();
     });
   });
 
@@ -235,7 +235,7 @@ describe('object()', () => {
     it('errors if value is empty', () => {
       expect(() => {
         builder.checkNotEmpty('key', {});
-      }).toThrowError('Invalid field "key". Object cannot be empty.');
+      }).toThrowErrorMatchingSnapshot();
     });
 
     it('doesnt error if not empty', () => {

@@ -4,13 +4,12 @@
  */
 
 import Builder from './Builder';
-import { SupportedType } from './types';
 
 export default class CollectionBuilder<T, TDefault> extends Builder<TDefault | null> {
   contents: Builder<T> | null = null;
 
   constructor(
-    type: SupportedType.Array | SupportedType.Object,
+    type: 'array' | 'object',
     contents: Builder<T> | null = null,
     defaultValue: TDefault | null = null,
   ) {
@@ -71,12 +70,12 @@ export function array<T>(
   contents: Builder<T> | null = null,
   defaultValue: T[] | null = [],
 ): CollectionBuilder<T, T[]> {
-  return new CollectionBuilder(SupportedType.Array, contents, defaultValue);
+  return new CollectionBuilder('array', contents, defaultValue);
 }
 
 export function object<T>(
   contents: Builder<T> | null = null,
   defaultValue: { [key: string]: T } | null = {},
 ): CollectionBuilder<T, { [key: string]: T }> {
-  return new CollectionBuilder(SupportedType.Object, contents, defaultValue);
+  return new CollectionBuilder('object', contents, defaultValue);
 }

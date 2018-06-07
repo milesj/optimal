@@ -22,16 +22,15 @@ export interface OptimalOptions extends Struct {
   unknown?: boolean;
 }
 
-export enum SupportedType {
-  Array = 'array',
-  Boolean = 'boolean',
-  Custom = 'custom',
-  Function = 'function',
-  Instance = 'instance',
-  Number = 'number',
-  Object = 'object',
-  Shape = 'shape',
-  String = 'string',
-  Union = 'union',
-  Unknown = 'unknown',
-}
+export type SupportedType =
+  | 'array'
+  | 'boolean'
+  | 'custom'
+  | 'function'
+  | 'instance'
+  | 'number'
+  | 'object'
+  | 'shape'
+  | 'string'
+  | 'union'
+  | 'unknown';
