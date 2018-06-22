@@ -68,9 +68,9 @@
   dependencies:
     rimraf "^2.6.2"
 
-"@milesj/build-tool-config@^0.102.3":
-  version "0.102.3"
-  resolved "https://registry.npmjs.org/@milesj/build-tool-config/-/build-tool-config-0.102.3.tgz#8f8b254f3e04c614fb6b1f54d6f7d8aeaea56df9"
+"@milesj/build-tool-config@^0.104.1":
+  version "0.104.1"
+  resolved "https://registry.npmjs.org/@milesj/build-tool-config/-/build-tool-config-0.104.1.tgz#078f203c2a237ed31da50817838cb190d58354e4"
   dependencies:
     "@beemo/cli" "^0.18.0"
     "@beemo/core" "^0.18.0"
@@ -80,7 +80,7 @@
     "@beemo/driver-prettier" "^0.18.0"
     "@beemo/driver-typescript" "^0.7.0"
     "@types/enzyme" "^3.1.10"
-    "@types/jest" "^23.1.0"
+    "@types/jest" "^23.1.1"
     babel-cli "^6.26.0"
     babel-core "^6.26.3"
     babel-jest "^23.0.1"
@@ -96,7 +96,7 @@
     enzyme-adapter-react-16 "^1.1.1"
     enzyme-to-json "^3.3.4"
     eslint "^4.19.1"
-    eslint-config-airbnb "^16.1.0"
+    eslint-config-airbnb "^17.0.0"
     eslint-config-prettier "^2.9.0"
     eslint-plugin-babel "^5.1.0"
     eslint-plugin-compat "^2.4.0"
@@ -117,7 +117,6 @@
     react "^16.4.1"
     react-dom "^16.4.1"
     react-test-renderer "^16.4.1"
-    rimraf "^2.6.2"
     ts-jest "^22.4.6"
     typescript "^2.9.2"
     typescript-eslint-parser "^16.0.0"
@@ -181,7 +180,7 @@
   version "4.0.0"
   resolved "https://registry.npmjs.org/@types/is-glob/-/is-glob-4.0.0.tgz#fb8a2bff539025d4dcd6d5efe7689e03341b876d"
 
-"@types/jest@^23.1.0":
+"@types/jest@^23.1.1":
   version "23.1.1"
   resolved "https://registry.npmjs.org/@types/jest/-/jest-23.1.1.tgz#c54ab1a5f41aa693c0957222dd10414416d0c87b"
 
@@ -2638,17 +2637,21 @@ eslint-ast-utils@^1.0.0:
     lodash.get "^4.4.2"
     lodash.zip "^4.2.0"
 
-eslint-config-airbnb-base@^12.1.0:
-  version "12.1.0"
-  resolved "https://registry.yarnpkg.com/eslint-config-airbnb-base/-/eslint-config-airbnb-base-12.1.0.tgz#386441e54a12ccd957b0a92564a4bafebd747944"
+eslint-config-airbnb-base@^13.0.0:
+  version "13.0.0"
+  resolved "https://registry.npmjs.org/eslint-config-airbnb-base/-/eslint-config-airbnb-base-13.0.0.tgz#2ee6279c4891128e49d6445b24aa13c2d1a21450"
   dependencies:
     eslint-restricted-globals "^0.1.1"
+    object.assign "^4.1.0"
+    object.entries "^1.0.4"
 
-eslint-config-airbnb@^16.1.0:
-  version "16.1.0"
-  resolved "https://registry.yarnpkg.com/eslint-config-airbnb/-/eslint-config-airbnb-16.1.0.tgz#2546bfb02cc9fe92284bf1723ccf2e87bc45ca46"
+eslint-config-airbnb@^17.0.0:
+  version "17.0.0"
+  resolved "https://registry.npmjs.org/eslint-config-airbnb/-/eslint-config-airbnb-17.0.0.tgz#1bb8c4255483320bb68c3b614f71ae6058b0b2db"
   dependencies:
-    eslint-config-airbnb-base "^12.1.0"
+    eslint-config-airbnb-base "^13.0.0"
+    object.assign "^4.1.0"
+    object.entries "^1.0.4"
 
 eslint-config-prettier@^2.9.0:
   version "2.9.0"

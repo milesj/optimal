@@ -317,7 +317,9 @@ export default class Builder<T> {
     if (value === null) {
       if (this.isNullable) {
         return value;
-      } else if (process.env.NODE_ENV !== 'production') {
+      }
+
+      if (process.env.NODE_ENV !== 'production') {
         this.invariant(false, 'Null is not allowed.', path);
       }
     }
