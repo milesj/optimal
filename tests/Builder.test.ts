@@ -12,7 +12,7 @@ describe('Builder', () => {
   describe('constructor()', () => {
     it('errors if default value is undefined', () => {
       expect(() => {
-        builder = new Builder('string');
+        builder = new Builder('string', undefined);
       }).toThrowErrorMatchingSnapshot();
     });
 
@@ -573,7 +573,7 @@ describe('bool()', () => {
 
   it('errors if a non-boolean value is used', () => {
     expect(() => {
-      bool().runChecks('key', 123);
+      bool().runChecks('key', 123, {});
     }).toThrowErrorMatchingSnapshot();
   });
 
@@ -614,7 +614,7 @@ describe('func()', () => {
 
   it('errors if a non-function value is used', () => {
     expect(() => {
-      func().runChecks('key', 123);
+      func().runChecks('key', 123, {});
     }).toThrowErrorMatchingSnapshot();
   });
 

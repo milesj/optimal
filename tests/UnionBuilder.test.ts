@@ -1,4 +1,4 @@
-import { union } from '../src/UnionBuilder';
+import UnionBuilder, { union } from '../src/UnionBuilder';
 import { bool, custom } from '../src/Builder';
 import { array, object } from '../src/CollectionBuilder';
 import { instance } from '../src/InstanceBuilder';
@@ -7,7 +7,7 @@ import { shape } from '../src/ShapeBuilder';
 import { string } from '../src/StringBuilder';
 
 describe('UnionBuilder', () => {
-  let builder;
+  let builder: UnionBuilder;
 
   class Foo {}
   class Bar {}
@@ -26,6 +26,7 @@ describe('UnionBuilder', () => {
   describe('constructor()', () => {
     it('errors if a non-array is not passed', () => {
       expect(() => {
+        // @ts-ignore
         union('foo');
       }).toThrowErrorMatchingSnapshot();
     });
@@ -38,6 +39,7 @@ describe('UnionBuilder', () => {
 
     it('errors if an array with non-builders is passed', () => {
       expect(() => {
+        // @ts-ignore
         union([123]);
       }).toThrowErrorMatchingSnapshot();
     });
@@ -56,7 +58,7 @@ describe('UnionBuilder', () => {
   describe('runChecks()', () => {
     it('errors if a unsupported type is used', () => {
       expect(() => {
-        union([string(), number(), bool()]).runChecks('key', []);
+        union([string(), number(), bool()]).runChecks('key', [], {});
       }).toThrowErrorMatchingSnapshot();
     });
 
@@ -65,6 +67,7 @@ describe('UnionBuilder', () => {
         union([string('foo').oneOf(['foo', 'bar', 'baz']), union([number(), bool()])]).runChecks(
           'key',
           [],
+          {},
         );
       }).toThrowErrorMatchingSnapshot();
     });
@@ -77,31 +80,31 @@ describe('UnionBuilder', () => {
             foo: string(),
             bar: number(),
           }),
-        ]).runChecks('key', []);
+        ]).runChecks('key', [], {});
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if the same builder type is used multiple times', () => {
       expect(() => {
-        union([object(string()), object(number())]).runChecks('key', []);
+        union([object(string()), object(number())]).runChecks('key', [], {});
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors with the class name for instance checks', () => {
       expect(() => {
-        union([number(), instance(FormData)]).runChecks('key', {});
+        union([number(), instance(FormData)]).runChecks('key', {}, {});
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('runs array check', () => {
       expect(() => {
-        builder.runChecks('key', [123]);
+        builder.runChecks('key', [123], {});
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('runs boolean check', () => {
       expect(() => {
-        builder.runChecks('key', false);
+        builder.runChecks('key', false, {});
       }).toThrowErrorMatchingSnapshot();
     });
 
@@ -114,25 +117,25 @@ describe('UnionBuilder', () => {
               throw new TypeError('Encountered a number!');
             }
           }),
-        ]).runChecks('key', 123);
+        ]).runChecks('key', 123, {});
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('runs instance check', () => {
       expect(() => {
-        builder.runChecks('key', new Bar());
+        builder.runChecks('key', new Bar(), {});
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('runs number check', () => {
       expect(() => {
-        builder.runChecks('key', 10);
+        builder.runChecks('key', 10, {});
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('runs object check', () => {
       expect(() => {
-        builder.runChecks('key', { foo: 'foo' });
+        builder.runChecks('key', { foo: 'foo' }, {});
       }).toThrowErrorMatchingSnapshot();
     });
 
@@ -143,22 +146,26 @@ describe('UnionBuilder', () => {
             foo: string(),
             bar: number(),
           }),
-        ]).runChecks('key', {
-          foo: 123,
-        });
+        ]).runChecks(
+          'key',
+          {
+            foo: 123,
+          },
+          {},
+        );
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('runs string check', () => {
       expect(() => {
-        builder.runChecks('key', 'qux');
+        builder.runChecks('key', 'qux', {});
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('runs correctly for valid values', () => {
-      expect(builder.runChecks('key', 'foo')).toBe('foo');
-      expect(builder.runChecks('key', 3)).toBe(3);
-      expect(builder.runChecks('key', true)).toBe(true);
+      expect(builder.runChecks('key', 'foo', {})).toBe('foo');
+      expect(builder.runChecks('key', 3, {})).toBe(3);
+      expect(builder.runChecks('key', true, {})).toBe(true);
     });
   });
 

@@ -16,7 +16,7 @@ describe('NumberBuilder', () => {
   describe('runChecks()', () => {
     it('errors if a non-number value is used', () => {
       expect(() => {
-        number().runChecks('key', 'foo');
+        number().runChecks('key', 'foo', {});
       }).toThrowErrorMatchingSnapshot();
     });
   });

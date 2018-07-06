@@ -1,9 +1,9 @@
-import { array, object } from '../src/CollectionBuilder';
+import CollectionBuilder, { array, object } from '../src/CollectionBuilder';
 import { number } from '../src/NumberBuilder';
 import { string } from '../src/StringBuilder';
 
 describe('array()', () => {
-  let builder;
+  let builder: CollectionBuilder<any, any>;
 
   beforeEach(() => {
     builder = array(string(), []);
@@ -12,6 +12,7 @@ describe('array()', () => {
   describe('constructor()', () => {
     it('errors if a non-builder is passed', () => {
       expect(() => {
+        // @ts-ignore
         builder = array(123);
       }).toThrowErrorMatchingSnapshot();
     });
@@ -38,30 +39,30 @@ describe('array()', () => {
 
   describe('runChecks()', () => {
     it('returns an empty array for no data', () => {
-      expect(builder.runChecks('key')).toEqual([]);
+      expect(builder.runChecks('key', [], {})).toEqual([]);
     });
 
     it('errors if a non-array is passed', () => {
       expect(() => {
-        builder.runChecks('key', 'foo');
+        builder.runChecks('key', 'foo', {});
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if a non-array is passed, when not using a builder', () => {
       expect(() => {
-        array().runChecks('key', 'foo');
+        array().runChecks('key', 'foo', {});
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('checks each item in the array', () => {
       expect(() => {
-        builder.runChecks('key', ['foo', 'bar', 'baz', 123]);
+        builder.runChecks('key', ['foo', 'bar', 'baz', 123], {});
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if an array item is invalid; persists path with index', () => {
       expect(() => {
-        builder.runChecks('key', [123]);
+        builder.runChecks('key', [123], {});
       }).toThrowErrorMatchingSnapshot();
     });
 
@@ -70,14 +71,14 @@ describe('array()', () => {
 
       const data = [['foo', 'bar'], ['baz', 'qux']];
 
-      expect(builder.runChecks('key', data)).toEqual(data);
+      expect(builder.runChecks('key', data, {})).toEqual(data);
     });
 
     it('errors correctly for arrays in arrays', () => {
       builder = array(array(string()));
 
       expect(() => {
-        builder.runChecks('key', [['foo', 'bar'], ['baz', 123]]);
+        builder.runChecks('key', [['foo', 'bar'], ['baz', 123]], {});
       }).toThrowErrorMatchingSnapshot();
     });
   });
@@ -119,7 +120,7 @@ describe('array()', () => {
 });
 
 describe('object()', () => {
-  let builder;
+  let builder: CollectionBuilder<any, any>;
 
   beforeEach(() => {
     builder = object(string(), {});
@@ -128,6 +129,7 @@ describe('object()', () => {
   describe('constructor()', () => {
     it('errors if a non-builder is passed', () => {
       expect(() => {
+        // @ts-ignore
         builder = object(123);
       }).toThrowErrorMatchingSnapshot();
     });
@@ -154,36 +156,44 @@ describe('object()', () => {
 
   describe('runChecks()', () => {
     it('returns an empty object for no data', () => {
-      expect(builder.runChecks('key')).toEqual({});
+      expect(builder.runChecks('key', {}, {})).toEqual({});
     });
 
     it('errors if a non-object is passed', () => {
       expect(() => {
-        builder.runChecks('key', 'foo');
+        builder.runChecks('key', 'foo', {});
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if a non-object is passed, when not using a builder', () => {
       expect(() => {
-        object().runChecks('key', 'foo');
+        object().runChecks('key', 'foo', {});
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('checks each item in the object', () => {
       expect(() => {
-        builder.runChecks('key', {
-          a: 'foo',
-          b: 'bar',
-          c: 123,
-        });
+        builder.runChecks(
+          'key',
+          {
+            a: 'foo',
+            b: 'bar',
+            c: 123,
+          },
+          {},
+        );
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if an object item is invalid; persists path with index', () => {
       expect(() => {
-        builder.runChecks('key', {
-          foo: 123,
-        });
+        builder.runChecks(
+          'key',
+          {
+            foo: 123,
+          },
+          {},
+        );
       }).toThrowErrorMatchingSnapshot();
     });
 
@@ -200,22 +210,26 @@ describe('object()', () => {
         },
       };
 
-      expect(builder.runChecks('key', data)).toEqual(data);
+      expect(builder.runChecks('key', data, {})).toEqual(data);
     });
 
     it('errors correctly for objects in objects', () => {
       builder = object(object(string()));
 
       expect(() => {
-        builder.runChecks('key', {
-          a: {
-            foo: '123',
-            bar: 456,
+        builder.runChecks(
+          'key',
+          {
+            a: {
+              foo: '123',
+              bar: 456,
+            },
+            b: {
+              baz: '789',
+            },
           },
-          b: {
-            baz: '789',
-          },
-        });
+          {},
+        );
       }).toThrowErrorMatchingSnapshot();
     });
   });

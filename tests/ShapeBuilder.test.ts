@@ -17,6 +17,7 @@ describe('shape()', () => {
   describe('constructor()', () => {
     it('errors if a non-object is not passed', () => {
       expect(() => {
+        // @ts-ignore
         shape('foo');
       }).toThrowErrorMatchingSnapshot();
     });
@@ -29,6 +30,7 @@ describe('shape()', () => {
 
     it('errors if an object with non-builders is passed', () => {
       expect(() => {
+        // @ts-ignore
         shape({ foo: 123 });
       }).toThrowErrorMatchingSnapshot();
     });

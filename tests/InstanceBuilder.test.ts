@@ -6,12 +6,14 @@ describe('instance()', () => {
   describe('constructor()', () => {
     it('errors if a non-class is passed', () => {
       expect(() => {
+        // @ts-ignore
         instance(123);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if an object is passed', () => {
       expect(() => {
+        // @ts-ignore
         instance({});
       }).toThrowErrorMatchingSnapshot();
     });
@@ -25,36 +27,36 @@ describe('instance()', () => {
 
   describe('runChecks()', () => {
     it('returns null for no data', () => {
-      expect(instance(Foo).runChecks('key')).toBeNull();
+      expect(instance(Foo).runChecks('key', null, {})).toBeNull();
     });
 
     it('errors if a non-instance is passed', () => {
       expect(() => {
-        instance().runChecks('key', 'foo');
+        instance().runChecks('key', 'foo', {});
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if an object is passed when a class instance is required', () => {
       expect(() => {
-        instance().runChecks('key', {});
+        instance().runChecks('key', {}, {});
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('doesnt error if a generic class instance is passed', () => {
       expect(() => {
-        instance().runChecks('key', new Foo());
+        instance().runChecks('key', new Foo(), {});
       }).not.toThrowError('Invalid field "key". Must be a class instance.');
     });
 
     it('errors if a non-instance is passed when a class reference is set', () => {
       expect(() => {
-        instance(Foo).runChecks('key', 'foo');
+        instance(Foo).runChecks('key', 'foo', {});
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('doesnt error if the correct instance is passed', () => {
       expect(() => {
-        instance(Foo).runChecks('key', new Foo());
+        instance(Foo).runChecks('key', new Foo(), {});
       }).not.toThrowError('Invalid field "key". Must be an instance of "Foo".');
     });
   });

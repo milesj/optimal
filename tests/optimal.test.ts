@@ -86,24 +86,27 @@ describe('Optimal', () => {
 
   it('errors if a non-object is passed', () => {
     expect(() => {
-      optimal([]);
+      optimal([], {});
     }).toThrowErrorMatchingSnapshot();
 
     expect(() => {
-      optimal(123);
+      // @ts-ignore
+      optimal(123, {});
     }).toThrowErrorMatchingSnapshot();
 
     expect(() => {
-      optimal('foo');
+      // @ts-ignore
+      optimal('foo', {});
     }).toThrowErrorMatchingSnapshot();
 
     expect(() => {
-      optimal(() => {});
+      optimal(() => {}, {});
     }).toThrowErrorMatchingSnapshot();
   });
 
   it('errors if a non-object is passed as a blueprint', () => {
     expect(() => {
+      // @ts-ignore
       optimal({}, 123);
     }).toThrowErrorMatchingSnapshot();
   });
@@ -112,6 +115,7 @@ describe('Optimal', () => {
     expect(() => {
       optimal(
         {},
+        // @ts-ignore
         {
           foo: 123,
         },
@@ -121,6 +125,7 @@ describe('Optimal', () => {
 
   it('errors if a non-object config is passed', () => {
     expect(() => {
+      // @ts-ignore
       optimal({}, blueprint, 123);
     }).toThrowErrorMatchingSnapshot();
   });

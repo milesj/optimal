@@ -1,7 +1,7 @@
-import { string } from '../src/StringBuilder';
+import StringBuilder, { string } from '../src/StringBuilder';
 
 describe('StringBuilder', () => {
-  let builder;
+  let builder: StringBuilder;
 
   beforeEach(() => {
     builder = string('foo');
@@ -16,7 +16,7 @@ describe('StringBuilder', () => {
   describe('runChecks()', () => {
     it('errors if a non-string value is used', () => {
       expect(() => {
-        builder.runChecks('key', 123);
+        builder.runChecks('key', 123, {});
       }).toThrowErrorMatchingSnapshot();
     });
   });
@@ -24,6 +24,7 @@ describe('StringBuilder', () => {
   describe('contains()', () => {
     it('errors if token is not string', () => {
       expect(() => {
+        // @ts-ignore
         builder.contains(123);
       }).toThrowErrorMatchingSnapshot();
     });
@@ -61,6 +62,7 @@ describe('StringBuilder', () => {
   describe('match()', () => {
     it('errors if pattern is not a regex', () => {
       expect(() => {
+        // @ts-ignore
         builder.match(123);
       }).toThrowErrorMatchingSnapshot();
     });
@@ -114,6 +116,7 @@ describe('StringBuilder', () => {
   describe('oneOf()', () => {
     it('errors if not an array', () => {
       expect(() => {
+        // @ts-ignore
         builder.oneOf(123);
       }).toThrowErrorMatchingSnapshot();
     });
@@ -126,6 +129,7 @@ describe('StringBuilder', () => {
 
     it('errors if array contains a non-string', () => {
       expect(() => {
+        // @ts-ignore
         builder.oneOf(['foo', 123]);
       }).toThrowErrorMatchingSnapshot();
     });
