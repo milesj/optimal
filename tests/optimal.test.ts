@@ -9,12 +9,13 @@ import optimal, {
   shape,
   string,
   union,
+  Blueprint,
 } from '../src';
 
 class Plugin {}
 
 describe('Optimal', () => {
-  let options;
+  let options: Blueprint;
 
   // This blueprint is based on Webpack's configuration: https://webpack.js.org/configuration/
   // Webpack provides a pretty robust example of how to use this library.

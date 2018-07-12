@@ -1,10 +1,10 @@
-import { shape } from '../src/ShapeBuilder';
+import ShapeBuilder, { shape } from '../src/ShapeBuilder';
 import { bool } from '../src/Builder';
 import { number } from '../src/NumberBuilder';
 import { string } from '../src/StringBuilder';
 
 describe('shape()', () => {
-  let builder;
+  let builder: ShapeBuilder;
 
   beforeEach(() => {
     builder = shape({
@@ -63,30 +63,38 @@ describe('shape()', () => {
 
   describe('runChecks()', () => {
     it('returns an empty object for no data', () => {
-      expect(builder.runChecks('key')).toEqual({});
+      expect(builder.runChecks('key', undefined, {})).toEqual({});
     });
 
     it('errors if a non-object is passed', () => {
       expect(() => {
-        builder.runChecks('key', 'foo');
+        builder.runChecks('key', 'foo', {});
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('checks each item in the object', () => {
       expect(() => {
-        builder.runChecks('key', {
-          foo: 'foo',
-          bar: 'bar',
-          baz: true,
-        });
+        builder.runChecks(
+          'key',
+          {
+            foo: 'foo',
+            bar: 'bar',
+            baz: true,
+          },
+          {},
+        );
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if an object item is invalid; persists path with index', () => {
       expect(() => {
-        builder.runChecks('key', {
-          foo: 123,
-        });
+        builder.runChecks(
+          'key',
+          {
+            foo: 123,
+          },
+          {},
+        );
       }).toThrowErrorMatchingSnapshot();
     });
 
@@ -106,7 +114,7 @@ describe('shape()', () => {
         },
       };
 
-      expect(builder.runChecks('key', data)).toEqual(data);
+      expect(builder.runChecks('key', data, {})).toEqual(data);
     });
 
     it('supports nested required', () => {
@@ -116,9 +124,13 @@ describe('shape()', () => {
       });
 
       expect(() => {
-        builder.runChecks('key', {
-          foo: 'abc',
-        });
+        builder.runChecks(
+          'key',
+          {
+            foo: 'abc',
+          },
+          {},
+        );
       }).toThrowErrorMatchingSnapshot();
     });
 
@@ -132,13 +144,17 @@ describe('shape()', () => {
       });
 
       expect(() => {
-        builder.runChecks('key', {
-          foo: {
-            a: 123,
-            b: 456,
-            c: 789,
+        builder.runChecks(
+          'key',
+          {
+            foo: {
+              a: 123,
+              b: 456,
+              c: 789,
+            },
           },
-        });
+          {},
+        );
       }).toThrowErrorMatchingSnapshot();
     });
   });

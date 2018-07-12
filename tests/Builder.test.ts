@@ -3,7 +3,7 @@
 import Builder, { bool, custom, func } from '../src/Builder';
 
 describe('Builder', () => {
-  let builder;
+  let builder: Builder<any>;
 
   beforeEach(() => {
     builder = new Builder('string', 'foo');
@@ -216,12 +216,14 @@ describe('Builder', () => {
 
   describe('custom()', () => {
     it('errors if no callback', () => {
+      // @ts-ignore
       expect(() => builder.custom()).toThrowError(
         'Custom blueprints require a validation function.',
       );
     });
 
     it('errors if callback is not a function', () => {
+      // @ts-ignore
       expect(() => builder.custom(123)).toThrowError(
         'Custom blueprints require a validation function.',
       );
@@ -237,11 +239,11 @@ describe('Builder', () => {
       });
 
       expect(() => {
-        builder.runChecks('error', 123);
+        builder.runChecks('error', 123, {});
       }).toThrowErrorMatchingSnapshot();
 
       expect(() => {
-        builder.runChecks('key', 456);
+        builder.runChecks('key', 456, {});
       }).not.toThrowError('Invalid field "error". This will error!');
     });
 
@@ -261,7 +263,7 @@ describe('Builder', () => {
   describe('invariant()', () => {
     it('does nothing if condition is true', () => {
       expect(() => {
-        builder.invariant(true);
+        builder.invariant(true, '');
       }).not.toThrowError();
     });
 
@@ -313,6 +315,7 @@ describe('Builder', () => {
 
     it('errors for non-string value', () => {
       expect(() => {
+        // @ts-ignore
         builder.message(123);
       }).toThrowErrorMatchingSnapshot();
     });
@@ -333,6 +336,7 @@ describe('Builder', () => {
 
     it('errors for non-string value', () => {
       expect(() => {
+        // @ts-ignore
         builder.deprecate(123);
       }).toThrowErrorMatchingSnapshot();
     });
@@ -374,38 +378,38 @@ describe('Builder', () => {
 
   describe('runChecks()', () => {
     it('returns valid value', () => {
-      expect(builder.runChecks('key', 'bar')).toBe('bar');
+      expect(builder.runChecks('key', 'bar', {})).toBe('bar');
     });
 
     it('returns default value if value passed is undefined', () => {
-      expect(builder.runChecks('key')).toBe('foo');
+      expect(builder.runChecks('key', undefined, {})).toBe('foo');
     });
 
     it('returns null if value passed is null and builder is nullable', () => {
-      expect(builder.nullable().runChecks('key', null)).toBeNull();
+      expect(builder.nullable().runChecks('key', null, {})).toBeNull();
     });
 
     it('errors if value passed is undefined and builder is required', () => {
       expect(() => {
-        builder.required().runChecks('key');
+        builder.required().runChecks('key', undefined, {});
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if value passed is null and builder is non-nullable', () => {
       expect(() => {
-        builder.runChecks('key', null);
+        builder.runChecks('key', null, {});
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('runs default type of check', () => {
       expect(() => {
-        builder.runChecks('key', 123);
+        builder.runChecks('key', 123, {});
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('uses custom message', () => {
       expect(() => {
-        builder.message('Oops, something is broken.').runChecks('key', 123);
+        builder.message('Oops, something is broken.').runChecks('key', 123, {});
       }).toThrowErrorMatchingSnapshot();
     });
 
@@ -422,14 +426,14 @@ describe('Builder', () => {
 
       it('logs a message', () => {
         builder.deprecate('Use something else.');
-        builder.runChecks('key', 'foo');
+        builder.runChecks('key', 'foo', {});
 
         expect(console.info).toBeCalledWith('Field "key" is deprecated. Use something else.');
       });
 
       it('doesnt log if undefined', () => {
         builder.deprecate('Use something else.');
-        builder.runChecks('key');
+        builder.runChecks('key', undefined, {});
 
         expect(console.info).not.toBeCalledWith('Field "key" is deprecated. Use something else.');
       });
