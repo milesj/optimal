@@ -68,11 +68,11 @@ describe('StringBuilder', () => {
     });
 
     it('adds a checker', () => {
-      builder.match(/oo/);
+      builder.match(/oo/u);
 
       expect(builder.checks[2]).toEqual({
         callback: builder.checkMatch,
-        args: [/oo/],
+        args: [/oo/u],
       });
     });
   });
@@ -80,13 +80,13 @@ describe('StringBuilder', () => {
   describe('checkMatch()', () => {
     it('errors if value does not match pattern', () => {
       expect(() => {
-        builder.checkMatch('key', 'bar', /oo/);
+        builder.checkMatch('key', 'bar', /oo/u);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('doesnt error if value matches pattern', () => {
       expect(() => {
-        builder.checkMatch('key', 'foo', /oo/);
+        builder.checkMatch('key', 'foo', /oo/u);
       }).not.toThrowError('Invalid field "key". String does not match pattern "oo".');
     });
   });

@@ -45,7 +45,7 @@
   },
   "homepage": "https://github.com/milesj/optimal#readme",
   "devDependencies": {
-    "@milesj/build-tool-config": "^0.112.0"
+    "@milesj/build-tool-config": "^0.117.1"
   },
   "beemo": {
     "module": "@milesj/build-tool-config",
