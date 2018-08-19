@@ -11,15 +11,17 @@ export interface Shape {
   [key: string]: any;
 }
 
-export default class ShapeBuilder extends Builder<Shape | null> {
-  constructor(contents: Blueprint, defaultValue: Shape | null = {}) {
+export default class ShapeBuilder<Struct extends object> extends Builder<Shape | null, Struct> {
+  constructor(contents: Blueprint<Struct>, defaultValue: Shape | null = {}) {
     super('shape', defaultValue);
 
     if (process.env.NODE_ENV !== 'production') {
       this.invariant(
         isObject(contents) &&
           Object.keys(contents).length > 0 &&
-          Object.keys(contents).every(key => contents[key] instanceof Builder),
+          Object.keys(contents).every(
+            key => contents[key as keyof Blueprint<Struct>] instanceof Builder,
+          ),
         'A non-empty object of properties to blueprints are required for a shape.',
       );
 
@@ -27,10 +29,10 @@ export default class ShapeBuilder extends Builder<Shape | null> {
     }
   }
 
-  checkContents(path: string, object: any, contents: Blueprint) {
+  checkContents(path: string, object: any, contents: Blueprint<Struct>) {
     if (process.env.NODE_ENV !== 'production') {
       Object.keys(contents).forEach(key => {
-        const builder = contents[key];
+        const builder = contents[key as keyof Blueprint<Struct>];
 
         // Fields should be optional by default unless explicitly required
         if (
@@ -44,6 +46,9 @@ export default class ShapeBuilder extends Builder<Shape | null> {
   }
 }
 
-export function shape(contents: Blueprint, defaultValue: Shape | null = {}): ShapeBuilder {
+export function shape<S extends object>(
+  contents: Blueprint<S>,
+  defaultValue: Shape | null = {},
+): ShapeBuilder<S> {
   return new ShapeBuilder(contents, defaultValue);
 }

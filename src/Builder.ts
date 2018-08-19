@@ -4,17 +4,17 @@
  */
 
 import isObject from './isObject';
-import { SupportedType, CheckerCallback, CustomCallback, OptimalOptions, Struct } from './types';
+import { SupportedType, CheckerCallback, CustomCallback, OptimalOptions } from './types';
 
 export interface Check {
   args: any[];
   callback: CheckerCallback;
 }
 
-export default class Builder<T> {
+export default class Builder<T, Struct extends object> {
   checks: Check[] = [];
 
-  currentStruct: Struct = {};
+  currentStruct: Partial<Struct> = {};
 
   defaultValue: T;
 
@@ -61,7 +61,7 @@ export default class Builder<T> {
   /**
    * Map a list of names that must be defined alongside this field.
    */
-  and(...keys: string[]): this {
+  and(...keys: (keyof Struct)[]): this {
     if (process.env.NODE_ENV !== 'production') {
       this.invariant(keys.length > 0, 'AND requires a list of field names.');
     }
@@ -72,7 +72,7 @@ export default class Builder<T> {
   /**
    * Validate that all fields have been defined.
    */
-  checkAnd(path: string, value: any, otherKeys: string[]) {
+  checkAnd(path: string, value: any, otherKeys: (keyof Struct)[]) {
     if (process.env.NODE_ENV !== 'production') {
       const keys = [this.key(path), ...otherKeys];
       const struct = this.currentStruct;
@@ -122,7 +122,7 @@ export default class Builder<T> {
   /**
    * Set a callback to run custom logic.
    */
-  custom(callback: CustomCallback): this {
+  custom(callback: CustomCallback<Struct>): this {
     if (process.env.NODE_ENV !== 'production') {
       this.invariant(
         typeof callback === 'function',
@@ -136,7 +136,7 @@ export default class Builder<T> {
   /**
    * Validate the value using a custom callback.
    */
-  checkCustom(path: string, value: any, callback: CustomCallback) {
+  checkCustom(path: string, value: T, callback: CustomCallback<Struct>) {
     if (process.env.NODE_ENV !== 'production') {
       try {
         callback(value, this.currentStruct);
@@ -191,10 +191,11 @@ export default class Builder<T> {
   /**
    * Return the current key from a path.
    */
-  key(path: string): string {
+  key(path: string): keyof Struct {
     const index = path.lastIndexOf('.');
+    const key = index > 0 ? path.slice(index + 1) : path;
 
-    return index > 0 ? path.slice(index + 1) : path;
+    return key as keyof Struct;
   }
 
   /**
@@ -242,7 +243,7 @@ export default class Builder<T> {
   /**
    * Validate the value matches only the default value.
    */
-  checkOnly(path: string, value: any) {
+  checkOnly(path: string, value: T) {
     if (process.env.NODE_ENV !== 'production') {
       this.invariant(
         value === this.defaultValue,
@@ -255,7 +256,7 @@ export default class Builder<T> {
   /**
    * Map a list of field names that must have at least 1 defined.
    */
-  or(...keys: string[]): this {
+  or(...keys: (keyof Struct)[]): this {
     if (process.env.NODE_ENV !== 'production') {
       this.invariant(keys.length > 0, 'OR requires a list of field names.');
     }
@@ -266,7 +267,7 @@ export default class Builder<T> {
   /**
    * Validate that at least 1 field is defined.
    */
-  checkOr(path: string, value: any, otherKeys: string[]) {
+  checkOr(path: string, value: T, otherKeys: (keyof Struct)[]) {
     if (process.env.NODE_ENV !== 'production') {
       const keys = [this.key(path), ...otherKeys];
       const struct = this.currentStruct;
@@ -293,7 +294,12 @@ export default class Builder<T> {
   /**
    * Run all validation checks that have been enqueued.
    */
-  runChecks(path: string, initialValue: any, struct: Struct, options: OptimalOptions = {}): any {
+  runChecks(
+    path: string,
+    initialValue: T | undefined | null,
+    struct: Partial<Struct>,
+    options: OptimalOptions = {},
+  ): T | null {
     this.currentStruct = struct;
     this.options = options;
 
@@ -331,7 +337,7 @@ export default class Builder<T> {
       });
     }
 
-    return value;
+    return value as T | null;
   }
 
   /**
@@ -344,7 +350,7 @@ export default class Builder<T> {
   /**
    * Map a list of field names that must not be defined alongside this field.
    */
-  xor(...keys: string[]): this {
+  xor(...keys: (keyof Struct)[]): this {
     if (process.env.NODE_ENV !== 'production') {
       this.invariant(keys.length > 0, 'XOR requires a list of field names.');
     }
@@ -355,7 +361,7 @@ export default class Builder<T> {
   /**
    * Validate that only 1 field is defined.
    */
-  checkXor(path: string, value: any, otherKeys: string[]) {
+  checkXor(path: string, value: T, otherKeys: (keyof Struct)[]) {
     if (process.env.NODE_ENV !== 'production') {
       const keys = [this.key(path), ...otherKeys];
       const struct = this.currentStruct;
@@ -369,17 +375,21 @@ export default class Builder<T> {
   }
 }
 
-export function bool(defaultValue: boolean | null = false): Builder<boolean | null> {
+export function bool<S extends object>(
+  defaultValue: boolean | null = false,
+): Builder<boolean | null, S> {
   return new Builder('boolean', defaultValue);
 }
 
-export function custom<T>(
-  callback: CustomCallback,
-  defaultValue: T | null = null,
-): Builder<T | null> {
-  return new Builder('custom', defaultValue).custom(callback);
+export function custom<S extends object>(
+  callback: CustomCallback<S>,
+  defaultValue: any = null,
+): Builder<any, S> {
+  return new Builder<any, S>('custom', defaultValue).custom(callback);
 }
 
-export function func(defaultValue: Function | null = null): Builder<Function | null> {
-  return new Builder('function', defaultValue).nullable();
+export function func<S extends object>(
+  defaultValue: Function | null = null,
+): Builder<Function | null, S> {
+  return new Builder<Function | null, S>('function', defaultValue).nullable();
 }

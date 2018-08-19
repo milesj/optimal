@@ -6,14 +6,18 @@ import { number } from '../src/NumberBuilder';
 import { shape } from '../src/ShapeBuilder';
 import { string } from '../src/StringBuilder';
 
-describe('UnionBuilder', () => {
-  let builder: UnionBuilder;
+class Foo {}
+class Bar {}
 
-  class Foo {}
-  class Bar {}
+type Struct = {
+  key: string[] | boolean | Foo | number | { [key: string]: number } | string;
+};
+
+describe('UnionBuilder', () => {
+  let builder: UnionBuilder<Struct>;
 
   beforeEach(() => {
-    builder = union([
+    builder = union<Struct>([
       array(string()),
       bool(true).only(),
       instance(Foo),
@@ -74,6 +78,7 @@ describe('UnionBuilder', () => {
 
     it('errors if an object and shape are used', () => {
       expect(() => {
+        // @ts-ignore
         union([
           object(string()),
           shape({

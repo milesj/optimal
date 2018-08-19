@@ -5,13 +5,16 @@
 
 import Builder from './Builder';
 
-export default class CollectionBuilder<T, TDefault> extends Builder<TDefault | null> {
-  contents: Builder<T> | null = null;
+export default class CollectionBuilder<T, D, Struct extends object> extends Builder<
+  D | null,
+  Struct
+> {
+  contents: Builder<T, Struct> | null = null;
 
   constructor(
     type: 'array' | 'object',
-    contents: Builder<T> | null = null,
-    defaultValue: TDefault | null = null,
+    contents: Builder<T, Struct> | null = null,
+    defaultValue: D | null = null,
   ) {
     super(type, defaultValue);
 
@@ -27,7 +30,7 @@ export default class CollectionBuilder<T, TDefault> extends Builder<TDefault | n
     }
   }
 
-  checkContents(path: string, value: any, contents: Builder<T>) {
+  checkContents(path: string, value: any, contents: Builder<T, Struct>) {
     if (process.env.NODE_ENV !== 'production') {
       if (this.type === 'array') {
         value.forEach((item: T, i: number) => {
@@ -66,16 +69,16 @@ export default class CollectionBuilder<T, TDefault> extends Builder<TDefault | n
   }
 }
 
-export function array<T>(
-  contents: Builder<T> | null = null,
+export function array<T, S extends object>(
+  contents: Builder<T, S> | null = null,
   defaultValue: T[] | null = [],
-): CollectionBuilder<T, T[]> {
+): CollectionBuilder<T, T[], S> {
   return new CollectionBuilder('array', contents, defaultValue);
 }
 
-export function object<T>(
-  contents: Builder<T> | null = null,
+export function object<T, S extends object>(
+  contents: Builder<T, S> | null = null,
   defaultValue: { [key: string]: T } | null = {},
-): CollectionBuilder<T, { [key: string]: T }> {
+): CollectionBuilder<T, { [key: string]: T }, S> {
   return new CollectionBuilder('object', contents, defaultValue);
 }

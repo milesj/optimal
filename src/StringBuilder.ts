@@ -9,7 +9,7 @@ function isString(value: any): boolean {
   return typeof value === 'string' && value !== '';
 }
 
-export default class StringBuilder extends Builder<string | null> {
+export default class StringBuilder<Struct extends object> extends Builder<string | null, Struct> {
   allowEmpty: boolean = false;
 
   constructor(defaultValue: string | null = '') {
@@ -90,6 +90,6 @@ export default class StringBuilder extends Builder<string | null> {
   }
 }
 
-export function string(defaultValue: string | null = ''): StringBuilder {
+export function string<S extends object>(defaultValue: string | null = ''): StringBuilder<S> {
   return new StringBuilder(defaultValue);
 }

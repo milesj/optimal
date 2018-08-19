@@ -4,10 +4,16 @@ import { number } from '../src/NumberBuilder';
 import { string } from '../src/StringBuilder';
 
 describe('shape()', () => {
-  let builder: ShapeBuilder;
+  type Struct = {
+    foo: string;
+    bar: number;
+    baz: boolean;
+  };
+
+  let builder: ShapeBuilder<Struct>;
 
   beforeEach(() => {
-    builder = shape({
+    builder = shape<Struct>({
       foo: string(),
       bar: number(),
       baz: bool(),
@@ -46,9 +52,11 @@ describe('shape()', () => {
     });
 
     it('sets default value', () => {
-      builder = shape(
+      builder = shape<Struct>(
         {
           foo: string(),
+          bar: number(),
+          baz: bool(),
         },
         {
           foo: 'bar',
@@ -68,6 +76,7 @@ describe('shape()', () => {
 
     it('errors if a non-object is passed', () => {
       expect(() => {
+        // @ts-ignore Testing wrong type
         builder.runChecks('key', 'foo', {});
       }).toThrowErrorMatchingSnapshot();
     });
@@ -99,7 +108,15 @@ describe('shape()', () => {
     });
 
     it('supports shapes of shapes', () => {
-      builder = shape({
+      type NestedStruct = {
+        foo: {
+          a: number;
+          b: number;
+          c: string;
+        };
+      };
+
+      const nestedBuilder = shape<NestedStruct>({
         foo: shape({
           a: number(),
           b: number(),
@@ -118,9 +135,10 @@ describe('shape()', () => {
     });
 
     it('supports nested required', () => {
-      builder = shape({
+      builder = shape<Struct>({
         foo: string(),
-        bar: bool().required(),
+        bar: number(),
+        baz: bool().required(),
       });
 
       expect(() => {

@@ -6,14 +6,14 @@ describe('instance()', () => {
   describe('constructor()', () => {
     it('errors if a non-class is passed', () => {
       expect(() => {
-        // @ts-ignore
+        // @ts-ignore Testing wrong type
         instance(123);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if an object is passed', () => {
       expect(() => {
-        // @ts-ignore
+        // @ts-ignore Testing wrong type
         instance({});
       }).toThrowErrorMatchingSnapshot();
     });

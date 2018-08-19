@@ -6,10 +6,10 @@
 import Builder from './Builder';
 import typeOf from './typeOf';
 
-export default class UnionBuilder extends Builder<any> {
-  builders: Builder<any>[] = [];
+export default class UnionBuilder<Struct extends object> extends Builder<any, Struct> {
+  builders: Builder<any, Struct>[] = [];
 
-  constructor(builders: Builder<any>[], defaultValue: any | null = null) {
+  constructor(builders: Builder<any, Struct>[], defaultValue: any = null) {
     super('union', defaultValue);
 
     if (process.env.NODE_ENV !== 'production') {
@@ -25,7 +25,7 @@ export default class UnionBuilder extends Builder<any> {
     }
   }
 
-  checkUnions(path: string, value: any, builders: Builder<any>[]) {
+  checkUnions(path: string, value: any, builders: Builder<any, Struct>[]) {
     if (process.env.NODE_ENV !== 'production') {
       const usage: { [type: string]: boolean } = {};
       const keys: string[] = [];
@@ -73,6 +73,9 @@ export default class UnionBuilder extends Builder<any> {
   }
 }
 
-export function union(builders: Builder<any>[], defaultValue: any | null = null): UnionBuilder {
+export function union<S extends object>(
+  builders: Builder<any, S>[],
+  defaultValue: any | null = null,
+): UnionBuilder<S> {
   return new UnionBuilder(builders, defaultValue);
 }

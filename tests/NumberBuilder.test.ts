@@ -1,7 +1,11 @@
 import NumberBuilder, { number } from '../src/NumberBuilder';
 
 describe('NumberBuilder', () => {
-  let builder: NumberBuilder;
+  type Struct = {
+    key: number;
+  };
+
+  let builder: NumberBuilder<Struct>;
 
   beforeEach(() => {
     builder = number(123);
@@ -16,6 +20,7 @@ describe('NumberBuilder', () => {
   describe('runChecks()', () => {
     it('errors if a non-number value is used', () => {
       expect(() => {
+        // @ts-ignore Testing wrong type
         number().runChecks('key', 'foo', {});
       }).toThrowErrorMatchingSnapshot();
     });
@@ -24,14 +29,14 @@ describe('NumberBuilder', () => {
   describe('between()', () => {
     it('errors if min is a not a number', () => {
       expect(() => {
-        // @ts-ignore
+        // @ts-ignore Testing wrong type
         builder.between('foo', 5);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if max is a not a number', () => {
       expect(() => {
-        // @ts-ignore
+        // @ts-ignore Testing wrong type
         builder.between(0, 'foo');
       }).toThrowErrorMatchingSnapshot();
     });
@@ -81,7 +86,7 @@ describe('NumberBuilder', () => {
   describe('gt()', () => {
     it('errors if min is a not a number', () => {
       expect(() => {
-        // @ts-ignore
+        // @ts-ignore Testing wrong type
         builder.gt('foo');
       }).toThrowErrorMatchingSnapshot();
     });
@@ -99,7 +104,7 @@ describe('NumberBuilder', () => {
   describe('gte()', () => {
     it('errors if min is a not a number', () => {
       expect(() => {
-        // @ts-ignore
+        // @ts-ignore Testing wrong type
         builder.gte('foo');
       }).toThrowErrorMatchingSnapshot();
     });
@@ -149,7 +154,7 @@ describe('NumberBuilder', () => {
   describe('lt()', () => {
     it('errors if max is a not a number', () => {
       expect(() => {
-        // @ts-ignore
+        // @ts-ignore Testing wrong type
         builder.lt('foo');
       }).toThrowErrorMatchingSnapshot();
     });
@@ -167,7 +172,7 @@ describe('NumberBuilder', () => {
   describe('lte()', () => {
     it('errors if max is a not a number', () => {
       expect(() => {
-        // @ts-ignore
+        // @ts-ignore Testing wrong type
         builder.lte('foo');
       }).toThrowErrorMatchingSnapshot();
     });
@@ -217,7 +222,7 @@ describe('NumberBuilder', () => {
   describe('oneOf()', () => {
     it('errors if not an array', () => {
       expect(() => {
-        // @ts-ignore
+        // @ts-ignore Testing wrong type
         builder.oneOf(123);
       }).toThrowErrorMatchingSnapshot();
     });
@@ -230,7 +235,7 @@ describe('NumberBuilder', () => {
 
     it('errors if array contains a non-number', () => {
       expect(() => {
-        // @ts-ignore
+        // @ts-ignore Testing wrong type
         builder.oneOf(['foo', 123]);
       }).toThrowErrorMatchingSnapshot();
     });

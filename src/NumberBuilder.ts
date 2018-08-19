@@ -9,7 +9,7 @@ function isNumber(value: any): boolean {
   return typeof value === 'number';
 }
 
-export default class NumberBuilder extends Builder<number | null> {
+export default class NumberBuilder<Struct extends object> extends Builder<number | null, Struct> {
   constructor(defaultValue: number | null = 0) {
     super('number', defaultValue);
   }
@@ -105,6 +105,6 @@ export default class NumberBuilder extends Builder<number | null> {
   }
 }
 
-export function number(defaultValue: number | null = 0): NumberBuilder {
+export function number<S extends object>(defaultValue: number | null = 0): NumberBuilder<S> {
   return new NumberBuilder(defaultValue);
 }

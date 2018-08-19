@@ -3,7 +3,14 @@
 import Builder, { bool, custom, func } from '../src/Builder';
 
 describe('Builder', () => {
-  let builder: Builder<any>;
+  type Struct = {
+    key: string;
+    foo: string;
+    bar: string;
+    baz: string;
+  };
+
+  let builder: Builder<string, Struct>;
 
   beforeEach(() => {
     builder = new Builder('string', 'foo');
@@ -12,6 +19,7 @@ describe('Builder', () => {
   describe('constructor()', () => {
     it('errors if default value is undefined', () => {
       expect(() => {
+        // @ts-ignore Testing undefined
         builder = new Builder('string', undefined);
       }).toThrowErrorMatchingSnapshot();
     });
@@ -216,14 +224,14 @@ describe('Builder', () => {
 
   describe('custom()', () => {
     it('errors if no callback', () => {
-      // @ts-ignore
+      // @ts-ignore Testing missing arg
       expect(() => builder.custom()).toThrowError(
         'Custom blueprints require a validation function.',
       );
     });
 
     it('errors if callback is not a function', () => {
-      // @ts-ignore
+      // @ts-ignore Testing wrong type
       expect(() => builder.custom(123)).toThrowError(
         'Custom blueprints require a validation function.',
       );
@@ -231,31 +239,37 @@ describe('Builder', () => {
   });
 
   describe('checkCustom()', () => {
+    type CustomStruct = {
+      foo: number;
+      bar: number;
+      error: string;
+    };
+
     it('triggers callback function', () => {
-      builder = custom(value => {
+      const customBuilder = custom<CustomStruct>(value => {
         if (value === 123) {
           throw new Error('This will error!');
         }
       });
 
       expect(() => {
-        builder.runChecks('error', 123, {});
+        customBuilder.runChecks('error', 123, {});
       }).toThrowErrorMatchingSnapshot();
 
       expect(() => {
-        builder.runChecks('key', 456, {});
+        customBuilder.runChecks('key', 456, {});
       }).not.toThrowError('Invalid field "error". This will error!');
     });
 
     it('is passed entire options object', () => {
-      builder = custom((value, options) => {
-        if (options.foo && options.bar) {
+      const customBuilder = custom<CustomStruct>((value, struct) => {
+        if (struct.foo && struct.bar) {
           throw new Error('This will error!');
         }
       });
 
       expect(() => {
-        builder.runChecks('error', 123, { foo: 123, bar: 456, error: '' });
+        customBuilder.runChecks('error', 123, { foo: 123, bar: 456, error: '' });
       }).toThrowErrorMatchingSnapshot();
     });
   });
@@ -315,7 +329,7 @@ describe('Builder', () => {
 
     it('errors for non-string value', () => {
       expect(() => {
-        // @ts-ignore
+        // @ts-ignore Testing wrong type
         builder.message(123);
       }).toThrowErrorMatchingSnapshot();
     });
@@ -336,7 +350,7 @@ describe('Builder', () => {
 
     it('errors for non-string value', () => {
       expect(() => {
-        // @ts-ignore
+        // @ts-ignore Testing wrong type
         builder.deprecate(123);
       }).toThrowErrorMatchingSnapshot();
     });
@@ -403,12 +417,14 @@ describe('Builder', () => {
 
     it('runs default type of check', () => {
       expect(() => {
+        // @ts-ignore Testing wrong type
         builder.runChecks('key', 123, {});
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('uses custom message', () => {
       expect(() => {
+        // @ts-ignore Testing wrong type
         builder.message('Oops, something is broken.').runChecks('key', 123, {});
       }).toThrowErrorMatchingSnapshot();
     });
@@ -442,6 +458,7 @@ describe('Builder', () => {
 
   describe('only()', () => {
     it('errors if default value is not the same type', () => {
+      // @ts-ignore Testing wrong type
       builder.defaultValue = 123;
 
       expect(() => {
@@ -577,6 +594,7 @@ describe('bool()', () => {
 
   it('errors if a non-boolean value is used', () => {
     expect(() => {
+      // @ts-ignore Testing wrong type
       bool().runChecks('key', 123, {});
     }).toThrowErrorMatchingSnapshot();
   });
@@ -618,6 +636,7 @@ describe('func()', () => {
 
   it('errors if a non-function value is used', () => {
     expect(() => {
+      // @ts-ignore Testing wrong type
       func().runChecks('key', 123, {});
     }).toThrowErrorMatchingSnapshot();
   });

@@ -3,7 +3,13 @@ import { number } from '../src/NumberBuilder';
 import { string } from '../src/StringBuilder';
 
 describe('array()', () => {
-  let builder: CollectionBuilder<any, any>;
+  let builder: CollectionBuilder<
+    string | null,
+    (string | null)[],
+    {
+      key: string[];
+    }
+  >;
 
   beforeEach(() => {
     builder = array(string(), []);
@@ -44,31 +50,34 @@ describe('array()', () => {
 
     it('errors if a non-array is passed', () => {
       expect(() => {
+        // @ts-ignore Testing wrong type
         builder.runChecks('key', 'foo', {});
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if a non-array is passed, when not using a builder', () => {
       expect(() => {
+        // @ts-ignore Testing wrong type
         array().runChecks('key', 'foo', {});
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('checks each item in the array', () => {
       expect(() => {
+        // @ts-ignore Testing wrong type
         builder.runChecks('key', ['foo', 'bar', 'baz', 123], {});
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if an array item is invalid; persists path with index', () => {
       expect(() => {
+        // @ts-ignore Testing wrong type
         builder.runChecks('key', [123], {});
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('supports arrays of arrays', () => {
-      builder = array(array(string()));
-
+      const nestedBuilder = array(array(string()));
       const data = [['foo', 'bar'], ['baz', 'qux']];
 
       expect(builder.runChecks('key', data, {})).toEqual(data);
