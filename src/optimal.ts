@@ -31,7 +31,7 @@ function buildAndCheck<T extends Struct>(
       builtStruct[key] = buildAndCheck(struct[key] || {}, builder, options, path);
 
       // Oops
-    } else if (process.env.NODE_ENV !== 'production') {
+    } else if (__DEV__) {
       throw new Error('Unknown blueprint. Must be a builder or plain object.');
     }
 
@@ -42,7 +42,7 @@ function buildAndCheck<T extends Struct>(
   // Handle unknown options
   if (options.unknown) {
     Object.assign(builtStruct, unknownFields);
-  } else if (process.env.NODE_ENV !== 'production') {
+  } else if (__DEV__) {
     const unknownKeys = Object.keys(unknownFields);
 
     if (unknownKeys.length > 0) {
@@ -58,7 +58,7 @@ export default function optimal<T extends Struct>(
   blueprint: Blueprint,
   options: OptimalOptions = {},
 ): T {
-  if (process.env.NODE_ENV !== 'production') {
+  if (__DEV__) {
     if (!isObject(struct)) {
       throw new TypeError(`Optimal requires a plain object, found ${typeOf(struct)}.`);
     } else if (!isObject(options)) {

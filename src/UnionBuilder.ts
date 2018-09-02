@@ -12,7 +12,7 @@ export default class UnionBuilder extends Builder<any> {
   constructor(builders: Builder<any>[], defaultValue: any | null = null) {
     super('union', defaultValue);
 
-    if (process.env.NODE_ENV !== 'production') {
+    if (__DEV__) {
       this.invariant(
         Array.isArray(builders) &&
           builders.length > 0 &&
@@ -26,7 +26,7 @@ export default class UnionBuilder extends Builder<any> {
   }
 
   checkUnions(path: string, value: any, builders: Builder<any>[]) {
-    if (process.env.NODE_ENV !== 'production') {
+    if (__DEV__) {
       const usage: { [type: string]: boolean } = {};
       const keys: string[] = [];
       const type = typeOf(value);

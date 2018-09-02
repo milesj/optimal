@@ -15,7 +15,7 @@ export default class ShapeBuilder extends Builder<Shape | null> {
   constructor(contents: Blueprint, defaultValue: Shape | null = {}) {
     super('shape', defaultValue);
 
-    if (process.env.NODE_ENV !== 'production') {
+    if (__DEV__) {
       this.invariant(
         isObject(contents) &&
           Object.keys(contents).length > 0 &&
@@ -28,7 +28,7 @@ export default class ShapeBuilder extends Builder<Shape | null> {
   }
 
   checkContents(path: string, object: any, contents: Blueprint) {
-    if (process.env.NODE_ENV !== 'production') {
+    if (__DEV__) {
       Object.keys(contents).forEach(key => {
         const builder = contents[key];
 
