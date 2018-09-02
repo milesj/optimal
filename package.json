@@ -1,6 +1,6 @@
 {
   "name": "optimal",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A system for building and validating defined object structures.",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
