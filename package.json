@@ -5,7 +5,7 @@
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
   "scripts": {
-    "build": "beemo babel",
+    "build": "beemo babel && beemo typescript --declarationOnly",
     "coverage": "yarn run jest --coverage",
     "docs": "gitbook build --debug",
     "docs:serve": "gitbook serve",
