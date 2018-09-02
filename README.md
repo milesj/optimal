@@ -15,8 +15,8 @@ production using dead code elimination.
 
 ## Requirements
 
-- Node 6.5 (server)
-- IE 10+ (browser)
+- Node 8.9 (server)
+- IE 11+ (browser)
 
 ## Installation
 

@@ -58,7 +58,7 @@
     ]
   },
   "browserslist": [
-    "ie 10"
+    "ie 11"
   ],
   "dependencies": {
     "@babel/runtime": "^7.0.0"
