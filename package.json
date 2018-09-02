@@ -5,7 +5,7 @@
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
   "scripts": {
-    "build": "beemo babel && beemo typescript --declarationOnly",
+    "build": "beemo babel && beemo typescript --emitDeclarationOnly --no-clean",
     "coverage": "yarn run jest --coverage",
     "docs": "gitbook build --debug",
     "docs:serve": "gitbook serve",
@@ -45,7 +45,7 @@
   },
   "homepage": "https://github.com/milesj/optimal#readme",
   "devDependencies": {
-    "@milesj/build-tools": "^0.0.8"
+    "@milesj/build-tools": "^0.0.9"
   },
   "beemo": {
     "module": "@milesj/build-tool-config",

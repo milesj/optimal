@@ -697,9 +697,9 @@
     semver "^5.5.1"
     yargs "^12.0.1"
 
-"@beemo/core@^0.21.3":
-  version "0.21.3"
-  resolved "https://registry.npmjs.org/@beemo/core/-/core-0.21.3.tgz#8bbf7dbde719872d2d9a184dd49ccda9f6bf5511"
+"@beemo/core@^0.21.4":
+  version "0.21.4"
+  resolved "https://registry.npmjs.org/@beemo/core/-/core-0.21.4.tgz#541e70aeb687870870f8cb3621ce13f9cea2e7c2"
   dependencies:
     "@boost/core" "^0.64.3"
     "@types/execa" "^0.9.0"
@@ -741,9 +741,9 @@
   dependencies:
     "@types/prettier" "^1.13.2"
 
-"@beemo/driver-typescript@^0.10.1":
-  version "0.10.1"
-  resolved "https://registry.npmjs.org/@beemo/driver-typescript/-/driver-typescript-0.10.1.tgz#f3624f7a3472d7dc3d3a095156be2f3f9187049e"
+"@beemo/driver-typescript@^0.10.2":
+  version "0.10.2"
+  resolved "https://registry.npmjs.org/@beemo/driver-typescript/-/driver-typescript-0.10.2.tgz#36ed75c783542cebc9c09619b74af71716476aea"
   dependencies:
     rimraf "^2.6.2"
 
@@ -815,30 +815,30 @@
     typescript "^3.0.3"
     typescript-eslint-parser "^18.0.0"
 
-"@milesj/build-tool-runtime@^0.0.4":
-  version "0.0.4"
-  resolved "https://registry.npmjs.org/@milesj/build-tool-runtime/-/build-tool-runtime-0.0.4.tgz#78dc3fe003b258561aedbc6b21eb8d89a87181f5"
+"@milesj/build-tool-runtime@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.npmjs.org/@milesj/build-tool-runtime/-/build-tool-runtime-0.0.5.tgz#d9cd34b85ea63141645a47e2beda6f8ffd56d3be"
   dependencies:
     "@babel/core" "^7.0.0"
     "@beemo/cli" "^0.21.1"
-    "@beemo/core" "^0.21.3"
+    "@beemo/core" "^0.21.4"
     "@beemo/driver-babel" "^0.21.2"
     "@beemo/driver-eslint" "^0.21.1"
     "@beemo/driver-jest" "^0.21.1"
     "@beemo/driver-prettier" "^0.21.1"
-    "@beemo/driver-typescript" "^0.10.1"
+    "@beemo/driver-typescript" "^0.10.2"
     babel-core "7.0.0-bridge.0"
     eslint "^5.5.0"
     jest "^23.5.0"
     prettier "^1.14.2"
     typescript "^3.0.3"
 
-"@milesj/build-tools@^0.0.8":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@milesj/build-tools/-/build-tools-0.0.8.tgz#15fb7d4e1e6d1c68780d25879bcc11ac9c9131ac"
+"@milesj/build-tools@^0.0.9":
+  version "0.0.9"
+  resolved "https://registry.npmjs.org/@milesj/build-tools/-/build-tools-0.0.9.tgz#c68cee11e835f15c72767087649900e7e94c30fe"
   dependencies:
     "@milesj/build-tool-config" "^0.119.7"
-    "@milesj/build-tool-runtime" "^0.0.4"
+    "@milesj/build-tool-runtime" "^0.0.5"
 
 "@samverschueren/stream-to-observable@^0.3.0":
   version "0.3.0"

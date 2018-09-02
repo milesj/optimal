@@ -1,5 +1,11 @@
 # Changelog
 
+# 1.1.1 - 09/02/18
+
+#### 🐞 Fixed
+
+- Fixed an issue with built declaration files.
+
 # 1.1.0 - 09/02/18
 
 #### 🚀 New
