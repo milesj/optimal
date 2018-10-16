@@ -61,16 +61,16 @@ describe('Optimal', () => {
       path: string().empty(),
       publicPath: string().empty(),
     },
-    module: {
+    module: shape({
       noParse: union([regex(), array(regex()), func()]).nullable(),
       rules: array(rule),
-    },
-    resolve: {
+    }),
+    resolve: shape({
       alias: object(string()),
       extensions: array(string()),
       plugins: array(instance(Plugin)),
       resolveLoader: object(array(string())),
-    },
+    }),
     plugins: array(instance(Plugin)),
     target: string('web').oneOf([
       'async-node',

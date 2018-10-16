@@ -5,13 +5,15 @@
 
 import Builder from './Builder';
 import isObject from './isObject';
-import { Blueprint } from './types';
+import { Blueprint, Struct, OptimalOptions } from './types';
 
 export interface Shape {
   [key: string]: any;
 }
 
 export default class ShapeBuilder extends Builder<Shape | null> {
+  contents: Blueprint;
+
   constructor(contents: Blueprint, defaultValue: Shape | null = {}) {
     super('shape', defaultValue);
 
@@ -22,25 +24,34 @@ export default class ShapeBuilder extends Builder<Shape | null> {
           Object.keys(contents).every(key => contents[key] instanceof Builder),
         'A non-empty object of properties to blueprints are required for a shape.',
       );
-
-      this.addCheck(this.checkContents, contents);
     }
+
+    this.contents = contents;
   }
 
-  checkContents(path: string, object: any, contents: Blueprint) {
-    if (__DEV__) {
-      Object.keys(contents).forEach(key => {
-        const builder = contents[key];
+  runChecks(path: string, initialValue: any, struct: Struct, options: OptimalOptions = {}): any {
+    const value: any = {};
+    const object = initialValue || this.defaultValue || {};
 
-        // Fields should be optional by default unless explicitly required
-        if (
-          builder instanceof Builder &&
-          (builder.isRequired || typeof object[key] !== 'undefined')
-        ) {
-          builder.runChecks(`${path}.${key}`, object[key], object, this.options);
-        }
-      });
+    if (__DEV__) {
+      this.invariant(
+        typeof object === 'object' && object,
+        'Value passed to shape must be an object.',
+        path,
+      );
     }
+
+    Object.keys(this.contents).forEach(key => {
+      const builder = this.contents[key];
+
+      if (builder instanceof Builder) {
+        value[key] = builder.runChecks(`${path}.${key}`, object[key], object, options);
+      } else {
+        value[key] = object[key];
+      }
+    });
+
+    return value;
   }
 }
 

@@ -8,7 +8,7 @@ describe('shape()', () => {
 
   beforeEach(() => {
     builder = shape({
-      foo: string(),
+      foo: string().empty(),
       bar: number(),
       baz: bool(),
     });
@@ -62,10 +62,6 @@ describe('shape()', () => {
   });
 
   describe('runChecks()', () => {
-    it('returns an empty object for no data', () => {
-      expect(builder.runChecks('key', undefined, {})).toEqual({});
-    });
-
     it('errors if a non-object is passed', () => {
       expect(() => {
         builder.runChecks('key', 'foo', {});
@@ -103,7 +99,7 @@ describe('shape()', () => {
         foo: shape({
           a: number(),
           b: number(),
-          c: string(),
+          c: string().empty(),
         }),
       });
 
@@ -114,7 +110,12 @@ describe('shape()', () => {
         },
       };
 
-      expect(builder.runChecks('key', data, {})).toEqual(data);
+      expect(builder.runChecks('key', data, {})).toEqual({
+        foo: {
+          ...data.foo,
+          c: '',
+        },
+      });
     });
 
     it('supports nested required', () => {
@@ -156,6 +157,14 @@ describe('shape()', () => {
           {},
         );
       }).toThrowErrorMatchingSnapshot();
+    });
+
+    it('should be the object with defaults', () => {
+      expect(builder.runChecks('key', {}, {})).toEqual({
+        bar: 0,
+        baz: false,
+        foo: '',
+      });
     });
   });
 
