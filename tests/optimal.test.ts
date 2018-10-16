@@ -116,8 +116,8 @@ describe('Optimal', () => {
     expect(() => {
       optimal(
         {},
-        // @ts-ignore
         {
+          // @ts-ignore
           foo: 123,
         },
       );

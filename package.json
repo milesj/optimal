@@ -44,8 +44,11 @@
     "url": "https://github.com/milesj/optimal/issues"
   },
   "homepage": "https://github.com/milesj/optimal#readme",
+  "dependencies": {
+    "@babel/runtime": "^7.1.2"
+  },
   "devDependencies": {
-    "@milesj/build-tools": "^0.0.9"
+    "@milesj/build-tools": "^0.3.0"
   },
   "beemo": {
     "module": "@milesj/build-tool-config",
@@ -59,8 +62,5 @@
   },
   "browserslist": [
     "ie 11"
-  ],
-  "dependencies": {
-    "@babel/runtime": "^7.0.0"
-  }
+  ]
 }
