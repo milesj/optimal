@@ -5,11 +5,8 @@
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
   "scripts": {
-    "build": "beemo babel && beemo typescript --emitDeclarationOnly --no-clean",
+    "build": "beemo typescript",
     "coverage": "yarn run jest --coverage",
-    "docs": "gitbook build --debug",
-    "docs:serve": "gitbook serve",
-    "docs:install": "gitbook install",
     "eslint": "beemo eslint",
     "jest": "beemo jest",
     "prettier": "beemo prettier",
