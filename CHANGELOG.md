@@ -1,5 +1,11 @@
 # Changelog
 
+# 1.1.3 - 10/15/18
+
+#### 🐞 Fixed
+
+- Fixed an issue with built files.
+
 # 1.1.2 - 10/15/18
 
 #### 🐞 Fixed

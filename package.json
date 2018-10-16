@@ -5,7 +5,7 @@
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
   "scripts": {
-    "build": "beemo typescript",
+    "build": "beemo babel --clean && beemo typescript --emitDeclarationOnly",
     "coverage": "yarn run jest --coverage",
     "eslint": "beemo eslint",
     "jest": "beemo jest",
