@@ -1,5 +1,11 @@
 # Changelog
 
+# 1.1.2 - 10/15/18
+
+#### 🐞 Fixed
+
+- Updated `shape` to return an object with inherited or default values, instead of an empty object.
+
 # 1.1.1 - 09/02/18
 
 #### 🐞 Fixed
