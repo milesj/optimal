@@ -45,7 +45,7 @@
     "@babel/runtime": "^7.1.2"
   },
   "devDependencies": {
-    "@milesj/build-tools": "^0.3.0"
+    "@milesj/build-tools": "^0.4.2"
   },
   "beemo": {
     "module": "@milesj/build-tool-config",
