@@ -42,10 +42,10 @@
   },
   "homepage": "https://github.com/milesj/optimal#readme",
   "dependencies": {
-    "@babel/runtime": "^7.1.2"
+    "@babel/runtime": "^7.1.5"
   },
   "devDependencies": {
-    "@milesj/build-tools": "^0.4.2"
+    "@milesj/build-tools": "^0.9.1"
   },
   "beemo": {
     "module": "@milesj/build-tool-config",
