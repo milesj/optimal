@@ -1,5 +1,11 @@
 # Changelog
 
+# 1.2.0 - 12/29/2018
+
+#### 🚀 New
+
+- Added and ES `module` target.
+
 # 1.1.3 - 10/15/2018
 
 #### 🐞 Fixed
