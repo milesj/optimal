@@ -1,6 +1,8 @@
 # Optimal
 
 [![Build Status](https://travis-ci.org/milesj/optimal.svg?branch=master)](https://travis-ci.org/milesj/optimal)
+[![npm version](https://badge.fury.io/js/optimal.svg)](https://www.npmjs.com/package/optimal)
+[![npm deps](https://david-dm.org/milesj/optimal.svg)](https://www.npmjs.com/package/optimal)
 
 A system for building and validating defined object structures, like argument options, configuration
 files, data bags, validation fields, and more! Runs checks in development, and strips checks in
