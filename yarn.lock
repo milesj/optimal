@@ -862,19 +862,19 @@
     lodash "^4.17.10"
     to-fast-properties "^2.0.0"
 
-"@beemo/cli@^0.25.0":
-  version "0.25.0"
-  resolved "https://registry.npmjs.org/@beemo/cli/-/cli-0.25.0.tgz#12aca993cb69726cb989bd8557f942141ec6435c"
-  integrity sha512-6GY7sVC+txYLHek/Eo7hxl93FZ5DCPtTBCBSx8Di0yKblgVqdqJchxLDkDryMcgDhGnIWAGtDAxmV/Jy/fHNmg==
+"@beemo/cli@^0.25.1":
+  version "0.25.1"
+  resolved "https://registry.npmjs.org/@beemo/cli/-/cli-0.25.1.tgz#4a41fd39ad15547c39fb92df466e7435d5799fff"
+  integrity sha512-Bb5RlwgbS9L3rJxUZEMisUNCKyBX72NrhlByYI9zOvvjtOcUpygURwAZb2ReJGZkzAYpJbCqHl9BdQYKAuSBeg==
   dependencies:
     chalk "^2.4.1"
     semver "^5.6.0"
     yargs "^12.0.5"
 
-"@beemo/core@^0.25.0":
-  version "0.25.0"
-  resolved "https://registry.npmjs.org/@beemo/core/-/core-0.25.0.tgz#3a6ad4e06bf5ef0e424c4e674a31a7095e709e44"
-  integrity sha512-mdYXZ5qGbt7FbKblbs8uMz8POHVTMPmZwM7pIid3jQeMbUKGwYqaxd3Y3TJygPujOhR4kunct/cOqguNqtSokQ==
+"@beemo/core@^0.25.1":
+  version "0.25.1"
+  resolved "https://registry.npmjs.org/@beemo/core/-/core-0.25.1.tgz#87f6b318ffeeec42f343a69e0f0fd7a2f6a29d72"
+  integrity sha512-2fwQc8f6xa3/Sbg798Oc/yDx9c/Rz33vrAQ/aN1XhyVtEXNN/a4HplJbjaMaS8u9yz19trkDFlkdYC+/2wpdlw==
   dependencies:
     "@boost/core" "^1.2.1"
     "@types/execa" "^0.9.0"
@@ -883,7 +883,7 @@
     "@types/lodash" "^4.14.119"
     "@types/micromatch" "^3.1.0"
     "@types/node" "^10.12.18"
-    "@types/yargs" "^12.0.4"
+    "@types/yargs" "^12.0.5"
     "@types/yargs-parser" "^11.0.2"
     chalk "^2.4.1"
     execa "^1.0.0"
@@ -897,34 +897,34 @@
     yargs "^12.0.5"
     yargs-parser "^11.1.1"
 
-"@beemo/driver-babel@^0.25.0":
-  version "0.25.0"
-  resolved "https://registry.npmjs.org/@beemo/driver-babel/-/driver-babel-0.25.0.tgz#2f75f687f1b39f12b23c6ad3f923bc520e9576ba"
-  integrity sha512-yEjPll79K26eFZWXMw8o6EtkYtaEI9LjnErszYyEMhQSiPcEh28YBumvJfhO3n5MY+pAJ6sl8Q2uRImfbsqe/w==
+"@beemo/driver-babel@^0.25.1":
+  version "0.25.1"
+  resolved "https://registry.npmjs.org/@beemo/driver-babel/-/driver-babel-0.25.1.tgz#214b50ff66868cee8b46645f00cd1aecda981947"
+  integrity sha512-eoUhAaWsQGlWHXeqdO5Uf864RI1RbGOhCtYWypBUHZlQwoS8/zR/HD6osRPA8SJhiLtS5c9zLPwfnJssCkaOGg==
   dependencies:
     rimraf "^2.6.2"
 
-"@beemo/driver-eslint@^0.25.0":
-  version "0.25.0"
-  resolved "https://registry.npmjs.org/@beemo/driver-eslint/-/driver-eslint-0.25.0.tgz#e07c1284cdd9c72bd5dbe042364120d02636cd5c"
-  integrity sha512-6/dgAsVIoZ+9OEEIxjJ5uE/W4zY5YlPQWx/NoWr1frhdEwDinWAAsvswXdIm9RzUkEGVQlZspMxXO5xZgK7PAA==
+"@beemo/driver-eslint@^0.25.1":
+  version "0.25.1"
+  resolved "https://registry.npmjs.org/@beemo/driver-eslint/-/driver-eslint-0.25.1.tgz#0fa0d5109d24eb76682dd22028c837c1268abed7"
+  integrity sha512-fe8+/K18UQOU2J5yh8KZJaoeKglI9bGqxD1gwDO0BYwkvky0a6ZGnTBv9BBI+4gXk5OCawPMMQkWDwhYlTNc1Q==
 
-"@beemo/driver-jest@^0.25.0":
-  version "0.25.0"
-  resolved "https://registry.npmjs.org/@beemo/driver-jest/-/driver-jest-0.25.0.tgz#f7942b34c28215eda1eb9133f125d46826810c93"
-  integrity sha512-IdR0gCNo5X4Yy26MYR/4shw/O4XkrLSmSpZV337VuxhNL3LCTZoIvURYwlZWoaplxwjopQwerXj6Z1q0SIquJQ==
+"@beemo/driver-jest@^0.25.1":
+  version "0.25.1"
+  resolved "https://registry.npmjs.org/@beemo/driver-jest/-/driver-jest-0.25.1.tgz#24abac915902052c227d3d3ef9a2bcbc4ec1d1cf"
+  integrity sha512-YQdu3LES5RAftJU75l5wLAugBpP7Jnep8AsottePK8K6Vld30Hf3WvixU5k4CtOKqcw4kUB+6yT1pUiRRO0mjg==
 
-"@beemo/driver-prettier@^0.25.0":
-  version "0.25.0"
-  resolved "https://registry.npmjs.org/@beemo/driver-prettier/-/driver-prettier-0.25.0.tgz#a95c2d730f2ddbf01f03b6d3e96adaacc0568fc5"
-  integrity sha512-JODF6LGr5TR9PihwRRebp1vLhfGYiEKXdky12bgXzHAZ7hZT3J1VOlUhhgRG41pTBdiEjE2vq3p3qCBBwrXJew==
+"@beemo/driver-prettier@^0.25.1":
+  version "0.25.1"
+  resolved "https://registry.npmjs.org/@beemo/driver-prettier/-/driver-prettier-0.25.1.tgz#baf5e2926496162eeecfeb146e1c6689683db392"
+  integrity sha512-XgsDH3PMJ71DbwAf2Qs59BkukLTxkF+AJuES4khyN29EY+IAulJdHqu1o4RzClqwOXjv78izaYvg21SIUZglVg==
   dependencies:
     "@types/prettier" "^1.15.2"
 
-"@beemo/driver-typescript@^0.14.0":
-  version "0.14.0"
-  resolved "https://registry.npmjs.org/@beemo/driver-typescript/-/driver-typescript-0.14.0.tgz#435f560cc68bb44d3eee3f8778976f1cf1ca3c68"
-  integrity sha512-rwz7JbM///bVn76byi/CpXZBy6rBQ4Vaf5zpETb2oMs4uPYBqOqNncZKZpTKsbgbrSPHkcmqNZXwmYQ/00Tsyw==
+"@beemo/driver-typescript@^0.14.1":
+  version "0.14.1"
+  resolved "https://registry.npmjs.org/@beemo/driver-typescript/-/driver-typescript-0.14.1.tgz#5e286e008d7cdf8665d6aee68dcaf2022907a405"
+  integrity sha512-hIh/12GB1SDueVVlDDXQOosZF54cWqSOxTpPhP46SlVO6LYlzE+gMxmdy00gzwNHNO9La6v+83B6vP7dHIxezg==
   dependencies:
     rimraf "^2.6.2"
 
@@ -966,10 +966,10 @@
     wrap-ansi "^4.0.0"
     yargs-parser "^11.1.1"
 
-"@milesj/build-tool-config@^0.137.0":
-  version "0.137.0"
-  resolved "https://registry.npmjs.org/@milesj/build-tool-config/-/build-tool-config-0.137.0.tgz#d04fb07824432cadd497c32728691748465b9066"
-  integrity sha512-NcDwI1v2Au4ftrJ5w1bbm2V2kky2HkykKLLKP9S7+FYurMBu1GIh6SUcAwc4odnFNmmwrqxFZgrTw716b2h2Kg==
+"@milesj/build-tool-config@^0.137.1":
+  version "0.137.1"
+  resolved "https://registry.npmjs.org/@milesj/build-tool-config/-/build-tool-config-0.137.1.tgz#adfdd826b2c178e75dff9d94e071265bc6768ad0"
+  integrity sha512-8IxQBEjss6MzVpEAAT6PYKaziIoaUfEamQW4DcYOVN4CsR3Iruv2upmiBodO8TdOii9U0AkrnV3wd+tNhv1Bow==
   dependencies:
     "@babel/cli" "^7.2.3"
     "@babel/core" "^7.2.2"
@@ -983,7 +983,7 @@
     "@babel/preset-react" "^7.0.0"
     "@babel/preset-typescript" "^7.1.0"
     "@types/enzyme" "^3.1.15"
-    "@types/jest" "^23.3.10"
+    "@types/jest" "^23.3.11"
     babel-plugin-transform-dev "^2.0.1"
     babel-plugin-typescript-to-proptypes "^0.15.0"
     enzyme "^3.8.0"
@@ -1010,31 +1010,31 @@
     typescript "^3.2.2"
     typescript-eslint-parser "^21.0.2"
 
-"@milesj/build-tool-runtime@^0.13.0":
-  version "0.13.0"
-  resolved "https://registry.npmjs.org/@milesj/build-tool-runtime/-/build-tool-runtime-0.13.0.tgz#2af1136a08fd70393d7e30b34091c2736e5e73a8"
-  integrity sha512-N3XU6fj2xw9IeWhAaP51EStEDLgEUZsrCLmbmB9euoEwTCQI5n9CFes8Tg885UuWyTuDe4baxJbEwz+xlhcaXw==
+"@milesj/build-tool-runtime@^0.13.1":
+  version "0.13.1"
+  resolved "https://registry.npmjs.org/@milesj/build-tool-runtime/-/build-tool-runtime-0.13.1.tgz#93a2ad4a760c321d10d6b29c5016889969ac7377"
+  integrity sha512-xuXHqdTAeqKAH06tYc7GNRR9O+4A1XnBg4o3UwZFmAeHksME6/cBxoUY15K2idpN+N6fiyQkaNvlq4PAXucErw==
   dependencies:
     "@babel/core" "^7.2.2"
-    "@beemo/cli" "^0.25.0"
-    "@beemo/core" "^0.25.0"
-    "@beemo/driver-babel" "^0.25.0"
-    "@beemo/driver-eslint" "^0.25.0"
-    "@beemo/driver-jest" "^0.25.0"
-    "@beemo/driver-prettier" "^0.25.0"
-    "@beemo/driver-typescript" "^0.14.0"
+    "@beemo/cli" "^0.25.1"
+    "@beemo/core" "^0.25.1"
+    "@beemo/driver-babel" "^0.25.1"
+    "@beemo/driver-eslint" "^0.25.1"
+    "@beemo/driver-jest" "^0.25.1"
+    "@beemo/driver-prettier" "^0.25.1"
+    "@beemo/driver-typescript" "^0.14.1"
     eslint "^5.11.1"
     jest "^24.0.0-alpha.9"
     prettier "^1.15.3"
     typescript "^3.2.2"
 
-"@milesj/build-tools@^0.15.0":
-  version "0.15.0"
-  resolved "https://registry.npmjs.org/@milesj/build-tools/-/build-tools-0.15.0.tgz#be393a5cb5931af778b0de9d4e1381c5e566aee4"
-  integrity sha512-NjLAsW/hHNNXDcqIh/cz/XWmFa7Sw67gqsvM7pZ2PQfakRAkmL8DNEmWwhA9XyXdzz4mj/z8gx3f0tbk5CUFaA==
+"@milesj/build-tools@^0.15.1":
+  version "0.15.1"
+  resolved "https://registry.npmjs.org/@milesj/build-tools/-/build-tools-0.15.1.tgz#b8b8a310394efc264b6d03bded752c99e2cb62c5"
+  integrity sha512-T8WufrSMfLf8RmXiIknk2YPFktV7/Pl927UFRZMfpg35YezObwcvxyz3RvHivm1zibOso9GgwsR3HlPKsVof8Q==
   dependencies:
-    "@milesj/build-tool-config" "^0.137.0"
-    "@milesj/build-tool-runtime" "^0.13.0"
+    "@milesj/build-tool-config" "^0.137.1"
+    "@milesj/build-tool-runtime" "^0.13.1"
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
@@ -1127,10 +1127,10 @@
   resolved "https://registry.npmjs.org/@types/is-glob/-/is-glob-4.0.0.tgz#fb8a2bff539025d4dcd6d5efe7689e03341b876d"
   integrity sha512-zC/2EmD8scdsGIeE+Xg7kP7oi9VP90zgMQtm9Cr25av4V+a+k8slQyiT60qSw8KORYrOKlPXfHwoa1bQbRzskQ==
 
-"@types/jest@^23.3.10":
-  version "23.3.10"
-  resolved "https://registry.npmjs.org/@types/jest/-/jest-23.3.10.tgz#4897974cc317bf99d4fe6af1efa15957fa9c94de"
-  integrity sha512-DC8xTuW/6TYgvEg3HEXS7cu9OijFqprVDXXiOcdOKZCU/5PJNLZU37VVvmZHdtMiGOa8wAA/We+JzbdxFzQTRQ==
+"@types/jest@^23.3.11":
+  version "23.3.11"
+  resolved "https://registry.npmjs.org/@types/jest/-/jest-23.3.11.tgz#d3a936ae753d9e484965f5cbd19027c2b8af2551"
+  integrity sha512-eroF85PoG87XjCwzxey7yBsQNkIY/TV5myKKSG/022A0FW25afdu/uub6JDMS5eT68zBBt82S+w/MFOTjeLM3Q==
 
 "@types/json5@^0.0.30":
   version "0.0.30"
@@ -1221,6 +1221,11 @@
   version "12.0.4"
   resolved "https://registry.npmjs.org/@types/yargs/-/yargs-12.0.4.tgz#14a37542f01a1ed4d743d5f8bc3f40e63e5835d4"
   integrity sha512-hBYcOaYPnlAPj2OZbivFFzsW61mN0L3N0Aq4KwRt/ZXlw1c25Srj8413MBu5IhFGOyOdjLi2/qOqtStDTXGs9g==
+
+"@types/yargs@^12.0.5":
+  version "12.0.5"
+  resolved "https://registry.npmjs.org/@types/yargs/-/yargs-12.0.5.tgz#f4f85fe198e1e9cedc0bb53a8c2d30fb34299e50"
+  integrity sha512-y51XRWWg1GiW4+mV2zmFQUqJT3bX7nuUaXW4j8a2dFvT9ZlaNLjb7ZxcUSDyklt/UBWrW2+31x+hQpRzxaTFzw==
 
 abab@^2.0.0:
   version "2.0.0"
