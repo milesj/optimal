@@ -42,7 +42,11 @@ exports[`Builder invariant() errors if condition is false 1`] = `"Failure"`;
 
 exports[`Builder invariant() includes a class name 1`] = `"Invalid FooBar field \\"foo.bar\\". Failure"`;
 
-exports[`Builder invariant() includes a class name when no path 1`] = `"FooBar: Failure"`;
+exports[`Builder invariant() includes a class name when no path 1`] = `"FooBar. Failure"`;
+
+exports[`Builder invariant() includes a file and class name 1`] = `"Invalid FooBar field \\"foo.bar\\" in package.json. Failure"`;
+
+exports[`Builder invariant() includes a file name 1`] = `"Invalid field \\"foo.bar\\" in package.json. Failure"`;
 
 exports[`Builder invariant() includes an option path 1`] = `"Invalid field \\"foo.bar\\". Failure"`;
 

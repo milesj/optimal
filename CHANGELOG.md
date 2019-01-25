@@ -1,5 +1,11 @@
 # Changelog
 
+# 1.3.0
+
+#### 🚀 New
+
+- Added a `file` option to `optimal` to include in error messages.
+
 # 1.2.0 - 12/29/2018
 
 #### 🚀 New

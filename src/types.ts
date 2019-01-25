@@ -18,6 +18,7 @@ export interface Struct<T = any> {
 }
 
 export interface OptimalOptions extends Struct {
+  file?: string;
   name?: string;
   unknown?: boolean;
 }

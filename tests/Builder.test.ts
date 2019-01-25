@@ -292,6 +292,23 @@ describe('Builder', () => {
         builder.invariant(false, 'Failure');
       }).toThrowErrorMatchingSnapshot();
     });
+
+    it('includes a file name', () => {
+      expect(() => {
+        builder.options.file = 'package.json';
+
+        builder.invariant(false, 'Failure', 'foo.bar');
+      }).toThrowErrorMatchingSnapshot();
+    });
+
+    it('includes a file and class name', () => {
+      expect(() => {
+        builder.options.file = 'package.json';
+        builder.options.name = 'FooBar';
+
+        builder.invariant(false, 'Failure', 'foo.bar');
+      }).toThrowErrorMatchingSnapshot();
+    });
   });
 
   describe('key()', () => {

@@ -171,20 +171,29 @@ export default class Builder<T> {
         return;
       }
 
-      const { name } = this.options;
+      const { file, name } = this.options;
+      const error = this.errorMessage || message;
       let prefix = '';
 
       if (path) {
         if (name) {
-          prefix += `Invalid ${name} field "${path}". `;
+          prefix += `Invalid ${name} field "${path}"`;
         } else {
-          prefix += `Invalid field "${path}". `;
+          prefix += `Invalid field "${path}"`;
         }
       } else if (name) {
-        prefix += `${name}: `;
+        prefix += name;
       }
 
-      throw new Error(`${prefix}${this.errorMessage || message}`);
+      if (file) {
+        prefix += ` in ${file}`;
+      }
+
+      if (prefix) {
+        throw new Error(`${prefix}. ${error}`);
+      } else {
+        throw new Error(error);
+      }
     }
   }
 
