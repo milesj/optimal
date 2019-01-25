@@ -6,29 +6,31 @@
 import Builder from './Builder';
 import isObject from './isObject';
 import typeOf from './typeOf';
-import { Blueprint, OptimalOptions, Struct } from './types';
+import { Blueprint, InferStructure, OptimalOptions } from './types';
 
-function buildAndCheck<T extends Struct>(
-  struct: Struct,
-  blueprint: Blueprint,
+function buildAndCheck<Struct extends object>(
+  struct: Partial<Struct>,
+  blueprint: Blueprint<Struct>,
   options: OptimalOptions = {},
   parentPath: string = '',
-): T {
-  const unknownFields: Struct = { ...struct };
-  const builtStruct = {} as T;
+): any {
+  const unknownFields: any = { ...struct };
+  const builtStruct: any = {};
 
   // Validate using the blueprint
-  Object.keys(blueprint).forEach(key => {
+  Object.keys(blueprint).forEach(baseKey => {
+    const key = baseKey as keyof Struct;
+    const value = struct[key];
     const builder = blueprint[key];
-    const path = parentPath ? `${parentPath}.${key}` : key;
+    const path = String(parentPath ? `${parentPath}.${key}` : key);
 
     // Run validation checks
     if (builder instanceof Builder) {
-      builtStruct[key] = builder.runChecks(path, struct[key], struct, options);
+      builtStruct[key] = builder.runChecks(path, value, struct, options);
 
       // Builder is a plain object, so let's recursively try again
     } else if (isObject(builder)) {
-      builtStruct[key] = buildAndCheck(struct[key] || {}, builder, options, path);
+      builtStruct[key] = buildAndCheck(isObject(value) ? value : {}, builder, options, path);
 
       // Oops
     } else if (__DEV__) {
@@ -53,11 +55,11 @@ function buildAndCheck<T extends Struct>(
   return builtStruct;
 }
 
-export default function optimal<T extends Struct>(
-  struct: Struct,
-  blueprint: Blueprint,
+export default function optimal<Struct extends object, Construct extends object = Partial<Struct>>(
+  struct: Construct,
+  blueprint: Blueprint<Struct>,
   options: OptimalOptions = {},
-): T {
+): InferStructure<Struct> {
   if (__DEV__) {
     if (!isObject(struct)) {
       throw new TypeError(`Optimal requires a plain object, found ${typeOf(struct)}.`);

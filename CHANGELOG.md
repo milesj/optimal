@@ -1,6 +1,19 @@
 # Changelog
 
-# 1.3.0
+# 2.0.0
+
+#### 💥 Breaking
+
+- TypeScript minimum version requirement is now 3.0.
+- TypeScript has been rewritten to infer builder types and structures as best it can. This may cause
+  unexpected inferrence for `optimal` usage and may require explicit generic types to be passed.
+  Some caveats:
+  - Union types are not inferrable and are typed as `any`.
+  - String enums (`oneOf()`) are not inferrable and are typed as `string`.
+- `CollectionBuilder` has split into `ArrayBuilder` and `ObjectBuilder`. `array()` and `object()`
+  are still the same.
+- `shape()` default value is now `null` instead of an empty object, but the structure should be
+  auto-built based on the defined builder.
 
 #### 🚀 New
 

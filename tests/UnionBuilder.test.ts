@@ -1,13 +1,14 @@
 import UnionBuilder, { union } from '../src/UnionBuilder';
 import { bool, custom } from '../src/Builder';
-import { array, object } from '../src/CollectionBuilder';
+import { array } from '../src/ArrayBuilder';
+import { object } from '../src/ObjectBuilder';
 import { instance } from '../src/InstanceBuilder';
 import { number } from '../src/NumberBuilder';
 import { shape } from '../src/ShapeBuilder';
 import { string } from '../src/StringBuilder';
 
 describe('UnionBuilder', () => {
-  let builder: UnionBuilder;
+  let builder: UnionBuilder<{}>;
 
   class Foo {}
   class Bar {}

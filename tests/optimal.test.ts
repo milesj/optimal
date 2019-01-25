@@ -15,8 +15,6 @@ import optimal, {
 class Plugin {}
 
 describe('Optimal', () => {
-  let options: Blueprint;
-
   // This blueprint is based on Webpack's configuration: https://webpack.js.org/configuration/
   // Webpack provides a pretty robust example of how to use this library.
   const primitive = union([string(), number(), bool()]);
@@ -132,7 +130,11 @@ describe('Optimal', () => {
   });
 
   it('sets object keys as class properties', () => {
-    options = optimal(
+    const options = optimal<{
+      foo: number;
+      bar: boolean;
+      baz: string;
+    }>(
       {
         foo: 123,
         bar: true,
@@ -155,7 +157,7 @@ describe('Optimal', () => {
   });
 
   it('sets default values', () => {
-    options = optimal({}, blueprint);
+    const options = optimal({}, blueprint);
 
     expect(options).toEqual({
       context: process.cwd(),
@@ -188,7 +190,7 @@ describe('Optimal', () => {
 
   it('runs checks for root level values', () => {
     expect(() => {
-      options = optimal(
+      optimal(
         {
           entry: 123,
         },
@@ -201,7 +203,7 @@ describe('Optimal', () => {
 
   it('runs checks for nested level values', () => {
     expect(() => {
-      options = optimal(
+      optimal(
         {
           output: {
             crossOriginLoading: 'not-anonymous',
@@ -216,7 +218,7 @@ describe('Optimal', () => {
 
   it('includes a custom `name` in the error message', () => {
     expect(() => {
-      options = optimal(
+      optimal(
         {
           entry: 123,
         },
@@ -289,7 +291,14 @@ describe('Optimal', () => {
 
       // Dont error if all are undefined
       expect(() => {
-        optimal({}, and);
+        optimal(
+          {},
+          {
+            foo: string('a').and('bar', 'baz'),
+            bar: string('b').and('foo', 'baz'),
+            baz: string('c').and('foo', 'bar'),
+          },
+        );
       }).not.toThrowError('All of these fields must be defined: foo, bar, baz');
 
       expect(() => {

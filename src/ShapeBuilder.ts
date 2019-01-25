@@ -5,23 +5,22 @@
 
 import Builder from './Builder';
 import isObject from './isObject';
-import { Blueprint, Struct, OptimalOptions } from './types';
+import { Blueprint, OptimalOptions } from './types';
 
-export interface Shape {
-  [key: string]: any;
-}
+export default class ShapeBuilder<Shape extends object, Struct extends object> extends Builder<
+  Shape | null,
+  Struct
+> {
+  contents: Blueprint<Shape>;
 
-export default class ShapeBuilder extends Builder<Shape | null> {
-  contents: Blueprint;
-
-  constructor(contents: Blueprint, defaultValue: Shape | null = {}) {
+  constructor(contents: Blueprint<Shape>, defaultValue: Shape | null = null) {
     super('shape', defaultValue);
 
     if (__DEV__) {
       this.invariant(
         isObject(contents) &&
           Object.keys(contents).length > 0 &&
-          Object.keys(contents).every(key => contents[key] instanceof Builder),
+          Object.keys(contents).every(key => (contents as any)[key] instanceof Builder),
         'A non-empty object of properties to blueprints are required for a shape.',
       );
     }
@@ -29,19 +28,25 @@ export default class ShapeBuilder extends Builder<Shape | null> {
     this.contents = contents;
   }
 
-  runChecks(path: string, initialValue: any, struct: Struct, options: OptimalOptions = {}): any {
+  runChecks(
+    path: string,
+    initialValue: Partial<Shape> | null,
+    struct: Struct,
+    options: OptimalOptions = {},
+  ): any {
     const value: any = {};
     const object = initialValue || this.defaultValue || {};
 
     if (__DEV__) {
       this.invariant(
-        typeof object === 'object' && object,
+        typeof object === 'object' && !!object,
         'Value passed to shape must be an object.',
         path,
       );
     }
 
-    Object.keys(this.contents).forEach(key => {
+    Object.keys(this.contents).forEach(baseKey => {
+      const key = baseKey as keyof Shape;
       const builder = this.contents[key];
 
       if (builder instanceof Builder) {
@@ -55,6 +60,9 @@ export default class ShapeBuilder extends Builder<Shape | null> {
   }
 }
 
-export function shape(contents: Blueprint, defaultValue: Shape | null = {}): ShapeBuilder {
-  return new ShapeBuilder(contents, defaultValue);
+export function shape<P extends object, S extends object>(
+  contents: Blueprint<P>,
+  defaultValue: P | null = null,
+) /* infer */ {
+  return new ShapeBuilder<P, S>(contents, defaultValue);
 }

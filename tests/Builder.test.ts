@@ -1,7 +1,7 @@
 import Builder, { bool, custom, func } from '../src/Builder';
 
 describe('Builder', () => {
-  let builder: Builder<any>;
+  let builder: Builder<any, any>;
 
   beforeEach(() => {
     builder = new Builder('string', 'foo');
@@ -592,7 +592,12 @@ describe('bool()', () => {
 
   it('errors if a non-boolean value is used', () => {
     expect(() => {
-      bool().runChecks('key', 123, {});
+      bool().runChecks(
+        'key',
+        // @ts-ignore Test invalid type
+        123,
+        {},
+      );
     }).toThrowErrorMatchingSnapshot();
   });
 
@@ -633,7 +638,12 @@ describe('func()', () => {
 
   it('errors if a non-function value is used', () => {
     expect(() => {
-      func().runChecks('key', 123, {});
+      func().runChecks(
+        'key',
+        // @ts-ignore Test invalid type
+        123,
+        {},
+      );
     }).toThrowErrorMatchingSnapshot();
   });
 

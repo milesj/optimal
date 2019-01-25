@@ -8,7 +8,7 @@ import isObject from './isObject';
 
 export type Constructor<T> = new (...args: any[]) => T;
 
-export default class InstanceBuilder<T> extends Builder<T | null> {
+export default class InstanceBuilder<T, Struct extends object> extends Builder<T | null, Struct> {
   refClass: Constructor<T> | null = null;
 
   constructor(refClass: Constructor<T> | null = null) {
@@ -27,7 +27,7 @@ export default class InstanceBuilder<T> extends Builder<T | null> {
     }
   }
 
-  checkInstance(path: string, value: any, refClass: T | null) {
+  checkInstance(path: string, value: T, refClass: T | null) {
     if (__DEV__) {
       if (refClass) {
         this.invariant(
@@ -55,14 +55,16 @@ export default class InstanceBuilder<T> extends Builder<T | null> {
   }
 }
 
-export function instance<T>(refClass: Constructor<T> | null = null): InstanceBuilder<T> {
+export function instance<T, S extends object>(
+  refClass: Constructor<T> | null = null,
+): InstanceBuilder<T, S> {
   return new InstanceBuilder(refClass);
 }
 
-export function regex(): InstanceBuilder<RegExp> {
+export function regex<S extends object>(): InstanceBuilder<RegExp, S> {
   return instance(RegExp);
 }
 
-export function date(): InstanceBuilder<Date> {
+export function date<S extends object>(): InstanceBuilder<Date, S> {
   return instance(Date);
 }

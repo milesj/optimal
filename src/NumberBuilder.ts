@@ -5,11 +5,11 @@
 
 import Builder from './Builder';
 
-function isNumber(value: any): boolean {
+function isNumber(value: any): value is number {
   return typeof value === 'number';
 }
 
-export default class NumberBuilder extends Builder<number | null> {
+export default class NumberBuilder<Struct extends object> extends Builder<number | null, Struct> {
   constructor(defaultValue: number | null = 0) {
     super('number', defaultValue);
   }
@@ -25,7 +25,7 @@ export default class NumberBuilder extends Builder<number | null> {
     return this.addCheck(this.checkBetween, min, max, inclusive);
   }
 
-  checkBetween(path: string, value: any, min: number, max: number, inclusive: boolean = false) {
+  checkBetween(path: string, value: number, min: number, max: number, inclusive: boolean = false) {
     if (__DEV__) {
       this.invariant(
         isNumber(value) && (inclusive ? value >= min && value <= max : value > min && value < max),
@@ -47,7 +47,7 @@ export default class NumberBuilder extends Builder<number | null> {
     return this.gt(min, true);
   }
 
-  checkGreaterThan(path: string, value: any, min: number, inclusive: boolean = false) {
+  checkGreaterThan(path: string, value: number, min: number, inclusive: boolean = false) {
     if (__DEV__) {
       if (inclusive) {
         this.invariant(
@@ -73,7 +73,7 @@ export default class NumberBuilder extends Builder<number | null> {
     return this.lt(max, true);
   }
 
-  checkLessThan(path: string, value: any, max: number, inclusive: boolean = false) {
+  checkLessThan(path: string, value: number, max: number, inclusive: boolean = false) {
     if (__DEV__) {
       if (inclusive) {
         this.invariant(
@@ -98,13 +98,13 @@ export default class NumberBuilder extends Builder<number | null> {
     return this.addCheck(this.checkOneOf, list);
   }
 
-  checkOneOf(path: string, value: any, list: number[]) {
+  checkOneOf(path: string, value: number, list: number[]) {
     if (__DEV__) {
       this.invariant(list.indexOf(value) >= 0, `Number must be one of: ${list.join(', ')}`, path);
     }
   }
 }
 
-export function number(defaultValue: number | null = 0): NumberBuilder {
+export function number<S extends object>(defaultValue: number | null = 0): NumberBuilder<S> {
   return new NumberBuilder(defaultValue);
 }

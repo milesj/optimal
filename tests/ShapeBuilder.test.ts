@@ -4,7 +4,13 @@ import { number } from '../src/NumberBuilder';
 import { string } from '../src/StringBuilder';
 
 describe('shape()', () => {
-  let builder: ShapeBuilder;
+  interface Shape {
+    foo: string;
+    bar: number;
+    baz: boolean;
+  }
+
+  let builder: ShapeBuilder<Shape, { key: Shape }>;
 
   beforeEach(() => {
     builder = shape({
@@ -136,7 +142,7 @@ describe('shape()', () => {
     });
 
     it('errors correctly for shapes in shapes', () => {
-      builder = shape({
+      const nestedBuilder = shape({
         foo: shape({
           a: number(),
           b: number(),
@@ -145,7 +151,7 @@ describe('shape()', () => {
       });
 
       expect(() => {
-        builder.runChecks(
+        nestedBuilder.runChecks(
           'key',
           {
             foo: {
