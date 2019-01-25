@@ -67,7 +67,7 @@ describe('instance()', () => {
     });
 
     it('returns the class name when a reference class is defined', () => {
-      expect(instance(FormData).typeAlias()).toBe('FormData');
+      expect(instance(Buffer).typeAlias()).toBe('Buffer');
     });
   });
 });

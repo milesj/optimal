@@ -92,7 +92,7 @@ describe('UnionBuilder', () => {
 
     it('errors with the class name for instance checks', () => {
       expect(() => {
-        union([number(), instance(FormData)]).runChecks('key', {}, {});
+        union([number(), instance(Buffer)]).runChecks('key', {}, {});
       }).toThrowErrorMatchingSnapshot();
     });
 

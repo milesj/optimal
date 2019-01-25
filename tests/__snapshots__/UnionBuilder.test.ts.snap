@@ -14,7 +14,7 @@ exports[`UnionBuilder runChecks() errors if an object and shape are used 1`] = `
 
 exports[`UnionBuilder runChecks() errors if the same builder type is used multiple times 1`] = `"Invalid field \\"key\\". Multiple instances of \\"object\\" are not supported."`;
 
-exports[`UnionBuilder runChecks() errors with the class name for instance checks 1`] = `"Invalid field \\"key\\". Type must be one of: number, FormData"`;
+exports[`UnionBuilder runChecks() errors with the class name for instance checks 1`] = `"Invalid field \\"key\\". Type must be one of: number, Buffer"`;
 
 exports[`UnionBuilder runChecks() runs array check 1`] = `"Invalid field \\"key[0]\\". Must be a string."`;
 

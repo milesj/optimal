@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 import Builder, { bool, custom, func } from '../src/Builder';
 
 describe('Builder', () => {
