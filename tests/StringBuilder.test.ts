@@ -39,7 +39,7 @@ describe('StringBuilder', () => {
     it('adds a checker', () => {
       builder.contains('oo');
 
-      expect(builder.checks[2]).toEqual({
+      expect(builder.checks[1]).toEqual({
         callback: builder.checkContains,
         args: ['oo', 0],
       });
@@ -71,7 +71,7 @@ describe('StringBuilder', () => {
     it('adds a checker', () => {
       builder.match(/oo/u);
 
-      expect(builder.checks[2]).toEqual({
+      expect(builder.checks[1]).toEqual({
         callback: builder.checkMatch,
         args: [/oo/u],
       });
@@ -92,11 +92,14 @@ describe('StringBuilder', () => {
     });
   });
 
-  describe('empty()', () => {
-    it('allows empty', () => {
-      builder.empty();
+  describe('notEmpty()', () => {
+    it('adds a checker', () => {
+      builder.notEmpty();
 
-      expect(builder.allowEmpty).toBe(true);
+      expect(builder.checks[1]).toEqual({
+        callback: builder.checkNotEmpty,
+        args: [],
+      });
     });
   });
 
@@ -105,12 +108,6 @@ describe('StringBuilder', () => {
       expect(() => {
         builder.checkNotEmpty('key', '');
       }).toThrowErrorMatchingSnapshot();
-    });
-
-    it('doesnt error if allow empty', () => {
-      expect(() => {
-        builder.empty().checkNotEmpty('key', '');
-      }).not.toThrowError('Invalid field "key". String cannot be empty.');
     });
   });
 
@@ -138,7 +135,7 @@ describe('StringBuilder', () => {
     it('adds a checker', () => {
       builder.oneOf(['foo', 'bar', 'baz']);
 
-      expect(builder.checks[2]).toEqual({
+      expect(builder.checks[1]).toEqual({
         callback: builder.checkOneOf,
         args: [['foo', 'bar', 'baz']],
       });

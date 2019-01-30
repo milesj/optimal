@@ -56,8 +56,8 @@ describe('Optimal', () => {
       ),
       filename: string('bundle.js'),
       hashFunction: string('md5').oneOf(['md5', 'sha256', 'sha512']),
-      path: string().empty(),
-      publicPath: string().empty(),
+      path: string(),
+      publicPath: string(),
     }),
     module: shape({
       noParse: union([regex(), array(regex()), func()], null).nullable(),
@@ -142,7 +142,7 @@ describe('Optimal', () => {
       {
         foo: number(0),
         bar: bool(true),
-        baz: string().empty(),
+        baz: string(),
       },
     );
 
@@ -161,7 +161,7 @@ describe('Optimal', () => {
 
     expect(options).toEqual({
       context: process.cwd(),
-      entry: null,
+      entry: [],
       output: {
         chunkFilename: '[id].js',
         chunkLoadTimeout: 120000,

@@ -31,26 +31,26 @@ describe('UnionBuilder', () => {
     it('errors if a non-array is not passed', () => {
       expect(() => {
         // @ts-ignore
-        union('foo');
+        union('foo', []);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if an empty array is passed', () => {
       expect(() => {
-        union([], '');
+        union([], []);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if an array with non-builders is passed', () => {
       expect(() => {
         // @ts-ignore
-        union([123]);
+        union([123], []);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('doesnt error if a builder array is passed', () => {
       expect(() => {
-        union([string()], '');
+        union([string()], []);
       }).not.toThrowError('A non-empty array of blueprints are required for a union.');
     });
 

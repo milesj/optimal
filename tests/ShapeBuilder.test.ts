@@ -12,7 +12,7 @@ describe('shape()', () => {
 
   beforeEach(() => {
     builder = shape({
-      foo: string().empty(),
+      foo: string(),
       bar: number(),
       baz: bool(),
     });
@@ -47,16 +47,6 @@ describe('shape()', () => {
       }).not.toThrowError(
         'A non-empty object of properties to blueprints are required for a shape.',
       );
-    });
-
-    it('sets default value', () => {
-      const defBuilder = shape({
-        foo: string('bar'),
-      });
-
-      expect(defBuilder.defaultValue).toEqual({
-        foo: 'bar',
-      });
     });
   });
 
@@ -101,7 +91,7 @@ describe('shape()', () => {
         foo: shape({
           a: number(),
           b: number(),
-          c: string().empty(),
+          c: string(),
         }),
       });
 

@@ -7,26 +7,29 @@
 - TypeScript minimum version requirement is now 3.0.
 - TypeScript has been rewritten to infer builder types and structures as best it can. This may cause
   unexpected inferrence for `optimal` usage and may require explicit generic types to be passed.
-  Some caveats:
-  - Union types are not inferrable and are typed as `any`. However, their union type can be defined
-    via generics on the builder factory function.
 - Nested blueprints must now use `shape()` instead of a plain object.
-- `CollectionBuilder` has split into `ArrayBuilder` and `ObjectBuilder`. `array()` and `object()`
-  are still the same.
+- Collections have split into `ArrayBuilder` and `ObjectBuilder`. `array()` and `object()` are still
+  the same.
 - `Builder#nullable` no longer accepts an argument and instead enables nulls.
 - `custom()`
   - Default value is now required at all times.
-  - TS: Type will be inferred by the default value unless generic is explicitly defined.
+  - TS: Type will be inferred by the default value unless the generic is explicitly defined.
 - `shape()`
   - Default value has been removed (since it's inferred by nested blueprint structure).
+- `string()`
+  - String logic has been reversed, as they are now empty by default, instead of not empty. To
+    enable the old logic, use the `notEmpty()` method.
+  - The `empty()` method has been removed.
 - `union()`
   - Default value is now required at all times.
+  - TS: Types are not inferrable and are typed as `any` unless generic is explicitly defined.
 
 #### 🚀 New
 
 - Added a `file` option to `optimal` to include in error messages.
 - Added a `predicates` export from the index, which is an object of all builder factory functions.
 - Added `Builder#notNullable` to disable null values.
+- Added `StringBuilder#notEmpty` to require strings to not be empty.
 
 # 1.2.0 - 2018-12-29
 

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Optimal errors if a non-builder is passed within the blueprint 1`] = `"Unknown blueprint. Must be a builder or plain object."`;
+exports[`Optimal errors if a non-builder is passed within the blueprint 1`] = `"Unknown blueprint for \\"foo\\". Must be a builder."`;
 
 exports[`Optimal errors if a non-object config is passed 1`] = `"Optimal options must be a plain object."`;
 

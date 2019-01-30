@@ -10,15 +10,8 @@ function isString(value: any): value is string {
 }
 
 export default class StringBuilder<T extends string = string> extends Builder<T> {
-  allowEmpty: boolean = false;
-
   constructor(defaultValue?: T) {
     super('string', defaultValue || ('' as T));
-
-    // Not empty by default
-    if (__DEV__) {
-      this.addCheck(this.checkNotEmpty);
-    }
   }
 
   contains(token: string, index: number = 0): this {
@@ -56,19 +49,13 @@ export default class StringBuilder<T extends string = string> extends Builder<T>
     }
   }
 
-  empty(): this {
-    if (__DEV__) {
-      this.allowEmpty = true;
-    }
-
-    return this;
+  notEmpty(): this {
+    return this.addCheck(this.checkNotEmpty);
   }
 
   checkNotEmpty(path: string, value: T) {
     if (__DEV__) {
-      if (!this.allowEmpty) {
-        this.invariant(isString(value), 'String cannot be empty.', path);
-      }
+      this.invariant(isString(value), 'String cannot be empty.', path);
     }
   }
 
