@@ -28,6 +28,8 @@
 
 - Added a `file` option to `optimal` to include in error messages.
 - Added a `predicates` export from the index, which is an object of all builder factory functions.
+- Added `loose` option to `instance()`, so cross-realm instance checks work (compares constructor
+  name).
 - Added `Builder#notNullable` to disable null values.
 - Added `StringBuilder#notEmpty` to require strings to not be empty.
 

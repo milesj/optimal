@@ -70,6 +70,22 @@ describe('instance()', () => {
         instance(Foo).runChecks('key', new Foo(), {});
       }).not.toThrowError('Invalid field "key". Must be an instance of "Foo".');
     });
+
+    it('handles an instance of the same name when passed in loose mode', () => {
+      class Foo2 {}
+
+      Object.defineProperty(Foo2, 'name', {
+        value: 'Foo',
+      });
+
+      expect(() => {
+        instance(Foo).runChecks('key', new Foo2(), {});
+      }).toThrowError('Invalid field "key". Must be an instance of "Foo".');
+
+      expect(() => {
+        instance(Foo, true).runChecks('key', new Foo2(), {});
+      }).not.toThrowError('Invalid field "key". Must be an instance of "Foo".');
+    });
   });
 
   describe('typeAlias()', () => {
