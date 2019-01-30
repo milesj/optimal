@@ -60,10 +60,10 @@ describe('ObjectBuilder', () => {
       expect(() => {
         builder.runChecks(
           'key',
-          // @ts-ignore Test invalid type
           {
             a: 'foo',
             b: 'bar',
+            // @ts-ignore Test invalid type
             c: 123,
           },
           {},
@@ -75,8 +75,8 @@ describe('ObjectBuilder', () => {
       expect(() => {
         builder.runChecks(
           'key',
-          // @ts-ignore Test invalid type
           {
+            // @ts-ignore Test invalid type
             foo: 123,
           },
           {},
@@ -106,10 +106,10 @@ describe('ObjectBuilder', () => {
       expect(() => {
         nestedBuilder.runChecks(
           'key',
-          // @ts-ignore Test invalid type
           {
             a: {
               foo: '123',
+              // @ts-ignore Test invalid type
               bar: 456,
             },
             b: {

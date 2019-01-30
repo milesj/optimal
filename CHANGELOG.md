@@ -16,6 +16,7 @@
 - `Builder#nullable` no longer accepts an argument and instead enables nulls.
 - `custom()`
   - Default value is now required at all times.
+  - TS: Type will be inferred by the default value unless generic is explicitly defined.
 - `shape()`
   - Default value has been removed (since it's inferred by nested blueprint structure).
 - `union()`

@@ -60,9 +60,9 @@ export function instance<T = Function>(refClass: Constructor<T> | null = null) /
 }
 
 export function regex() /* infer */ {
-  return instance<RegExp>(RegExp);
+  return instance(RegExp);
 }
 
 export function date() /* infer */ {
-  return instance<Date>(Date);
+  return instance(Date);
 }

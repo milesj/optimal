@@ -9,7 +9,7 @@ import typeOf from './typeOf';
 export default class UnionBuilder<T = any> extends Builder<T> {
   builders: Builder<any>[] = [];
 
-  constructor(builders: Builder<any>[], defaultValue: T) {
+  constructor(builders: Builder<any>[], defaultValue: any) {
     super('union', defaultValue);
 
     if (__DEV__) {

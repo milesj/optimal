@@ -72,9 +72,9 @@ describe('shape()', () => {
       expect(() => {
         builder.runChecks(
           'key',
-          // @ts-ignore Allow invalid type
           {
             foo: 'foo',
+            // @ts-ignore Allow invalid type
             bar: 'bar',
             baz: true,
           },
@@ -87,8 +87,8 @@ describe('shape()', () => {
       expect(() => {
         builder.runChecks(
           'key',
-          // @ts-ignore Allow invalid type
           {
+            // @ts-ignore Allow invalid type
             foo: 123,
           },
           {},

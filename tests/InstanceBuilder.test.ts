@@ -38,7 +38,12 @@ describe('instance()', () => {
 
     it('errors if a non-instance is passed', () => {
       expect(() => {
-        builder.runChecks('key', 'foo', { key: null });
+        instance().runChecks(
+          'key',
+          // @ts-ignore Allow invalid type
+          'foo',
+          { key: null },
+        );
       }).toThrowErrorMatchingSnapshot();
     });
 

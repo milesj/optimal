@@ -36,7 +36,7 @@ describe('Optimal', () => {
             options: object(primitive),
           }),
         ],
-        '',
+        [],
       ),
     ),
   });
