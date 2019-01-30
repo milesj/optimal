@@ -12,12 +12,13 @@
   - String enums (`oneOf()`) are not inferrable and are typed as `string`.
 - `CollectionBuilder` has split into `ArrayBuilder` and `ObjectBuilder`. `array()` and `object()`
   are still the same.
-- `shape()` default value is now `null` instead of an empty object, but the structure should be
-  auto-built based on the defined builder.
+- Nested objects in a blueprint must now use `shape()` instead of a plain object.
+- Default value has been removed from `shape()` (since it's inferred by nested blueprint structure).
 
 #### 🚀 New
 
 - Added a `file` option to `optimal` to include in error messages.
+- Added a `predicates` export from the index, which is an object of all predicate functions.
 
 # 1.2.0 - 2018-12-29
 

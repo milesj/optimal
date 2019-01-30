@@ -13,6 +13,21 @@ import ShapeBuilder, { shape } from './ShapeBuilder';
 import StringBuilder, { string } from './StringBuilder';
 import UnionBuilder, { union } from './UnionBuilder';
 
+export const predicates = {
+  array,
+  bool,
+  custom,
+  date,
+  func,
+  instance,
+  number,
+  object,
+  regex,
+  shape,
+  string,
+  union,
+};
+
 export { array, bool, custom, date, func, instance, number, object, regex, shape, string, union };
 
 export {

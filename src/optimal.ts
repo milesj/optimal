@@ -55,20 +55,20 @@ function buildAndCheck<Struct extends object>(
   return builtStruct;
 }
 
-export default function optimal<Struct extends object, Construct extends object = Partial<Struct>>(
-  struct: Construct,
+export default function optimal<Struct extends object>(
+  // struct: Construct,
   blueprint: Blueprint<Struct>,
   options: OptimalOptions = {},
-): InferStructure<Struct> {
-  if (__DEV__) {
-    if (!isObject(struct)) {
-      throw new TypeError(`Optimal requires a plain object, found ${typeOf(struct)}.`);
-    } else if (!isObject(options)) {
-      throw new TypeError('Optimal options must be a plain object.');
-    } else if (!isObject(blueprint)) {
-      throw new TypeError('A blueprint is required.');
-    }
-  }
-
-  return buildAndCheck(struct, blueprint, options);
+): Struct {
+  // if (__DEV__) {
+  //   if (!isObject(struct)) {
+  //     throw new TypeError(`Optimal requires a plain object, found ${typeOf(struct)}.`);
+  //   } else if (!isObject(options)) {
+  //     throw new TypeError('Optimal options must be a plain object.');
+  //   } else if (!isObject(blueprint)) {
+  //     throw new TypeError('A blueprint is required.');
+  //   }
+  // }
+  // return buildAndCheck(struct, blueprint, options);
+  return {} as any;
 }

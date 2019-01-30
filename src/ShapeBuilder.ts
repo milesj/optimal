@@ -7,14 +7,14 @@ import Builder from './Builder';
 import isObject from './isObject';
 import { Blueprint, OptimalOptions } from './types';
 
-export default class ShapeBuilder<Shape extends object, Struct extends object> extends Builder<
-  Shape | null,
-  Struct
+export default class ShapeBuilder<Struct extends object, Shape extends object> extends Builder<
+  Struct,
+  Partial<Shape>
 > {
   contents: Blueprint<Shape>;
 
-  constructor(contents: Blueprint<Shape>, defaultValue: Shape | null = null) {
-    super('shape', defaultValue);
+  constructor(contents: Blueprint<Shape>) {
+    super('shape', {});
 
     if (__DEV__) {
       this.invariant(
@@ -30,7 +30,7 @@ export default class ShapeBuilder<Shape extends object, Struct extends object> e
 
   runChecks(
     path: string,
-    initialValue: Partial<Shape> | null,
+    initialValue: Partial<Shape>,
     struct: Struct,
     options: OptimalOptions = {},
   ): any {
@@ -60,9 +60,6 @@ export default class ShapeBuilder<Shape extends object, Struct extends object> e
   }
 }
 
-export function shape<P extends object, S extends object>(
-  contents: Blueprint<P>,
-  defaultValue: P | null = null,
-) /* infer */ {
-  return new ShapeBuilder<P, S>(contents, defaultValue);
+export function shape<S extends object, P extends object>(contents: Blueprint<P>) /* infer */ {
+  return new ShapeBuilder<S, P>(contents);
 }

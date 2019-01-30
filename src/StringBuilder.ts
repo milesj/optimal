@@ -9,10 +9,10 @@ function isString(value: any): value is string {
   return typeof value === 'string' && value !== '';
 }
 
-export default class StringBuilder<Struct extends object> extends Builder<string | null, Struct> {
+export default class StringBuilder<Struct extends object> extends Builder<Struct, string> {
   allowEmpty: boolean = false;
 
-  constructor(defaultValue: string | null = '') {
+  constructor(defaultValue: string = '') {
     super('string', defaultValue);
 
     // Not empty by default
@@ -90,6 +90,6 @@ export default class StringBuilder<Struct extends object> extends Builder<string
   }
 }
 
-export function string<S extends object>(defaultValue: string | null = '') /* infer */ {
+export function string<S extends object>(defaultValue: string = '') /* infer */ {
   return new StringBuilder<S>(defaultValue);
 }

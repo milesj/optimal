@@ -11,11 +11,11 @@ export interface Check {
   callback: CheckerCallback;
 }
 
-export default class Builder<T, Struct extends object> {
+export default class Builder<Struct extends object, T> {
   checks: Check[] = [];
 
   // @ts-ignore Set before running checks
-  currentStruct: Struct = {};
+  currentStruct: Struct;
 
   defaultValue: T;
 
@@ -226,9 +226,9 @@ export default class Builder<T, Struct extends object> {
   /**
    * Allow null values.
    */
-  nullable(state: boolean = true): this {
+  nullable(): Builder<Struct, T | null> {
     if (__DEV__) {
-      this.isNullable = state;
+      this.isNullable = true;
     }
 
     return this;
@@ -379,17 +379,17 @@ export default class Builder<T, Struct extends object> {
   }
 }
 
-export function bool<S extends object>(defaultValue: boolean | null = false) /* infer */ {
-  return new Builder<boolean | null, S>('boolean', defaultValue);
+export function bool<S extends object>(defaultValue: boolean = false) /* infer */ {
+  return new Builder<S, boolean>('boolean', defaultValue);
 }
 
-export function custom<T, S extends object>(
+export function custom<S extends object, T>(
   callback: CustomCallback<S>,
-  defaultValue: T | null = null,
+  defaultValue: T,
 ) /* infer */ {
-  return new Builder<T | null, S>('custom', defaultValue).custom(callback);
+  return new Builder<S, T>('custom', defaultValue).custom(callback);
 }
 
 export function func<S extends object>(defaultValue: Function | null = null) /* infer */ {
-  return new Builder<Function | null, S>('function', defaultValue).nullable();
+  return new Builder<S, Function | null>('function', defaultValue).nullable();
 }

@@ -7,13 +7,10 @@ import Builder from './Builder';
 
 export type ArrayOf<T> = T[];
 
-export default class ArrayBuilder<T, Struct extends object> extends Builder<
-  ArrayOf<T> | null,
-  Struct
-> {
-  contents: Builder<T, Struct> | null = null;
+export default class ArrayBuilder<Struct extends object, T> extends Builder<Struct, ArrayOf<T>> {
+  contents: Builder<Struct, T> | null = null;
 
-  constructor(contents: Builder<T, Struct> | null = null, defaultValue: ArrayOf<T> | null = []) {
+  constructor(contents: Builder<Struct, T> | null = null, defaultValue: ArrayOf<T> = []) {
     super('array', defaultValue);
 
     if (__DEV__) {
@@ -28,7 +25,7 @@ export default class ArrayBuilder<T, Struct extends object> extends Builder<
     }
   }
 
-  checkContents(path: string, value: ArrayOf<T>, contents: Builder<T, Struct>) {
+  checkContents(path: string, value: ArrayOf<T>, contents: Builder<Struct, T>) {
     if (__DEV__) {
       value.forEach((item: T, i: number) => {
         contents.runChecks(`${path}[${i}]`, item, this.currentStruct, this.options);
@@ -57,9 +54,9 @@ export default class ArrayBuilder<T, Struct extends object> extends Builder<
   }
 }
 
-export function array<T, S extends object>(
-  contents: Builder<T, S> | null = null,
-  defaultValue?: ArrayOf<T> | null,
+export function array<S extends object, T = any>(
+  contents: Builder<S, T> | null = null,
+  defaultValue?: ArrayOf<T>,
 ) /* infer */ {
-  return new ArrayBuilder<T, S>(contents, defaultValue);
+  return new ArrayBuilder<S, T>(contents, defaultValue);
 }

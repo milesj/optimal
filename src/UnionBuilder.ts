@@ -6,7 +6,7 @@
 import Builder from './Builder';
 import typeOf from './typeOf';
 
-export default class UnionBuilder<Struct extends object> extends Builder<any, Struct> {
+export default class UnionBuilder<T = any, Struct extends object = {}> extends Builder<T, Struct> {
   builders: Builder<any, Struct>[] = [];
 
   constructor(builders: Builder<any, Struct>[], defaultValue: any = null) {
@@ -73,9 +73,9 @@ export default class UnionBuilder<Struct extends object> extends Builder<any, St
   }
 }
 
-export function union<S extends object>(
-  builders: Builder<any, S>[],
+export function union<T = any>(
+  builders: Builder<any>[],
   defaultValue: any = null,
-) /* infer */ {
-  return new UnionBuilder<S>(builders, defaultValue);
+): UnionBuilder<T> {
+  return new UnionBuilder(builders, defaultValue);
 }
