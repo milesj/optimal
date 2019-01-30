@@ -236,12 +236,12 @@ export default class Builder<T> {
   /**
    * Allow null values.
    */
-  nullable(): Builder<T | null> {
+  nullable() /* refine */ {
     if (__DEV__) {
       this.isNullable = true;
     }
 
-    return this;
+    return (this as any) as Builder<T | null>;
   }
 
   /**

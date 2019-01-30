@@ -6,14 +6,14 @@
 
 - TypeScript minimum version requirement is now 3.0.
 - TypeScript has been rewritten to infer builder types and structures as best it can. This may cause
-  unexpected inferrence for `optimal` usage and may require explicit generic types to be passed.
+  unexpected inferrence for `optimal()` usage and may require explicit generic types to be passed.
 - Nested blueprints must now use `shape()` instead of a plain object.
 - Collections have split into `ArrayBuilder` and `ObjectBuilder`. `array()` and `object()` are still
   the same.
 - `Builder#nullable` no longer accepts an argument and instead enables nulls.
 - `custom()`
   - Default value is now required at all times.
-  - TS: Type will be inferred by the default value unless the generic is explicitly defined.
+  - TS: Type will be inferred by the default value. Can be explicitly typed using generics.
 - `shape()`
   - Default value has been removed (since it's inferred by nested blueprint structure).
 - `string()`
@@ -22,13 +22,13 @@
   - The `empty()` method has been removed.
 - `union()`
   - Default value is now required at all times.
-  - TS: Types are not inferrable and are typed as `any` unless generic is explicitly defined.
+  - TS: Type is `any` as unions are not inferrable. Can be explicitly typed using generics.
 
 #### 🚀 New
 
-- Added a `file` option to `optimal` to include in error messages.
+- Added a `file` option to `optimal()` to include in error messages.
 - Added a `predicates` export from the index, which is an object of all builder factory functions.
-- Added `loose` option to `instance()`, so cross-realm instance checks work (compares constructor
+- Added a `loose` option to `instance()`, so cross-realm instance checks work (compares constructor
   name).
 - Added `Builder#notNullable` to disable null values.
 - Added `StringBuilder#notEmpty` to require strings to not be empty.
