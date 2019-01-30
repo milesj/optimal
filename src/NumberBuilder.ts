@@ -107,6 +107,6 @@ export default class NumberBuilder<T extends number = number> extends Builder<T>
   }
 }
 
-export function number<T extends number = number>(defaultValue?: T) /* infer */ {
-  return new NumberBuilder<T>(defaultValue);
+export function number<T extends number = number>(defaultValue?: number) /* infer */ {
+  return new NumberBuilder<T>(defaultValue as T);
 }

@@ -73,6 +73,6 @@ export default class UnionBuilder<T = any> extends Builder<T> {
   }
 }
 
-export function union<T = any>(builders: Builder<any>[], defaultValue: T) /* infer */ {
+export function union<T = any>(builders: Builder<any>[], defaultValue: any) /* infer */ {
   return new UnionBuilder<T>(builders, defaultValue);
 }

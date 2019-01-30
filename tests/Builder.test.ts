@@ -371,7 +371,7 @@ describe('Builder', () => {
 
       expect(builder.isNullable).toBe(true);
 
-      builder.nullable(false);
+      builder.notNullable();
 
       expect(builder.isNullable).toBe(false);
     });

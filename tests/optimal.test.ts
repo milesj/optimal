@@ -9,7 +9,6 @@ import optimal, {
   shape,
   string,
   union,
-  Blueprint,
 } from '../src';
 
 class Plugin {}
@@ -48,7 +47,7 @@ describe('Optimal', () => {
       [string(), array(string()), object(union([string(), array(string())], '')), func()],
       [],
     ).nullable(),
-    output: {
+    output: shape({
       chunkFilename: string('[id].js'),
       chunkLoadTimeout: number(120000),
       crossOriginLoading: union(
@@ -59,7 +58,7 @@ describe('Optimal', () => {
       hashFunction: string('md5').oneOf(['md5', 'sha256', 'sha512']),
       path: string().empty(),
       publicPath: string().empty(),
-    },
+    }),
     module: shape({
       noParse: union([regex(), array(regex()), func()], null).nullable(),
       rules: array(rule),

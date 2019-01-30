@@ -223,6 +223,17 @@ export default class Builder<T> {
   }
 
   /**
+   * Disallow null values.
+   */
+  notNullable() /* refine */ {
+    if (__DEV__) {
+      this.isNullable = false;
+    }
+
+    return (this as any) as Builder<NonNullable<T>>;
+  }
+
+  /**
    * Allow null values.
    */
   nullable(): Builder<T | null> {
@@ -289,7 +300,7 @@ export default class Builder<T> {
   }
 
   /**
-   * Disallow undefined values.
+   * Require an object property to be explicitly defined.
    */
   required(state: boolean = true): this {
     if (__DEV__) {

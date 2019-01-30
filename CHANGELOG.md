@@ -13,6 +13,7 @@
 - Nested blueprints must now use `shape()` instead of a plain object.
 - `CollectionBuilder` has split into `ArrayBuilder` and `ObjectBuilder`. `array()` and `object()`
   are still the same.
+- `Builder#nullable` no longer accepts an argument and instead enables nulls.
 - `custom()`
   - Default value is now required at all times.
 - `shape()`
@@ -24,6 +25,7 @@
 
 - Added a `file` option to `optimal` to include in error messages.
 - Added a `predicates` export from the index, which is an object of all builder factory functions.
+- Added `Builder#notNullable` to disable null values.
 
 # 1.2.0 - 2018-12-29
 

@@ -12,34 +12,62 @@ import optimal, {
   custom,
   union,
   ObjectOf,
+  date,
+  regex,
 } from '../src/index';
 
 class Foo {}
 
-const options = optimal(
+const primitives = optimal(
+  {},
+  {
+    b: bool(),
+    bn: bool().nullable(),
+    bd: bool(true),
+    n: number(),
+    nn: number().nullable(),
+    nl: number().oneOf([1, 2, 3]),
+    nd: number(123),
+    s: string(),
+    sn: string().nullable(),
+    sl: string().oneOf(['foo', 'bar', 'baz']),
+    sd: string('foo'),
+  },
+);
+
+const other = optimal(
+  {},
+  {
+    c: custom(() => {}, ''),
+    f: func(),
+    i: instance(),
+    ic: instance(Foo),
+    ir: instance(Foo).required(),
+    in: instance(Foo).notNullable(),
+    d: date(),
+    r: regex(),
+  },
+);
+
+const arrays = optimal(
   {},
   {
     a: array(),
     aa: array(array(string())),
     ac: array(string()),
     an: array(number().nullable()).nullable(),
-    b: bool(),
-    bn: bool().nullable(),
-    c: custom(() => {}, ''),
-    f: func(),
-    i: instance(),
-    ic: instance(Foo),
-    ir: instance(Foo).required(),
-    n: number(),
-    nn: number().nullable(),
-    nl: number().oneOf([1, 2, 3]),
+    ad: array(number(), [1, 2, 3]),
+  },
+);
+
+const objects = optimal(
+  {},
+  {
     o: object(),
     oo: object(object(number())),
     oc: object(number()),
     on: object(number().nullable()).nullable(),
-    s: string(),
-    sn: string().nullable(),
-    sl: string().oneOf(['foo', 'bar', 'baz']),
+    od: object(string(), { foo: 'bar' }),
   },
 );
 
@@ -50,11 +78,12 @@ const shapes = optimal(
       h1: string(),
       h2: bool(),
       h3: func(),
+      h4: string('foo'),
     }).nullable(),
     hn: shape({
       h1: string(),
       h2: shape({
-        a: number(),
+        a: number(123),
         b: instance(),
         c: string().oneOf(['foo']),
       }).nullable(),

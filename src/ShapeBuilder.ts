@@ -25,7 +25,12 @@ export default class ShapeBuilder<Shape extends object> extends Builder<Shape> {
     this.contents = contents;
   }
 
-  runChecks(path: string, initialValue: Shape, struct: object, options: OptimalOptions = {}): any {
+  runChecks(
+    path: string,
+    initialValue: Partial<Shape> | undefined,
+    struct: object,
+    options: OptimalOptions = {},
+  ): any {
     const value: any = {};
     const object = initialValue || this.defaultValue || {};
 

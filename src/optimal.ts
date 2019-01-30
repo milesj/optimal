@@ -53,7 +53,7 @@ function buildAndCheck<Struct extends object>(
 
 export default function optimal<
   Struct extends object,
-  Construct extends object = { [K in keyof Struct]: any }
+  Construct extends object = { [K in keyof Struct]?: any }
 >(struct: Construct, blueprint: Blueprint<Struct>, options: OptimalOptions = {}): Struct {
   if (__DEV__) {
     if (!isObject(struct)) {

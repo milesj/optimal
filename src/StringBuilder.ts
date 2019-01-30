@@ -92,6 +92,6 @@ export default class StringBuilder<T extends string = string> extends Builder<T>
   }
 }
 
-export function string<T extends string = string>(defaultValue?: T) /* infer */ {
-  return new StringBuilder<T>(defaultValue);
+export function string<T extends string = string>(defaultValue?: string) /* infer */ {
+  return new StringBuilder<T>(defaultValue as T);
 }

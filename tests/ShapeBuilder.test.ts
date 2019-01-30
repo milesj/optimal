@@ -50,16 +50,11 @@ describe('shape()', () => {
     });
 
     it('sets default value', () => {
-      builder = shape(
-        {
-          foo: string(),
-        },
-        {
-          foo: 'bar',
-        },
-      );
+      const defBuilder = shape({
+        foo: string('bar'),
+      });
 
-      expect(builder.defaultValue).toEqual({
+      expect(defBuilder.defaultValue).toEqual({
         foo: 'bar',
       });
     });
@@ -68,6 +63,7 @@ describe('shape()', () => {
   describe('runChecks()', () => {
     it('errors if a non-object is passed', () => {
       expect(() => {
+        // @ts-ignore Allow invalid type
         builder.runChecks('key', 'foo', {});
       }).toThrowErrorMatchingSnapshot();
     });
@@ -76,6 +72,7 @@ describe('shape()', () => {
       expect(() => {
         builder.runChecks(
           'key',
+          // @ts-ignore Allow invalid type
           {
             foo: 'foo',
             bar: 'bar',
@@ -90,6 +87,7 @@ describe('shape()', () => {
       expect(() => {
         builder.runChecks(
           'key',
+          // @ts-ignore Allow invalid type
           {
             foo: 123,
           },
@@ -99,7 +97,7 @@ describe('shape()', () => {
     });
 
     it('supports shapes of shapes', () => {
-      builder = shape({
+      const nestedBuilder = shape({
         foo: shape({
           a: number(),
           b: number(),
@@ -114,7 +112,7 @@ describe('shape()', () => {
         },
       };
 
-      expect(builder.runChecks('key', data, {})).toEqual({
+      expect(nestedBuilder.runChecks('key', data, {})).toEqual({
         foo: {
           ...data.foo,
           c: '',
@@ -123,13 +121,13 @@ describe('shape()', () => {
     });
 
     it('supports nested required', () => {
-      builder = shape({
+      const nestedBuilder = shape({
         foo: string(),
         bar: bool().required(),
       });
 
       expect(() => {
-        builder.runChecks(
+        nestedBuilder.runChecks(
           'key',
           {
             foo: 'abc',
@@ -151,6 +149,7 @@ describe('shape()', () => {
       expect(() => {
         nestedBuilder.runChecks(
           'key',
+          // @ts-ignore Allow invalid type
           {
             foo: {
               a: 123,
