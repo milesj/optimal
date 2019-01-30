@@ -9,9 +9,9 @@ function isNumber(value: any): value is number {
   return typeof value === 'number';
 }
 
-export default class NumberBuilder<Struct extends object> extends Builder<Struct, number> {
-  constructor(defaultValue: number = 0) {
-    super('number', defaultValue);
+export default class NumberBuilder<T extends number = number> extends Builder<T> {
+  constructor(defaultValue?: T) {
+    super('number', defaultValue || (0 as T));
   }
 
   between(min: number, max: number, inclusive: boolean = false): this {
@@ -25,7 +25,7 @@ export default class NumberBuilder<Struct extends object> extends Builder<Struct
     return this.addCheck(this.checkBetween, min, max, inclusive);
   }
 
-  checkBetween(path: string, value: number, min: number, max: number, inclusive: boolean = false) {
+  checkBetween(path: string, value: T, min: number, max: number, inclusive: boolean = false) {
     if (__DEV__) {
       this.invariant(
         isNumber(value) && (inclusive ? value >= min && value <= max : value > min && value < max),
@@ -47,7 +47,7 @@ export default class NumberBuilder<Struct extends object> extends Builder<Struct
     return this.gt(min, true);
   }
 
-  checkGreaterThan(path: string, value: number, min: number, inclusive: boolean = false) {
+  checkGreaterThan(path: string, value: T, min: number, inclusive: boolean = false) {
     if (__DEV__) {
       if (inclusive) {
         this.invariant(
@@ -73,7 +73,7 @@ export default class NumberBuilder<Struct extends object> extends Builder<Struct
     return this.lt(max, true);
   }
 
-  checkLessThan(path: string, value: number, max: number, inclusive: boolean = false) {
+  checkLessThan(path: string, value: T, max: number, inclusive: boolean = false) {
     if (__DEV__) {
       if (inclusive) {
         this.invariant(
@@ -87,7 +87,7 @@ export default class NumberBuilder<Struct extends object> extends Builder<Struct
     }
   }
 
-  oneOf(list: number[]): this {
+  oneOf<U extends number>(list: U[]) /* refine */ {
     if (__DEV__) {
       this.invariant(
         Array.isArray(list) && list.length > 0 && list.every(item => isNumber(item)),
@@ -95,16 +95,18 @@ export default class NumberBuilder<Struct extends object> extends Builder<Struct
       );
     }
 
-    return this.addCheck(this.checkOneOf, list);
+    this.addCheck(this.checkOneOf, list);
+
+    return (this as any) as NumberBuilder<U>;
   }
 
-  checkOneOf(path: string, value: number, list: number[]) {
+  checkOneOf(path: string, value: T, list: T[]) {
     if (__DEV__) {
       this.invariant(list.indexOf(value) >= 0, `Number must be one of: ${list.join(', ')}`, path);
     }
   }
 }
 
-export function number<S extends object>(defaultValue: number = 0) /* infer */ {
-  return new NumberBuilder<S>(defaultValue);
+export function number<T extends number = number>(defaultValue?: T) /* infer */ {
+  return new NumberBuilder<T>(defaultValue);
 }

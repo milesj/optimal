@@ -11,11 +11,10 @@ export interface Check {
   callback: CheckerCallback;
 }
 
-export default class Builder<Struct extends object, T> {
+export default class Builder<T> {
   checks: Check[] = [];
 
-  // @ts-ignore Set before running checks
-  currentStruct: Struct;
+  currentStruct: object = {};
 
   defaultValue: T;
 
@@ -62,7 +61,7 @@ export default class Builder<Struct extends object, T> {
   /**
    * Map a list of names that must be defined alongside this field.
    */
-  and(...keys: (keyof Struct)[]): this {
+  and(...keys: string[]): this {
     if (__DEV__) {
       this.invariant(keys.length > 0, 'AND requires a list of field names.');
     }
@@ -73,10 +72,10 @@ export default class Builder<Struct extends object, T> {
   /**
    * Validate that all fields have been defined.
    */
-  checkAnd(path: string, value: T, otherKeys: (keyof Struct)[]) {
+  checkAnd(path: string, value: T, otherKeys: string[]) {
     if (__DEV__) {
       const keys = [this.key(path), ...otherKeys];
-      const struct = this.currentStruct;
+      const struct = this.currentStruct as any;
       const undefs = keys.filter(key => typeof struct[key] === 'undefined' || struct[key] === null);
 
       // Only error once one of the struct is defined
@@ -123,7 +122,7 @@ export default class Builder<Struct extends object, T> {
   /**
    * Set a callback to run custom logic.
    */
-  custom(callback: CustomCallback<Struct>): this {
+  custom(callback: CustomCallback): this {
     if (__DEV__) {
       this.invariant(
         typeof callback === 'function',
@@ -137,7 +136,7 @@ export default class Builder<Struct extends object, T> {
   /**
    * Validate the value using a custom callback.
    */
-  checkCustom(path: string, value: T, callback: CustomCallback<Struct>) {
+  checkCustom(path: string, value: T, callback: CustomCallback) {
     if (__DEV__) {
       try {
         callback(value, this.currentStruct);
@@ -201,10 +200,10 @@ export default class Builder<Struct extends object, T> {
   /**
    * Return the current key from a path.
    */
-  key(path: string): keyof Struct {
+  key(path: string): string {
     const index = path.lastIndexOf('.');
 
-    return (index > 0 ? path.slice(index + 1) : path) as keyof Struct;
+    return index > 0 ? path.slice(index + 1) : path;
   }
 
   /**
@@ -226,7 +225,7 @@ export default class Builder<Struct extends object, T> {
   /**
    * Allow null values.
    */
-  nullable(): Builder<Struct, T | null> {
+  nullable(): Builder<T | null> {
     if (__DEV__) {
       this.isNullable = true;
     }
@@ -265,7 +264,7 @@ export default class Builder<Struct extends object, T> {
   /**
    * Map a list of field names that must have at least 1 defined.
    */
-  or(...keys: (keyof Struct)[]): this {
+  or(...keys: string[]): this {
     if (__DEV__) {
       this.invariant(keys.length > 0, 'OR requires a list of field names.');
     }
@@ -276,10 +275,10 @@ export default class Builder<Struct extends object, T> {
   /**
    * Validate that at least 1 field is defined.
    */
-  checkOr(path: string, value: T, otherKeys: (keyof Struct)[]) {
+  checkOr(path: string, value: T, otherKeys: string[]) {
     if (__DEV__) {
       const keys = [this.key(path), ...otherKeys];
-      const struct = this.currentStruct;
+      const struct = this.currentStruct as any;
       const defs = keys.filter(key => typeof struct[key] !== 'undefined' && struct[key] !== null);
 
       this.invariant(
@@ -303,7 +302,12 @@ export default class Builder<Struct extends object, T> {
   /**
    * Run all validation checks that have been enqueued.
    */
-  runChecks(path: string, initialValue: T, struct: Struct, options: OptimalOptions = {}): T | null {
+  runChecks(
+    path: string,
+    initialValue: T | undefined,
+    struct: object,
+    options: OptimalOptions = {},
+  ): T | null {
     this.currentStruct = struct;
     this.options = options;
 
@@ -341,7 +345,7 @@ export default class Builder<Struct extends object, T> {
       });
     }
 
-    return value;
+    return value!;
   }
 
   /**
@@ -354,7 +358,7 @@ export default class Builder<Struct extends object, T> {
   /**
    * Map a list of field names that must not be defined alongside this field.
    */
-  xor(...keys: (keyof Struct)[]): this {
+  xor(...keys: string[]): this {
     if (__DEV__) {
       this.invariant(keys.length > 0, 'XOR requires a list of field names.');
     }
@@ -365,10 +369,10 @@ export default class Builder<Struct extends object, T> {
   /**
    * Validate that only 1 field is defined.
    */
-  checkXor(path: string, value: T, otherKeys: (keyof Struct)[]) {
+  checkXor(path: string, value: T, otherKeys: string[]) {
     if (__DEV__) {
       const keys = [this.key(path), ...otherKeys];
-      const struct = this.currentStruct;
+      const struct = this.currentStruct as any;
       const defs = keys.filter(key => typeof struct[key] !== 'undefined' && struct[key] !== null);
 
       this.invariant(
@@ -379,17 +383,14 @@ export default class Builder<Struct extends object, T> {
   }
 }
 
-export function bool<S extends object>(defaultValue: boolean = false) /* infer */ {
-  return new Builder<S, boolean>('boolean', defaultValue);
+export function bool(defaultValue: boolean = false) /* infer */ {
+  return new Builder<boolean>('boolean', defaultValue);
 }
 
-export function custom<S extends object, T>(
-  callback: CustomCallback<S>,
-  defaultValue: T,
-) /* infer */ {
-  return new Builder<S, T>('custom', defaultValue).custom(callback);
+export function custom<T>(callback: CustomCallback, defaultValue: T) /* infer */ {
+  return new Builder<T>('custom', defaultValue).custom(callback);
 }
 
-export function func<S extends object>(defaultValue: Function | null = null) /* infer */ {
-  return new Builder<S, Function | null>('function', defaultValue).nullable();
+export function func(defaultValue: Function | null = null) /* infer */ {
+  return new Builder<Function | null>('function', defaultValue).nullable();
 }

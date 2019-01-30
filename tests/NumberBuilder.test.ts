@@ -1,7 +1,7 @@
 import NumberBuilder, { number } from '../src/NumberBuilder';
 
 describe('NumberBuilder', () => {
-  let builder: NumberBuilder<{ key: number }>;
+  let builder: NumberBuilder;
 
   beforeEach(() => {
     builder = number(123);

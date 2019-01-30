@@ -4,13 +4,12 @@
  */
 
 import Builder from './Builder';
+import { ArrayOf } from './types';
 
-export type ArrayOf<T> = T[];
+export default class ArrayBuilder<T> extends Builder<ArrayOf<T>> {
+  contents: Builder<T> | null = null;
 
-export default class ArrayBuilder<Struct extends object, T> extends Builder<Struct, ArrayOf<T>> {
-  contents: Builder<Struct, T> | null = null;
-
-  constructor(contents: Builder<Struct, T> | null = null, defaultValue: ArrayOf<T> = []) {
+  constructor(contents: Builder<T> | null = null, defaultValue: ArrayOf<T> = []) {
     super('array', defaultValue);
 
     if (__DEV__) {
@@ -25,7 +24,7 @@ export default class ArrayBuilder<Struct extends object, T> extends Builder<Stru
     }
   }
 
-  checkContents(path: string, value: ArrayOf<T>, contents: Builder<Struct, T>) {
+  checkContents(path: string, value: ArrayOf<T>, contents: Builder<T>) {
     if (__DEV__) {
       value.forEach((item: T, i: number) => {
         contents.runChecks(`${path}[${i}]`, item, this.currentStruct, this.options);
@@ -54,9 +53,9 @@ export default class ArrayBuilder<Struct extends object, T> extends Builder<Stru
   }
 }
 
-export function array<S extends object, T = any>(
-  contents: Builder<S, T> | null = null,
+export function array<T = any>(
+  contents: Builder<T> | null = null,
   defaultValue?: ArrayOf<T>,
 ) /* infer */ {
-  return new ArrayBuilder<S, T>(contents, defaultValue);
+  return new ArrayBuilder<T>(contents, defaultValue);
 }

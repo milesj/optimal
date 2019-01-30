@@ -8,17 +8,22 @@
 - TypeScript has been rewritten to infer builder types and structures as best it can. This may cause
   unexpected inferrence for `optimal` usage and may require explicit generic types to be passed.
   Some caveats:
-  - Union types are not inferrable and are typed as `any`.
-  - String enums (`oneOf()`) are not inferrable and are typed as `string`.
+  - Union types are not inferrable and are typed as `any`. However, their union type can be defined
+    via generics on the builder factory function.
+- Nested blueprints must now use `shape()` instead of a plain object.
 - `CollectionBuilder` has split into `ArrayBuilder` and `ObjectBuilder`. `array()` and `object()`
   are still the same.
-- Nested objects in a blueprint must now use `shape()` instead of a plain object.
-- Default value has been removed from `shape()` (since it's inferred by nested blueprint structure).
+- `custom()`
+  - Default value is now required at all times.
+- `shape()`
+  - Default value has been removed (since it's inferred by nested blueprint structure).
+- `union()`
+  - Default value is now required at all times.
 
 #### 🚀 New
 
 - Added a `file` option to `optimal` to include in error messages.
-- Added a `predicates` export from the index, which is an object of all predicate functions.
+- Added a `predicates` export from the index, which is an object of all builder factory functions.
 
 # 1.2.0 - 2018-12-29
 

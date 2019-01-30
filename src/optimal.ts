@@ -6,11 +6,11 @@
 import Builder from './Builder';
 import isObject from './isObject';
 import typeOf from './typeOf';
-import { Blueprint, InferStructure, OptimalOptions } from './types';
+import { Blueprint, OptimalOptions } from './types';
 
 function buildAndCheck<Struct extends object>(
-  struct: Partial<Struct>,
   blueprint: Blueprint<Struct>,
+  struct: Partial<Struct>,
   options: OptimalOptions = {},
   parentPath: string = '',
 ): any {
@@ -28,13 +28,9 @@ function buildAndCheck<Struct extends object>(
     if (builder instanceof Builder) {
       builtStruct[key] = builder.runChecks(path, value, struct, options);
 
-      // Builder is a plain object, so let's recursively try again
-    } else if (isObject(builder)) {
-      builtStruct[key] = buildAndCheck(isObject(value) ? value : {}, builder, options, path);
-
       // Oops
     } else if (__DEV__) {
-      throw new Error('Unknown blueprint. Must be a builder or plain object.');
+      throw new Error(`Unknown blueprint for "${path}". Must be a builder.`);
     }
 
     // Delete the prop and mark it as known
@@ -55,20 +51,19 @@ function buildAndCheck<Struct extends object>(
   return builtStruct;
 }
 
-export default function optimal<Struct extends object>(
-  // struct: Construct,
-  blueprint: Blueprint<Struct>,
-  options: OptimalOptions = {},
-): Struct {
-  // if (__DEV__) {
-  //   if (!isObject(struct)) {
-  //     throw new TypeError(`Optimal requires a plain object, found ${typeOf(struct)}.`);
-  //   } else if (!isObject(options)) {
-  //     throw new TypeError('Optimal options must be a plain object.');
-  //   } else if (!isObject(blueprint)) {
-  //     throw new TypeError('A blueprint is required.');
-  //   }
-  // }
-  // return buildAndCheck(struct, blueprint, options);
-  return {} as any;
+export default function optimal<
+  Struct extends object,
+  Construct extends object = { [K in keyof Struct]: any }
+>(struct: Construct, blueprint: Blueprint<Struct>, options: OptimalOptions = {}): Struct {
+  if (__DEV__) {
+    if (!isObject(struct)) {
+      throw new TypeError(`Optimal requires a plain object, found ${typeOf(struct)}.`);
+    } else if (!isObject(options)) {
+      throw new TypeError('Optimal options must be a plain object.');
+    } else if (!isObject(blueprint)) {
+      throw new TypeError('A blueprint is required.');
+    }
+  }
+
+  return buildAndCheck(blueprint, struct, options);
 }

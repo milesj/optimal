@@ -1,7 +1,7 @@
 import StringBuilder, { string } from '../src/StringBuilder';
 
 describe('StringBuilder', () => {
-  let builder: StringBuilder<{ key: string }>;
+  let builder: StringBuilder;
 
   beforeEach(() => {
     builder = string('foo');

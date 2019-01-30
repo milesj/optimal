@@ -4,15 +4,12 @@
  */
 
 import Builder from './Builder';
+import { ObjectOf } from './types';
 
-export interface ObjectOf<T> {
-  [key: string]: T;
-}
+export default class ObjectBuilder<T> extends Builder<ObjectOf<T>> {
+  contents: Builder<T> | null = null;
 
-export default class ObjectBuilder<Struct extends object, T> extends Builder<Struct, ObjectOf<T>> {
-  contents: Builder<Struct, T> | null = null;
-
-  constructor(contents: Builder<Struct, T> | null = null, defaultValue: ObjectOf<T> = {}) {
+  constructor(contents: Builder<T> | null = null, defaultValue: ObjectOf<T> = {}) {
     super('object', defaultValue);
 
     if (__DEV__) {
@@ -27,10 +24,10 @@ export default class ObjectBuilder<Struct extends object, T> extends Builder<Str
     }
   }
 
-  checkContents(path: string, value: ObjectOf<T>, contents: Builder<Struct, T>) {
+  checkContents(path: string, value: ObjectOf<T>, contents: Builder<T>) {
     if (__DEV__) {
       Object.keys(value).forEach(key => {
-        contents.runChecks(`${path}.${key}`, (value as any)[key], this.currentStruct, this.options);
+        contents.runChecks(`${path}.${key}`, value[key], this.currentStruct, this.options);
       });
     }
   }
@@ -56,9 +53,9 @@ export default class ObjectBuilder<Struct extends object, T> extends Builder<Str
   }
 }
 
-export function object<S extends object, T = any>(
-  contents: Builder<S, T> | null = null,
+export function object<T = any>(
+  contents: Builder<T> | null = null,
   defaultValue?: ObjectOf<T>,
 ) /* infer */ {
-  return new ObjectBuilder<S, T>(contents, defaultValue);
+  return new ObjectBuilder<T>(contents, defaultValue);
 }

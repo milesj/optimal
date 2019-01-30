@@ -3,7 +3,7 @@ import InstanceBuilder, { instance, date, regex } from '../src/InstanceBuilder';
 describe('instance()', () => {
   class Foo {}
 
-  let builder: InstanceBuilder<Foo, { key: Foo | null }>;
+  let builder: InstanceBuilder<Foo>;
 
   beforeEach(() => {
     builder = instance(Foo);
@@ -50,7 +50,7 @@ describe('instance()', () => {
 
     it('doesnt error if a generic class instance is passed', () => {
       expect(() => {
-        instance().runChecks('key', new Foo(), {});
+        instance<Foo>().runChecks('key', new Foo(), {});
       }).not.toThrowError('Invalid field "key". Must be a class instance.');
     });
 

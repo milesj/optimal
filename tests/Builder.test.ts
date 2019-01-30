@@ -1,7 +1,7 @@
 import Builder, { bool, custom, func } from '../src/Builder';
 
 describe('Builder', () => {
-  let builder: Builder<any, any>;
+  let builder: Builder<any>;
 
   beforeEach(() => {
     builder = new Builder('string', 'foo');
@@ -234,7 +234,7 @@ describe('Builder', () => {
         if (value === 123) {
           throw new Error('This will error!');
         }
-      });
+      }, 0);
 
       expect(() => {
         builder.runChecks('error', 123, {});
@@ -246,11 +246,11 @@ describe('Builder', () => {
     });
 
     it('is passed entire options object', () => {
-      builder = custom((value, options) => {
+      builder = custom((value, options: any) => {
         if (options.foo && options.bar) {
           throw new Error('This will error!');
         }
-      });
+      }, 0);
 
       expect(() => {
         builder.runChecks('error', 123, { foo: 123, bar: 456, error: '' });
@@ -608,7 +608,7 @@ describe('bool()', () => {
 
 describe('custom()', () => {
   it('returns a builder', () => {
-    expect(custom(() => {})).toBeInstanceOf(Builder);
+    expect(custom(() => {}, '')).toBeInstanceOf(Builder);
   });
 
   it('sets type and default value', () => {
@@ -619,7 +619,7 @@ describe('custom()', () => {
   });
 
   it('returns the type alias', () => {
-    expect(custom(() => {}).typeAlias()).toBe('custom');
+    expect(custom(() => {}, '').typeAlias()).toBe('custom');
   });
 });
 

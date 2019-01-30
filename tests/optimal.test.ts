@@ -17,9 +17,9 @@ class Plugin {}
 describe('Optimal', () => {
   // This blueprint is based on Webpack's configuration: https://webpack.js.org/configuration/
   // Webpack provides a pretty robust example of how to use this library.
-  const primitive = union([string(), number(), bool()]);
+  const primitive = union([string(), number(), bool()], false);
 
-  const condition = union([string(), regex(), func(), array(regex()), object(regex())]);
+  const condition = union([string(), regex(), func(), array(regex()), object(regex())], false);
 
   const rule = shape({
     enforce: string('post').oneOf(['pre', 'post']),
@@ -29,24 +29,25 @@ describe('Optimal', () => {
     parser: object(bool()),
     resource: condition,
     use: array(
-      union([
-        string(),
-        shape({
-          loader: string(),
-          options: object(primitive),
-        }),
-      ]),
+      union(
+        [
+          string(),
+          shape({
+            loader: string(),
+            options: object(primitive),
+          }),
+        ],
+        '',
+      ),
     ),
   });
 
   const blueprint = {
     context: string(process.cwd()),
-    entry: union([
-      string(),
-      array(string()),
-      object(union([string(), array(string())])),
-      func(),
-    ]).nullable(),
+    entry: union(
+      [string(), array(string()), object(union([string(), array(string())], '')), func()],
+      [],
+    ).nullable(),
     output: {
       chunkFilename: string('[id].js'),
       chunkLoadTimeout: number(120000),
@@ -60,7 +61,7 @@ describe('Optimal', () => {
       publicPath: string().empty(),
     },
     module: shape({
-      noParse: union([regex(), array(regex()), func()]).nullable(),
+      noParse: union([regex(), array(regex()), func()], null).nullable(),
       rules: array(rule),
     }),
     resolve: shape({
@@ -80,7 +81,7 @@ describe('Optimal', () => {
       'webworker',
     ]),
     watch: bool(false),
-    node: object(union([bool(), string('mock').oneOf(['mock', 'empty'])])),
+    node: object(union([bool(), string('mock').oneOf(['mock', 'empty'])], false)),
   };
 
   it('errors if a non-object is passed', () => {

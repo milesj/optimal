@@ -4,13 +4,11 @@ import { number } from '../src/NumberBuilder';
 import { string } from '../src/StringBuilder';
 
 describe('shape()', () => {
-  interface Shape {
+  let builder: ShapeBuilder<{
     foo: string;
     bar: number;
     baz: boolean;
-  }
-
-  let builder: ShapeBuilder<Shape, { key: Shape }>;
+  }>;
 
   beforeEach(() => {
     builder = shape({

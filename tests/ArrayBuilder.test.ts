@@ -2,7 +2,7 @@ import ArrayBuilder, { array } from '../src/ArrayBuilder';
 import { string } from '../src/StringBuilder';
 
 describe('ArrayBuilder', () => {
-  let builder: ArrayBuilder<string, { key: string[] }>;
+  let builder: ArrayBuilder<string>;
 
   beforeEach(() => {
     builder = array(string());
@@ -59,13 +59,8 @@ describe('ArrayBuilder', () => {
       expect(() => {
         builder.runChecks(
           'key',
-          [
-            'foo',
-            'bar',
-            'baz',
-            // @ts-ignore Test invalid type
-            123,
-          ],
+          // @ts-ignore Test invalid type
+          ['foo', 'bar', 'baz', 123],
           { key: [] },
         );
       }).toThrowErrorMatchingSnapshot();
@@ -92,14 +87,8 @@ describe('ArrayBuilder', () => {
       expect(() => {
         nestedBuilder.runChecks(
           'key',
-          [
-            ['foo', 'bar'],
-            [
-              'baz',
-              // @ts-ignore Test invalid type
-              123,
-            ],
-          ],
+          // @ts-ignore Test invalid type
+          [['foo', 'bar'], ['baz', 123]],
           {},
         );
       }).toThrowErrorMatchingSnapshot();

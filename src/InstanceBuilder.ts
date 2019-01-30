@@ -8,7 +8,7 @@ import isObject from './isObject';
 
 export type Constructor<T> = new (...args: any[]) => T;
 
-export default class InstanceBuilder<Struct extends object, T> extends Builder<Struct, T | null> {
+export default class InstanceBuilder<T> extends Builder<T | null> {
   refClass: Constructor<T> | null = null;
 
   constructor(refClass: Constructor<T> | null = null) {
@@ -55,16 +55,14 @@ export default class InstanceBuilder<Struct extends object, T> extends Builder<S
   }
 }
 
-export function instance<S extends object, T = Function>(
-  refClass: Constructor<T> | null = null,
-) /* infer */ {
-  return new InstanceBuilder<S, T>(refClass);
+export function instance<T = Function>(refClass: Constructor<T> | null = null) /* infer */ {
+  return new InstanceBuilder<T>(refClass);
 }
 
-export function regex<S extends object>() /* infer */ {
-  return instance<S, RegExp>(RegExp);
+export function regex() /* infer */ {
+  return instance<RegExp>(RegExp);
 }
 
-export function date<S extends object>() /* infer */ {
-  return instance<S, Date>(Date);
+export function date() /* infer */ {
+  return instance<Date>(Date);
 }
