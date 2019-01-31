@@ -6,10 +6,10 @@
 import Builder from './Builder';
 import typeOf from './typeOf';
 
-export default class UnionBuilder extends Builder<any> {
+export default class UnionBuilder<T = any> extends Builder<T> {
   builders: Builder<any>[] = [];
 
-  constructor(builders: Builder<any>[], defaultValue: any | null = null) {
+  constructor(builders: Builder<any>[], defaultValue: any) {
     super('union', defaultValue);
 
     if (__DEV__) {
@@ -73,6 +73,6 @@ export default class UnionBuilder extends Builder<any> {
   }
 }
 
-export function union(builders: Builder<any>[], defaultValue: any | null = null): UnionBuilder {
-  return new UnionBuilder(builders, defaultValue);
+export function union<T = any>(builders: Builder<any>[], defaultValue: any) /* infer */ {
+  return new UnionBuilder<T>(builders, defaultValue);
 }

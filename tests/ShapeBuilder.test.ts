@@ -4,11 +4,15 @@ import { number } from '../src/NumberBuilder';
 import { string } from '../src/StringBuilder';
 
 describe('shape()', () => {
-  let builder: ShapeBuilder;
+  let builder: ShapeBuilder<{
+    foo: string;
+    bar: number;
+    baz: boolean;
+  }>;
 
   beforeEach(() => {
     builder = shape({
-      foo: string().empty(),
+      foo: string(),
       bar: number(),
       baz: bool(),
     });
@@ -44,26 +48,12 @@ describe('shape()', () => {
         'A non-empty object of properties to blueprints are required for a shape.',
       );
     });
-
-    it('sets default value', () => {
-      builder = shape(
-        {
-          foo: string(),
-        },
-        {
-          foo: 'bar',
-        },
-      );
-
-      expect(builder.defaultValue).toEqual({
-        foo: 'bar',
-      });
-    });
   });
 
   describe('runChecks()', () => {
     it('errors if a non-object is passed', () => {
       expect(() => {
+        // @ts-ignore Allow invalid type
         builder.runChecks('key', 'foo', {});
       }).toThrowErrorMatchingSnapshot();
     });
@@ -72,6 +62,7 @@ describe('shape()', () => {
       expect(() => {
         builder.runChecks(
           'key',
+          // @ts-ignore Allow invalid type
           {
             foo: 'foo',
             bar: 'bar',
@@ -86,6 +77,7 @@ describe('shape()', () => {
       expect(() => {
         builder.runChecks(
           'key',
+          // @ts-ignore Allow invalid type
           {
             foo: 123,
           },
@@ -95,11 +87,11 @@ describe('shape()', () => {
     });
 
     it('supports shapes of shapes', () => {
-      builder = shape({
+      const nestedBuilder = shape({
         foo: shape({
           a: number(),
           b: number(),
-          c: string().empty(),
+          c: string(),
         }),
       });
 
@@ -110,7 +102,7 @@ describe('shape()', () => {
         },
       };
 
-      expect(builder.runChecks('key', data, {})).toEqual({
+      expect(nestedBuilder.runChecks('key', data, {})).toEqual({
         foo: {
           ...data.foo,
           c: '',
@@ -119,13 +111,13 @@ describe('shape()', () => {
     });
 
     it('supports nested required', () => {
-      builder = shape({
+      const nestedBuilder = shape({
         foo: string(),
         bar: bool().required(),
       });
 
       expect(() => {
-        builder.runChecks(
+        nestedBuilder.runChecks(
           'key',
           {
             foo: 'abc',
@@ -136,7 +128,7 @@ describe('shape()', () => {
     });
 
     it('errors correctly for shapes in shapes', () => {
-      builder = shape({
+      const nestedBuilder = shape({
         foo: shape({
           a: number(),
           b: number(),
@@ -145,8 +137,9 @@ describe('shape()', () => {
       });
 
       expect(() => {
-        builder.runChecks(
+        nestedBuilder.runChecks(
           'key',
+          // @ts-ignore Allow invalid type
           {
             foo: {
               a: 123,

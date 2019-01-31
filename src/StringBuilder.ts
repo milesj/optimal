@@ -5,20 +5,13 @@
 
 import Builder from './Builder';
 
-function isString(value: any): boolean {
+function isString(value: any): value is string {
   return typeof value === 'string' && value !== '';
 }
 
-export default class StringBuilder extends Builder<string | null> {
-  allowEmpty: boolean = false;
-
-  constructor(defaultValue: string | null = '') {
-    super('string', defaultValue);
-
-    // Not empty by default
-    if (__DEV__) {
-      this.addCheck(this.checkNotEmpty);
-    }
+export default class StringBuilder<T extends string = string> extends Builder<T> {
+  constructor(defaultValue?: T) {
+    super('string', defaultValue || ('' as T));
   }
 
   contains(token: string, index: number = 0): this {
@@ -29,7 +22,7 @@ export default class StringBuilder extends Builder<string | null> {
     return this.addCheck(this.checkContains, token, index);
   }
 
-  checkContains(path: string, value: any, token: string, index: number = 0) {
+  checkContains(path: string, value: T, token: string, index: number = 0) {
     if (__DEV__) {
       this.invariant(value.indexOf(token, index) >= 0, `String does not include "${token}".`, path);
     }
@@ -46,33 +39,27 @@ export default class StringBuilder extends Builder<string | null> {
     return this.addCheck(this.checkMatch, pattern);
   }
 
-  checkMatch(path: string, value: any, pattern: RegExp) {
+  checkMatch(path: string, value: T, pattern: RegExp) {
     if (__DEV__) {
       this.invariant(
-        value.match(pattern),
+        !!value.match(pattern),
         `String does not match pattern "${pattern.source}".`,
         path,
       );
     }
   }
 
-  empty(): this {
-    if (__DEV__) {
-      this.allowEmpty = true;
-    }
-
-    return this;
+  notEmpty(): this {
+    return this.addCheck(this.checkNotEmpty);
   }
 
-  checkNotEmpty(path: string, value: any) {
+  checkNotEmpty(path: string, value: T) {
     if (__DEV__) {
-      if (!this.allowEmpty) {
-        this.invariant(isString(value), 'String cannot be empty.', path);
-      }
+      this.invariant(isString(value), 'String cannot be empty.', path);
     }
   }
 
-  oneOf(list: string[]): this {
+  oneOf<U extends string>(list: U[]) /* refine */ {
     if (__DEV__) {
       this.invariant(
         Array.isArray(list) && list.length > 0 && list.every(item => isString(item)),
@@ -80,16 +67,18 @@ export default class StringBuilder extends Builder<string | null> {
       );
     }
 
-    return this.addCheck(this.checkOneOf, list);
+    this.addCheck(this.checkOneOf, list);
+
+    return (this as any) as StringBuilder<U>;
   }
 
-  checkOneOf(path: string, value: any, list: string[]) {
+  checkOneOf(path: string, value: T, list: T[]) {
     if (__DEV__) {
       this.invariant(list.indexOf(value) >= 0, `String must be one of: ${list.join(', ')}`, path);
     }
   }
 }
 
-export function string(defaultValue: string | null = ''): StringBuilder {
-  return new StringBuilder(defaultValue);
+export function string<T extends string = string>(defaultValue?: string) /* infer */ {
+  return new StringBuilder<T>(defaultValue as T);
 }

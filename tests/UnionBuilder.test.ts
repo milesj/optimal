@@ -1,6 +1,7 @@
 import UnionBuilder, { union } from '../src/UnionBuilder';
 import { bool, custom } from '../src/Builder';
-import { array, object } from '../src/CollectionBuilder';
+import { array } from '../src/ArrayBuilder';
+import { object } from '../src/ObjectBuilder';
 import { instance } from '../src/InstanceBuilder';
 import { number } from '../src/NumberBuilder';
 import { shape } from '../src/ShapeBuilder';
@@ -13,40 +14,43 @@ describe('UnionBuilder', () => {
   class Bar {}
 
   beforeEach(() => {
-    builder = union([
-      array(string()),
-      bool(true).only(),
-      instance(Foo),
-      number().between(0, 5),
-      object(number()),
-      string('foo').oneOf(['foo', 'bar', 'baz']),
-    ]);
+    builder = union(
+      [
+        array(string()),
+        bool(true).only(),
+        instance(Foo),
+        number().between(0, 5),
+        object(number()),
+        string('foo').oneOf(['foo', 'bar', 'baz']),
+      ],
+      '',
+    );
   });
 
   describe('constructor()', () => {
     it('errors if a non-array is not passed', () => {
       expect(() => {
         // @ts-ignore
-        union('foo');
+        union('foo', []);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if an empty array is passed', () => {
       expect(() => {
-        union([]);
+        union([], []);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if an array with non-builders is passed', () => {
       expect(() => {
         // @ts-ignore
-        union([123]);
+        union([123], []);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('doesnt error if a builder array is passed', () => {
       expect(() => {
-        union([string()]);
+        union([string()], []);
       }).not.toThrowError('A non-empty array of blueprints are required for a union.');
     });
 
@@ -58,41 +62,43 @@ describe('UnionBuilder', () => {
   describe('runChecks()', () => {
     it('errors if a unsupported type is used', () => {
       expect(() => {
-        union([string(), number(), bool()]).runChecks('key', [], {});
+        union([string(), number(), bool()], []).runChecks('key', [], {});
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if a nested union is used', () => {
       expect(() => {
-        union([string('foo').oneOf(['foo', 'bar', 'baz']), union([number(), bool()])]).runChecks(
-          'key',
+        union(
+          [string('foo').oneOf(['foo', 'bar', 'baz']), union([number(), bool()], [])],
           [],
-          {},
-        );
+        ).runChecks('key', [], {});
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if an object and shape are used', () => {
       expect(() => {
-        union([
-          object(string()),
-          shape({
-            foo: string(),
-            bar: number(),
-          }),
-        ]).runChecks('key', [], {});
+        union(
+          [
+            object(string()),
+            shape({
+              foo: string(),
+              bar: number(),
+            }),
+          ],
+          [],
+        ).runChecks('key', [], {});
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if the same builder type is used multiple times', () => {
       expect(() => {
-        union([object(string()), object(number())]).runChecks('key', [], {});
+        union([object(string()), object(number())], []).runChecks('key', [], {});
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors with the class name for instance checks', () => {
       expect(() => {
-        union([number(), instance(Buffer)]).runChecks('key', {}, {});
+        union([number(), instance(Buffer)], {}).runChecks('key', {}, {});
       }).toThrowErrorMatchingSnapshot();
     });
 
@@ -110,14 +116,17 @@ describe('UnionBuilder', () => {
 
     it('runs custom check', () => {
       expect(() => {
-        union([
-          string(),
-          custom(value => {
-            if (typeof value === 'number') {
-              throw new TypeError('Encountered a number!');
-            }
-          }),
-        ]).runChecks('key', 123, {});
+        union(
+          [
+            string(),
+            custom(value => {
+              if (typeof value === 'number') {
+                throw new TypeError('Encountered a number!');
+              }
+            }, ''),
+          ],
+          0,
+        ).runChecks('key', 123, {});
       }).toThrowErrorMatchingSnapshot();
     });
 
@@ -141,12 +150,15 @@ describe('UnionBuilder', () => {
 
     it('runs shape check', () => {
       expect(() => {
-        union([
-          shape({
-            foo: string(),
-            bar: number(),
-          }),
-        ]).runChecks(
+        union(
+          [
+            shape({
+              foo: string(),
+              bar: number(),
+            }),
+          ],
+          {},
+        ).runChecks(
           'key',
           {
             foo: 123,
@@ -171,7 +183,7 @@ describe('UnionBuilder', () => {
 
   describe('typeAlias()', () => {
     it('returns all the available type aliases separated by pipes', () => {
-      expect(union([string(), number(), bool()]).typeAlias()).toBe('string | number | boolean');
+      expect(union([string(), number(), bool()], []).typeAlias()).toBe('string | number | boolean');
     });
 
     it('supports complex structures', () => {

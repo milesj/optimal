@@ -24,8 +24,8 @@ production using dead code elimination.
 
 ```
 yarn add optimal
-// OR
-npm install optimal --save
+// Or
+npm install optimal
 ```
 
 ## Documentation

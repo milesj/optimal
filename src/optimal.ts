@@ -6,33 +6,34 @@
 import Builder from './Builder';
 import isObject from './isObject';
 import typeOf from './typeOf';
-import { Blueprint, OptimalOptions, Struct } from './types';
+import { Blueprint, OptimalOptions } from './types';
 
-function buildAndCheck<T extends Struct>(
-  struct: Struct,
-  blueprint: Blueprint,
+function buildAndCheck<Struct extends object>(
+  blueprint: Blueprint<Struct>,
+  struct: Partial<Struct>,
   options: OptimalOptions = {},
   parentPath: string = '',
-): T {
-  const unknownFields: Struct = { ...struct };
-  const builtStruct = {} as T;
+): any {
+  const unknownFields: any = { ...struct };
+  const builtStruct: any = {};
 
   // Validate using the blueprint
-  Object.keys(blueprint).forEach(key => {
+  Object.keys(blueprint).forEach(baseKey => {
+    const key = baseKey as keyof Struct;
+    const value = struct[key];
     const builder = blueprint[key];
-    const path = parentPath ? `${parentPath}.${key}` : key;
+    const path = String(parentPath ? `${parentPath}.${key}` : key);
 
-    // Run validation checks
-    if (builder instanceof Builder) {
-      builtStruct[key] = builder.runChecks(path, struct[key], struct, options);
-
-      // Builder is a plain object, so let's recursively try again
-    } else if (isObject(builder)) {
-      builtStruct[key] = buildAndCheck(struct[key] || {}, builder, options, path);
+    // Run validation checks and support both v1 and v2
+    if (
+      builder instanceof Builder ||
+      (isObject(builder) && (builder as any).constructor.name.endsWith('Builder'))
+    ) {
+      builtStruct[key] = builder.runChecks(path, value, struct, options);
 
       // Oops
     } else if (__DEV__) {
-      throw new Error('Unknown blueprint. Must be a builder or plain object.');
+      throw new Error(`Unknown blueprint for "${path}". Must be a builder.`);
     }
 
     // Delete the prop and mark it as known
@@ -53,11 +54,10 @@ function buildAndCheck<T extends Struct>(
   return builtStruct;
 }
 
-export default function optimal<T extends Struct>(
-  struct: Struct,
-  blueprint: Blueprint,
-  options: OptimalOptions = {},
-): T {
+export default function optimal<
+  Struct extends object,
+  Construct extends object = { [K in keyof Struct]?: any }
+>(struct: Construct, blueprint: Blueprint<Struct>, options: OptimalOptions = {}): Struct {
   if (__DEV__) {
     if (!isObject(struct)) {
       throw new TypeError(`Optimal requires a plain object, found ${typeOf(struct)}.`);
@@ -68,5 +68,5 @@ export default function optimal<T extends Struct>(
     }
   }
 
-  return buildAndCheck(struct, blueprint, options);
+  return buildAndCheck(blueprint, struct, options);
 }

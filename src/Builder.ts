@@ -4,7 +4,7 @@
  */
 
 import isObject from './isObject';
-import { SupportedType, CheckerCallback, CustomCallback, OptimalOptions, Struct } from './types';
+import { SupportedType, CheckerCallback, CustomCallback, OptimalOptions, FuncOf } from './types';
 
 export interface Check {
   args: any[];
@@ -14,7 +14,7 @@ export interface Check {
 export default class Builder<T> {
   checks: Check[] = [];
 
-  currentStruct: Struct = {};
+  currentStruct: object = {};
 
   defaultValue: T;
 
@@ -72,10 +72,10 @@ export default class Builder<T> {
   /**
    * Validate that all fields have been defined.
    */
-  checkAnd(path: string, value: any, otherKeys: string[]) {
+  checkAnd(path: string, value: T, otherKeys: string[]) {
     if (__DEV__) {
       const keys = [this.key(path), ...otherKeys];
-      const struct = this.currentStruct;
+      const struct = this.currentStruct as any;
       const undefs = keys.filter(key => typeof struct[key] === 'undefined' || struct[key] === null);
 
       // Only error once one of the struct is defined
@@ -93,7 +93,7 @@ export default class Builder<T> {
   /**
    * Validate the type of value.
    */
-  checkType(path: string, value: any) {
+  checkType(path: string, value: T) {
     if (__DEV__) {
       switch (this.type) {
         case 'array':
@@ -136,7 +136,7 @@ export default class Builder<T> {
   /**
    * Validate the value using a custom callback.
    */
-  checkCustom(path: string, value: any, callback: CustomCallback) {
+  checkCustom(path: string, value: T, callback: CustomCallback) {
     if (__DEV__) {
       try {
         callback(value, this.currentStruct);
@@ -223,14 +223,25 @@ export default class Builder<T> {
   }
 
   /**
-   * Allow null values.
+   * Disallow null values.
    */
-  nullable(state: boolean = true): this {
+  notNullable() /* refine */ {
     if (__DEV__) {
-      this.isNullable = state;
+      this.isNullable = false;
     }
 
-    return this;
+    return (this as any) as Builder<NonNullable<T>>;
+  }
+
+  /**
+   * Allow null values.
+   */
+  nullable() /* refine */ {
+    if (__DEV__) {
+      this.isNullable = true;
+    }
+
+    return (this as any) as Builder<T | null>;
   }
 
   /**
@@ -251,7 +262,7 @@ export default class Builder<T> {
   /**
    * Validate the value matches only the default value.
    */
-  checkOnly(path: string, value: any) {
+  checkOnly(path: string, value: T) {
     if (__DEV__) {
       this.invariant(
         value === this.defaultValue,
@@ -275,10 +286,10 @@ export default class Builder<T> {
   /**
    * Validate that at least 1 field is defined.
    */
-  checkOr(path: string, value: any, otherKeys: string[]) {
+  checkOr(path: string, value: T, otherKeys: string[]) {
     if (__DEV__) {
       const keys = [this.key(path), ...otherKeys];
-      const struct = this.currentStruct;
+      const struct = this.currentStruct as any;
       const defs = keys.filter(key => typeof struct[key] !== 'undefined' && struct[key] !== null);
 
       this.invariant(
@@ -289,7 +300,7 @@ export default class Builder<T> {
   }
 
   /**
-   * Disallow undefined values.
+   * Require an object property to be explicitly defined.
    */
   required(state: boolean = true): this {
     if (__DEV__) {
@@ -302,7 +313,12 @@ export default class Builder<T> {
   /**
    * Run all validation checks that have been enqueued.
    */
-  runChecks(path: string, initialValue: any, struct: Struct, options: OptimalOptions = {}): any {
+  runChecks(
+    path: string,
+    initialValue: T | undefined,
+    struct: object,
+    options: OptimalOptions = {},
+  ): T | null {
     this.currentStruct = struct;
     this.options = options;
 
@@ -340,7 +356,7 @@ export default class Builder<T> {
       });
     }
 
-    return value;
+    return value!;
   }
 
   /**
@@ -364,10 +380,10 @@ export default class Builder<T> {
   /**
    * Validate that only 1 field is defined.
    */
-  checkXor(path: string, value: any, otherKeys: string[]) {
+  checkXor(path: string, value: T, otherKeys: string[]) {
     if (__DEV__) {
       const keys = [this.key(path), ...otherKeys];
-      const struct = this.currentStruct;
+      const struct = this.currentStruct as any;
       const defs = keys.filter(key => typeof struct[key] !== 'undefined' && struct[key] !== null);
 
       this.invariant(
@@ -378,17 +394,14 @@ export default class Builder<T> {
   }
 }
 
-export function bool(defaultValue: boolean | null = false): Builder<boolean | null> {
-  return new Builder('boolean', defaultValue);
+export function bool(defaultValue: boolean = false) /* infer */ {
+  return new Builder<boolean>('boolean', defaultValue);
 }
 
-export function custom<T>(
-  callback: CustomCallback,
-  defaultValue: T | null = null,
-): Builder<T | null> {
-  return new Builder('custom', defaultValue).custom(callback);
+export function custom<T>(callback: CustomCallback, defaultValue: T) /* infer */ {
+  return new Builder<T>('custom', defaultValue).custom(callback);
 }
 
-export function func(defaultValue: Function | null = null): Builder<Function | null> {
-  return new Builder('function', defaultValue).nullable();
+export function func<T = FuncOf>(defaultValue: T | null = null) /* infer */ {
+  return new Builder<T | null>('function', defaultValue).nullable();
 }

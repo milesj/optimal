@@ -234,7 +234,7 @@ describe('Builder', () => {
         if (value === 123) {
           throw new Error('This will error!');
         }
-      });
+      }, 0);
 
       expect(() => {
         builder.runChecks('error', 123, {});
@@ -246,11 +246,11 @@ describe('Builder', () => {
     });
 
     it('is passed entire options object', () => {
-      builder = custom((value, options) => {
+      builder = custom((value, options: any) => {
         if (options.foo && options.bar) {
           throw new Error('This will error!');
         }
-      });
+      }, 0);
 
       expect(() => {
         builder.runChecks('error', 123, { foo: 123, bar: 456, error: '' });
@@ -371,7 +371,7 @@ describe('Builder', () => {
 
       expect(builder.isNullable).toBe(true);
 
-      builder.nullable(false);
+      builder.notNullable();
 
       expect(builder.isNullable).toBe(false);
     });
@@ -592,7 +592,12 @@ describe('bool()', () => {
 
   it('errors if a non-boolean value is used', () => {
     expect(() => {
-      bool().runChecks('key', 123, {});
+      bool().runChecks(
+        'key',
+        // @ts-ignore Test invalid type
+        123,
+        {},
+      );
     }).toThrowErrorMatchingSnapshot();
   });
 
@@ -603,7 +608,7 @@ describe('bool()', () => {
 
 describe('custom()', () => {
   it('returns a builder', () => {
-    expect(custom(() => {})).toBeInstanceOf(Builder);
+    expect(custom(() => {}, '')).toBeInstanceOf(Builder);
   });
 
   it('sets type and default value', () => {
@@ -614,7 +619,7 @@ describe('custom()', () => {
   });
 
   it('returns the type alias', () => {
-    expect(custom(() => {}).typeAlias()).toBe('custom');
+    expect(custom(() => {}, '').typeAlias()).toBe('custom');
   });
 });
 
@@ -633,7 +638,12 @@ describe('func()', () => {
 
   it('errors if a non-function value is used', () => {
     expect(() => {
-      func().runChecks('key', 123, {});
+      func().runChecks(
+        'key',
+        // @ts-ignore Test invalid type
+        123,
+        {},
+      );
     }).toThrowErrorMatchingSnapshot();
   });
 

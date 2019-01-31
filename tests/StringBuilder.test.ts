@@ -16,7 +16,8 @@ describe('StringBuilder', () => {
   describe('runChecks()', () => {
     it('errors if a non-string value is used', () => {
       expect(() => {
-        builder.runChecks('key', 123, {});
+        // @ts-ignore Testing wrong type
+        builder.runChecks('key', 123, { key: 123 });
       }).toThrowErrorMatchingSnapshot();
     });
   });
@@ -24,7 +25,7 @@ describe('StringBuilder', () => {
   describe('contains()', () => {
     it('errors if token is not string', () => {
       expect(() => {
-        // @ts-ignore
+        // @ts-ignore Testing wrong type
         builder.contains(123);
       }).toThrowErrorMatchingSnapshot();
     });
@@ -38,7 +39,7 @@ describe('StringBuilder', () => {
     it('adds a checker', () => {
       builder.contains('oo');
 
-      expect(builder.checks[2]).toEqual({
+      expect(builder.checks[1]).toEqual({
         callback: builder.checkContains,
         args: ['oo', 0],
       });
@@ -62,7 +63,7 @@ describe('StringBuilder', () => {
   describe('match()', () => {
     it('errors if pattern is not a regex', () => {
       expect(() => {
-        // @ts-ignore
+        // @ts-ignore Testing wrong type
         builder.match(123);
       }).toThrowErrorMatchingSnapshot();
     });
@@ -70,7 +71,7 @@ describe('StringBuilder', () => {
     it('adds a checker', () => {
       builder.match(/oo/u);
 
-      expect(builder.checks[2]).toEqual({
+      expect(builder.checks[1]).toEqual({
         callback: builder.checkMatch,
         args: [/oo/u],
       });
@@ -91,11 +92,14 @@ describe('StringBuilder', () => {
     });
   });
 
-  describe('empty()', () => {
-    it('allows empty', () => {
-      builder.empty();
+  describe('notEmpty()', () => {
+    it('adds a checker', () => {
+      builder.notEmpty();
 
-      expect(builder.allowEmpty).toBe(true);
+      expect(builder.checks[1]).toEqual({
+        callback: builder.checkNotEmpty,
+        args: [],
+      });
     });
   });
 
@@ -105,18 +109,12 @@ describe('StringBuilder', () => {
         builder.checkNotEmpty('key', '');
       }).toThrowErrorMatchingSnapshot();
     });
-
-    it('doesnt error if allow empty', () => {
-      expect(() => {
-        builder.empty().checkNotEmpty('key', '');
-      }).not.toThrowError('Invalid field "key". String cannot be empty.');
-    });
   });
 
   describe('oneOf()', () => {
     it('errors if not an array', () => {
       expect(() => {
-        // @ts-ignore
+        // @ts-ignore Testing wrong type
         builder.oneOf(123);
       }).toThrowErrorMatchingSnapshot();
     });
@@ -129,7 +127,7 @@ describe('StringBuilder', () => {
 
     it('errors if array contains a non-string', () => {
       expect(() => {
-        // @ts-ignore
+        // @ts-ignore Testing wrong type
         builder.oneOf(['foo', 123]);
       }).toThrowErrorMatchingSnapshot();
     });
@@ -137,7 +135,7 @@ describe('StringBuilder', () => {
     it('adds a checker', () => {
       builder.oneOf(['foo', 'bar', 'baz']);
 
-      expect(builder.checks[2]).toEqual({
+      expect(builder.checks[1]).toEqual({
         callback: builder.checkOneOf,
         args: [['foo', 'bar', 'baz']],
       });

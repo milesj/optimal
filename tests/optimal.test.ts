@@ -9,19 +9,16 @@ import optimal, {
   shape,
   string,
   union,
-  Blueprint,
 } from '../src';
 
 class Plugin {}
 
 describe('Optimal', () => {
-  let options: Blueprint;
-
   // This blueprint is based on Webpack's configuration: https://webpack.js.org/configuration/
   // Webpack provides a pretty robust example of how to use this library.
-  const primitive = union([string(), number(), bool()]);
+  const primitive = union([string(), number(), bool()], false);
 
-  const condition = union([string(), regex(), func(), array(regex()), object(regex())]);
+  const condition = union([string(), regex(), func(), array(regex()), object(regex())], false);
 
   const rule = shape({
     enforce: string('post').oneOf(['pre', 'post']),
@@ -31,25 +28,26 @@ describe('Optimal', () => {
     parser: object(bool()),
     resource: condition,
     use: array(
-      union([
-        string(),
-        shape({
-          loader: string(),
-          options: object(primitive),
-        }),
-      ]),
+      union(
+        [
+          string(),
+          shape({
+            loader: string(),
+            options: object(primitive),
+          }),
+        ],
+        [],
+      ),
     ),
   });
 
   const blueprint = {
     context: string(process.cwd()),
-    entry: union([
-      string(),
-      array(string()),
-      object(union([string(), array(string())])),
-      func(),
-    ]).nullable(),
-    output: {
+    entry: union(
+      [string(), array(string()), object(union([string(), array(string())], '')), func()],
+      [],
+    ).nullable(),
+    output: shape({
       chunkFilename: string('[id].js'),
       chunkLoadTimeout: number(120000),
       crossOriginLoading: union(
@@ -58,11 +56,11 @@ describe('Optimal', () => {
       ),
       filename: string('bundle.js'),
       hashFunction: string('md5').oneOf(['md5', 'sha256', 'sha512']),
-      path: string().empty(),
-      publicPath: string().empty(),
-    },
+      path: string(),
+      publicPath: string(),
+    }),
     module: shape({
-      noParse: union([regex(), array(regex()), func()]).nullable(),
+      noParse: union([regex(), array(regex()), func()], null).nullable(),
       rules: array(rule),
     }),
     resolve: shape({
@@ -82,7 +80,7 @@ describe('Optimal', () => {
       'webworker',
     ]),
     watch: bool(false),
-    node: object(union([bool(), string('mock').oneOf(['mock', 'empty'])])),
+    node: object(union([bool(), string('mock').oneOf(['mock', 'empty'])], false)),
   };
 
   it('errors if a non-object is passed', () => {
@@ -132,7 +130,11 @@ describe('Optimal', () => {
   });
 
   it('sets object keys as class properties', () => {
-    options = optimal(
+    const options = optimal<{
+      foo: number;
+      bar: boolean;
+      baz: string;
+    }>(
       {
         foo: 123,
         bar: true,
@@ -140,7 +142,7 @@ describe('Optimal', () => {
       {
         foo: number(0),
         bar: bool(true),
-        baz: string().empty(),
+        baz: string(),
       },
     );
 
@@ -155,11 +157,11 @@ describe('Optimal', () => {
   });
 
   it('sets default values', () => {
-    options = optimal({}, blueprint);
+    const options = optimal({}, blueprint);
 
     expect(options).toEqual({
       context: process.cwd(),
-      entry: null,
+      entry: [],
       output: {
         chunkFilename: '[id].js',
         chunkLoadTimeout: 120000,
@@ -188,7 +190,7 @@ describe('Optimal', () => {
 
   it('runs checks for root level values', () => {
     expect(() => {
-      options = optimal(
+      optimal(
         {
           entry: 123,
         },
@@ -201,7 +203,7 @@ describe('Optimal', () => {
 
   it('runs checks for nested level values', () => {
     expect(() => {
-      options = optimal(
+      optimal(
         {
           output: {
             crossOriginLoading: 'not-anonymous',
@@ -216,7 +218,7 @@ describe('Optimal', () => {
 
   it('includes a custom `name` in the error message', () => {
     expect(() => {
-      options = optimal(
+      optimal(
         {
           entry: 123,
         },
@@ -289,7 +291,14 @@ describe('Optimal', () => {
 
       // Dont error if all are undefined
       expect(() => {
-        optimal({}, and);
+        optimal(
+          {},
+          {
+            foo: string('a').and('bar', 'baz'),
+            bar: string('b').and('foo', 'baz'),
+            baz: string('c').and('foo', 'bar'),
+          },
+        );
       }).not.toThrowError('All of these fields must be defined: foo, bar, baz');
 
       expect(() => {

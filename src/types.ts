@@ -5,19 +5,21 @@
 
 import Builder from './Builder';
 
-export interface Blueprint {
-  [field: string]: Builder<any> | Blueprint;
-}
+export type ArrayOf<T> = T[];
 
-export type CheckerCallback = (path: string, value: any, ...args: any[]) => void;
+export type FuncOf = (...args: any[]) => any;
 
-export type CustomCallback = (value: any, struct: Struct) => void;
-
-export interface Struct<T = any> {
+export interface ObjectOf<T> {
   [key: string]: T;
 }
 
-export interface OptimalOptions extends Struct {
+export type Blueprint<Struct extends object> = { [K in keyof Struct]: Builder<Struct[K]> };
+
+export type CheckerCallback = (path: string, value: any, ...args: any[]) => void;
+
+export type CustomCallback = (value: any, struct: object) => void;
+
+export interface OptimalOptions {
   file?: string;
   name?: string;
   unknown?: boolean;

@@ -8,4 +8,4 @@ exports[`instance() runChecks() errors if a non-instance is passed 1`] = `"Inval
 
 exports[`instance() runChecks() errors if a non-instance is passed when a class reference is set 1`] = `"Invalid field \\"key\\". Must be an instance of \\"Foo\\"."`;
 
-exports[`instance() runChecks() errors if an object is passed when a class instance is required 1`] = `"Invalid field \\"key\\". Must be a class instance."`;
+exports[`instance() runChecks() errors if an object is passed when a class instance is required 1`] = `"Invalid field \\"key\\". Must be an instance of \\"Foo\\"."`;
