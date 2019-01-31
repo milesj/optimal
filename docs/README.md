@@ -12,8 +12,8 @@ production using dead code elimination.
 - Handles complex operators like AND, OR, and XOR.
 
 ```ts
-// Pass a partial object to an explicit blueprint
-const options = optimal(
+// Pass a partial object and define an explicit blueprint
+optimal(
   { name: 'Optimal' },
   {
     name: string().notEmpty(),
@@ -23,13 +23,13 @@ const options = optimal(
   },
 );
 
-// Validates, builds, and returns the following object
-const options = {
+// Which alidates, builds, and returns the following object
+{
   name: 'Optimal',
   include: [],
   exclude: [],
   maxSize: 10000,
-};
+}
 ```
 
 ## Requirements

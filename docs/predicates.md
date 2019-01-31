@@ -39,7 +39,7 @@ optimal(
 );
 ```
 
-## Bool
+## Boolean
 
 The `bool(default?: boolean)` predicate verifies a value is a boolean. Defaults to `false` but can
 be customized with the 1st argument.
@@ -104,6 +104,8 @@ optimal(
 );
 ```
 
+> This predicate is nullable by default.
+
 ## Instance
 
 The `instance(contract?: Constructor<any>)` predicate verifies a value is an instance of a specific
@@ -123,6 +125,8 @@ optimal(
 Since `instanceof` checks are problematic cross realm or cross module version, an optional `loose`
 argument can be enabled as the 2nd argument: `instance(Plugin, true)`. This will compare constructor
 names, which is brittle, but unblocks certain scenarios.
+
+> This predicate is nullable by default.
 
 ## Number
 
