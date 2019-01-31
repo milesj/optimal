@@ -41,6 +41,8 @@ export {
   UnionBuilder,
 };
 
+export type Predicates = typeof predicates;
+
 export * from './types';
 
 export default optimal;
