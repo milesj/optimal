@@ -26,6 +26,7 @@
 
 #### 🚀 New
 
+- Added documentation.
 - Added a `file` option to `optimal()` to include in error messages.
 - Added a `predicates` export from the index, which is an object of all builder factory functions.
   - TS: Also added a `Predicates` type representing this shape.
