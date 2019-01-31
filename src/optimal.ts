@@ -24,8 +24,11 @@ function buildAndCheck<Struct extends object>(
     const builder = blueprint[key];
     const path = String(parentPath ? `${parentPath}.${key}` : key);
 
-    // Run validation checks
-    if (builder instanceof Builder) {
+    // Run validation checks and support both v1 and v2
+    if (
+      builder instanceof Builder ||
+      (isObject(builder) && (builder as any).constructor.name.endsWith('Builder'))
+    ) {
       builtStruct[key] = builder.runChecks(path, value, struct, options);
 
       // Oops
