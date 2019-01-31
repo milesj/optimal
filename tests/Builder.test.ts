@@ -527,6 +527,16 @@ describe('Builder', () => {
         builder.checkOr('foo', 'a', ['bar', 'baz']);
       }).not.toThrowError('Invalid field "foo".');
     });
+
+    it('doesnt error if at least 1 option is defined that isnt the main field', () => {
+      expect(() => {
+        builder.currentStruct = {
+          bar: 'b',
+        };
+
+        builder.checkOr('foo', 'a', ['bar', 'baz']);
+      }).not.toThrowError('Invalid field "foo".');
+    });
   });
 
   describe('xor()', () => {

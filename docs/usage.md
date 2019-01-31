@@ -51,6 +51,8 @@ returned from `optimal()`. Each predicate defines a default value to be used whe
 the same name is undefined or missing . Furthermore, it provides a fluent interface for adding rules
 to be ran during the validation process.
 
+> Predicate factory functions are named imports from the `optimal` module.
+
 ## Options
 
 The following options can be passed to the 3rd argument.

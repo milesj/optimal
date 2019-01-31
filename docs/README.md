@@ -9,7 +9,7 @@ production using dead code elimination.
 - Autofills missing fields with default values.
 - Allows or restricts unknown fields.
 - Mark fields as nullable or required.
-- Handles complex operators like AND, OR, and XOR.
+- Handles logical operators AND, OR, and XOR.
 
 ```ts
 // Pass a partial object and define an explicit blueprint
@@ -23,7 +23,7 @@ optimal(
   },
 );
 
-// Which alidates, builds, and returns the following object
+// Which validates, builds, and returns the following object
 {
   name: 'Optimal',
   include: [],
