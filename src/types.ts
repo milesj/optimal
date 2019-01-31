@@ -7,6 +7,8 @@ import Builder from './Builder';
 
 export type ArrayOf<T> = T[];
 
+export type FuncOf = (...args: any[]) => any;
+
 export interface ObjectOf<T> {
   [key: string]: T;
 }

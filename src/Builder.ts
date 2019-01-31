@@ -4,7 +4,7 @@
  */
 
 import isObject from './isObject';
-import { SupportedType, CheckerCallback, CustomCallback, OptimalOptions } from './types';
+import { SupportedType, CheckerCallback, CustomCallback, OptimalOptions, FuncOf } from './types';
 
 export interface Check {
   args: any[];
@@ -402,6 +402,6 @@ export function custom<T>(callback: CustomCallback, defaultValue: T) /* infer */
   return new Builder<T>('custom', defaultValue).custom(callback);
 }
 
-export function func(defaultValue: Function | null = null) /* infer */ {
-  return new Builder<Function | null>('function', defaultValue).nullable();
+export function func<T = FuncOf>(defaultValue: T | null = null) /* infer */ {
+  return new Builder<T | null>('function', defaultValue).nullable();
 }
