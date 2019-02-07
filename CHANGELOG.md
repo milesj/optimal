@@ -1,4 +1,8 @@
-# Changelog
+# 2.1.0 - 2018-02-06
+
+#### 🚀 New
+
+- Removed docblocks from source files to reduce bundle size.
 
 # 2.0.0 - 2018-01-30
 
