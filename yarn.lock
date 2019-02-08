@@ -877,10 +877,10 @@
     wrap-ansi "^4.0.0"
     yargs-parser "^11.1.1"
 
-"@milesj/build-tool-config@^0.146.0":
-  version "0.146.0"
-  resolved "https://registry.npmjs.org/@milesj/build-tool-config/-/build-tool-config-0.146.0.tgz#24aab28d20256e2a894edf0c79a1e682f9c717a8"
-  integrity sha512-BFI5bp9vCGyYTntlTdxX3AOtAkFoPJLKo6aGvNIDpbil89W4pQdEa38pTEiBsdbOVHQWklwuhAxGfw2MT+OaZA==
+"@milesj/build-tool-config@^0.146.1":
+  version "0.146.1"
+  resolved "https://registry.npmjs.org/@milesj/build-tool-config/-/build-tool-config-0.146.1.tgz#ecc27cc2c043eb6e04237608fae3a4ad5e55279e"
+  integrity sha512-5MElXQhbgLXXT7tA4/yZb3SxjOtRDHql6k+RocRBocZ5ERUlWjsZYGS/aQ/7ofUZ6SJpr72zpWFEAD6hPSgHlw==
   dependencies:
     "@babel/cli" "^7.2.3"
     "@babel/core" "^7.2.2"
@@ -941,12 +941,12 @@
     prettier "^1.16.4"
     typescript "^3.3.1"
 
-"@milesj/build-tools@^0.24.0":
-  version "0.24.0"
-  resolved "https://registry.npmjs.org/@milesj/build-tools/-/build-tools-0.24.0.tgz#ae8757cef697dda3eb641448a96953bf04a38544"
-  integrity sha512-nmebWTq9Eqg+l4itl+RWgL7gmqQVQif2ug3edk/iddD/sd7799Rv/knasl8oDszQ2LnmfAB1Yjl/0aG/3TFdmg==
+"@milesj/build-tools@^0.24.1":
+  version "0.24.1"
+  resolved "https://registry.npmjs.org/@milesj/build-tools/-/build-tools-0.24.1.tgz#b469c577bc26f3e06c4a5f290c829716646da1c5"
+  integrity sha512-JQAxfxg5iG97L/1HrLVY7iqUwpFvyu/EYhKl1Fst0e+ihdFyW5woSgFuV4vELQ3v9GpGj9Sg/ZxPJ4w2mf/bUQ==
   dependencies:
-    "@milesj/build-tool-config" "^0.146.0"
+    "@milesj/build-tool-config" "^0.146.1"
     "@milesj/build-tool-runtime" "^0.22.0"
 
 "@mrmlnc/readdir-enhanced@^2.2.1":

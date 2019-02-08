@@ -1,3 +1,9 @@
+# 2.1.1 - 2018-02-07
+
+#### 🐞 Fixed
+
+- Fixed some inheritance issues for instance of checks in loose mode.
+
 # 2.1.0 - 2018-02-06
 
 #### 🚀 New
