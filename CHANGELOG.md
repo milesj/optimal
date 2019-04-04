@@ -1,3 +1,9 @@
+# 2.2.0 - 2019-04-03
+
+#### 🛠 Internal
+
+- Updated to `@babel/runtime-corejs3`, which uses Babel v7.4 and CoreJS v3.
+
 # 2.1.1 - 2018-02-07
 
 #### 🐞 Fixed

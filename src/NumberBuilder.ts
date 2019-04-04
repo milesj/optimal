@@ -97,7 +97,7 @@ export default class NumberBuilder<T extends number = number> extends Builder<T>
 
   checkOneOf(path: string, value: T, list: T[]) {
     if (__DEV__) {
-      this.invariant(list.indexOf(value) >= 0, `Number must be one of: ${list.join(', ')}`, path);
+      this.invariant(list.includes(value), `Number must be one of: ${list.join(', ')}`, path);
     }
   }
 }

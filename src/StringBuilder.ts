@@ -19,7 +19,7 @@ export default class StringBuilder<T extends string = string> extends Builder<T>
 
   checkContains(path: string, value: T, token: string, index: number = 0) {
     if (__DEV__) {
-      this.invariant(value.indexOf(token, index) >= 0, `String does not include "${token}".`, path);
+      this.invariant(value.includes(token, index), `String does not include "${token}".`, path);
     }
   }
 
@@ -69,7 +69,7 @@ export default class StringBuilder<T extends string = string> extends Builder<T>
 
   checkOneOf(path: string, value: T, list: T[]) {
     if (__DEV__) {
-      this.invariant(list.indexOf(value) >= 0, `String must be one of: ${list.join(', ')}`, path);
+      this.invariant(list.includes(value), `String must be one of: ${list.join(', ')}`, path);
     }
   }
 }

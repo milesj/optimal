@@ -37,6 +37,7 @@ function buildAndCheck<Struct extends object>(
 
   // Handle unknown options
   if (options.unknown) {
+    // eslint-disable-next-line compat/compat
     Object.assign(builtStruct, unknownFields);
   } else if (__DEV__) {
     const unknownKeys = Object.keys(unknownFields);
