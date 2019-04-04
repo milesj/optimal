@@ -2,7 +2,7 @@ import isObject from './isObject';
 import { SupportedType, CheckerCallback, CustomCallback, OptimalOptions, FuncOf } from './types';
 
 export interface Check {
-  args: any[];
+  args: unknown[];
   callback: CheckerCallback;
 }
 

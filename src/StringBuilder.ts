@@ -1,6 +1,6 @@
 import Builder from './Builder';
 
-function isString(value: any): value is string {
+function isString(value: unknown): value is string {
   return typeof value === 'string' && value !== '';
 }
 

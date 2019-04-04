@@ -19,25 +19,25 @@ import optimal, {
 
 type BasicBlueprint = Blueprint<{
   foo: string;
-  bar: number;
+  bar: number | null;
 }>;
 
 type OptionalPropsBlueprint = Blueprint<{
   foo?: string;
-  bar?: number;
+  bar?: number | null;
 }>;
 
 type PartialPropsBlueprint = Blueprint<
   Partial<{
     foo: string;
-    bar: number;
+    bar: number | null;
   }>
 >;
 
 type RequiredPropsBlueprint = Blueprint<
   Required<{
     foo?: string;
-    bar?: number;
+    bar?: number | null;
   }>
 >;
 

@@ -2,7 +2,7 @@ import Builder from './Builder';
 
 export type ArrayOf<T> = T[];
 
-export type FuncOf = (...args: any[]) => any;
+export type FuncOf = (...args: unknown[]) => unknown;
 
 export interface ObjectOf<T> {
   [key: string]: T;
@@ -12,7 +12,7 @@ export type Blueprint<Struct extends object> = { [K in keyof Struct]-?: Builder<
 
 export type CheckerCallback = (path: string, value: any, ...args: any[]) => void;
 
-export type CustomCallback = (value: any, struct: object) => void;
+export type CustomCallback = (value: unknown, struct: object) => void;
 
 export interface OptimalOptions {
   file?: string;

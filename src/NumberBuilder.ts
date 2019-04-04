@@ -1,6 +1,6 @@
 import Builder from './Builder';
 
-function isNumber(value: any): value is number {
+function isNumber(value: unknown): value is number {
   return typeof value === 'number';
 }
 

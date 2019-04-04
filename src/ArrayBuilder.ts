@@ -48,7 +48,7 @@ export default class ArrayBuilder<T> extends Builder<ArrayOf<T>> {
   }
 }
 
-export function array<T = any>(
+export function array<T = unknown>(
   contents: Builder<T> | null = null,
   defaultValue?: ArrayOf<T>,
 ) /* infer */ {

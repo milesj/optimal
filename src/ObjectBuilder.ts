@@ -48,7 +48,7 @@ export default class ObjectBuilder<T> extends Builder<ObjectOf<T>> {
   }
 }
 
-export function object<T = any>(
+export function object<T = unknown>(
   contents: Builder<T> | null = null,
   defaultValue?: ObjectOf<T>,
 ) /* infer */ {

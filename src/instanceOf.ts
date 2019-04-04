@@ -5,8 +5,8 @@ import { Constructor } from './InstanceBuilder';
  * They will also fail when comparing against source and built files.
  * So emulate an `instanceof` check by comparing constructor names.
  */
-export default function instanceOf<T = any>(
-  object: any,
+export default function instanceOf<T = unknown>(
+  object: unknown,
   contract: Constructor<T> | Function,
 ): object is T {
   if (!object || typeof object !== 'object') {

@@ -1,10 +1,10 @@
 import Builder from './Builder';
 import typeOf from './typeOf';
 
-export default class UnionBuilder<T = any> extends Builder<T> {
-  builders: Builder<any>[] = [];
+export default class UnionBuilder<T = unknown> extends Builder<T> {
+  builders: Builder<unknown>[] = [];
 
-  constructor(builders: Builder<any>[], defaultValue: any) {
+  constructor(builders: Builder<unknown>[], defaultValue: any) {
     super('union', defaultValue);
 
     if (__DEV__) {
@@ -20,7 +20,7 @@ export default class UnionBuilder<T = any> extends Builder<T> {
     }
   }
 
-  checkUnions(path: string, value: any, builders: Builder<any>[]) {
+  checkUnions(path: string, value: any, builders: Builder<unknown>[]) {
     if (__DEV__) {
       const usage: { [type: string]: boolean } = {};
       const keys: string[] = [];
@@ -68,6 +68,6 @@ export default class UnionBuilder<T = any> extends Builder<T> {
   }
 }
 
-export function union<T = any>(builders: Builder<any>[], defaultValue: any) /* infer */ {
+export function union<T = unknown>(builders: Builder<unknown>[], defaultValue: any) /* infer */ {
   return new UnionBuilder<T>(builders, defaultValue);
 }

@@ -2,7 +2,7 @@ import isObject from './isObject';
 import { SupportedType } from './types';
 
 // Not supported: shape, custom
-export default function typeOf(value: any): SupportedType {
+export default function typeOf(value: unknown): SupportedType {
   if (Array.isArray(value)) {
     return value.every(item => typeof item === typeof value[0]) ? 'array' : 'union';
   }
