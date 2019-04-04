@@ -3,6 +3,7 @@
 #### 🛠 Internal
 
 - Updated to `@babel/runtime-corejs3`, which uses Babel v7.4 and CoreJS v3.
+- TS: Updated `Blueprint` to remove optional properties (acts like `Required`).
 
 # 2.1.1 - 2018-02-07
 

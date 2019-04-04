@@ -11,10 +11,35 @@ import optimal, {
   instance,
   custom,
   union,
-  ObjectOf,
   date,
   regex,
+  ObjectOf,
+  Blueprint,
 } from '../src/index';
+
+type BasicBlueprint = Blueprint<{
+  foo: string;
+  bar: number;
+}>;
+
+type OptionalPropsBlueprint = Blueprint<{
+  foo?: string;
+  bar?: number;
+}>;
+
+type PartialPropsBlueprint = Blueprint<
+  Partial<{
+    foo: string;
+    bar: number;
+  }>
+>;
+
+type RequiredPropsBlueprint = Blueprint<
+  Required<{
+    foo?: string;
+    bar?: number;
+  }>
+>;
 
 class Foo {}
 

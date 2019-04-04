@@ -8,7 +8,7 @@ export interface ObjectOf<T> {
   [key: string]: T;
 }
 
-export type Blueprint<Struct extends object> = { [K in keyof Struct]: Builder<Struct[K]> };
+export type Blueprint<Struct extends object> = { [K in keyof Struct]-?: Builder<Struct[K]> };
 
 export type CheckerCallback = (path: string, value: any, ...args: any[]) => void;
 
