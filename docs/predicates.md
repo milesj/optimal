@@ -39,6 +39,28 @@ optimal(
 );
 ```
 
+## Blueprint
+
+The `blueprint(default?: { [key: string]: Builder })` predicate verifies a value is an object that
+maps properties to builder instances.
+
+```ts
+optimal(
+  {
+    settings: {
+      name: string(),
+      type: number(),
+    },
+  },
+  {
+    settings: blueprint(),
+  },
+);
+```
+
+> This works in a similar fashion to `shape()` but without the wrapping builder. It allows the
+> object to be passed to other `optimal` calls.
+
 ## Boolean
 
 The `bool(default?: boolean)` predicate verifies a value is a boolean. Defaults to `false` but can
@@ -50,6 +72,22 @@ optimal(
   {
     watch: bool(), // false
     debug: bool(true),
+  },
+);
+```
+
+## Builder
+
+The `builder()` predicate verifies a value is a builder instance. This is useful for composing
+blueprints.
+
+```ts
+optimal(
+  {
+    value: string(),
+  },
+  {
+    value: builder(),
   },
 );
 ```

@@ -53,7 +53,7 @@ function buildAndCheck<Struct extends object>(
 export default function optimal<
   Struct extends object,
   Construct extends object = { [K in keyof Struct]?: unknown }
->(struct: Construct, blueprint: Blueprint<Struct>, options: OptimalOptions = {}): Struct {
+>(struct: Construct, blueprint: Blueprint<Struct>, options: OptimalOptions = {}): Required<Struct> {
   if (__DEV__) {
     if (!isObject(struct)) {
       throw new TypeError(`Optimal requires a plain object, found ${typeOf(struct)}.`);

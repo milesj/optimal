@@ -1,4 +1,4 @@
-# 2.2.0 - 2019-04-03
+# 3.0.0 - 2019-04-03
 
 #### 🚀 New
 
@@ -8,23 +8,24 @@
 #### 🛠 Internal
 
 - Updated to `@babel/runtime-corejs3`, which uses Babel v7.4 and CoreJS v3.
+- TS: Updated `optimal` to return the shape wrapped in `Required`.
 - TS: Updated `Blueprint` to remove optional properties (acts like `Required`).
 - TS: Updated `Builder#custom` to infer the value argument based on the builder type.
 - TS: Replaced some usage of `any` with `unknown`.
 
-# 2.1.1 - 2018-02-07
+# 2.1.1 - 2019-02-07
 
 #### 🐞 Fixed
 
 - Fixed some inheritance issues for instance of checks in loose mode.
 
-# 2.1.0 - 2018-02-06
+# 2.1.0 - 2019-02-06
 
 #### 🚀 New
 
 - Removed docblocks from source files to reduce bundle size.
 
-# 2.0.0 - 2018-01-30
+# 2.0.0 - 2019-01-30
 
 #### 💥 Breaking
 
