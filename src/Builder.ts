@@ -117,7 +117,7 @@ export default class Builder<T> {
   /**
    * Set a callback to run custom logic.
    */
-  custom(callback: CustomCallback): this {
+  custom(callback: CustomCallback<T>): this {
     if (__DEV__) {
       this.invariant(
         typeof callback === 'function',
@@ -131,7 +131,7 @@ export default class Builder<T> {
   /**
    * Validate the value using a custom callback.
    */
-  checkCustom(path: string, value: T, callback: CustomCallback) {
+  checkCustom(path: string, value: T, callback: CustomCallback<T>) {
     if (__DEV__) {
       try {
         callback(value, this.currentStruct);
@@ -393,7 +393,7 @@ export function bool(defaultValue: boolean = false) /* infer */ {
   return new Builder<boolean>('boolean', defaultValue);
 }
 
-export function custom<T>(callback: CustomCallback, defaultValue: T) /* infer */ {
+export function custom<T>(callback: CustomCallback<T>, defaultValue: T) /* infer */ {
   return new Builder<T>('custom', defaultValue).custom(callback);
 }
 

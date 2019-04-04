@@ -6,16 +6,18 @@
 import optimal from './optimal';
 import Builder, { bool, custom, func } from './Builder';
 import ArrayBuilder, { array } from './ArrayBuilder';
-import InstanceBuilder, { instance, date, regex } from './InstanceBuilder';
+import InstanceBuilder, { builder, instance, date, regex } from './InstanceBuilder';
 import NumberBuilder, { number } from './NumberBuilder';
-import ObjectBuilder, { object } from './ObjectBuilder';
+import ObjectBuilder, { object, blueprint } from './ObjectBuilder';
 import ShapeBuilder, { shape } from './ShapeBuilder';
 import StringBuilder, { string } from './StringBuilder';
 import UnionBuilder, { union } from './UnionBuilder';
 
 export const predicates = {
   array,
+  blueprint,
   bool,
+  builder,
   custom,
   date,
   func,
@@ -28,7 +30,22 @@ export const predicates = {
   union,
 };
 
-export { array, bool, custom, date, func, instance, number, object, regex, shape, string, union };
+export {
+  array,
+  blueprint,
+  bool,
+  builder,
+  custom,
+  date,
+  func,
+  instance,
+  number,
+  object,
+  regex,
+  shape,
+  string,
+  union,
+};
 
 export {
   Builder,

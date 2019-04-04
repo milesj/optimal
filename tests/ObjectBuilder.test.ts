@@ -1,4 +1,4 @@
-import ObjectBuilder, { object } from '../src/ObjectBuilder';
+import ObjectBuilder, { object, blueprint } from '../src/ObjectBuilder';
 import { number } from '../src/NumberBuilder';
 import { string } from '../src/StringBuilder';
 
@@ -155,5 +155,22 @@ describe('ObjectBuilder', () => {
     it('returns the type name with contents type', () => {
       expect(object(number()).typeAlias()).toBe('object<number>');
     });
+  });
+});
+
+describe('blueprint()', () => {
+  it('returns a builder for Date', () => {
+    expect(blueprint()).toBeInstanceOf(ObjectBuilder);
+  });
+
+  it('errors if a non-Builder is passed', () => {
+    expect(() => {
+      blueprint().runChecks(
+        'key',
+        // @ts-ignore Allow invalid type
+        { value: 123 },
+        {},
+      );
+    }).toThrowError('Invalid field "key.value". Must be an instance of "Builder".');
   });
 });

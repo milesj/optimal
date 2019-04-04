@@ -1,9 +1,15 @@
 # 2.2.0 - 2019-04-03
 
+#### 🚀 New
+
+- Added a `builder()` predicate, which checks that a property value is a `Builder` instance.
+- Added a `blueprint()` predicate, which checks that a property is an object of `Builder`s.
+
 #### 🛠 Internal
 
 - Updated to `@babel/runtime-corejs3`, which uses Babel v7.4 and CoreJS v3.
 - TS: Updated `Blueprint` to remove optional properties (acts like `Required`).
+- TS: Updated `Builder#custom` to infer the value argument based on the builder type.
 - TS: Replaced some usage of `any` with `unknown`.
 
 # 2.1.1 - 2018-02-07

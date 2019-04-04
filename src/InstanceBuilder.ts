@@ -63,6 +63,10 @@ export function instance<T = Function>(
   return new InstanceBuilder<T>(refClass, loose);
 }
 
+export function builder<T = any>() /* infer */ {
+  return instance<Builder<T>>(Builder);
+}
+
 export function regex() /* infer */ {
   return instance(RegExp);
 }

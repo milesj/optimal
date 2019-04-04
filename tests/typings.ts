@@ -3,6 +3,8 @@
 import optimal, {
   array,
   bool,
+  builder,
+  blueprint,
   func,
   number,
   string,
@@ -133,5 +135,18 @@ const unions = optimal(
       ],
       null,
     ),
+  },
+);
+
+const bp = optimal(
+  {
+    a: {
+      str: string(),
+    },
+    b: number(),
+  },
+  {
+    a: blueprint(),
+    b: builder(),
   },
 );

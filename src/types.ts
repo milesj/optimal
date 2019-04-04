@@ -12,7 +12,7 @@ export type Blueprint<Struct extends object> = { [K in keyof Struct]-?: Builder<
 
 export type CheckerCallback = (path: string, value: any, ...args: any[]) => void;
 
-export type CustomCallback = (value: unknown, struct: object) => void;
+export type CustomCallback<T> = (value: T, struct: object) => void;
 
 export interface OptimalOptions {
   file?: string;

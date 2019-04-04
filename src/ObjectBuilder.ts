@@ -1,5 +1,6 @@
 import Builder from './Builder';
 import { ObjectOf } from './types';
+import { builder } from './InstanceBuilder';
 
 export default class ObjectBuilder<T> extends Builder<ObjectOf<T>> {
   contents: Builder<T> | null = null;
@@ -53,4 +54,8 @@ export function object<T = unknown>(
   defaultValue?: ObjectOf<T>,
 ) /* infer */ {
   return new ObjectBuilder<T>(contents, defaultValue);
+}
+
+export function blueprint<T = any>(defaultValue?: ObjectOf<Builder<T>>) /* infer */ {
+  return new ObjectBuilder<Builder<T>>(builder<T>().notNullable(), defaultValue);
 }
