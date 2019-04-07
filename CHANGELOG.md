@@ -1,3 +1,9 @@
+# 3.1.0 - 2019-04-07
+
+#### 🚀 New
+
+- TS: Updated `instance()` to allow abstract classes.
+
 # 3.0.0 - 2019-04-03
 
 #### 🚀 New

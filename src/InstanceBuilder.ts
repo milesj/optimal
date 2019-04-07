@@ -2,7 +2,7 @@ import Builder from './Builder';
 import isObject from './isObject';
 import instanceOf from './instanceOf';
 
-export type Constructor<T> = new (...args: any[]) => T;
+export type Constructor<T> = (new (...args: any[]) => T) | (Function & { prototype: T });
 
 export default class InstanceBuilder<T> extends Builder<T | null> {
   loose: boolean = false;

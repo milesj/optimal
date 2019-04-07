@@ -3,6 +3,8 @@ import InstanceBuilder, { instance, builder, date, regex } from '../src/Instance
 
 describe('instance()', () => {
   class Foo {}
+  abstract class Bar {}
+  class BarImpl extends Bar {}
 
   let inst: InstanceBuilder<Foo>;
 
@@ -86,6 +88,12 @@ describe('instance()', () => {
       expect(() => {
         instance(Foo, true).runChecks('key', new Foo2(), {});
       }).not.toThrowError('Invalid field "key". Must be an instance of "Foo".');
+    });
+
+    it('supports running checks on abstract classes', () => {
+      expect(() => {
+        instance(Bar).runChecks('key', new BarImpl(), {});
+      }).not.toThrowError();
     });
   });
 
