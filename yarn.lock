@@ -1200,10 +1200,10 @@
     "@types/istanbul-lib-coverage" "^2.0.0"
     "@types/yargs" "^12.0.9"
 
-"@milesj/build-tool-config@^0.159.3":
-  version "0.159.3"
-  resolved "https://registry.npmjs.org/@milesj/build-tool-config/-/build-tool-config-0.159.3.tgz#93c6f66e1cf25186dbd11b0495622e286edaa428"
-  integrity sha512-m8+QvcDP0wfAzNGr3PFKRtknTuKPRub0sUoVBaY4fFeS9hvgzG05O/xsOElvheP1X1Dpar6StMmnW9UwaOHUfQ==
+"@milesj/build-tool-config@^0.160.1":
+  version "0.160.1"
+  resolved "https://registry.npmjs.org/@milesj/build-tool-config/-/build-tool-config-0.160.1.tgz#e877a2bf1539117eedb6e832095c3208a844279c"
+  integrity sha512-D7pEmRGUa7zhn03JGq1/gyU1wZFIbFc6IUb33VVZdFM0C6K/FXbgxRfvRdNC2NL3ltghvRoPxV1WbB1Qfi0LRg==
   dependencies:
     "@babel/cli" "^7.4.3"
     "@babel/core" "^7.4.3"
@@ -1224,13 +1224,13 @@
     babel-plugin-transform-dev "^2.0.1"
     babel-plugin-typescript-to-proptypes "^0.17.1"
     enzyme "^3.9.0"
-    enzyme-adapter-react-16 "^1.11.2"
+    enzyme-adapter-react-16 "^1.12.1"
     enzyme-to-json "^3.3.5"
     eslint "^5.16.0"
     eslint-config-airbnb "^17.1.0"
     eslint-config-prettier "^4.1.0"
     eslint-plugin-babel "^5.3.0"
-    eslint-plugin-compat "^3.1.0"
+    eslint-plugin-compat "^3.1.1"
     eslint-plugin-import "^2.16.0"
     eslint-plugin-jest "^22.4.1"
     eslint-plugin-jsx-a11y "^6.2.1"
@@ -1240,18 +1240,18 @@
     eslint-plugin-unicorn "^8.0.1"
     execa "^1.0.0"
     fs-extra "^7.0.1"
-    jest "^24.5.0"
+    jest "^24.7.1"
     np "^4.0.2"
     prettier "^1.16.4"
     react "^16.8.6"
     react-dom "^16.8.6"
     react-test-renderer "^16.8.6"
-    typescript "~3.4.1"
+    typescript "~3.4.2"
 
-"@milesj/build-tool-runtime@^0.33.0":
-  version "0.33.0"
-  resolved "https://registry.npmjs.org/@milesj/build-tool-runtime/-/build-tool-runtime-0.33.0.tgz#fdfcd1f0adb3250b899394bd7b5c9b8381d1698b"
-  integrity sha512-vH/R+jAvTcvFC/GwqClLwFrBpYSW+O84reUh2XllxnLc+kTWxuLwgEKlqRNKNJL4dTzge1vt+p33k+LIujMXlw==
+"@milesj/build-tool-runtime@^0.34.0":
+  version "0.34.0"
+  resolved "https://registry.npmjs.org/@milesj/build-tool-runtime/-/build-tool-runtime-0.34.0.tgz#ea52b5fc79c30d655d07973c064e85cc2167b35b"
+  integrity sha512-kVjyI/5q1j43VfxVE/u4LcA9jxvMQiwllorrvWh7uJ+TfNfCxLKTUEGaDZMdkpRrUM3Yo7VvQrz6VrmEMrNJQw==
   dependencies:
     "@babel/core" "^7.4.3"
     "@beemo/cli" "^1.0.0-alpha.3"
@@ -1262,17 +1262,17 @@
     "@beemo/driver-prettier" "^1.0.0-alpha.3"
     "@beemo/driver-typescript" "^1.0.0-alpha.3"
     eslint "^5.16.0"
-    jest "^24.5.0"
+    jest "^24.7.1"
     prettier "^1.16.4"
-    typescript "^3.4.1"
+    typescript "^3.4.2"
 
-"@milesj/build-tools@^0.37.3":
-  version "0.37.3"
-  resolved "https://registry.npmjs.org/@milesj/build-tools/-/build-tools-0.37.3.tgz#82b7d063b4719f9912f95037be0794d58438f174"
-  integrity sha512-sA6Tio3I47Z/I63KM4O8U6Zqgsp+50lOSIm+irDUEOzXcrJNjP24dUu0m8sUQJgBVcwpKzgDmhSIKl8oypzhOA==
+"@milesj/build-tools@^0.38.1":
+  version "0.38.1"
+  resolved "https://registry.npmjs.org/@milesj/build-tools/-/build-tools-0.38.1.tgz#7f6e97d1659ad4bed4b73be53ac119ba9dd3044a"
+  integrity sha512-IFp16ip/Uaxrk0MAL5oJjRLCvQdpeVlE6VmFESkpEWO8Nw9uBreyCki2oy+3q0la9PdSa/xtrey0c3mICQYRDQ==
   dependencies:
-    "@milesj/build-tool-config" "^0.159.3"
-    "@milesj/build-tool-runtime" "^0.33.0"
+    "@milesj/build-tool-config" "^0.160.1"
+    "@milesj/build-tool-runtime" "^0.34.0"
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
@@ -1580,6 +1580,22 @@ acorn@^6.0.1, acorn@^6.0.7:
   resolved "https://registry.npmjs.org/acorn/-/acorn-6.1.1.tgz#7d25ae05bb8ad1f9b699108e1094ecd7884adc1f"
   integrity sha512-jPTiwtOxaHNaAPg/dmrJ/beuzLRnXtB0kQPQ8JpotKJgTB6rX6c8mlf315941pyjBSaPg8NHXS9fhP4u17DpGA==
 
+airbnb-prop-types@^2.12.0:
+  version "2.13.1"
+  resolved "https://registry.npmjs.org/airbnb-prop-types/-/airbnb-prop-types-2.13.1.tgz#abcae3f683c0c918aae5e0a1df6232e39e0abfa5"
+  integrity sha512-imXx6ssLTp1IJ6TgOH+8X04VgNXLjjHDz72PfhrovwFYwVHOmoklMpPAeB45VxxP5+wi1Ztxwl+xHBIZLEEmRQ==
+  dependencies:
+    array.prototype.find "^2.0.4"
+    function.prototype.name "^1.1.0"
+    has "^1.0.3"
+    is-regex "^1.0.4"
+    object-is "^1.0.1"
+    object.assign "^4.1.0"
+    object.entries "^1.1.0"
+    prop-types "^15.7.2"
+    prop-types-exact "^1.2.0"
+    react-is "^16.8.6"
+
 ajv@^6.5.5, ajv@^6.9.1:
   version "6.10.0"
   resolved "https://registry.npmjs.org/ajv/-/ajv-6.10.0.tgz#90d0d54439da587cd7e843bfb7045f50bd22bdf1"
@@ -1743,6 +1759,14 @@ array-unique@^0.3.2:
   version "0.3.2"
   resolved "https://registry.npmjs.org/array-unique/-/array-unique-0.3.2.tgz#a894b75d4bc4f6cd679ef3244a9fd8f46ae2d428"
   integrity sha1-qJS3XUvE9s1nnvMkSp/Y9Gri1Cg=
+
+array.prototype.find@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.npmjs.org/array.prototype.find/-/array.prototype.find-2.0.4.tgz#556a5c5362c08648323ddaeb9de9d14bc1864c90"
+  integrity sha1-VWpcU2LAhkgyPdrrnenRS8GGTJA=
+  dependencies:
+    define-properties "^1.1.2"
+    es-abstract "^1.7.0"
 
 array.prototype.flat@^1.2.1:
   version "1.2.1"
@@ -2750,24 +2774,25 @@ env-ci@^3.2.0:
     execa "^1.0.0"
     java-properties "^0.2.9"
 
-enzyme-adapter-react-16@^1.11.2:
-  version "1.11.2"
-  resolved "https://registry.npmjs.org/enzyme-adapter-react-16/-/enzyme-adapter-react-16-1.11.2.tgz#8efeafb27e96873a5492fdef3f423693182eb9d4"
-  integrity sha512-2ruTTCPRb0lPuw/vKTXGVZVBZqh83MNDnakMhzxhpJcIbneEwNy2Cv0KvL97pl57/GOazJHflWNLjwWhex5AAA==
+enzyme-adapter-react-16@^1.12.1:
+  version "1.12.1"
+  resolved "https://registry.npmjs.org/enzyme-adapter-react-16/-/enzyme-adapter-react-16-1.12.1.tgz#6a2d74c80559d35ac0a91ca162fa45f4186290cf"
+  integrity sha512-GB61gvY97XvrA6qljExGY+lgI6BBwz+ASLaRKct9VQ3ozu0EraqcNn3CcrUckSGIqFGa1+CxO5gj5is5t3lwrw==
   dependencies:
-    enzyme-adapter-utils "^1.10.1"
+    enzyme-adapter-utils "^1.11.0"
     object.assign "^4.1.0"
     object.values "^1.1.0"
     prop-types "^15.7.2"
-    react-is "^16.8.4"
+    react-is "^16.8.6"
     react-test-renderer "^16.0.0-0"
     semver "^5.6.0"
 
-enzyme-adapter-utils@^1.10.1:
-  version "1.10.1"
-  resolved "https://registry.npmjs.org/enzyme-adapter-utils/-/enzyme-adapter-utils-1.10.1.tgz#58264efa19a7befdbf964fb7981a108a5452ac96"
-  integrity sha512-oasinhhLoBuZsIkTe8mx0HiudtfErUtG0Ooe1FOplu/t4c9rOmyG5gtrBASK6u4whHIRWvv0cbZMElzNTR21SA==
+enzyme-adapter-utils@^1.11.0:
+  version "1.11.0"
+  resolved "https://registry.npmjs.org/enzyme-adapter-utils/-/enzyme-adapter-utils-1.11.0.tgz#6ffff782b1b57dd46c72a845a91fc4103956a117"
+  integrity sha512-0VZeoE9MNx+QjTfsjmO1Mo+lMfunucYB4wt5ficU85WB/LoetTJrbuujmHP3PJx6pSoaAuLA+Mq877x4LoxdNg==
   dependencies:
+    airbnb-prop-types "^2.12.0"
     function.prototype.name "^1.1.0"
     object.assign "^4.1.0"
     object.fromentries "^2.0.0"
@@ -2909,10 +2934,10 @@ eslint-plugin-babel@^5.3.0:
   dependencies:
     eslint-rule-composer "^0.3.0"
 
-eslint-plugin-compat@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.npmjs.org/eslint-plugin-compat/-/eslint-plugin-compat-3.1.0.tgz#3a0a0490bd8cb08eb06cbbe840ad612227ccadf2"
-  integrity sha512-N+FiugxY5Y8CKp6/sk76KtIFlA2fMx8Ogb3FqbwOePND6mnnkxZL/iPMC/3QhPtuq10RVNduYOmKU9laqna5+A==
+eslint-plugin-compat@^3.1.1:
+  version "3.1.1"
+  resolved "https://registry.npmjs.org/eslint-plugin-compat/-/eslint-plugin-compat-3.1.1.tgz#5ec367dbaec422928894e6b4f708aa623f23a198"
+  integrity sha512-pqy5LBy4ZPhSVwb2p0+jUozdnoGX+qc1NRIcK+Yfg99149ncqZVc8gP5u637vwVC/nLQP6X6zTpnHwsZCdvluQ==
   dependencies:
     "@babel/runtime" "^7.4.2"
     ast-metadata-inferer "^0.1.1"
@@ -4624,7 +4649,7 @@ jest-worker@^24.6.0:
     merge-stream "^1.0.1"
     supports-color "^6.1.0"
 
-jest@^24.5.0:
+jest@^24.7.1:
   version "24.7.1"
   resolved "https://registry.npmjs.org/jest/-/jest-24.7.1.tgz#0d94331cf510c75893ee32f87d7321d5bf8f2501"
   integrity sha512-AbvRar5r++izmqo5gdbAjTeA6uNRGoNRuj5vHB0OnDXo2DXWZJVuaObiGgtlvhKb+cWy2oYbQSfxv7Q7GjnAtA==
@@ -5545,7 +5570,7 @@ object.assign@^4.1.0:
     has-symbols "^1.0.0"
     object-keys "^1.0.11"
 
-object.entries@^1.0.4:
+object.entries@^1.0.4, object.entries@^1.1.0:
   version "1.1.0"
   resolved "https://registry.npmjs.org/object.entries/-/object.entries-1.1.0.tgz#2024fc6d6ba246aee38bdb0ffd5cfbcf371b7519"
   integrity sha512-l+H6EQ8qzGRxbkHOd5I/aHRhHDKoQXQ8g0BYt4uSweQU1/J6dZUOyWh9a2Vky35YCKjzmgxOzta2hH6kf9HuXA==
@@ -6017,6 +6042,15 @@ prompts@^2.0.1:
     kleur "^3.0.2"
     sisteransi "^1.0.0"
 
+prop-types-exact@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.npmjs.org/prop-types-exact/-/prop-types-exact-1.2.0.tgz#825d6be46094663848237e3925a98c6e944e9869"
+  integrity sha512-K+Tk3Kd9V0odiXFP9fwDHUYRyvK3Nun3GVyPapSIs5OBkITAm15W0CPFD/YKTkMUAbc0b9CUwRQp2ybiBIq+eA==
+  dependencies:
+    has "^1.0.3"
+    object.assign "^4.1.0"
+    reflect.ownkeys "^0.2.0"
+
 prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.npmjs.org/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
@@ -6231,6 +6265,11 @@ redent@^2.0.0:
   dependencies:
     indent-string "^3.0.0"
     strip-indent "^2.0.0"
+
+reflect.ownkeys@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.npmjs.org/reflect.ownkeys/-/reflect.ownkeys-0.2.0.tgz#749aceec7f3fdf8b63f927a04809e90c5c0b3460"
+  integrity sha1-dJrO7H8/34tj+SegSAnpDFwLNGA=
 
 regenerate-unicode-properties@^8.0.2:
   version "8.0.2"
@@ -7183,10 +7222,10 @@ type-fest@^0.3.0:
   resolved "https://registry.npmjs.org/type-fest/-/type-fest-0.3.0.tgz#1eb4a83c4ee233afd59d4db3faef44fecee0e9a2"
   integrity sha512-fg3sfdDdJDtdHLUpeGsf/fLyG1aapk6zgFiYG5+MDUPybGrJemH4SLk5tP7hGRe8ntxjg0q5LYW53b6YpJIQ9Q==
 
-typescript@^3.4.1, typescript@~3.4.1:
-  version "3.4.1"
-  resolved "https://registry.npmjs.org/typescript/-/typescript-3.4.1.tgz#b6691be11a881ffa9a05765a205cb7383f3b63c6"
-  integrity sha512-3NSMb2VzDQm8oBTLH6Nj55VVtUEpe/rgkIzMir0qVoLyjDZlnMBva0U6vDiV3IH+sl/Yu6oP5QwsAQtHPmDd2Q==
+typescript@^3.4.2, typescript@~3.4.2:
+  version "3.4.2"
+  resolved "https://registry.npmjs.org/typescript/-/typescript-3.4.2.tgz#9ed4e6475d906f589200193be056f5913caed481"
+  integrity sha512-Og2Vn6Mk7JAuWA1hQdDQN/Ekm/SchX80VzLhjKN9ETYrIepBFAd8PkOdOTK2nKt0FCkmMZKBJvQ1dV1gIxPu/A==
 
 uglify-js@^3.1.4:
   version "3.4.9"
