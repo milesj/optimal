@@ -26,4 +26,9 @@ exports[`Optimal logical operators handles XOR 1`] = `"Only one of these fields 
 
 exports[`Optimal logical operators handles XOR 2`] = `"Only one of these fields may be defined: foo, bar, baz"`;
 
+exports[`Optimal runs checks for nested level values 1`] = `
+"Invalid field \\"output.crossOriginLoading\\". Type must be one of: boolean, string. Received string with the following invalidations:
+ - String must be one of: anonymous, use-credentials"
+`;
+
 exports[`Optimal unknown fields errors for unknown fields 1`] = `"Unknown fields: foo, bar."`;

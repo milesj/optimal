@@ -211,9 +211,7 @@ describe('Optimal', () => {
         },
         blueprint,
       );
-    }).toThrowError(
-      'Invalid field "output.crossOriginLoading". String must be one of: anonymous, use-credentials',
-    );
+    }).toThrowErrorMatchingSnapshot();
   });
 
   it('includes a custom `name` in the error message', () => {

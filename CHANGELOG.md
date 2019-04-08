@@ -2,7 +2,8 @@
 
 #### 🚀 New
 
-- Updated `shape()` to throw on unknown fields when the `unknown` option is passed to `optimal()`.
+- Updated `shape()` to throw on unknown fields when the `unknown: false` option is passed to
+  `optimal()`.
 - Updated `union()` to support builders of the same type in parallel. For example, can now use 2
   instances of `object()`.
 - Updated `union()` to support object and shapes in parallel.

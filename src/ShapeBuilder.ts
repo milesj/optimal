@@ -30,25 +30,31 @@ export default class ShapeBuilder<Shape extends object> extends Builder<Shape> {
     const object = initialValue || this.defaultValue || {};
 
     if (__DEV__) {
-      this.invariant(
-        typeof object === 'object' && !!object,
-        'Value passed to shape must be an object.',
-        path,
-      );
+      this.invariant(isObject(object), 'Value passed to shape must be an object.', path);
     }
 
-    Object.keys(object).forEach(baseKey => {
+    const unknownFields = { ...object };
+
+    Object.keys(this.contents).forEach(baseKey => {
       const key = baseKey as keyof Shape;
       const builder = this.contents[key];
 
       if (builder instanceof Builder) {
         value[key] = builder.runChecks(`${path}.${key}`, object[key], object, options);
-      } else if (options.unknown) {
-        throw new TypeError(`Unknown field "${path}.${key}".`);
       } else {
         value[key] = object[key];
       }
+
+      delete unknownFields[key];
     });
+
+    if (!options.unknown) {
+      const unknownKeys = Object.keys(unknownFields);
+
+      if (unknownKeys.length > 0) {
+        throw new Error(`Unknown shape fields: ${unknownKeys.join(', ')}.`);
+      }
+    }
 
     return value;
   }

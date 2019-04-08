@@ -58,6 +58,30 @@ describe('shape()', () => {
       }).toThrowErrorMatchingSnapshot();
     });
 
+    it('errors for unknown fields', () => {
+      expect(() => {
+        builder.runChecks(
+          'key',
+          // @ts-ignore Allow invalid fields
+          { qux: 123, oof: 'abc' },
+          {},
+          { unknown: false },
+        );
+      }).toThrowErrorMatchingSnapshot();
+    });
+
+    it('doesnt error for unknown fields if unknown is true', () => {
+      expect(() => {
+        builder.runChecks(
+          'key',
+          // @ts-ignore Allow invalid fields
+          { qux: 123, oof: 'abc' },
+          {},
+          { unknown: true },
+        );
+      }).not.toThrowError();
+    });
+
     it('checks each item in the object', () => {
       expect(() => {
         builder.runChecks(

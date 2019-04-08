@@ -40,7 +40,7 @@ export default class UnionBuilder<T = unknown> extends Builder<T> {
             builder.noPrefix = true;
             builder.runChecks(path, value, this.currentStruct, {
               ...this.options,
-              unknown: true,
+              unknown: false,
             });
 
             // We have a valid result, so remove errors
