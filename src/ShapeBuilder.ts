@@ -5,6 +5,8 @@ import { Blueprint, OptimalOptions } from './types';
 export default class ShapeBuilder<Shape extends object> extends Builder<Shape> {
   contents: Blueprint<Shape>;
 
+  isExact: boolean = false;
+
   constructor(contents: Blueprint<Shape>) {
     super('shape', {} as any);
 
@@ -18,6 +20,12 @@ export default class ShapeBuilder<Shape extends object> extends Builder<Shape> {
     }
 
     this.contents = contents;
+  }
+
+  exact(): this {
+    this.isExact = true;
+
+    return this;
   }
 
   runChecks(
@@ -48,7 +56,7 @@ export default class ShapeBuilder<Shape extends object> extends Builder<Shape> {
       delete unknownFields[key];
     });
 
-    if (!options.unknown) {
+    if (this.isExact) {
       const unknownKeys = Object.keys(unknownFields);
 
       if (unknownKeys.length > 0) {

@@ -10,7 +10,7 @@ exports[`shape() runChecks() checks each item in the object 1`] = `"Invalid fiel
 
 exports[`shape() runChecks() errors correctly for shapes in shapes 1`] = `"Invalid field \\"key.foo.c\\". Must be a string."`;
 
-exports[`shape() runChecks() errors for unknown fields 1`] = `"Unknown shape fields: qux, oof."`;
+exports[`shape() runChecks() errors for unknown fields when using exact 1`] = `"Unknown shape fields: qux, oof."`;
 
 exports[`shape() runChecks() errors if a non-object is passed 1`] = `"Invalid field \\"key\\". Value passed to shape must be an object."`;
 

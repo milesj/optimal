@@ -198,14 +198,14 @@ describe('UnionBuilder', () => {
             foo: string(),
             bar: number(),
             baz: bool(),
-          }),
+          }).exact(),
           object(string()),
         ],
         {},
       );
 
       expect(() => {
-        builder.runChecks('key', { unknown: true }, {}, { unknown: true });
+        builder.runChecks('key', { unknown: true }, {});
       }).toThrowErrorMatchingSnapshot();
 
       expect(() => {

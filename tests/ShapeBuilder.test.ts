@@ -58,14 +58,13 @@ describe('shape()', () => {
       }).toThrowErrorMatchingSnapshot();
     });
 
-    it('errors for unknown fields', () => {
+    it('errors for unknown fields when using exact', () => {
       expect(() => {
-        builder.runChecks(
+        builder.exact().runChecks(
           'key',
           // @ts-ignore Allow invalid fields
           { qux: 123, oof: 'abc' },
           {},
-          { unknown: false },
         );
       }).toThrowErrorMatchingSnapshot();
     });

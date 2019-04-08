@@ -38,13 +38,7 @@ export default class UnionBuilder<T = unknown> extends Builder<T> {
           ) {
             // eslint-disable-next-line no-param-reassign
             builder.noPrefix = true;
-            builder.runChecks(path, value, this.currentStruct, {
-              ...this.options,
-              unknown: false,
-            });
-
-            // We have a valid result, so remove errors
-            errors.clear();
+            builder.runChecks(path, value, this.currentStruct, this.options);
 
             return true;
           }
@@ -57,7 +51,7 @@ export default class UnionBuilder<T = unknown> extends Builder<T> {
 
       let message = `Type must be one of: ${keys}.`;
 
-      if (errors.size > 0) {
+      if (!passed && errors.size > 0) {
         message += ` Received ${type} with the following invalidations:\n`;
 
         errors.forEach(error => {
@@ -65,7 +59,7 @@ export default class UnionBuilder<T = unknown> extends Builder<T> {
         });
       }
 
-      this.invariant(passed && errors.size === 0, message.trim(), path);
+      this.invariant(passed, message.trim(), path);
     }
   }
 

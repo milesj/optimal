@@ -2,11 +2,10 @@
 
 #### 🚀 New
 
-- Updated `shape()` to throw on unknown fields when the `unknown: false` option is passed to
-  `optimal()`.
-- Updated `union()` to support builders of the same type in parallel. For example, can now use 2
-  instances of `object()`.
-- Updated `union()` to support object and shapes in parallel.
+- Added `ShapeBuilder#exact`, which throws on unknown fields and requires an exact shape.
+- Updated `UnionBuilder` to support builders of the same type in parallel. For example, can now use
+  2 instances of `object()`.
+- Updated `UnionBuilder` to support object and shapes in parallel.
 - TS: Updated `instance()` to allow abstract classes.
 
 # 3.0.0 - 2019-04-03
@@ -91,7 +90,8 @@
 
 #### 🐞 Fixed
 
-- Updated `shape` to return an object with inherited or default values, instead of an empty object.
+- Updated `shape()` to return an object with inherited or default values, instead of an empty
+  object.
 
 # 1.1.1 - 2018-09-02
 
