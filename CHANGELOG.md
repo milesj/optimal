@@ -1,6 +1,6 @@
-# 3.1.0 - 2019-04-07
+## 3.1.0 - 2019-04-07
 
-#### 🚀 New
+#### 🚀 Updates
 
 - Added `ShapeBuilder#exact`, which throws on unknown fields and requires an exact shape.
 - Updated `UnionBuilder` to support builders of the same type in parallel. For example, can now use
@@ -10,12 +10,12 @@
 
 # 3.0.0 - 2019-04-03
 
-#### 🚀 New
+#### 🚀 Updates
 
 - Added a `builder()` predicate, which checks that a property value is a `Builder` instance.
 - Added a `blueprint()` predicate, which checks that a property is an object of `Builder`s.
 
-#### 🛠 Internal
+#### 🛠 Internals
 
 - Updated to `@babel/runtime-corejs3`, which uses Babel v7.4 and CoreJS v3.
 - TS: Updated `optimal` to return the shape wrapped in `Required`.
@@ -23,15 +23,15 @@
 - TS: Updated `Builder#custom` to infer the value argument based on the builder type.
 - TS: Replaced some usage of `any` with `unknown`.
 
-# 2.1.1 - 2019-02-07
+### 2.1.1 - 2019-02-07
 
-#### 🐞 Fixed
+#### 🐞 Fixes
 
 - Fixed some inheritance issues for instance of checks in loose mode.
 
-# 2.1.0 - 2019-02-06
+## 2.1.0 - 2019-02-06
 
-#### 🚀 New
+#### 🚀 Updates
 
 - Removed docblocks from source files to reduce bundle size.
 
@@ -59,7 +59,7 @@
   - Default value is now required at all times.
   - TS: Type is `any` as unions are not inferrable. Can be explicitly typed using generics.
 
-#### 🚀 New
+#### 🚀 Updates
 
 - Added documentation.
 - Added a `file` option to `optimal()` to include in error messages.
@@ -70,38 +70,38 @@
 - Added `Builder#notNullable` to disable null values.
 - Added `StringBuilder#notEmpty` to require strings to not be empty.
 
-#### 🛠 Internal
+#### 🛠 Internals
 
 - TS: Removed `Struct` type.
 
-# 1.2.0 - 2018-12-29
+## 1.2.0 - 2018-12-29
 
-#### 🚀 New
+#### 🚀 Updates
 
 - Added and ES `module` target.
 
-# 1.1.3 - 2018-10-15
+### 1.1.3 - 2018-10-15
 
-#### 🐞 Fixed
+#### 🐞 Fixes
 
 - Fixed an issue with built files.
 
-# 1.1.2 - 2018-10-15
+### 1.1.2 - 2018-10-15
 
-#### 🐞 Fixed
+#### 🐞 Fixes
 
 - Updated `shape()` to return an object with inherited or default values, instead of an empty
   object.
 
-# 1.1.1 - 2018-09-02
+### 1.1.1 - 2018-09-02
 
-#### 🐞 Fixed
+#### 🐞 Fixes
 
 - Fixed an issue with built declaration files.
 
-# 1.1.0 - 2018-09-02
+## 1.1.0 - 2018-09-02
 
-#### 🚀 New
+#### 🚀 Updates
 
 - Switched to Babel 7 as the transpiler. Bumped IE requirement to v11, and Node requirement to v8.9.
 
