@@ -225,7 +225,9 @@ optimal(
 
 The `shape(shape: { [key: string]: Builder })` predicate verifies a value matches a specific object
 shape, defined by a collection of properties to builders. Defaults to the structure of the shape and
-_cannot_ be customized.
+_cannot_ be customized. Shape builder supports the following additional method:
+
+- `exact()` - Requires the object to be exact. Unknown fields will error.
 
 ```ts
 optimal(
@@ -240,9 +242,6 @@ optimal(
   },
 );
 ```
-
-> When the `unknown` option is passed to `optimal()`, the shape predicate will throw errors for
-> unknown fields.
 
 ## String
 
@@ -302,7 +301,7 @@ optimal(
 );
 ```
 
-Unions also support objects and unisons in parallel. However, when using this approach, be sure that
+Unions also support objects and shapes in unison. However, when using this approach, be sure that
 shapes are listed first so that they validate their shape early and exit the validation process.
 
 ```ts
