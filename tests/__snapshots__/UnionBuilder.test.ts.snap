@@ -8,26 +8,75 @@ exports[`UnionBuilder constructor() errors if an empty array is passed 1`] = `"A
 
 exports[`UnionBuilder runChecks() errors if a nested union is used 1`] = `"Invalid field \\"key\\". Nested unions are not supported."`;
 
-exports[`UnionBuilder runChecks() errors if a unsupported type is used 1`] = `"Invalid field \\"key\\". Type must be one of: string, number, boolean"`;
+exports[`UnionBuilder runChecks() errors if a unsupported type is used 1`] = `"Invalid field \\"key\\". Type must be one of: string, number, boolean."`;
 
-exports[`UnionBuilder runChecks() errors if an object and shape are used 1`] = `"Invalid field \\"key\\". Objects and shapes within the same union are not supported."`;
+exports[`UnionBuilder runChecks() errors with the class name for instance checks 1`] = `"Invalid field \\"key\\". Type must be one of: number, Buffer."`;
 
-exports[`UnionBuilder runChecks() errors if the same builder type is used multiple times 1`] = `"Invalid field \\"key\\". Multiple instances of \\"object\\" are not supported."`;
+exports[`UnionBuilder runChecks() runs array check 1`] = `
+"Invalid field \\"key\\". Type must be one of: array<string>, boolean, Foo, number, object<number>, string. Received array with the following invalidations:
+ - Invalid field \\"key[0]\\". Must be a string."
+`;
 
-exports[`UnionBuilder runChecks() errors with the class name for instance checks 1`] = `"Invalid field \\"key\\". Type must be one of: number, Buffer"`;
+exports[`UnionBuilder runChecks() runs boolean check 1`] = `
+"Invalid field \\"key\\". Type must be one of: array<string>, boolean, Foo, number, object<number>, string. Received boolean with the following invalidations:
+ - Value may only be \\"true\\"."
+`;
 
-exports[`UnionBuilder runChecks() runs array check 1`] = `"Invalid field \\"key[0]\\". Must be a string."`;
+exports[`UnionBuilder runChecks() runs custom check 1`] = `
+"Invalid field \\"key\\". Type must be one of: string, custom. Received number with the following invalidations:
+ - Encountered a number!"
+`;
 
-exports[`UnionBuilder runChecks() runs boolean check 1`] = `"Invalid field \\"key\\". Value may only be \\"true\\"."`;
+exports[`UnionBuilder runChecks() runs instance check 1`] = `
+"Invalid field \\"key\\". Type must be one of: array<string>, boolean, Foo, number, object<number>, string. Received instance with the following invalidations:
+ - Must be an instance of \\"Foo\\"."
+`;
 
-exports[`UnionBuilder runChecks() runs custom check 1`] = `"Invalid field \\"key\\". Encountered a number!"`;
+exports[`UnionBuilder runChecks() runs number check 1`] = `
+"Invalid field \\"key\\". Type must be one of: array<string>, boolean, Foo, number, object<number>, string. Received number with the following invalidations:
+ - Number must be between 0 and 5."
+`;
 
-exports[`UnionBuilder runChecks() runs instance check 1`] = `"Invalid field \\"key\\". Must be an instance of \\"Foo\\"."`;
+exports[`UnionBuilder runChecks() runs object check 1`] = `
+"Invalid field \\"key\\". Type must be one of: array<string>, boolean, Foo, number, object<number>, string. Received object with the following invalidations:
+ - Invalid field \\"key.foo\\". Must be a number."
+`;
 
-exports[`UnionBuilder runChecks() runs number check 1`] = `"Invalid field \\"key\\". Number must be between 0 and 5."`;
+exports[`UnionBuilder runChecks() runs shape check 1`] = `
+"Invalid field \\"key\\". Type must be one of: shape. Received object with the following invalidations:
+ - Invalid field \\"key.foo\\". Must be a string."
+`;
 
-exports[`UnionBuilder runChecks() runs object check 1`] = `"Invalid field \\"key.foo\\". Must be a number."`;
+exports[`UnionBuilder runChecks() runs string check 1`] = `
+"Invalid field \\"key\\". Type must be one of: array<string>, boolean, Foo, number, object<number>, string. Received string with the following invalidations:
+ - String must be one of: foo, bar, baz"
+`;
 
-exports[`UnionBuilder runChecks() runs shape check 1`] = `"Invalid field \\"key.foo\\". Must be a string."`;
+exports[`UnionBuilder runChecks() supports multiple array builders 1`] = `
+"Invalid field \\"key\\". Type must be one of: array<string>, array<number>. Received array with the following invalidations:
+ - Invalid field \\"key[0]\\". Must be a string.
+ - Invalid field \\"key[0]\\". Must be a number."
+`;
 
-exports[`UnionBuilder runChecks() runs string check 1`] = `"Invalid field \\"key\\". String must be one of: foo, bar, baz"`;
+exports[`UnionBuilder runChecks() supports multiple object builders 1`] = `
+"Invalid field \\"key\\". Type must be one of: object<string>, object<number>. Received object with the following invalidations:
+ - Invalid field \\"key.foo\\". Must be a string.
+ - Invalid field \\"key.foo\\". Must be a number."
+`;
+
+exports[`UnionBuilder runChecks() supports object and shape builders in parallel 1`] = `
+"Invalid field \\"key\\". Type must be one of: shape, object<string>. Received object with the following invalidations:
+ - Unknown field \\"key.unknown\\".
+ - Invalid field \\"key.unknown\\". Must be a string."
+`;
+
+exports[`UnionBuilder runChecks() supports object and shape builders in parallel 2`] = `
+"Invalid field \\"key\\". Type must be one of: shape, object<string>. Received object with the following invalidations:
+ - Invalid field \\"key.foo\\". Must be a string."
+`;
+
+exports[`UnionBuilder runChecks() supports object and shape builders in parallel 3`] = `
+"Invalid field \\"key\\". Type must be one of: shape, object<string>. Received object with the following invalidations:
+ - Invalid field \\"key.bar\\". Must be a number.
+ - Invalid field \\"key.baz\\". Must be a string."
+`;

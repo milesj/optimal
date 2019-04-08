@@ -2,6 +2,10 @@
 
 #### 🚀 New
 
+- Updated `shape()` to throw on unknown fields when the `unknown` option is passed to `optimal()`.
+- Updated `union()` to support builders of the same type in parallel. For example, can now use 2
+  instances of `object()`.
+- Updated `union()` to support object and shapes in parallel.
 - TS: Updated `instance()` to allow abstract classes.
 
 # 3.0.0 - 2019-04-03

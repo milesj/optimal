@@ -37,12 +37,14 @@ export default class ShapeBuilder<Shape extends object> extends Builder<Shape> {
       );
     }
 
-    Object.keys(this.contents).forEach(baseKey => {
+    Object.keys(object).forEach(baseKey => {
       const key = baseKey as keyof Shape;
       const builder = this.contents[key];
 
       if (builder instanceof Builder) {
         value[key] = builder.runChecks(`${path}.${key}`, object[key], object, options);
+      } else if (options.unknown) {
+        throw new TypeError(`Unknown field "${path}.${key}".`);
       } else {
         value[key] = object[key];
       }

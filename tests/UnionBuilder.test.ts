@@ -71,28 +71,7 @@ describe('UnionBuilder', () => {
         union(
           [string('foo').oneOf(['foo', 'bar', 'baz']), union([number(), bool()], [])],
           [],
-        ).runChecks('key', [], {});
-      }).toThrowErrorMatchingSnapshot();
-    });
-
-    it('errors if an object and shape are used', () => {
-      expect(() => {
-        union(
-          [
-            object(string()),
-            shape({
-              foo: string(),
-              bar: number(),
-            }),
-          ],
-          [],
-        ).runChecks('key', [], {});
-      }).toThrowErrorMatchingSnapshot();
-    });
-
-    it('errors if the same builder type is used multiple times', () => {
-      expect(() => {
-        union([object(string()), object(number())], []).runChecks('key', [], {});
+        ).runChecks('key', '', {});
       }).toThrowErrorMatchingSnapshot();
     });
 
@@ -178,6 +157,72 @@ describe('UnionBuilder', () => {
       expect(builder.runChecks('key', 'foo', {})).toBe('foo');
       expect(builder.runChecks('key', 3, {})).toBe(3);
       expect(builder.runChecks('key', true, {})).toBe(true);
+    });
+
+    it('supports multiple array builders', () => {
+      builder = union([array(string()), array(number())], []);
+
+      expect(() => {
+        builder.runChecks('key', [true], {});
+      }).toThrowErrorMatchingSnapshot();
+
+      expect(() => {
+        builder.runChecks('key', [123], {});
+      }).not.toThrowError();
+
+      expect(() => {
+        builder.runChecks('key', ['abc'], {});
+      }).not.toThrowError();
+    });
+
+    it('supports multiple object builders', () => {
+      builder = union([object(string()), object(number())], {});
+
+      expect(() => {
+        builder.runChecks('key', { foo: true }, {});
+      }).toThrowErrorMatchingSnapshot();
+
+      expect(() => {
+        builder.runChecks('key', { foo: 123 }, {});
+      }).not.toThrowError();
+
+      expect(() => {
+        builder.runChecks('key', { foo: 'abc' }, {});
+      }).not.toThrowError();
+    });
+
+    it('supports object and shape builders in parallel', () => {
+      builder = union(
+        [
+          shape({
+            foo: string(),
+            bar: number(),
+            baz: bool(),
+          }),
+          object(string()),
+        ],
+        {},
+      );
+
+      expect(() => {
+        builder.runChecks('key', { unknown: true }, {}, { unknown: true });
+      }).toThrowErrorMatchingSnapshot();
+
+      expect(() => {
+        builder.runChecks('key', { foo: 123 }, {});
+      }).toThrowErrorMatchingSnapshot();
+
+      expect(() => {
+        builder.runChecks('key', { foo: 'abc', bar: 'abc', baz: 123 }, {});
+      }).toThrowErrorMatchingSnapshot();
+
+      expect(() => {
+        builder.runChecks('key', { foo: 'abc', bar: 123 }, {});
+      }).not.toThrowError();
+
+      expect(() => {
+        builder.runChecks('key', { key: 'value' }, {});
+      }).not.toThrowError();
     });
   });
 

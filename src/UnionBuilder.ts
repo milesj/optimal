@@ -22,41 +22,47 @@ export default class UnionBuilder<T = unknown> extends Builder<T> {
 
   checkUnions(path: string, value: any, builders: Builder<unknown>[]) {
     if (__DEV__) {
-      const usage: { [type: string]: boolean } = {};
-      const keys: string[] = [];
+      const keys = builders.map(builder => builder.typeAlias()).join(', ');
       const type = typeOf(value);
-
-      // Verify structure and usage
-      builders.forEach(builder => {
-        if (usage[builder.type]) {
-          this.invariant(false, `Multiple instances of "${builder.type}" are not supported.`, path);
-        } else if (builder.type === 'union') {
+      const errors = new Set();
+      const passed = builders.some(builder => {
+        if (builder.type === 'union') {
           this.invariant(false, 'Nested unions are not supported.', path);
-        } else {
-          usage[builder.type] = true;
-          keys.push(builder.typeAlias());
         }
+
+        try {
+          if (
+            type === builder.type ||
+            (type === 'object' && builder.type === 'shape') ||
+            builder.type === 'custom'
+          ) {
+            // eslint-disable-next-line no-param-reassign
+            builder.noPrefix = true;
+            builder.runChecks(path, value, this.currentStruct, {
+              ...this.options,
+              unknown: true,
+            });
+
+            // We have a valid result, so remove errors
+            errors.clear();
+
+            return true;
+          }
+        } catch (error) {
+          errors.add(` - ${error.message}`);
+        }
+
+        return false;
       });
 
-      if (usage.shape && usage.object) {
-        this.invariant(false, 'Objects and shapes within the same union are not supported.', path);
+      let message = `Type must be one of: ${keys}.`;
+
+      if (errors.size > 0) {
+        message += ` Received ${type} with the following invalidations:\n`;
+        message += Array.from(errors).join('\n');
       }
 
-      // Run checks on value
-      let checked = false;
-
-      builders.forEach(builder => {
-        if (
-          type === builder.type ||
-          (type === 'object' && builder.type === 'shape') ||
-          builder.type === 'custom'
-        ) {
-          checked = true;
-          builder.runChecks(path, value, this.currentStruct, this.options);
-        }
-      });
-
-      this.invariant(checked, `Type must be one of: ${keys.join(', ')}`, path);
+      this.invariant(passed && errors.size === 0, message, path);
     }
   }
 

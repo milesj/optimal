@@ -241,6 +241,9 @@ optimal(
 );
 ```
 
+> When the `unknown` option is passed to `optimal()`, the shape predicate will throw errors for
+> unknown fields.
+
 ## String
 
 The `string(default?: string)` predicate verifies a value is a string. Defaults to an empty string
@@ -282,6 +285,38 @@ optimal(
         }),
       ],
       './src',
+    ),
+  },
+);
+```
+
+Unions support multiple builders of the same type in unison, and the first one that passes
+validation will be used.
+
+```ts
+optimal(
+  {},
+  {
+    source: union([object(number()), object(string())], {}),
+  },
+);
+```
+
+Unions also support objects and unisons in parallel. However, when using this approach, be sure that
+shapes are listed first so that they validate their shape early and exit the validation process.
+
+```ts
+optimal(
+  {},
+  {
+    source: union(
+      [
+        shape({
+          path: string(),
+        }),
+        object(number()),
+      ],
+      {},
     ),
   },
 );
