@@ -49,7 +49,7 @@ export default class UnionBuilder<T = unknown> extends Builder<T> {
             return true;
           }
         } catch (error) {
-          errors.add(` - ${error.message}`);
+          errors.add(` - ${error.message}\n`);
         }
 
         return false;
@@ -59,10 +59,13 @@ export default class UnionBuilder<T = unknown> extends Builder<T> {
 
       if (errors.size > 0) {
         message += ` Received ${type} with the following invalidations:\n`;
-        message += Array.from(errors).join('\n');
+
+        errors.forEach(error => {
+          message += error;
+        });
       }
 
-      this.invariant(passed && errors.size === 0, message, path);
+      this.invariant(passed && errors.size === 0, message.trim(), path);
     }
   }
 
