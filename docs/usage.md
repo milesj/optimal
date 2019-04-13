@@ -5,10 +5,17 @@ All Optimal functionality is handled through a single function, `optimal()`, whi
 understand its power, lets define a class that accepts an options object in the constructor.
 
 ```ts
-import optimal, { debug, string } from 'optimal';
+import optimal, { bool, string } from 'optimal';
+
+interface PluginOptions {
+  debug?: boolean;
+  priority?: 'low' | 'normal' | 'high';
+}
 
 class Plugin {
-  constructor(options = {}) {
+  options: Required<PluginOptions>;
+
+  constructor(options: PluginOptions = {}) {
     this.options = optimal(options, {
       debug: bool(),
       priority: string('low').oneOf(['low', 'normal', 'high']),
