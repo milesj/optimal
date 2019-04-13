@@ -11,7 +11,7 @@ export default class StringBuilder<T extends string = string> extends Builder<T>
 
   contains(token: string, index: number = 0): this {
     if (__DEV__) {
-      this.invariant(isString(token), 'Contains requires a non-empty string.');
+      this.invariant(isString(token), 'Contains requires a non-empty token.');
     }
 
     return this.addCheck(this.checkContains, token, index);
@@ -19,6 +19,10 @@ export default class StringBuilder<T extends string = string> extends Builder<T>
 
   checkContains(path: string, value: T, token: string, index: number = 0) {
     if (__DEV__) {
+      if (this.isOptionalDefault(value)) {
+        return;
+      }
+
       this.invariant(value.includes(token, index), `String does not include "${token}".`, path);
     }
   }
@@ -36,6 +40,10 @@ export default class StringBuilder<T extends string = string> extends Builder<T>
 
   checkMatch(path: string, value: T, pattern: RegExp) {
     if (__DEV__) {
+      if (this.isOptionalDefault(value)) {
+        return;
+      }
+
       this.invariant(
         !!value.match(pattern),
         `String does not match pattern "${pattern.source}".`,

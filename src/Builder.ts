@@ -195,6 +195,13 @@ export default class Builder<T> {
   }
 
   /**
+   * Return true if the value matches the default value and the builder is optional.
+   */
+  isOptionalDefault(value: any): boolean {
+    return !this.isRequired && value === this.defaultValue;
+  }
+
+  /**
    * Return the current key from a path.
    */
   key(path: string): string {

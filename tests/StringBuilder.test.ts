@@ -4,7 +4,7 @@ describe('StringBuilder', () => {
   let builder: StringBuilder;
 
   beforeEach(() => {
-    builder = string('foo');
+    builder = string();
   });
 
   describe('constructor()', () => {
@@ -53,6 +53,18 @@ describe('StringBuilder', () => {
       }).toThrowErrorMatchingSnapshot();
     });
 
+    it('errors if value matches default value and builder is required', () => {
+      expect(() => {
+        builder.required().checkContains('key', '', 'oo');
+      }).toThrowErrorMatchingSnapshot();
+    });
+
+    it('doesnt error if value matches default value and builder is optional', () => {
+      expect(() => {
+        builder.checkContains('key', '', 'oo');
+      }).not.toThrowError('Invalid field "key". String does not include "oo".');
+    });
+
     it('doesnt error if value contains token', () => {
       expect(() => {
         builder.checkContains('key', 'foo', 'oo');
@@ -83,6 +95,18 @@ describe('StringBuilder', () => {
       expect(() => {
         builder.checkMatch('key', 'bar', /oo/u);
       }).toThrowErrorMatchingSnapshot();
+    });
+
+    it('errors if value matches default value and builder is required', () => {
+      expect(() => {
+        builder.required().checkMatch('key', '', /oo/u);
+      }).toThrowErrorMatchingSnapshot();
+    });
+
+    it('doesnt error if value matches default value and builder is optional', () => {
+      expect(() => {
+        builder.checkMatch('key', '', /oo/u);
+      }).not.toThrowError('Invalid field "key". String does not match pattern "oo".');
     });
 
     it('doesnt error if value matches pattern', () => {

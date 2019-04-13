@@ -1,3 +1,10 @@
+### 3.1.1 - 2019-04-13
+
+#### 🐞 Fixes
+
+- Updated `StringBuilder#contains` and `StringBuilder#match` to only check when the passed value is
+  not the default value _or_ the field is required.
+
 ## 3.1.0 - 2019-04-07
 
 #### 🚀 Updates
