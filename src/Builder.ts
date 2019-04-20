@@ -21,7 +21,7 @@ export default class Builder<T> {
 
   isRequired: boolean = false;
 
-  noPrefix: boolean = false;
+  noErrorPrefix: boolean = false;
 
   options: OptimalOptions = {};
 
@@ -186,7 +186,7 @@ export default class Builder<T> {
         prefix += ` in ${file}`;
       }
 
-      if (prefix && !this.noPrefix) {
+      if (prefix && !this.noErrorPrefix) {
         throw new Error(`${prefix}. ${error}`);
       } else {
         throw new Error(error);

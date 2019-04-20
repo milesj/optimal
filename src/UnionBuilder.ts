@@ -39,7 +39,7 @@ export default class UnionBuilder<T = unknown> extends Builder<T> {
             builder.type === 'custom'
           ) {
             // eslint-disable-next-line no-param-reassign
-            builder.noPrefix = true;
+            builder.noErrorPrefix = true;
             nextValue = builder.runChecks(path, value, this.currentStruct, this.options);
 
             return true;

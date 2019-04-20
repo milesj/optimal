@@ -5,6 +5,10 @@
 - Added a `prefix` option to `optimal`, which customizes the initial object path prefix for errors.
 - Builder methods can now return a value to mutate the value being checked.
 
+#### 🐞 Fixes
+
+- Shapes within arrays, objects, or unions are now returned with the full object.
+
 #### 🛠 Internals
 
 - Updated `ShapeBuilder` to call `optimal` internally, as the APIs are very similar.
