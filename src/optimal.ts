@@ -43,7 +43,9 @@ function buildAndCheck<Struct extends object>(
     const unknownKeys = Object.keys(unknownFields);
 
     if (unknownKeys.length > 0) {
-      throw new Error(`Unknown fields: ${unknownKeys.join(', ')}.`);
+      const message = parentPath ? `Unknown "${parentPath}" fields` : 'Unknown fields';
+
+      throw new Error(`${message}: ${unknownKeys.join(', ')}.`);
     }
   }
 
@@ -64,5 +66,5 @@ export default function optimal<
     }
   }
 
-  return buildAndCheck(blueprint, struct, options);
+  return buildAndCheck(blueprint, struct, options, options.prefix);
 }

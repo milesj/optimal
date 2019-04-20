@@ -1,7 +1,12 @@
-### 3.2.0 - 2019-04-20
+## 3.2.0 - 2019-04-20
+
+#### 🚀 Updates
+
+- Added a `prefix` option to `optimal`, which customizes the initial object path prefix for errors.
 
 #### 🛠 Internals
 
+- Updated `ShapeBuilder` to call `optimal` internally, as the APIs are very similar.
 - Removed `@babel/runtime-corejs3` as it wasn't saving much space.
 
 ### 3.1.1 - 2019-04-13

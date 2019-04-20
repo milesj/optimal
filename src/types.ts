@@ -17,6 +17,7 @@ export type CustomCallback<T> = (value: T, struct: object) => void;
 export interface OptimalOptions {
   file?: string;
   name?: string;
+  prefix?: string;
   unknown?: boolean;
 }
 

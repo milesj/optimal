@@ -66,7 +66,7 @@ exports[`UnionBuilder runChecks() supports multiple object builders 1`] = `
 
 exports[`UnionBuilder runChecks() supports object and shape builders in parallel 1`] = `
 "Invalid field \\"key\\". Type must be one of: shape, object<string>. Received object with the following invalidations:
- - Unknown shape fields: unknown.
+ - Unknown \\"key\\" fields: unknown.
  - Invalid field \\"key.unknown\\". Must be a string."
 `;
 

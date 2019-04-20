@@ -1,5 +1,6 @@
 import Builder from './Builder';
 import isObject from './isObject';
+import optimal from './optimal';
 import { Blueprint, OptimalOptions } from './types';
 
 export default class ShapeBuilder<Shape extends object> extends Builder<Shape> {
@@ -34,37 +35,17 @@ export default class ShapeBuilder<Shape extends object> extends Builder<Shape> {
     struct: object,
     options: OptimalOptions = {},
   ): any {
-    const value: any = {};
     const object = initialValue || this.defaultValue || {};
 
     if (__DEV__) {
       this.invariant(isObject(object), 'Value passed to shape must be an object.', path);
     }
 
-    const unknownFields = { ...object };
-
-    Object.keys(this.contents).forEach(baseKey => {
-      const key = baseKey as keyof Shape;
-      const builder = this.contents[key];
-
-      if (builder instanceof Builder) {
-        value[key] = builder.runChecks(`${path}.${key}`, object[key], object, options);
-      } else {
-        value[key] = object[key];
-      }
-
-      delete unknownFields[key];
+    return optimal(object, this.contents, {
+      ...options,
+      prefix: path,
+      unknown: !this.isExact,
     });
-
-    if (this.isExact) {
-      const unknownKeys = Object.keys(unknownFields);
-
-      if (unknownKeys.length > 0) {
-        throw new Error(`Unknown shape fields: ${unknownKeys.join(', ')}.`);
-      }
-    }
-
-    return value;
   }
 }
 
