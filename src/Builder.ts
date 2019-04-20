@@ -356,7 +356,11 @@ export default class Builder<T> {
     // Run all checks against the value
     if (__DEV__) {
       this.checks.forEach(checker => {
-        checker.callback.call(this, path, value, ...checker.args);
+        const result = checker.callback.call(this, path, value, ...checker.args);
+
+        if (typeof result !== 'undefined') {
+          value = result;
+        }
       });
     }
 

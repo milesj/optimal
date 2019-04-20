@@ -19,12 +19,16 @@ export default class ArrayBuilder<T> extends Builder<ArrayOf<T>> {
     }
   }
 
-  checkContents(path: string, value: ArrayOf<T>, contents: Builder<T>) {
+  checkContents(path: string, value: ArrayOf<T>, contents: Builder<T>): T[] {
+    const nextValue = [...value];
+
     if (__DEV__) {
       value.forEach((item: T, i: number) => {
-        contents.runChecks(`${path}[${i}]`, item, this.currentStruct, this.options);
+        nextValue[i] = contents.runChecks(`${path}[${i}]`, item, this.currentStruct, this.options)!;
       });
     }
+
+    return nextValue;
   }
 
   notEmpty(): this {

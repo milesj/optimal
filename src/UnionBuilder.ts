@@ -21,6 +21,8 @@ export default class UnionBuilder<T = unknown> extends Builder<T> {
   }
 
   checkUnions(path: string, value: any, builders: Builder<unknown>[]) {
+    let nextValue = value;
+
     if (__DEV__) {
       const keys = builders.map(builder => builder.typeAlias()).join(', ');
       const type = typeOf(value);
@@ -38,7 +40,7 @@ export default class UnionBuilder<T = unknown> extends Builder<T> {
           ) {
             // eslint-disable-next-line no-param-reassign
             builder.noPrefix = true;
-            builder.runChecks(path, value, this.currentStruct, this.options);
+            nextValue = builder.runChecks(path, value, this.currentStruct, this.options);
 
             return true;
           }
@@ -61,10 +63,12 @@ export default class UnionBuilder<T = unknown> extends Builder<T> {
 
       this.invariant(passed, message.trim(), path);
     }
+
+    return nextValue;
   }
 
   /**
-   * Return the type name using generics syntax.
+   * Return the type name using pipe syntax.
    */
   typeAlias(): string {
     return this.builders.map(builder => builder.typeAlias()).join(' | ');

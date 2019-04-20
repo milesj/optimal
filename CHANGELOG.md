@@ -3,6 +3,7 @@
 #### 🚀 Updates
 
 - Added a `prefix` option to `optimal`, which customizes the initial object path prefix for errors.
+- Builder methods can now return a value to mutate the value being checked.
 
 #### 🛠 Internals
 

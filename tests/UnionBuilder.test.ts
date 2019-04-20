@@ -224,6 +224,62 @@ describe('UnionBuilder', () => {
         builder.runChecks('key', { key: 'value' }, {});
       }).not.toThrowError();
     });
+
+    it('returns shapes as their full objects', () => {
+      builder = union(
+        [
+          shape({
+            foo: string().required(),
+            bar: number(),
+            baz: bool(),
+          }).exact(),
+          object(number()),
+        ],
+        {},
+      );
+
+      expect(builder.runChecks('key', {}, {})).toEqual({});
+      expect(builder.runChecks('key', { foo: 'foo' }, {})).toEqual({
+        foo: 'foo',
+        bar: 0,
+        baz: false,
+      });
+      expect(builder.runChecks('key', { a: 1, b: 2 }, {})).toEqual({ a: 1, b: 2 });
+    });
+
+    it('returns an array of shapes as their full objects', () => {
+      builder = union(
+        [
+          array(
+            shape({
+              foo: string(),
+              bar: number(),
+              baz: bool(),
+            }).exact(),
+          ),
+        ],
+        [],
+      );
+
+      expect(builder.runChecks('key', [], {})).toEqual([]);
+      expect(builder.runChecks('key', [{ foo: 'foo' }, { bar: 123 }, { baz: true }], {})).toEqual([
+        {
+          foo: 'foo',
+          bar: 0,
+          baz: false,
+        },
+        {
+          foo: '',
+          bar: 123,
+          baz: false,
+        },
+        {
+          foo: '',
+          bar: 0,
+          baz: true,
+        },
+      ]);
+    });
   });
 
   describe('typeAlias()', () => {

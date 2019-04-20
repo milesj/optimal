@@ -20,12 +20,21 @@ export default class ObjectBuilder<T> extends Builder<ObjectOf<T>> {
     }
   }
 
-  checkContents(path: string, value: ObjectOf<T>, contents: Builder<T>) {
+  checkContents(path: string, value: ObjectOf<T>, contents: Builder<T>): ObjectOf<T> {
+    const nextValue = { ...value };
+
     if (__DEV__) {
       Object.keys(value).forEach(key => {
-        contents.runChecks(`${path}.${key}`, value[key], this.currentStruct, this.options);
+        nextValue[key] = contents.runChecks(
+          `${path}.${key}`,
+          value[key],
+          this.currentStruct,
+          this.options,
+        )!;
       });
     }
+
+    return nextValue;
   }
 
   notEmpty(): this {
