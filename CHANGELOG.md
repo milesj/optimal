@@ -1,3 +1,9 @@
+### 3.2.0 - 2019-04-20
+
+#### 🛠 Internals
+
+- Removed `@babel/runtime-corejs3` as it wasn't saving much space.
+
 ### 3.1.1 - 2019-04-13
 
 #### 🐞 Fixes

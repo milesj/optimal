@@ -42,11 +42,8 @@
     "url": "https://github.com/milesj/optimal/issues"
   },
   "homepage": "https://github.com/milesj/optimal#readme",
-  "dependencies": {
-    "@babel/runtime-corejs3": "^7.4.3"
-  },
   "devDependencies": {
-    "@milesj/build-tools": "^0.39.1"
+    "@milesj/build-tools": "^0.42.0"
   },
   "beemo": {
     "module": "@milesj/build-tools",
