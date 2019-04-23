@@ -1209,10 +1209,10 @@
     "@types/istanbul-lib-coverage" "^2.0.0"
     "@types/yargs" "^12.0.9"
 
-"@milesj/build-tool-config@^0.165.0":
-  version "0.165.0"
-  resolved "https://registry.npmjs.org/@milesj/build-tool-config/-/build-tool-config-0.165.0.tgz#e38a4e2c2f209f60f6f3bb16992cf472c875b0bb"
-  integrity sha512-5oIn3Oh5DiSuj6DRVi5olwCt8gFXYefF54nGm3Rjx6RmOqMXTO9R9rCCZJJVW19IEQsardK5PXPGRv51UxW8Ew==
+"@milesj/build-tool-config@^0.165.1":
+  version "0.165.1"
+  resolved "https://registry.npmjs.org/@milesj/build-tool-config/-/build-tool-config-0.165.1.tgz#ce64c94f1a847995d89272d0aed1dbdd845cd5c3"
+  integrity sha512-mqkJj4cmAnJl3M2cfHGDy6KWdp2j6BUnWo6vN+MGZhyWyptgoBXZq5ALRouUqoSF2laCDjSqHUkha7lvP1pj2A==
   dependencies:
     "@babel/cli" "^7.4.3"
     "@babel/core" "^7.4.3"
@@ -1275,12 +1275,12 @@
     prettier "^1.17.0"
     typescript "^3.4.4"
 
-"@milesj/build-tools@^0.43.0":
-  version "0.43.0"
-  resolved "https://registry.npmjs.org/@milesj/build-tools/-/build-tools-0.43.0.tgz#323d9ee2142ea73294b8b53364c149f28778a3d0"
-  integrity sha512-tEySW3LSJ+R3quiQ3Zovqiie9J0ZUx7aQAwNGNZMpBkhStWyVcnpo8nQXvJfY26sMGZGOy4tWTTinUBu35lGsg==
+"@milesj/build-tools@^0.43.1":
+  version "0.43.1"
+  resolved "https://registry.npmjs.org/@milesj/build-tools/-/build-tools-0.43.1.tgz#b0b5a0997f823b801f808b24e58c7c6f253f495c"
+  integrity sha512-cL97H9xL8GSZVIkvT6eNQtlxpKn5e7dVUcVvYRzKajmRLb8EiOtQ27zLTsLMg3iJWHwXLCLux0cporMuap7eHQ==
   dependencies:
-    "@milesj/build-tool-config" "^0.165.0"
+    "@milesj/build-tool-config" "^0.165.1"
     "@milesj/build-tool-runtime" "^0.37.0"
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
