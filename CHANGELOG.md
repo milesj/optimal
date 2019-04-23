@@ -1,3 +1,9 @@
+## 3.2.1 - 2019-04-22
+
+#### 🐞 Fixes
+
+- Fixed some build issues.
+
 ## 3.2.0 - 2019-04-20
 
 #### 🚀 Updates
