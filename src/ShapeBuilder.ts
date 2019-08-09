@@ -9,13 +9,16 @@ export default class ShapeBuilder<Shape extends object> extends Builder<Shape> {
   isExact: boolean = false;
 
   constructor(contents: Blueprint<Shape>) {
-    super('shape', {} as any);
+    // @ts-ignore
+    super('shape', {});
 
     if (__DEV__) {
       this.invariant(
         isObject(contents) &&
           Object.keys(contents).length > 0 &&
-          Object.keys(contents).every(key => (contents as any)[key] instanceof Builder),
+          Object.keys(contents).every(
+            key => contents[key as keyof typeof contents] instanceof Builder,
+          ),
         'A non-empty object of properties to blueprints are required for a shape.',
       );
     }
@@ -34,7 +37,7 @@ export default class ShapeBuilder<Shape extends object> extends Builder<Shape> {
     initialValue: Partial<Shape> | undefined,
     struct: object,
     options: OptimalOptions = {},
-  ): any {
+  ) {
     const object = initialValue || this.defaultValue || {};
 
     if (__DEV__) {

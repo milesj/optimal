@@ -92,7 +92,7 @@ export default class NumberBuilder<T extends number = number> extends Builder<T>
 
     this.addCheck(this.checkOneOf, list);
 
-    return (this as any) as NumberBuilder<U>;
+    return (this as unknown) as NumberBuilder<U>;
   }
 
   checkOneOf(path: string, value: T, list: T[]) {

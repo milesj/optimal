@@ -68,10 +68,10 @@ describe('UnionBuilder', () => {
 
     it('errors if a nested union is used', () => {
       expect(() => {
-        union(
+        union<string[]>(
           [string('foo').oneOf(['foo', 'bar', 'baz']), union([number(), bool()], [])],
           [],
-        ).runChecks('key', '', {});
+        ).runChecks('key', [], {});
       }).toThrowErrorMatchingSnapshot();
     });
 

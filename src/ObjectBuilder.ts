@@ -65,6 +65,6 @@ export function object<T = unknown>(
   return new ObjectBuilder<T>(contents, defaultValue);
 }
 
-export function blueprint<T = any>(defaultValue?: ObjectOf<Builder<T>>) /* infer */ {
+export function blueprint<T = unknown>(defaultValue?: ObjectOf<Builder<T>>) /* infer */ {
   return new ObjectBuilder<Builder<T>>(builder<T>().notNullable(), defaultValue);
 }

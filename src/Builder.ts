@@ -1,6 +1,10 @@
 import isObject from './isObject';
 import { SupportedType, CheckerCallback, CustomCallback, OptimalOptions, FuncOf } from './types';
 
+export interface TemporalStruct {
+  [key: string]: unknown;
+}
+
 export interface Check {
   args: unknown[];
   callback: CheckerCallback;
@@ -72,7 +76,7 @@ export default class Builder<T> {
   checkAnd(path: string, value: T, otherKeys: string[]) {
     if (__DEV__) {
       const keys = [this.key(path), ...otherKeys];
-      const struct = this.currentStruct as any;
+      const struct = this.currentStruct as TemporalStruct;
       const undefs = keys.filter(key => typeof struct[key] === 'undefined' || struct[key] === null);
 
       // Only error once one of the struct is defined
@@ -197,7 +201,7 @@ export default class Builder<T> {
   /**
    * Return true if the value matches the default value and the builder is optional.
    */
-  isOptionalDefault(value: any): boolean {
+  isOptionalDefault(value: unknown): boolean {
     return !this.isRequired && value === this.defaultValue;
   }
 
@@ -234,7 +238,7 @@ export default class Builder<T> {
       this.isNullable = false;
     }
 
-    return (this as any) as Builder<NonNullable<T>>;
+    return (this as unknown) as Builder<NonNullable<T>>;
   }
 
   /**
@@ -245,7 +249,7 @@ export default class Builder<T> {
       this.isNullable = true;
     }
 
-    return (this as any) as Builder<T | null>;
+    return (this as unknown) as Builder<T | null>;
   }
 
   /**
@@ -293,7 +297,7 @@ export default class Builder<T> {
   checkOr(path: string, value: T, otherKeys: string[]) {
     if (__DEV__) {
       const keys = [this.key(path), ...otherKeys];
-      const struct = this.currentStruct as any;
+      const struct = this.currentStruct as TemporalStruct;
       const defs = keys.filter(key => typeof struct[key] !== 'undefined' && struct[key] !== null);
 
       this.invariant(
@@ -391,7 +395,7 @@ export default class Builder<T> {
   checkXor(path: string, value: T, otherKeys: string[]) {
     if (__DEV__) {
       const keys = [this.key(path), ...otherKeys];
-      const struct = this.currentStruct as any;
+      const struct = this.currentStruct as TemporalStruct;
       const defs = keys.filter(key => typeof struct[key] !== 'undefined' && struct[key] !== null);
 
       this.invariant(

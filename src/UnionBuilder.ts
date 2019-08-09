@@ -4,7 +4,7 @@ import typeOf from './typeOf';
 export default class UnionBuilder<T = unknown> extends Builder<T> {
   builders: Builder<unknown>[] = [];
 
-  constructor(builders: Builder<unknown>[], defaultValue: any) {
+  constructor(builders: Builder<unknown>[], defaultValue: T) {
     super('union', defaultValue);
 
     if (__DEV__) {
@@ -20,7 +20,7 @@ export default class UnionBuilder<T = unknown> extends Builder<T> {
     }
   }
 
-  checkUnions(path: string, value: any, builders: Builder<unknown>[]) {
+  checkUnions(path: string, value: unknown, builders: Builder<unknown>[]) {
     let nextValue = value;
 
     if (__DEV__) {
@@ -75,6 +75,6 @@ export default class UnionBuilder<T = unknown> extends Builder<T> {
   }
 }
 
-export function union<T = unknown>(builders: Builder<unknown>[], defaultValue: any) /* infer */ {
+export function union<T = unknown>(builders: Builder<unknown>[], defaultValue: T) /* infer */ {
   return new UnionBuilder<T>(builders, defaultValue);
 }

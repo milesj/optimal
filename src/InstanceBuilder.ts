@@ -2,7 +2,7 @@ import Builder from './Builder';
 import isObject from './isObject';
 import instanceOf from './instanceOf';
 
-export type Constructor<T> = (new (...args: any[]) => T) | (Function & { prototype: T });
+export type Constructor<T> = (new (...args: unknown[]) => T) | (Function & { prototype: T });
 
 export default class InstanceBuilder<T> extends Builder<T | null> {
   loose: boolean = false;
@@ -63,7 +63,7 @@ export function instance<T = Function>(
   return new InstanceBuilder<T>(refClass, loose);
 }
 
-export function builder<T = any>() /* infer */ {
+export function builder<T = unknown>() /* infer */ {
   return instance<Builder<T>>(Builder);
 }
 

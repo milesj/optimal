@@ -1,7 +1,7 @@
 import Builder, { bool, custom, func } from '../src/Builder';
 
 describe('Builder', () => {
-  let builder: Builder<any>;
+  let builder: Builder<unknown>;
 
   beforeEach(() => {
     builder = new Builder('string', 'foo');
@@ -246,7 +246,7 @@ describe('Builder', () => {
     });
 
     it('is passed entire options object', () => {
-      builder = custom((value, options: any) => {
+      builder = custom((value, options: { foo?: number; bar?: number }) => {
         if (options.foo && options.bar) {
           throw new Error('This will error!');
         }

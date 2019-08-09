@@ -8,9 +8,9 @@ function buildAndCheck<Struct extends object>(
   struct: Partial<Struct>,
   options: OptimalOptions = {},
   parentPath: string = '',
-): any {
-  const unknownFields: any = { ...struct };
-  const builtStruct: any = {};
+): Required<Struct> {
+  const unknownFields: Partial<Struct> = { ...struct };
+  const builtStruct: Partial<Struct> = {};
 
   // Validate using the blueprint
   Object.keys(blueprint).forEach(baseKey => {
@@ -22,9 +22,9 @@ function buildAndCheck<Struct extends object>(
     // Run validation checks and support both v1 and v2
     if (
       builder instanceof Builder ||
-      (isObject(builder) && (builder as any).constructor.name.endsWith('Builder'))
+      (isObject(builder) && (builder as Function).constructor.name.endsWith('Builder'))
     ) {
-      builtStruct[key] = builder.runChecks(path, value, struct, options);
+      builtStruct[key] = builder.runChecks(path, value, struct, options)!;
 
       // Oops
     } else if (__DEV__) {
@@ -49,7 +49,7 @@ function buildAndCheck<Struct extends object>(
     }
   }
 
-  return builtStruct;
+  return builtStruct as Required<Struct>;
 }
 
 export default function optimal<

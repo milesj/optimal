@@ -1,3 +1,9 @@
+## 3.3.0
+
+#### ⚙️ Types
+
+- Refined types and replaced `any` with `unknown`.
+
 ## 3.2.1 - 2019-04-22
 
 #### 🐞 Fixes

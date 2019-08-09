@@ -72,7 +72,7 @@ export default class StringBuilder<T extends string = string> extends Builder<T>
 
     this.addCheck(this.checkOneOf, list);
 
-    return (this as any) as StringBuilder<U>;
+    return (this as unknown) as StringBuilder<U>;
   }
 
   checkOneOf(path: string, value: T, list: T[]) {
