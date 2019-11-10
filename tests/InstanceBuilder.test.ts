@@ -30,7 +30,7 @@ describe('instance()', () => {
     it('doesnt error if a class is passed', () => {
       expect(() => {
         inst = instance(Foo);
-      }).not.toThrowError('A class reference is required.');
+      }).not.toThrow('A class reference is required.');
     });
   });
 
@@ -59,7 +59,7 @@ describe('instance()', () => {
     it('doesnt error if a generic class instance is passed', () => {
       expect(() => {
         instance<Foo>().runChecks('key', new Foo(), {});
-      }).not.toThrowError('Invalid field "key". Must be a class instance.');
+      }).not.toThrow('Invalid field "key". Must be a class instance.');
     });
 
     it('errors if a non-instance is passed when a class reference is set', () => {
@@ -71,7 +71,7 @@ describe('instance()', () => {
     it('doesnt error if the correct instance is passed', () => {
       expect(() => {
         instance(Foo).runChecks('key', new Foo(), {});
-      }).not.toThrowError('Invalid field "key". Must be an instance of "Foo".');
+      }).not.toThrow('Invalid field "key". Must be an instance of "Foo".');
     });
 
     it('handles an instance of the same name when passed in loose mode', () => {
@@ -83,17 +83,17 @@ describe('instance()', () => {
 
       expect(() => {
         instance(Foo).runChecks('key', new Foo2(), {});
-      }).toThrowError('Invalid field "key". Must be an instance of "Foo".');
+      }).toThrow('Invalid field "key". Must be an instance of "Foo".');
 
       expect(() => {
         instance(Foo, true).runChecks('key', new Foo2(), {});
-      }).not.toThrowError('Invalid field "key". Must be an instance of "Foo".');
+      }).not.toThrow('Invalid field "key". Must be an instance of "Foo".');
     });
 
     it('supports running checks on abstract classes', () => {
       expect(() => {
         instance(Bar).runChecks('key', new BarImpl(), {});
-      }).not.toThrowError();
+      }).not.toThrow();
     });
   });
 
@@ -126,7 +126,7 @@ describe('builder()', () => {
         123,
         {},
       );
-    }).toThrowError('Invalid field "key". Must be an instance of "Builder".');
+    }).toThrow('Invalid field "key". Must be an instance of "Builder".');
   });
 });
 
@@ -148,7 +148,7 @@ describe('date()', () => {
         123,
         {},
       );
-    }).toThrowError('Invalid field "key". Must be an instance of "Date".');
+    }).toThrow('Invalid field "key". Must be an instance of "Date".');
   });
 });
 
@@ -170,6 +170,6 @@ describe('regex()', () => {
         123,
         {},
       );
-    }).toThrowError('Invalid field "key". Must be an instance of "RegExp".');
+    }).toThrow('Invalid field "key". Must be an instance of "RegExp".');
   });
 });

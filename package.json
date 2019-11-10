@@ -43,7 +43,8 @@
   },
   "homepage": "https://github.com/milesj/optimal#readme",
   "devDependencies": {
-    "@milesj/build-tools": "^0.51.0"
+    "@milesj/build-tools": "^0.59.1",
+    "conventional-changelog-beemo": "^1.5.1"
   },
   "beemo": {
     "module": "@milesj/build-tools",
@@ -53,7 +54,12 @@
       "jest",
       "prettier",
       "typescript"
-    ]
+    ],
+    "eslint": {
+      "rules": {
+        "default-param-last": "off"
+      }
+    }
   },
   "browserslist": [
     "ie 11"

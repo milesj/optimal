@@ -363,7 +363,7 @@ export default class Builder<T> {
         const result = checker.callback.call(this, path, value, ...checker.args);
 
         if (typeof result !== 'undefined') {
-          value = result;
+          value = result as T;
         }
       });
     }

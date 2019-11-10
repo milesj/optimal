@@ -44,7 +44,7 @@ describe('shape()', () => {
         shape({
           foo: string(),
         });
-      }).not.toThrowError(
+      }).not.toThrow(
         'A non-empty object of properties to blueprints are required for a shape.',
       );
     });
@@ -78,7 +78,7 @@ describe('shape()', () => {
           {},
           { unknown: true },
         );
-      }).not.toThrowError();
+      }).not.toThrow();
     });
 
     it('checks each item in the object', () => {

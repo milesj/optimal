@@ -196,7 +196,7 @@ describe('Optimal', () => {
         },
         blueprint,
       );
-    }).toThrowError(
+    }).toThrow(
       'Invalid field "entry". Type must be one of: string, array<string>, object<string | array<string>>, function',
     );
   });
@@ -225,7 +225,7 @@ describe('Optimal', () => {
           name: 'FooBar',
         },
       );
-    }).toThrowError(
+    }).toThrow(
       'Invalid FooBar field "entry". Type must be one of: string, array<string>, object<string | array<string>>, function',
     );
   });
@@ -255,7 +255,7 @@ describe('Optimal', () => {
             unknown: true,
           },
         );
-      }).not.toThrowError('Unknown fields: foo, bar.');
+      }).not.toThrow('Unknown fields: foo, bar.');
     });
 
     it('sets unknown fields', () => {
@@ -297,7 +297,7 @@ describe('Optimal', () => {
             baz: string('c').and('foo', 'bar'),
           },
         );
-      }).not.toThrowError('All of these fields must be defined: foo, bar, baz');
+      }).not.toThrow('All of these fields must be defined: foo, bar, baz');
 
       expect(() => {
         optimal(
@@ -337,7 +337,7 @@ describe('Optimal', () => {
           },
           and,
         );
-      }).not.toThrowError('All of these fields must be defined: foo, bar, baz');
+      }).not.toThrow('All of these fields must be defined: foo, bar, baz');
     });
 
     it('handles OR', () => {
@@ -358,7 +358,7 @@ describe('Optimal', () => {
           },
           or,
         );
-      }).not.toThrowError('At least one of these fields must be defined: foo, bar, baz');
+      }).not.toThrow('At least one of these fields must be defined: foo, bar, baz');
 
       expect(() => {
         optimal(
@@ -367,7 +367,7 @@ describe('Optimal', () => {
           },
           or,
         );
-      }).not.toThrowError('At least one of these fields must be defined: foo, bar, baz');
+      }).not.toThrow('At least one of these fields must be defined: foo, bar, baz');
 
       expect(() => {
         optimal(
@@ -376,7 +376,7 @@ describe('Optimal', () => {
           },
           or,
         );
-      }).not.toThrowError('At least one of these fields must be defined: foo, bar, baz');
+      }).not.toThrow('At least one of these fields must be defined: foo, bar, baz');
 
       expect(() => {
         optimal(
@@ -387,7 +387,7 @@ describe('Optimal', () => {
           },
           or,
         );
-      }).not.toThrowError('At least one of these fields must be defined: foo, bar, baz');
+      }).not.toThrow('At least one of these fields must be defined: foo, bar, baz');
     });
 
     it('handles XOR', () => {
@@ -408,7 +408,7 @@ describe('Optimal', () => {
           },
           xor,
         );
-      }).not.toThrowError('Only one of these fields may be defined: foo, bar, baz');
+      }).not.toThrow('Only one of these fields may be defined: foo, bar, baz');
 
       expect(() => {
         optimal(
@@ -417,7 +417,7 @@ describe('Optimal', () => {
           },
           xor,
         );
-      }).not.toThrowError('Only one of these fields may be defined: foo, bar, baz');
+      }).not.toThrow('Only one of these fields may be defined: foo, bar, baz');
 
       expect(() => {
         optimal(
@@ -426,7 +426,7 @@ describe('Optimal', () => {
           },
           xor,
         );
-      }).not.toThrowError('Only one of these fields may be defined: foo, bar, baz');
+      }).not.toThrow('Only one of these fields may be defined: foo, bar, baz');
 
       expect(() => {
         optimal(

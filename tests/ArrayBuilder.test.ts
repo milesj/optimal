@@ -19,13 +19,13 @@ describe('ArrayBuilder', () => {
     it('doesnt error if a builder is not passed', () => {
       expect(() => {
         builder = array();
-      }).not.toThrowError('A blueprint is required for array contents.');
+      }).not.toThrow('A blueprint is required for array contents.');
     });
 
     it('doesnt error if a builder is passed', () => {
       expect(() => {
         builder = array(string());
-      }).not.toThrowError('A blueprint is required for array contents.');
+      }).not.toThrow('A blueprint is required for array contents.');
     });
 
     it('sets type and default value', () => {
@@ -116,7 +116,7 @@ describe('ArrayBuilder', () => {
     it('doesnt error if not empty', () => {
       expect(() => {
         builder.checkNotEmpty('key', ['123']);
-      }).not.toThrowError('Invalid field "key". Array cannot be empty.');
+      }).not.toThrow('Invalid field "key". Array cannot be empty.');
     });
   });
 
