@@ -1,6 +1,6 @@
 # Optimal
 
-[![Build Status](https://travis-ci.org/milesj/optimal.svg?branch=master)](https://travis-ci.org/milesj/optimal)
+[![Build Status](https://github.com/milesj/optimal/workflows/Build/badge.svg)](https://github.com/milesj/optimal/actions?query=branch%3Amaster)
 [![npm version](https://badge.fury.io/js/optimal.svg)](https://www.npmjs.com/package/optimal)
 [![npm deps](https://david-dm.org/milesj/optimal.svg)](https://www.npmjs.com/package/optimal)
 
