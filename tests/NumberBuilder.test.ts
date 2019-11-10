@@ -70,13 +70,13 @@ describe('NumberBuilder', () => {
     it('doesnt error if in range', () => {
       expect(() => {
         builder.checkBetween('key', 3, 0, 5);
-      }).not.toThrowError('Invalid field "key". Number must be between 0 and 5.');
+      }).not.toThrow('Invalid field "key". Number must be between 0 and 5.');
     });
 
     it('doesnt error if in range inclusive', () => {
       expect(() => {
         builder.checkBetween('key', 5, 0, 5, true);
-      }).not.toThrowError('Invalid field "key". Number must be between 0 and 5 inclusive.');
+      }).not.toThrow('Invalid field "key". Number must be between 0 and 5 inclusive.');
     });
   });
 
@@ -139,13 +139,13 @@ describe('NumberBuilder', () => {
     it('doesnt error if above minimum', () => {
       expect(() => {
         builder.checkGreaterThan('key', 10, 5);
-      }).not.toThrowError('Invalid field "key". Number must be greater than 5.');
+      }).not.toThrow('Invalid field "key". Number must be greater than 5.');
     });
 
     it('doesnt error if above minimum inclusive', () => {
       expect(() => {
         builder.checkGreaterThan('key', 5, 5, true);
-      }).not.toThrowError('Invalid field "key". Number must be greater than or equal to 5.');
+      }).not.toThrow('Invalid field "key". Number must be greater than or equal to 5.');
     });
   });
 
@@ -208,13 +208,13 @@ describe('NumberBuilder', () => {
     it('doesnt error if below maximum', () => {
       expect(() => {
         builder.checkLessThan('key', 3, 5);
-      }).not.toThrowError('Invalid field "key". Number must be less than 5.');
+      }).not.toThrow('Invalid field "key". Number must be less than 5.');
     });
 
     it('doesnt error if below maximum inclusive', () => {
       expect(() => {
         builder.checkLessThan('key', 5, 5, true);
-      }).not.toThrowError('Invalid field "key". Number must be less than or equal to 5.');
+      }).not.toThrow('Invalid field "key". Number must be less than or equal to 5.');
     });
   });
 
@@ -259,7 +259,7 @@ describe('NumberBuilder', () => {
     it('doesnt error if value contains token', () => {
       expect(() => {
         builder.checkOneOf('key', 123, [123, 456, 789]);
-      }).not.toThrowError('Invalid field "key". Number must be one of: 123, 456, 789');
+      }).not.toThrow('Invalid field "key". Number must be one of: 123, 456, 789');
     });
   });
 

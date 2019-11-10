@@ -20,13 +20,13 @@ describe('ObjectBuilder', () => {
     it('doesnt error if a builder is not passed', () => {
       expect(() => {
         object();
-      }).not.toThrowError('A blueprint is required for object contents.');
+      }).not.toThrow('A blueprint is required for object contents.');
     });
 
     it('doesnt error if a builder is passed', () => {
       expect(() => {
         builder = object(string());
-      }).not.toThrowError('A blueprint is required for object contents.');
+      }).not.toThrow('A blueprint is required for object contents.');
     });
 
     it('sets type and default value', () => {
@@ -143,7 +143,7 @@ describe('ObjectBuilder', () => {
     it('doesnt error if not empty', () => {
       expect(() => {
         builder.checkNotEmpty('key', { foo: '123' });
-      }).not.toThrowError('Invalid field "key". Object cannot be empty.');
+      }).not.toThrow('Invalid field "key". Object cannot be empty.');
     });
   });
 
@@ -171,6 +171,6 @@ describe('blueprint()', () => {
         { value: 123 },
         {},
       );
-    }).toThrowError('Invalid field "key.value". Must be an instance of "Builder".');
+    }).toThrow('Invalid field "key.value". Must be an instance of "Builder".');
   });
 });

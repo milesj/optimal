@@ -82,7 +82,7 @@ describe('Builder', () => {
         };
 
         builder.checkAnd('foo', 'a', ['bar', 'baz']);
-      }).not.toThrowError('Invalid field "foo".');
+      }).not.toThrow('Invalid field "foo".');
     });
   });
 
@@ -93,7 +93,7 @@ describe('Builder', () => {
 
         expect(() => {
           builder.checkType('key', []);
-        }).not.toThrowError('Invalid field "key". Must be an array.');
+        }).not.toThrow('Invalid field "key". Must be an array.');
       });
 
       it('errors on non-arrays', () => {
@@ -111,7 +111,7 @@ describe('Builder', () => {
 
         expect(() => {
           builder.checkType('key', true);
-        }).not.toThrowError('Invalid field "key". Must be a boolean.');
+        }).not.toThrow('Invalid field "key". Must be a boolean.');
       });
 
       it('errors on non-booleans', () => {
@@ -129,7 +129,7 @@ describe('Builder', () => {
 
         expect(() => {
           builder.checkType('key', () => {});
-        }).not.toThrowError('Invalid field "key". Must be a function.');
+        }).not.toThrow('Invalid field "key". Must be a function.');
       });
 
       it('errors on non-functions', () => {
@@ -147,7 +147,7 @@ describe('Builder', () => {
 
         expect(() => {
           builder.checkType('key', 123);
-        }).not.toThrowError('Invalid field "key". Must be a number.');
+        }).not.toThrow('Invalid field "key". Must be a number.');
       });
 
       it('errors on non-numbers', () => {
@@ -165,7 +165,7 @@ describe('Builder', () => {
 
         expect(() => {
           builder.checkType('key', {});
-        }).not.toThrowError('Invalid field "key". Must be a plain object.');
+        }).not.toThrow('Invalid field "key". Must be a plain object.');
       });
 
       it('errors on non-objects', () => {
@@ -199,7 +199,7 @@ describe('Builder', () => {
 
         expect(() => {
           builder.checkType('key', 'foo');
-        }).not.toThrowError('Invalid field "key". Must be a string.');
+        }).not.toThrow('Invalid field "key". Must be a string.');
       });
 
       it('errors on non-strings', () => {
@@ -215,14 +215,14 @@ describe('Builder', () => {
   describe('custom()', () => {
     it('errors if no callback', () => {
       // @ts-ignore
-      expect(() => builder.custom()).toThrowError(
+      expect(() => builder.custom()).toThrow(
         'Custom blueprints require a validation function.',
       );
     });
 
     it('errors if callback is not a function', () => {
       // @ts-ignore
-      expect(() => builder.custom(123)).toThrowError(
+      expect(() => builder.custom(123)).toThrow(
         'Custom blueprints require a validation function.',
       );
     });
@@ -242,7 +242,7 @@ describe('Builder', () => {
 
       expect(() => {
         builder.runChecks('key', 456, {});
-      }).not.toThrowError('Invalid field "error". This will error!');
+      }).not.toThrow('Invalid field "error". This will error!');
     });
 
     it('is passed entire options object', () => {
@@ -262,7 +262,7 @@ describe('Builder', () => {
     it('does nothing if condition is true', () => {
       expect(() => {
         builder.invariant(true, '');
-      }).not.toThrowError();
+      }).not.toThrow();
     });
 
     it('errors if condition is false', () => {
@@ -432,7 +432,7 @@ describe('Builder', () => {
       const oldInfo = console.info;
 
       beforeEach(() => {
-        console.info = jest.fn();
+        jest.spyOn(console, 'info').mockImplementation();
       });
 
       afterEach(() => {
@@ -443,14 +443,14 @@ describe('Builder', () => {
         builder.deprecate('Use something else.');
         builder.runChecks('key', 'foo', {});
 
-        expect(console.info).toBeCalledWith('Field "key" is deprecated. Use something else.');
+        expect(console.info).toHaveBeenCalledWith('Field "key" is deprecated. Use something else.');
       });
 
       it('doesnt log if undefined', () => {
         builder.deprecate('Use something else.');
         builder.runChecks('key', undefined, {});
 
-        expect(console.info).not.toBeCalledWith('Field "key" is deprecated. Use something else.');
+        expect(console.info).not.toHaveBeenCalledWith('Field "key" is deprecated. Use something else.');
       });
     });
   });
@@ -488,7 +488,7 @@ describe('Builder', () => {
     it('doesnt error if value matches default value', () => {
       expect(() => {
         builder.checkOnly('key', 'foo');
-      }).not.toThrowError('Invalid field "key". Value may only be "foo".');
+      }).not.toThrow('Invalid field "key". Value may only be "foo".');
     });
   });
 
@@ -525,7 +525,7 @@ describe('Builder', () => {
         };
 
         builder.checkOr('foo', 'a', ['bar', 'baz']);
-      }).not.toThrowError('Invalid field "foo".');
+      }).not.toThrow('Invalid field "foo".');
     });
 
     it('doesnt error if at least 1 option is defined that isnt the main field', () => {
@@ -535,7 +535,7 @@ describe('Builder', () => {
         };
 
         builder.checkOr('foo', 'a', ['bar', 'baz']);
-      }).not.toThrowError('Invalid field "foo".');
+      }).not.toThrow('Invalid field "foo".');
     });
   });
 
@@ -583,7 +583,7 @@ describe('Builder', () => {
         };
 
         builder.checkXor('foo', 'a', ['bar', 'baz']);
-      }).not.toThrowError('Invalid field "foo".');
+      }).not.toThrow('Invalid field "foo".');
     });
   });
 });

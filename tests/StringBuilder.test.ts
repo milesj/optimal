@@ -62,13 +62,13 @@ describe('StringBuilder', () => {
     it('doesnt error if value matches default value and builder is optional', () => {
       expect(() => {
         builder.checkContains('key', '', 'oo');
-      }).not.toThrowError('Invalid field "key". String does not include "oo".');
+      }).not.toThrow('Invalid field "key". String does not include "oo".');
     });
 
     it('doesnt error if value contains token', () => {
       expect(() => {
         builder.checkContains('key', 'foo', 'oo');
-      }).not.toThrowError('Invalid field "key". String does not include "oo".');
+      }).not.toThrow('Invalid field "key". String does not include "oo".');
     });
   });
 
@@ -106,13 +106,13 @@ describe('StringBuilder', () => {
     it('doesnt error if value matches default value and builder is optional', () => {
       expect(() => {
         builder.checkMatch('key', '', /oo/u);
-      }).not.toThrowError('Invalid field "key". String does not match pattern "oo".');
+      }).not.toThrow('Invalid field "key". String does not match pattern "oo".');
     });
 
     it('doesnt error if value matches pattern', () => {
       expect(() => {
         builder.checkMatch('key', 'foo', /oo/u);
-      }).not.toThrowError('Invalid field "key". String does not match pattern "oo".');
+      }).not.toThrow('Invalid field "key". String does not match pattern "oo".');
     });
   });
 
@@ -176,7 +176,7 @@ describe('StringBuilder', () => {
     it('doesnt error if value contains token', () => {
       expect(() => {
         builder.checkOneOf('key', 'foo', ['foo', 'bar', 'baz']);
-      }).not.toThrowError('Invalid field "key". String must be one of: foo, bar, baz');
+      }).not.toThrow('Invalid field "key". String must be one of: foo, bar, baz');
     });
   });
 

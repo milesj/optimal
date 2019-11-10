@@ -51,7 +51,7 @@ describe('UnionBuilder', () => {
     it('doesnt error if a builder array is passed', () => {
       expect(() => {
         union([string()], []);
-      }).not.toThrowError('A non-empty array of blueprints are required for a union.');
+      }).not.toThrow('A non-empty array of blueprints are required for a union.');
     });
 
     it('sets default value', () => {
@@ -168,11 +168,11 @@ describe('UnionBuilder', () => {
 
       expect(() => {
         builder.runChecks('key', [123], {});
-      }).not.toThrowError();
+      }).not.toThrow();
 
       expect(() => {
         builder.runChecks('key', ['abc'], {});
-      }).not.toThrowError();
+      }).not.toThrow();
     });
 
     it('supports multiple object builders', () => {
@@ -184,11 +184,11 @@ describe('UnionBuilder', () => {
 
       expect(() => {
         builder.runChecks('key', { foo: 123 }, {});
-      }).not.toThrowError();
+      }).not.toThrow();
 
       expect(() => {
         builder.runChecks('key', { foo: 'abc' }, {});
-      }).not.toThrowError();
+      }).not.toThrow();
     });
 
     it('supports object and shape builders in parallel', () => {
@@ -218,11 +218,11 @@ describe('UnionBuilder', () => {
 
       expect(() => {
         builder.runChecks('key', { foo: 'abc', bar: 123 }, {});
-      }).not.toThrowError();
+      }).not.toThrow();
 
       expect(() => {
         builder.runChecks('key', { key: 'value' }, {});
-      }).not.toThrowError();
+      }).not.toThrow();
     });
 
     it('returns shapes as their full objects', () => {
