@@ -34,7 +34,7 @@ export default class ShapeBuilder<Shape extends object> extends Builder<Shape> {
 
   runChecks(
     path: string,
-    initialValue: Partial<Shape> | undefined,
+    initialValue: Shape | undefined,
     struct: object,
     options: OptimalOptions = {},
   ) {

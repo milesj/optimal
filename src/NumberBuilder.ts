@@ -82,7 +82,7 @@ export default class NumberBuilder<T extends number = number> extends Builder<T>
     }
   }
 
-  oneOf<U extends number>(list: U[]) /* refine */ {
+  oneOf<U extends number>(list: U[]): NumberBuilder<U> {
     if (__DEV__) {
       this.invariant(
         Array.isArray(list) && list.length > 0 && list.every(item => isNumber(item)),
