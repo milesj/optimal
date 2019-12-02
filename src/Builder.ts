@@ -233,7 +233,7 @@ export default class Builder<T> {
   /**
    * Disallow null values.
    */
-  notNullable() /* refine */ {
+  notNullable(): Builder<NonNullable<T>> {
     if (__DEV__) {
       this.isNullable = false;
     }
@@ -244,7 +244,7 @@ export default class Builder<T> {
   /**
    * Allow null values.
    */
-  nullable() /* refine */ {
+  nullable(): Builder<T | null> {
     if (__DEV__) {
       this.isNullable = true;
     }
