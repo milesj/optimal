@@ -62,7 +62,7 @@ export default class StringBuilder<T extends string = string> extends Builder<T>
     }
   }
 
-  oneOf<U extends string>(list: U[]) /* refine */ {
+  oneOf<U extends string>(list: U[]): StringBuilder<U> {
     if (__DEV__) {
       this.invariant(
         Array.isArray(list) && list.length > 0 && list.every(item => isString(item)),

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import ShapeBuilder, { shape } from '../src/ShapeBuilder';
 import { bool } from '../src/Builder';
 import { number } from '../src/NumberBuilder';
@@ -44,9 +46,7 @@ describe('shape()', () => {
         shape({
           foo: string(),
         });
-      }).not.toThrow(
-        'A non-empty object of properties to blueprints are required for a shape.',
-      );
+      }).not.toThrow('A non-empty object of properties to blueprints are required for a shape.');
     });
   });
 
@@ -125,7 +125,7 @@ describe('shape()', () => {
         },
       };
 
-      expect(nestedBuilder.runChecks('key', data, {})).toEqual({
+      expect(nestedBuilder.runChecks('key', data as any, {})).toEqual({
         foo: {
           ...data.foo,
           c: '',
@@ -144,7 +144,7 @@ describe('shape()', () => {
           'key',
           {
             foo: 'abc',
-          },
+          } as any,
           {},
         );
       }).toThrowErrorMatchingSnapshot();
@@ -176,7 +176,7 @@ describe('shape()', () => {
     });
 
     it('should be the object with defaults', () => {
-      expect(builder.runChecks('key', {}, {})).toEqual({
+      expect(builder.runChecks('key', {} as any, {})).toEqual({
         bar: 0,
         baz: false,
         foo: '',

@@ -82,11 +82,11 @@ const primitivesInferred = optimal(
     bd: bool(true),
     n: number(),
     nn: number().nullable(),
-    nl: number().oneOf([1, 2, 3]),
+    nl: number().oneOf<1 | 2 | 3>([1, 2, 3]),
     nd: number(123),
     s: string(),
     sn: string().nullable(),
-    sl: string().oneOf(['foo', 'bar', 'baz']),
+    sl: string().oneOf<'foo' | 'bar' | 'baz'>(['foo', 'bar', 'baz']),
     sd: string('foo'),
   },
 );
@@ -149,9 +149,11 @@ const funcsInferred = optimal(
   {},
   {
     opt: func(),
-    req: func().required(),
+    req: func()
+      .required()
+      .notNullable(),
     isNull: func().nullable(),
-    notNull: func(),
+    notNull: func().notNullable(),
   },
 );
 
@@ -211,7 +213,44 @@ const objectsInferred = optimal(
   },
 );
 
-const shapes = optimal(
+const shapes: {
+  h: {
+    h1: string;
+    h2: boolean;
+    h3: (() => void) | null;
+    h4: string;
+  } | null;
+  hn: {
+    h1: string;
+    h2: {
+      a: number;
+      b: Function | null;
+      c: 'foo';
+    } | null;
+    h3: (() => void) | null;
+  };
+} = optimal(
+  {},
+  {
+    h: shape({
+      h1: string(),
+      h2: bool(),
+      h3: func(),
+      h4: string('foo'),
+    }).nullable(),
+    hn: shape({
+      h1: string(),
+      h2: shape({
+        a: number(123),
+        b: instance<Function>(),
+        c: string().oneOf<'foo'>(['foo']),
+      }).nullable(),
+      h3: func(),
+    }),
+  },
+);
+
+const shapesInferred = optimal(
   {},
   {
     h: shape({
@@ -225,14 +264,37 @@ const shapes = optimal(
       h2: shape({
         a: number(123),
         b: instance(),
-        c: string().oneOf(['foo']),
+        c: string().oneOf<'foo'>(['foo']),
       }).nullable(),
       h3: func(),
     }),
   },
 );
 
-const unions = optimal(
+const unions: {
+  a: string | boolean | number;
+  an: string | boolean | number | null;
+  ac: ObjectOf<string>[] | ObjectOf<Function> | { a: boolean; b: Foo | null } | null;
+} = optimal(
+  {},
+  {
+    a: union([string(), bool(), number()], ''),
+    an: union([string(), bool(), number()], '').nullable(),
+    ac: union(
+      [
+        array(object(string())),
+        object(func()),
+        shape({
+          a: bool(),
+          b: instance(Foo),
+        }),
+      ],
+      null,
+    ),
+  },
+);
+
+const unionsInferred = optimal(
   {},
   {
     a: union<string | boolean | number>([string(), bool(), number()], ''),
