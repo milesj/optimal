@@ -412,6 +412,13 @@ describe('Builder', () => {
       }).toThrowErrorMatchingSnapshot();
     });
 
+    it('errors if value passed is defined and builder is never', () => {
+      expect(() => {
+        // @ts-ignore Allow values
+        expect(builder.never().runChecks('key', 'bar', { key: 'bar' })).toBeUndefined();
+      }).toThrowErrorMatchingSnapshot();
+    });
+
     it('runs default type of check', () => {
       expect(() => {
         builder.runChecks('key', 123, {});

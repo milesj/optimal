@@ -325,3 +325,48 @@ const bp = optimal(
     b: builder(),
   },
 );
+
+interface MaybeNeverProperty<T> {
+  foo: string;
+  bar: T extends number ? number : never;
+  baz: boolean;
+}
+
+type NonNeverBlueprint = Blueprint<MaybeNeverProperty<number>>;
+type NeverBlueprint = Blueprint<MaybeNeverProperty<string>>;
+
+const nonNever: MaybeNeverProperty<number> = optimal(
+  {},
+  {
+    foo: string(),
+    bar: number(),
+    baz: bool(),
+  },
+);
+
+const nonNeverInferred = optimal(
+  {},
+  {
+    foo: string(),
+    bar: number(),
+    baz: bool(),
+  },
+);
+
+const never: MaybeNeverProperty<string> = optimal(
+  {},
+  {
+    foo: string(),
+    bar: number().never(),
+    baz: bool(),
+  },
+);
+
+const neverInferred = optimal(
+  {},
+  {
+    foo: string(),
+    bar: number().never(),
+    baz: bool(),
+  },
+);

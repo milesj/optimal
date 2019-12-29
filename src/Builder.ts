@@ -21,6 +21,8 @@ export default class Builder<T> {
 
   errorMessage: string = '';
 
+  isNever: boolean = false;
+
   isNullable: boolean = false;
 
   isRequired: boolean = false;
@@ -231,6 +233,18 @@ export default class Builder<T> {
   }
 
   /**
+   * Field should never be used.
+   */
+  never(): Builder<never> {
+    if (__DEV__) {
+      this.defaultValue = (undefined as unknown) as T;
+      this.isNever = true;
+    }
+
+    return (this as unknown) as Builder<never>;
+  }
+
+  /**
    * Disallow null values.
    */
   notNullable(): Builder<NonNullable<T>> {
@@ -321,6 +335,7 @@ export default class Builder<T> {
   /**
    * Run all validation checks that have been enqueued.
    */
+  // eslint-disable-next-line complexity
   runChecks(
     path: string,
     initialValue: T | undefined,
@@ -339,10 +354,18 @@ export default class Builder<T> {
       } else if (__DEV__) {
         this.invariant(false, 'Field is required and must be defined.', path);
       }
-    } else if (this.deprecatedMessage) {
+    } else {
+      if (this.deprecatedMessage) {
+        if (__DEV__) {
+          // eslint-disable-next-line no-console
+          console.info(`Field "${path}" is deprecated. ${this.deprecatedMessage}`);
+        }
+      }
+
       if (__DEV__) {
-        // eslint-disable-next-line no-console
-        console.info(`Field "${path}" is deprecated. ${this.deprecatedMessage}`);
+        if (this.isNever) {
+          this.invariant(false, 'Field should never be used.', path);
+        }
       }
     }
 

@@ -58,6 +58,8 @@ exports[`Builder only() errors if default value is not the same type 1`] = `"Onl
 
 exports[`Builder or() errors if no keys are defined 1`] = `"OR requires a list of field names."`;
 
+exports[`Builder runChecks() errors if value passed is defined and builder is never 1`] = `"Invalid field \\"key\\". Field should never be used."`;
+
 exports[`Builder runChecks() errors if value passed is null and builder is non-nullable 1`] = `"Invalid field \\"key\\". Null is not allowed."`;
 
 exports[`Builder runChecks() errors if value passed is undefined and builder is required 1`] = `"Invalid field \\"key\\". Field is required and must be defined."`;

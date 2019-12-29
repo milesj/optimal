@@ -11,6 +11,7 @@ following methods:
   development.
 - `message(error: string)` - Set a custom error message that will override all validation error
   messages.
+- `never()` - Field should never be used. Will error immediately and return an undefined value.
 - `nullable()` - Mark the field as nullable and allow a `null` value.
 - `notNullable()` - Mark the field as non-nullable and disallow a `null` value.
 - `only()` - Field value must match the default value, otherwise will throw an error.
