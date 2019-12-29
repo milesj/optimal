@@ -249,11 +249,19 @@ The `string(default?: string)` predicate verifies a value is a string. Defaults 
 (`''`) but can be customized with the 1st argument. String builder supports the following additional
 methods:
 
+- `camelCase()` - Checks that the string is in camel case (`fooBarBaz`). Must start with a lowercase
+  character and contain at minimum 2 characters.
 - `contains(token: string, index?: number)` - Checks if the value contains the defined token.
   Supports an optional start index.
+- `kebabCase()` - Checks that the string is in kebab case (`foo-bar-baz`). Must separate words with
+  a dash and contain at minimum 2 characters.
 - `match(pattern: RegExp)` - Checks the value against a regex pattern.
 - `notEmpty()` - Requires the string to not be empty.
 - `oneOf(list: string[])` - Validate the value is one of the following strings.
+- `pascalCase()` - Checks that the string is in pascal case (`FooBarBaz`). Must start with an
+  uppercase character and contain at minimum 2 characters.
+- `snakeCase()` - Checks that the string is in snake case (`foo_bar_baz`). Must separate words with
+  an underscore and contain at minimum 2 characters.
 
 ```ts
 optimal(
