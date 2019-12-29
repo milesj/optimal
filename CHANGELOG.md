@@ -1,4 +1,20 @@
-## 3.3.0
+## 3.4.0 - 2019-12-28
+
+#### 🚀 Updates
+
+- Add `never()` for all builders.
+- **[bool]** Add `onlyFalse()` and `onlyTrue()` methods.
+- **[string]** Add `camelCase()`, `kebabCase()`, `pascalCase()`, and `snakeCase()` methods.
+
+#### ⚙️ Types
+
+- Update `CustomCallback` with a struct generic.
+
+#### 📦 Dependencies
+
+- Update to latest.
+
+## 3.3.0 - 2019-12-02
 
 #### ⚙️ Types
 
