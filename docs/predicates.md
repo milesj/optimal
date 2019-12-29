@@ -64,7 +64,10 @@ optimal(
 ## Boolean
 
 The `bool(default?: boolean)` predicate verifies a value is a boolean. Defaults to `false` but can
-be customized with the 1st argument.
+be customized with the 1st argument. Boolean builder supports the following additional methods:
+
+- `onlyFalse()` - Validate the value is only ever `false` (or undefined).
+- `onlyTrue()` - Validate the value is only ever `true` (or undefined).
 
 ```ts
 optimal(

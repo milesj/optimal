@@ -68,6 +68,4 @@ exports[`Builder runChecks() uses custom message 1`] = `"Invalid field \\"key\\"
 
 exports[`Builder xor() errors if no keys are defined 1`] = `"XOR requires a list of field names."`;
 
-exports[`bool() errors if a non-boolean value is used 1`] = `"Invalid field \\"key\\". Must be a boolean."`;
-
 exports[`func() errors if a non-function value is used 1`] = `"Invalid field \\"key\\". Must be a function."`;

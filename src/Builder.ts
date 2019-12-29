@@ -406,10 +406,6 @@ export default class Builder<T> {
   }
 }
 
-export function bool(defaultValue: boolean = false) /* infer */ {
-  return new Builder<boolean>('boolean', defaultValue);
-}
-
 export function custom<T>(callback: CustomCallback<T>, defaultValue: T) /* infer */ {
   return new Builder<T>('custom', defaultValue).custom(callback);
 }

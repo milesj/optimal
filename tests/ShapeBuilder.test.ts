@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import ShapeBuilder, { shape } from '../src/ShapeBuilder';
-import { bool } from '../src/Builder';
+import { bool } from '../src/BooleanBuilder';
 import { number } from '../src/NumberBuilder';
 import { string } from '../src/StringBuilder';
 

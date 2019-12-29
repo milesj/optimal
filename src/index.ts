@@ -4,8 +4,9 @@
  */
 
 import optimal from './optimal';
-import Builder, { bool, custom, func } from './Builder';
+import Builder, { custom, func } from './Builder';
 import ArrayBuilder, { array } from './ArrayBuilder';
+import BooleanBuilder, { bool } from './BooleanBuilder';
 import InstanceBuilder, { builder, instance, date, regex } from './InstanceBuilder';
 import NumberBuilder, { number } from './NumberBuilder';
 import ObjectBuilder, { object, blueprint } from './ObjectBuilder';
@@ -50,6 +51,7 @@ export {
 export {
   Builder,
   ArrayBuilder,
+  BooleanBuilder,
   InstanceBuilder,
   NumberBuilder,
   ObjectBuilder,

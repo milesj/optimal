@@ -1,4 +1,4 @@
-import Builder, { bool, custom, func } from '../src/Builder';
+import Builder, { custom, func } from '../src/Builder';
 
 describe('Builder', () => {
   let builder: Builder<unknown>;
@@ -215,16 +215,12 @@ describe('Builder', () => {
   describe('custom()', () => {
     it('errors if no callback', () => {
       // @ts-ignore
-      expect(() => builder.custom()).toThrow(
-        'Custom blueprints require a validation function.',
-      );
+      expect(() => builder.custom()).toThrow('Custom blueprints require a validation function.');
     });
 
     it('errors if callback is not a function', () => {
       // @ts-ignore
-      expect(() => builder.custom(123)).toThrow(
-        'Custom blueprints require a validation function.',
-      );
+      expect(() => builder.custom(123)).toThrow('Custom blueprints require a validation function.');
     });
   });
 
@@ -450,7 +446,9 @@ describe('Builder', () => {
         builder.deprecate('Use something else.');
         builder.runChecks('key', undefined, {});
 
-        expect(console.info).not.toHaveBeenCalledWith('Field "key" is deprecated. Use something else.');
+        expect(console.info).not.toHaveBeenCalledWith(
+          'Field "key" is deprecated. Use something else.',
+        );
       });
     });
   });
@@ -585,34 +583,6 @@ describe('Builder', () => {
         builder.checkXor('foo', 'a', ['bar', 'baz']);
       }).not.toThrow('Invalid field "foo".');
     });
-  });
-});
-
-describe('bool()', () => {
-  it('returns a builder', () => {
-    expect(bool(true)).toBeInstanceOf(Builder);
-  });
-
-  it('sets type and default value', () => {
-    const builder = bool(true);
-
-    expect(builder.type).toBe('boolean');
-    expect(builder.defaultValue).toBe(true);
-  });
-
-  it('errors if a non-boolean value is used', () => {
-    expect(() => {
-      bool().runChecks(
-        'key',
-        // @ts-ignore Test invalid type
-        123,
-        {},
-      );
-    }).toThrowErrorMatchingSnapshot();
-  });
-
-  it('returns the type alias', () => {
-    expect(bool().typeAlias()).toBe('boolean');
   });
 });
 

@@ -1,6 +1,7 @@
 import UnionBuilder, { union } from '../src/UnionBuilder';
-import { bool, custom } from '../src/Builder';
+import { custom } from '../src/Builder';
 import { array } from '../src/ArrayBuilder';
+import { bool } from '../src/BooleanBuilder';
 import { object } from '../src/ObjectBuilder';
 import { instance } from '../src/InstanceBuilder';
 import { number } from '../src/NumberBuilder';
