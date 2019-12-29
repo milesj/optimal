@@ -123,7 +123,7 @@ export default class Builder<T> {
   /**
    * Set a callback to run custom logic.
    */
-  custom(callback: CustomCallback<T>): this {
+  custom<S = object>(callback: CustomCallback<T, S>): this {
     if (__DEV__) {
       this.invariant(
         typeof callback === 'function',
@@ -406,7 +406,7 @@ export default class Builder<T> {
   }
 }
 
-export function custom<T>(callback: CustomCallback<T>, defaultValue: T) /* infer */ {
+export function custom<T, S = object>(callback: CustomCallback<T, S>, defaultValue: T) /* infer */ {
   return new Builder<T>('custom', defaultValue).custom(callback);
 }
 

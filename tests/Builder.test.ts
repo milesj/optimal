@@ -242,7 +242,7 @@ describe('Builder', () => {
     });
 
     it('is passed entire options object', () => {
-      builder = custom((value, options: { foo?: number; bar?: number }) => {
+      builder = custom<unknown, { foo?: number; bar?: number }>((value, options) => {
         if (options.foo && options.bar) {
           throw new Error('This will error!');
         }
