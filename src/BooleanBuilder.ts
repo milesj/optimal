@@ -1,7 +1,8 @@
 import Builder from './Builder';
+import { DefaultValue } from './types';
 
 export default class BooleanBuilder<T extends boolean = boolean> extends Builder<T> {
-  constructor(defaultValue?: T) {
+  constructor(defaultValue?: DefaultValue<T>) {
     super('boolean', defaultValue || (false as T));
   }
 
@@ -32,6 +33,6 @@ export default class BooleanBuilder<T extends boolean = boolean> extends Builder
   }
 }
 
-export function bool(defaultValue: boolean = false) /* infer */ {
+export function bool(defaultValue: DefaultValue<boolean> = false) /* infer */ {
   return new BooleanBuilder<boolean>(defaultValue);
 }

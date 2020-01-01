@@ -1,5 +1,13 @@
 import isObject from './isObject';
-import { SupportedType, CheckerCallback, CustomCallback, OptimalOptions, FuncOf } from './types';
+import {
+  SupportedType,
+  CheckerCallback,
+  CustomCallback,
+  OptimalOptions,
+  FuncOf,
+  DefaultValue,
+  DefaultValueFactory,
+} from './types';
 
 export interface TemporalStruct {
   [key: string]: unknown;
@@ -15,7 +23,9 @@ export default class Builder<T> {
 
   currentStruct: object = {};
 
-  defaultValue: T;
+  defaultValue?: T;
+
+  defaultValueFactory?: DefaultValueFactory<T>;
 
   deprecatedMessage: string = '';
 
@@ -33,7 +43,7 @@ export default class Builder<T> {
 
   type: SupportedType;
 
-  constructor(type: SupportedType, defaultValue: T) {
+  constructor(type: SupportedType, defaultValue: DefaultValue<T>, bypassFactory: boolean = false) {
     if (__DEV__) {
       this.invariant(
         typeof defaultValue !== 'undefined',
@@ -43,7 +53,12 @@ export default class Builder<T> {
       this.addCheck(this.checkType);
     }
 
-    this.defaultValue = defaultValue;
+    if (typeof defaultValue === 'function' && !bypassFactory) {
+      this.defaultValueFactory = defaultValue as DefaultValueFactory<T>;
+    } else {
+      this.defaultValue = defaultValue as T;
+    }
+
     this.type = type;
   }
 
@@ -345,6 +360,10 @@ export default class Builder<T> {
     this.currentStruct = struct;
     this.options = options;
 
+    if (this.defaultValueFactory) {
+      this.defaultValue = this.defaultValueFactory(struct);
+    }
+
     let value = initialValue;
 
     // Handle undefined
@@ -354,18 +373,14 @@ export default class Builder<T> {
       } else if (__DEV__) {
         this.invariant(false, 'Field is required and must be defined.', path);
       }
-    } else {
+    } else if (__DEV__) {
       if (this.deprecatedMessage) {
-        if (__DEV__) {
-          // eslint-disable-next-line no-console
-          console.info(`Field "${path}" is deprecated. ${this.deprecatedMessage}`);
-        }
+        // eslint-disable-next-line no-console
+        console.info(`Field "${path}" is deprecated. ${this.deprecatedMessage}`);
       }
 
-      if (__DEV__) {
-        if (this.isNever) {
-          this.invariant(false, 'Field should never be used.', path);
-        }
+      if (this.isNever) {
+        this.invariant(false, 'Field should never be used.', path);
       }
     }
 
@@ -429,10 +444,13 @@ export default class Builder<T> {
   }
 }
 
-export function custom<T, S = object>(callback: CustomCallback<T, S>, defaultValue: T) /* infer */ {
+export function custom<T, S = object>(
+  callback: CustomCallback<T, S>,
+  defaultValue: DefaultValue<T>,
+) /* infer */ {
   return new Builder<T>('custom', defaultValue).custom(callback);
 }
 
 export function func<T = FuncOf>(defaultValue: T | null = null) /* infer */ {
-  return new Builder<T | null>('function', defaultValue).nullable();
+  return new Builder<T | null>('function', defaultValue, true).nullable();
 }

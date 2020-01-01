@@ -1,11 +1,12 @@
 import Builder from './Builder';
+import { DefaultValue } from './types';
 
 function isNumber(value: unknown): value is number {
   return typeof value === 'number';
 }
 
 export default class NumberBuilder<T extends number = number> extends Builder<T> {
-  constructor(defaultValue?: T) {
+  constructor(defaultValue?: DefaultValue<T>) {
     super('number', defaultValue || (0 as T));
   }
 
@@ -102,6 +103,6 @@ export default class NumberBuilder<T extends number = number> extends Builder<T>
   }
 }
 
-export function number<T extends number = number>(defaultValue?: number) /* infer */ {
+export function number<T extends number = number>(defaultValue?: DefaultValue<number>) /* infer */ {
   return new NumberBuilder<T>(defaultValue as T);
 }

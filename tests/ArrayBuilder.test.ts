@@ -41,6 +41,20 @@ describe('ArrayBuilder', () => {
       expect(builder.runChecks('key', [], { key: [] })).toEqual([]);
     });
 
+    it('returns default value if value is undefined', () => {
+      expect(array(string(), ['abc']).runChecks('key', undefined, { key: undefined })).toEqual([
+        'abc',
+      ]);
+    });
+
+    it('returns default value from factory if value is undefined', () => {
+      expect(
+        array(string(), () => ['abc']).runChecks('key', undefined, {
+          key: undefined,
+        }),
+      ).toEqual(['abc']);
+    });
+
     it('errors if a non-array is passed', () => {
       expect(() => {
         // @ts-ignore Test invalid type

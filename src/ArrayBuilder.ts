@@ -1,11 +1,11 @@
 import Builder from './Builder';
 import CollectionBuilder from './CollectionBuilder';
-import { ArrayOf } from './types';
+import { ArrayOf, DefaultValue } from './types';
 
 export default class ArrayBuilder<T> extends CollectionBuilder<ArrayOf<T>> {
   contents: Builder<T> | null = null;
 
-  constructor(contents: Builder<T> | null = null, defaultValue: ArrayOf<T> = []) {
+  constructor(contents: Builder<T> | null = null, defaultValue: DefaultValue<ArrayOf<T>> = []) {
     super('array', defaultValue);
 
     if (__DEV__) {
@@ -55,7 +55,7 @@ export default class ArrayBuilder<T> extends CollectionBuilder<ArrayOf<T>> {
 
 export function array<T = unknown>(
   contents: Builder<T> | null = null,
-  defaultValue?: ArrayOf<T>,
+  defaultValue?: DefaultValue<ArrayOf<T>>,
 ) /* infer */ {
   return new ArrayBuilder<T>(contents, defaultValue);
 }

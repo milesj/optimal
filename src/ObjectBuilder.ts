@@ -1,12 +1,12 @@
 import Builder from './Builder';
 import CollectionBuilder from './CollectionBuilder';
-import { ObjectOf } from './types';
+import { ObjectOf, DefaultValue } from './types';
 import { builder } from './InstanceBuilder';
 
 export default class ObjectBuilder<T> extends CollectionBuilder<ObjectOf<T>> {
   contents: Builder<T> | null = null;
 
-  constructor(contents: Builder<T> | null = null, defaultValue: ObjectOf<T> = {}) {
+  constructor(contents: Builder<T> | null = null, defaultValue: DefaultValue<ObjectOf<T>> = {}) {
     super('object', defaultValue);
 
     if (__DEV__) {
@@ -61,11 +61,13 @@ export default class ObjectBuilder<T> extends CollectionBuilder<ObjectOf<T>> {
 
 export function object<T = unknown>(
   contents: Builder<T> | null = null,
-  defaultValue?: ObjectOf<T>,
+  defaultValue?: DefaultValue<ObjectOf<T>>,
 ) /* infer */ {
   return new ObjectBuilder<T>(contents, defaultValue);
 }
 
-export function blueprint<T = unknown>(defaultValue?: ObjectOf<Builder<T>>) /* infer */ {
+export function blueprint<T = unknown>(
+  defaultValue?: DefaultValue<ObjectOf<Builder<T>>>,
+) /* infer */ {
   return new ObjectBuilder<Builder<T>>(builder<T>().notNullable(), defaultValue);
 }

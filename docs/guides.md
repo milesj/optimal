@@ -2,6 +2,29 @@
 
 A few of guides on advanced usage, features, and concepts.
 
+## Default Values
+
+Most predicates and builders accept a default value when being created, and this default value will
+be used when the field is not explicitly defined. The default value must be of the same type as the
+predicate.
+
+Furthermore, the default value can also be a factory function, which is passed the current struct,
+and must return the same type. Extremely useful for conditional defaults.
+
+```ts
+optimal(
+  {},
+  {
+    strict: bool(),
+    level: string('low').oneOf(['low', 'high']),
+    // Factory function
+    level: string(struct => (struct.strict ? 'high' : 'low')).oneOf(['low', 'high']),
+  },
+);
+```
+
+> The `func()` predicate does not support the factory approach.
+
 ## Nullable Fields
 
 Excluding `instance()` and `func()` predicates, all other predicates are _not_ nullable by default.

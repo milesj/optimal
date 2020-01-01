@@ -19,6 +19,19 @@ describe('BooleanBuilder', () => {
       expect(builder.defaultValue).toBe(true);
     });
 
+    it('returns default value if value is undefined', () => {
+      expect(bool(true).runChecks('key', undefined, { key: undefined })).toEqual(true);
+    });
+
+    it('returns default value from factory if value is undefined', () => {
+      expect(
+        bool(struct => !struct.boop).runChecks('key', undefined, {
+          key: undefined,
+          boop: true,
+        }),
+      ).toEqual(false);
+    });
+
     it('errors if a non-boolean value is used', () => {
       expect(() => {
         bool().runChecks(

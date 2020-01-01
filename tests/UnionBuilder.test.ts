@@ -82,6 +82,22 @@ describe('UnionBuilder', () => {
       }).toThrowErrorMatchingSnapshot();
     });
 
+    it('returns default value if value is undefined', () => {
+      builder.defaultValue = 1;
+
+      expect(builder.runChecks('key', undefined, { key: undefined })).toEqual(1);
+    });
+
+    it('returns default value from factory if value is undefined', () => {
+      builder.defaultValueFactory = () => 'foo';
+
+      expect(
+        builder.runChecks('key', undefined, {
+          key: undefined,
+        }),
+      ).toEqual('foo');
+    });
+
     it('runs array check', () => {
       expect(() => {
         builder.runChecks('key', [123], {});

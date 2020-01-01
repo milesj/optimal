@@ -56,6 +56,21 @@ describe('ObjectBuilder', () => {
       }).toThrowErrorMatchingSnapshot();
     });
 
+    it('returns default value if value is undefined', () => {
+      expect(
+        object(string(), { foo: 'foo' }).runChecks('key', undefined, { key: undefined }),
+      ).toEqual({ foo: 'foo' });
+    });
+
+    it('returns default value from factory if value is undefined', () => {
+      expect(
+        object(string(), () => ({ foo: 'bar' })).runChecks('key', undefined, {
+          key: undefined,
+          multiplier: 3,
+        }),
+      ).toEqual({ foo: 'bar' });
+    });
+
     it('checks each item in the object', () => {
       expect(() => {
         builder.runChecks(

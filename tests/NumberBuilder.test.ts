@@ -20,6 +20,19 @@ describe('NumberBuilder', () => {
         number().runChecks('key', 'foo', {});
       }).toThrowErrorMatchingSnapshot();
     });
+
+    it('returns default value if value is undefined', () => {
+      expect(number(123).runChecks('key', undefined, { key: undefined })).toEqual(123);
+    });
+
+    it('returns default value from factory if value is undefined', () => {
+      expect(
+        number(struct => struct.multiplier * 123).runChecks('key', undefined, {
+          key: undefined,
+          multiplier: 3,
+        }),
+      ).toEqual(369);
+    });
   });
 
   describe('between()', () => {

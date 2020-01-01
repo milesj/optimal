@@ -1,11 +1,12 @@
 import CollectionBuilder from './CollectionBuilder';
+import { DefaultValue } from './types';
 
 function isString(value: unknown): value is string {
   return typeof value === 'string' && value !== '';
 }
 
 export default class StringBuilder<T extends string = string> extends CollectionBuilder<T> {
-  constructor(defaultValue?: T) {
+  constructor(defaultValue?: DefaultValue<T>) {
     super('string', defaultValue || ('' as T));
   }
 
@@ -98,6 +99,6 @@ export default class StringBuilder<T extends string = string> extends Collection
   }
 }
 
-export function string<T extends string = string>(defaultValue?: string) /* infer */ {
+export function string<T extends string = string>(defaultValue?: DefaultValue<string>) /* infer */ {
   return new StringBuilder<T>(defaultValue as T);
 }

@@ -1,3 +1,6 @@
+// Any is required here since we're literally checking any type of value.
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import Builder from './Builder';
 
 export type ArrayOf<T> = T[];
@@ -10,11 +13,13 @@ export interface ObjectOf<T> {
 
 export type Blueprint<Struct extends object> = { [K in keyof Struct]-?: Builder<Struct[K]> };
 
-// Any is required here since we're literally checking any type of value.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type CheckerCallback = (path: string, value: any, ...args: any[]) => unknown;
 
 export type CustomCallback<T, S = object> = (value: T, struct: S) => void;
+
+export type DefaultValueFactory<T> = (struct: any) => T;
+
+export type DefaultValue<T> = T | DefaultValueFactory<T>;
 
 export interface OptimalOptions {
   file?: string;

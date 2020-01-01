@@ -25,6 +25,18 @@ describe('StringBuilder', () => {
         builder.runChecks('key', 123, { key: 123 });
       }).toThrowErrorMatchingSnapshot();
     });
+
+    it('returns default value if value is undefined', () => {
+      expect(string('abc').runChecks('key', undefined, { key: undefined })).toEqual('abc');
+    });
+
+    it('returns default value from factory if value is undefined', () => {
+      expect(
+        string(() => 'XYZ').runChecks('key', undefined, {
+          key: undefined,
+        }),
+      ).toEqual('XYZ');
+    });
   });
 
   describe('camelCase()', () => {

@@ -1,10 +1,11 @@
 import Builder from './Builder';
 import typeOf from './typeOf';
+import { DefaultValue } from './types';
 
 export default class UnionBuilder<T = unknown> extends Builder<T> {
   builders: Builder<unknown>[] = [];
 
-  constructor(builders: Builder<unknown>[], defaultValue: T) {
+  constructor(builders: Builder<unknown>[], defaultValue: DefaultValue<T>) {
     super('union', defaultValue);
 
     if (__DEV__) {
@@ -75,6 +76,9 @@ export default class UnionBuilder<T = unknown> extends Builder<T> {
   }
 }
 
-export function union<T = unknown>(builders: Builder<unknown>[], defaultValue: T) /* infer */ {
+export function union<T = unknown>(
+  builders: Builder<unknown>[],
+  defaultValue: DefaultValue<T>,
+) /* infer */ {
   return new UnionBuilder<T>(builders, defaultValue);
 }
