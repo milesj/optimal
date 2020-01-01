@@ -29,6 +29,7 @@ an array of a specific type by accepting a predicate. Defaults to `[]` but can b
 the 2nd argument. Array builder supports the following additional method:
 
 - `notEmpty()` - Requires the array to not be empty.
+- `sizeOf(length: number)` - Requires the array to be an exact length.
 
 ```ts
 optimal(
@@ -201,6 +202,7 @@ Defaults to `{}` but can be customized with the 2nd argument. Object builder sup
 additional method:
 
 - `notEmpty()` - Requires the object to not be empty.
+- `sizeOf(length: number)` - Requires the object to have an exact number of properties.
 
 ```ts
 optimal(
@@ -264,6 +266,7 @@ methods:
 - `oneOf(list: string[])` - Validate the value is one of the following strings.
 - `pascalCase()` - Checks that the string is in pascal case (`FooBarBaz`). Must start with an
   uppercase character and contain at minimum 2 characters.
+- `sizeOf(length: number)` - Requires the string to be an exact length.
 - `snakeCase()` - Checks that the string is in snake case (`foo_bar_baz`). Must separate words with
   an underscore and contain at minimum 2 characters.
 

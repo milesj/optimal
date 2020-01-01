@@ -1,7 +1,8 @@
 import Builder from './Builder';
+import CollectionBuilder from './CollectionBuilder';
 import { ArrayOf } from './types';
 
-export default class ArrayBuilder<T> extends Builder<ArrayOf<T>> {
+export default class ArrayBuilder<T> extends CollectionBuilder<ArrayOf<T>> {
   contents: Builder<T> | null = null;
 
   constructor(contents: Builder<T> | null = null, defaultValue: ArrayOf<T> = []) {

@@ -2,6 +2,8 @@
 
 exports[`ObjectBuilder checkNotEmpty() errors if value is empty 1`] = `"Invalid field \\"key\\". Object cannot be empty."`;
 
+exports[`ObjectBuilder checkSizeOf() errors if length doesnt match 1`] = `"Invalid field \\"key\\". Object must have 3 properties."`;
+
 exports[`ObjectBuilder constructor() errors if a non-builder is passed 1`] = `"A blueprint is required for object contents."`;
 
 exports[`ObjectBuilder runChecks() checks each item in the object 1`] = `"Invalid field \\"key.c\\". Must be a string."`;

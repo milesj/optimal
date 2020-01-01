@@ -22,6 +22,8 @@ exports[`StringBuilder checkNotEmpty() errors if value is empty 1`] = `"Invalid 
 
 exports[`StringBuilder checkOneOf() errors if value is not in the list 1`] = `"Invalid field \\"key\\". String must be one of: foo, bar, baz"`;
 
+exports[`StringBuilder checkSizeOf() errors if length doesnt match 1`] = `"Invalid field \\"key\\". String length must be 3."`;
+
 exports[`StringBuilder contains() errors if token is an empty string 1`] = `"Contains requires a non-empty token."`;
 
 exports[`StringBuilder contains() errors if token is not string 1`] = `"Contains requires a non-empty token."`;

@@ -1,10 +1,10 @@
-import Builder from './Builder';
+import CollectionBuilder from './CollectionBuilder';
 
 function isString(value: unknown): value is string {
   return typeof value === 'string' && value !== '';
 }
 
-export default class StringBuilder<T extends string = string> extends Builder<T> {
+export default class StringBuilder<T extends string = string> extends CollectionBuilder<T> {
   constructor(defaultValue?: T) {
     super('string', defaultValue || ('' as T));
   }

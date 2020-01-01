@@ -1,8 +1,9 @@
 import Builder from './Builder';
+import CollectionBuilder from './CollectionBuilder';
 import { ObjectOf } from './types';
 import { builder } from './InstanceBuilder';
 
-export default class ObjectBuilder<T> extends Builder<ObjectOf<T>> {
+export default class ObjectBuilder<T> extends CollectionBuilder<ObjectOf<T>> {
   contents: Builder<T> | null = null;
 
   constructor(contents: Builder<T> | null = null, defaultValue: ObjectOf<T> = {}) {

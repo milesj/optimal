@@ -2,6 +2,8 @@
 
 exports[`ArrayBuilder checkNotEmpty() errors if value is empty 1`] = `"Invalid field \\"key\\". Array cannot be empty."`;
 
+exports[`ArrayBuilder checkSizeOf() errors if length doesnt match 1`] = `"Invalid field \\"key\\". Array length must be 3."`;
+
 exports[`ArrayBuilder constructor() errors if a non-builder is passed 1`] = `"A blueprint is required for array contents."`;
 
 exports[`ArrayBuilder runChecks() checks each item in the array 1`] = `"Invalid field \\"key[3]\\". Must be a string."`;

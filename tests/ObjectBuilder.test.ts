@@ -147,6 +147,31 @@ describe('ObjectBuilder', () => {
     });
   });
 
+  describe('sizeOf()', () => {
+    it('adds a checker', () => {
+      builder.sizeOf(3);
+
+      expect(builder.checks[2]).toEqual({
+        callback: builder.checkSizeOf,
+        args: [3],
+      });
+    });
+  });
+
+  describe('checkSizeOf()', () => {
+    it('errors if length doesnt match', () => {
+      expect(() => {
+        builder.checkSizeOf('key', {}, 3);
+      }).toThrowErrorMatchingSnapshot();
+    });
+
+    it('doesnt error if length matches', () => {
+      expect(() => {
+        builder.checkSizeOf('key', { a: '1', b: '2', c: '3' }, 3);
+      }).not.toThrow();
+    });
+  });
+
   describe('typeAlias()', () => {
     it('returns the type name when no contents', () => {
       expect(object().typeAlias()).toBe('object');

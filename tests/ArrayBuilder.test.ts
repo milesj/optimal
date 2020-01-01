@@ -76,7 +76,10 @@ describe('ArrayBuilder', () => {
     it('supports arrays of arrays', () => {
       const nestedBuilder = array(array(string()));
 
-      const data = [['foo', 'bar'], ['baz', 'qux']];
+      const data = [
+        ['foo', 'bar'],
+        ['baz', 'qux'],
+      ];
 
       expect(nestedBuilder.runChecks('key', data, {})).toEqual(data);
     });
@@ -88,7 +91,10 @@ describe('ArrayBuilder', () => {
         nestedBuilder.runChecks(
           'key',
           // @ts-ignore Test invalid type
-          [['foo', 'bar'], ['baz', 123]],
+          [
+            ['foo', 'bar'],
+            ['baz', 123],
+          ],
           {},
         );
       }).toThrowErrorMatchingSnapshot();
@@ -117,6 +123,31 @@ describe('ArrayBuilder', () => {
       expect(() => {
         builder.checkNotEmpty('key', ['123']);
       }).not.toThrow('Invalid field "key". Array cannot be empty.');
+    });
+  });
+
+  describe('sizeOf()', () => {
+    it('adds a checker', () => {
+      builder.sizeOf(3);
+
+      expect(builder.checks[2]).toEqual({
+        callback: builder.checkSizeOf,
+        args: [3],
+      });
+    });
+  });
+
+  describe('checkSizeOf()', () => {
+    it('errors if length doesnt match', () => {
+      expect(() => {
+        builder.checkSizeOf('key', [], 3);
+      }).toThrowErrorMatchingSnapshot();
+    });
+
+    it('doesnt error if length matches', () => {
+      expect(() => {
+        builder.checkSizeOf('key', ['1', '2', '3'], 3);
+      }).not.toThrow();
     });
   });
 

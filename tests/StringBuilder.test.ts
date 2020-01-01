@@ -317,6 +317,31 @@ describe('StringBuilder', () => {
     });
   });
 
+  describe('sizeOf()', () => {
+    it('adds a checker', () => {
+      builder.sizeOf(3);
+
+      expect(builder.checks[1]).toEqual({
+        callback: builder.checkSizeOf,
+        args: [3],
+      });
+    });
+  });
+
+  describe('checkSizeOf()', () => {
+    it('errors if length doesnt match', () => {
+      expect(() => {
+        builder.checkSizeOf('key', '', 3);
+      }).toThrowErrorMatchingSnapshot();
+    });
+
+    it('doesnt error if length matches', () => {
+      expect(() => {
+        builder.checkSizeOf('key', 'abc', 3);
+      }).not.toThrow();
+    });
+  });
+
   describe('snakeCase()', () => {
     it('errors if less than 2 characters', () => {
       expect(() => {
