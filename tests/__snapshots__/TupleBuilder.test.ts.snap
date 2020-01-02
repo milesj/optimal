@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TupleBuilder errors if a non-array is not passed 1`] = `"union is not defined"`;
+
+exports[`TupleBuilder errors if an array with non-builders is passed 1`] = `"A non-empty array of blueprints are required for a tuple."`;
+
+exports[`TupleBuilder errors if an empty array is passed 1`] = `"A non-empty array of blueprints are required for a tuple."`;
+
+exports[`TupleBuilder notEmpty() errors if value is empty 1`] = `"Invalid field \\"key[2]\\". Number must be between 0 and 5."`;

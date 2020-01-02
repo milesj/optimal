@@ -12,6 +12,7 @@ import NumberBuilder, { number } from './NumberBuilder';
 import ObjectBuilder, { object, blueprint } from './ObjectBuilder';
 import ShapeBuilder, { shape } from './ShapeBuilder';
 import StringBuilder, { string } from './StringBuilder';
+import TupleBuilder, { tuple } from './TupleBuilder';
 import UnionBuilder, { union } from './UnionBuilder';
 
 export const predicates = {
@@ -28,6 +29,7 @@ export const predicates = {
   regex,
   shape,
   string,
+  tuple,
   union,
 };
 
@@ -45,6 +47,7 @@ export {
   regex,
   shape,
   string,
+  tuple,
   union,
 };
 
@@ -57,6 +60,7 @@ export {
   ObjectBuilder,
   ShapeBuilder,
   StringBuilder,
+  TupleBuilder,
   UnionBuilder,
 };
 

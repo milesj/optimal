@@ -3,14 +3,13 @@ import isObject from './isObject';
 import optimal from './optimal';
 import { Blueprint, OptimalOptions } from './types';
 
-export default class ShapeBuilder<Shape extends object> extends Builder<Shape> {
-  protected contents: Blueprint<Shape>;
+export default class ShapeBuilder<T extends object> extends Builder<T> {
+  protected contents: Blueprint<T>;
 
   protected isExact: boolean = false;
 
-  constructor(contents: Blueprint<Shape>) {
-    // @ts-ignore
-    super('shape', {});
+  constructor(contents: Blueprint<T>) {
+    super('shape', {} as T);
 
     if (__DEV__) {
       this.invariant(
@@ -34,7 +33,7 @@ export default class ShapeBuilder<Shape extends object> extends Builder<Shape> {
 
   runChecks(
     path: string,
-    initialValue: Shape | undefined,
+    initialValue: T | undefined,
     struct: object,
     options: OptimalOptions = {},
   ) {
@@ -52,6 +51,6 @@ export default class ShapeBuilder<Shape extends object> extends Builder<Shape> {
   }
 }
 
-export function shape<P extends object>(contents: Blueprint<P>) /* infer */ {
-  return new ShapeBuilder<P>(contents);
+export function shape<T extends object>(contents: Blueprint<T>) /* infer */ {
+  return new ShapeBuilder<T>(contents);
 }
