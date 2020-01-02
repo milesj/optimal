@@ -17,19 +17,17 @@ export default class StringBuilder<T extends string = string> extends Collection
   contains(token: string, index: number = 0): this {
     if (__DEV__) {
       this.invariant(isString(token), 'Contains requires a non-empty token.');
+
+      this.addCheck((path, value) => {
+        if (this.isOptionalDefault(value)) {
+          return;
+        }
+
+        this.invariant(value.includes(token, index), `String does not include "${token}".`, path);
+      });
     }
 
-    return this.addCheck(this.checkContains, token, index);
-  }
-
-  checkContains(path: string, value: T, token: string, index: number = 0) {
-    if (__DEV__) {
-      if (this.isOptionalDefault(value)) {
-        return;
-      }
-
-      this.invariant(value.includes(token, index), `String does not include "${token}".`, path);
-    }
+    return this;
   }
 
   kebabCase(): this {
@@ -42,33 +40,31 @@ export default class StringBuilder<T extends string = string> extends Collection
         pattern instanceof RegExp,
         'Match requires a regular expression to match against.',
       );
+
+      this.addCheck((path, value) => {
+        if (this.isOptionalDefault(value)) {
+          return;
+        }
+
+        this.invariant(
+          !!value.match(pattern),
+          `${message || 'String does not match.'} (pattern "${pattern.source}")`,
+          path,
+        );
+      });
     }
 
-    return this.addCheck(this.checkMatch, pattern, message);
-  }
-
-  checkMatch(path: string, value: T, pattern: RegExp, message?: string) {
-    if (__DEV__) {
-      if (this.isOptionalDefault(value)) {
-        return;
-      }
-
-      this.invariant(
-        !!value.match(pattern),
-        `${message || 'String does not match.'} (pattern "${pattern.source}")`,
-        path,
-      );
-    }
+    return this;
   }
 
   notEmpty(): this {
-    return this.addCheck(this.checkNotEmpty);
-  }
-
-  checkNotEmpty(path: string, value: T) {
     if (__DEV__) {
-      this.invariant(isString(value), 'String cannot be empty.', path);
+      this.addCheck((path, value) => {
+        this.invariant(isString(value), 'String cannot be empty.', path);
+      });
     }
+
+    return this;
   }
 
   oneOf<U extends string>(list: U[]): StringBuilder<U> {
@@ -77,17 +73,13 @@ export default class StringBuilder<T extends string = string> extends Collection
         Array.isArray(list) && list.length > 0 && list.every(item => isString(item)),
         'One of requires a non-empty array of strings.',
       );
-    }
 
-    this.addCheck(this.checkOneOf, list);
+      this.addCheck((path, value) => {
+        this.invariant(list.includes(value), `String must be one of: ${list.join(', ')}`, path);
+      });
+    }
 
     return (this as unknown) as StringBuilder<U>;
-  }
-
-  checkOneOf(path: string, value: T, list: T[]) {
-    if (__DEV__) {
-      this.invariant(list.includes(value), `String must be one of: ${list.join(', ')}`, path);
-    }
   }
 
   pascalCase(): this {

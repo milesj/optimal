@@ -8,28 +8,26 @@ export default class BooleanBuilder<T extends boolean = boolean> extends Builder
 
   onlyFalse(): BooleanBuilder<false> {
     this.defaultValue = false as T;
-    this.addCheck(this.checkOnlyFalse);
+
+    if (__DEV__) {
+      this.addCheck((path, value) => {
+        this.invariant(value === false, 'May only be `false`.', path);
+      });
+    }
 
     return (this as unknown) as BooleanBuilder<false>;
   }
 
-  checkOnlyFalse(path: string, value: T) {
-    if (__DEV__) {
-      this.invariant(value === false, 'May only be `false`.', path);
-    }
-  }
-
   onlyTrue(): BooleanBuilder<true> {
     this.defaultValue = true as T;
-    this.addCheck(this.checkOnlyTrue);
+
+    if (__DEV__) {
+      this.addCheck((path, value) => {
+        this.invariant(value === true, 'May only be `true`.', path);
+      });
+    }
 
     return (this as unknown) as BooleanBuilder<true>;
-  }
-
-  checkOnlyTrue(path: string, value: T) {
-    if (__DEV__) {
-      this.invariant(value === true, 'May only be `true`.', path);
-    }
   }
 }
 

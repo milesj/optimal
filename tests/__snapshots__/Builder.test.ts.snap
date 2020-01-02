@@ -2,15 +2,7 @@
 
 exports[`Builder and() errors if no keys are defined 1`] = `"AND requires a list of field names."`;
 
-exports[`Builder checkAnd() errors if not all options are defined 1`] = `"All of these fields must be defined: foo, bar, baz"`;
-
-exports[`Builder checkCustom() is passed entire options object 1`] = `"Invalid field \\"error\\". This will error!"`;
-
-exports[`Builder checkCustom() triggers callback function 1`] = `"Invalid field \\"error\\". This will error!"`;
-
-exports[`Builder checkOnly() errors if value doesnt match the default value 1`] = `"Invalid field \\"key\\". Value may only be \\"foo\\"."`;
-
-exports[`Builder checkOr() errors if not 1 option is defined 1`] = `"At least one of these fields must be defined: foo, bar, baz"`;
+exports[`Builder and() errors if not all options are defined 1`] = `"All of these fields must be defined: foo, bar, baz"`;
 
 exports[`Builder checkType() array errors on non-arrays 1`] = `"Invalid field \\"key\\". Must be an array."`;
 
@@ -24,19 +16,19 @@ exports[`Builder checkType() object errors on arrays 1`] = `"Invalid field \\"ke
 
 exports[`Builder checkType() object errors on non-objects 1`] = `"Invalid field \\"key\\". Must be a plain object."`;
 
-exports[`Builder checkType() object errors on nulls 1`] = `"Invalid field \\"key\\". Must be a plain object."`;
+exports[`Builder checkType() object errors on nulls 1`] = `"Invalid field \\"key\\". Null is not allowed."`;
 
 exports[`Builder checkType() string errors on non-strings 1`] = `"Invalid field \\"key\\". Must be a string."`;
 
-exports[`Builder checkXor() errors if more than 1 option is defined 1`] = `"Only one of these fields may be defined: foo, bar, baz"`;
+exports[`Builder custom() is passed entire options object 1`] = `"Invalid field \\"error\\". This will error!"`;
 
-exports[`Builder checkXor() errors if no options are defined 1`] = `"Only one of these fields may be defined: foo, bar, baz"`;
-
-exports[`Builder constructor() errors if default value is undefined 1`] = `"A default value for type \\"string\\" is required."`;
+exports[`Builder custom() triggers callback function 1`] = `"Invalid field \\"key\\". This will error!"`;
 
 exports[`Builder deprecate() errors for empty value 1`] = `"A non-empty string is required for deprecated messages."`;
 
 exports[`Builder deprecate() errors for non-string value 1`] = `"A non-empty string is required for deprecated messages."`;
+
+exports[`Builder errors if default value is undefined 1`] = `"A default value for type \\"string\\" is required."`;
 
 exports[`Builder invariant() errors if condition is false 1`] = `"Failure"`;
 
@@ -54,9 +46,17 @@ exports[`Builder message() errors for empty value 1`] = `"A non-empty string is 
 
 exports[`Builder message() errors for non-string value 1`] = `"A non-empty string is required for custom messages."`;
 
+exports[`Builder nullable() errors if field is undefined 1`] = `"Invalid field \\"key\\". Null is not allowed."`;
+
 exports[`Builder only() errors if default value is not the same type 1`] = `"Only requires a default string value."`;
 
+exports[`Builder only() errors if value doesnt match the default value 1`] = `"Invalid field \\"key\\". Value may only be \\"foo\\"."`;
+
 exports[`Builder or() errors if no keys are defined 1`] = `"OR requires a list of field names."`;
+
+exports[`Builder or() errors if not 1 option is defined 1`] = `"At least one of these fields must be defined: foo, bar, baz"`;
+
+exports[`Builder required() errors if field is undefined 1`] = `"Invalid field \\"key\\". Field is required and must be defined."`;
 
 exports[`Builder runChecks() errors if value passed is defined and builder is never 1`] = `"Invalid field \\"key\\". Field should never be used."`;
 
@@ -68,6 +68,10 @@ exports[`Builder runChecks() runs default type of check 1`] = `"Invalid field \\
 
 exports[`Builder runChecks() uses custom message 1`] = `"Invalid field \\"key\\". Oops, something is broken."`;
 
+exports[`Builder xor() errors if more than 1 option is defined 1`] = `"Only one of these fields may be defined: foo, bar, baz"`;
+
 exports[`Builder xor() errors if no keys are defined 1`] = `"XOR requires a list of field names."`;
+
+exports[`Builder xor() errors if no options are defined 1`] = `"Only one of these fields may be defined: foo, bar, baz"`;
 
 exports[`func() errors if a non-function value is used 1`] = `"Invalid field \\"key\\". Must be a function."`;

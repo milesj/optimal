@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`shape() constructor() errors if a non-object is not passed 1`] = `"A non-empty object of properties to blueprints are required for a shape."`;
+exports[`shape() errors if a non-object is not passed 1`] = `"A non-empty object of properties to blueprints are required for a shape."`;
 
-exports[`shape() constructor() errors if an empty object is passed 1`] = `"A non-empty object of properties to blueprints are required for a shape."`;
+exports[`shape() errors if an empty object is passed 1`] = `"A non-empty object of properties to blueprints are required for a shape."`;
 
-exports[`shape() constructor() errors if an object with non-builders is passed 1`] = `"A non-empty object of properties to blueprints are required for a shape."`;
+exports[`shape() errors if an object with non-builders is passed 1`] = `"A non-empty object of properties to blueprints are required for a shape."`;
 
 exports[`shape() runChecks() checks each item in the object 1`] = `"Invalid field \\"key.bar\\". Must be a number."`;
 

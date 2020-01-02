@@ -4,9 +4,9 @@ import optimal from './optimal';
 import { Blueprint, OptimalOptions } from './types';
 
 export default class ShapeBuilder<Shape extends object> extends Builder<Shape> {
-  contents: Blueprint<Shape>;
+  protected contents: Blueprint<Shape>;
 
-  isExact: boolean = false;
+  protected isExact: boolean = false;
 
   constructor(contents: Blueprint<Shape>) {
     // @ts-ignore

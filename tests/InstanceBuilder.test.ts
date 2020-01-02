@@ -1,5 +1,6 @@
 import Builder from '../src/Builder';
 import InstanceBuilder, { instance, builder, date, regex } from '../src/InstanceBuilder';
+import { runChecks } from './helpers';
 
 describe('instance()', () => {
   class Foo {}
@@ -12,66 +13,63 @@ describe('instance()', () => {
     inst = instance(Foo);
   });
 
-  describe('constructor()', () => {
-    it('errors if a non-class is passed', () => {
-      expect(() => {
-        // @ts-ignore Test invalid type
-        inst = instance(123);
-      }).toThrowErrorMatchingSnapshot();
-    });
+  it('errors if a non-class is passed', () => {
+    expect(() => {
+      // @ts-ignore Test invalid type
+      instance(123);
+    }).toThrowErrorMatchingSnapshot();
+  });
 
-    it('errors if an object is passed', () => {
-      expect(() => {
-        // @ts-ignore Test invalid type
-        inst = instance({});
-      }).toThrowErrorMatchingSnapshot();
-    });
+  it('errors if an object is passed', () => {
+    expect(() => {
+      // @ts-ignore Test invalid type
+      instance({});
+    }).toThrowErrorMatchingSnapshot();
+  });
 
-    it('doesnt error if a class is passed', () => {
-      expect(() => {
-        inst = instance(Foo);
-      }).not.toThrow('A class reference is required.');
-    });
+  it('doesnt error if a class is passed', () => {
+    expect(() => {
+      instance(Foo);
+    }).not.toThrow();
   });
 
   describe('runChecks()', () => {
     it('returns null for no data', () => {
-      expect(inst.runChecks('key', null, { key: null })).toBeNull();
+      expect(runChecks(inst, null)).toBeNull();
     });
 
     it('errors if a non-instance is passed', () => {
       expect(() => {
-        instance().runChecks(
-          'key',
+        runChecks(
+          instance(),
           // @ts-ignore Allow invalid type
           'foo',
-          { key: null },
         );
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if an object is passed when a class instance is required', () => {
       expect(() => {
-        inst.runChecks('key', {}, { key: null });
+        runChecks(inst, {});
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('doesnt error if a generic class instance is passed', () => {
       expect(() => {
-        instance<Foo>().runChecks('key', new Foo(), {});
-      }).not.toThrow('Invalid field "key". Must be a class instance.');
+        runChecks(instance<Foo>(), new Foo());
+      }).not.toThrow();
     });
 
     it('errors if a non-instance is passed when a class reference is set', () => {
       expect(() => {
-        instance(Foo).runChecks('key', 'foo', {});
+        runChecks(instance(Foo), 'foo');
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('doesnt error if the correct instance is passed', () => {
       expect(() => {
-        instance(Foo).runChecks('key', new Foo(), {});
-      }).not.toThrow('Invalid field "key". Must be an instance of "Foo".');
+        runChecks(instance(Foo), new Foo());
+      }).not.toThrow();
     });
 
     it('handles an instance of the same name when passed in loose mode', () => {
@@ -82,17 +80,17 @@ describe('instance()', () => {
       });
 
       expect(() => {
-        instance(Foo).runChecks('key', new Foo2(), {});
+        runChecks(instance(Foo), new Foo2());
       }).toThrow('Invalid field "key". Must be an instance of "Foo".');
 
       expect(() => {
-        instance(Foo, true).runChecks('key', new Foo2(), {});
-      }).not.toThrow('Invalid field "key". Must be an instance of "Foo".');
+        runChecks(instance(Foo, true), new Foo2());
+      }).not.toThrow();
     });
 
     it('supports running checks on abstract classes', () => {
       expect(() => {
-        instance(Bar).runChecks('key', new BarImpl(), {});
+        runChecks(instance(Bar), new BarImpl());
       }).not.toThrow();
     });
   });
@@ -111,6 +109,7 @@ describe('instance()', () => {
 describe('builder()', () => {
   it('returns a builder instance', () => {
     expect(builder()).toBeInstanceOf(InstanceBuilder);
+    // @ts-ignore Allow access
     expect(builder().refClass).toBe(Builder);
   });
 
@@ -120,11 +119,10 @@ describe('builder()', () => {
 
   it('errors if a non-builder is passed', () => {
     expect(() => {
-      builder().runChecks(
-        'key',
+      runChecks(
+        builder(),
         // @ts-ignore Allow invalid type
         123,
-        {},
       );
     }).toThrow('Invalid field "key". Must be an instance of "Builder".');
   });
@@ -133,6 +131,7 @@ describe('builder()', () => {
 describe('date()', () => {
   it('returns a builder for Date', () => {
     expect(date()).toBeInstanceOf(InstanceBuilder);
+    // @ts-ignore Allow access
     expect(date().refClass).toBe(Date);
   });
 
@@ -142,11 +141,10 @@ describe('date()', () => {
 
   it('errors if a non-Date is passed', () => {
     expect(() => {
-      date().runChecks(
-        'key',
+      runChecks(
+        date(),
         // @ts-ignore Allow invalid type
         123,
-        {},
       );
     }).toThrow('Invalid field "key". Must be an instance of "Date".');
   });
@@ -155,6 +153,7 @@ describe('date()', () => {
 describe('regex()', () => {
   it('returns a builder for RegExp', () => {
     expect(regex()).toBeInstanceOf(InstanceBuilder);
+    // @ts-ignore Allow access
     expect(regex().refClass).toBe(RegExp);
   });
 
@@ -164,11 +163,10 @@ describe('regex()', () => {
 
   it('errors if a non-RegExp is passed', () => {
     expect(() => {
-      regex().runChecks(
-        'key',
+      runChecks(
+        regex(),
         // @ts-ignore Allow invalid type
         123,
-        {},
       );
     }).toThrow('Invalid field "key". Must be an instance of "RegExp".');
   });

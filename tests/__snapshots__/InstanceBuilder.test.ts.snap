@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`instance() constructor() errors if a non-class is passed 1`] = `"A class reference is required."`;
+exports[`instance() errors if a non-class is passed 1`] = `"A class reference is required."`;
 
-exports[`instance() constructor() errors if an object is passed 1`] = `"A class reference is required."`;
+exports[`instance() errors if an object is passed 1`] = `"A class reference is required."`;
 
 exports[`instance() runChecks() errors if a non-instance is passed 1`] = `"Invalid field \\"key\\". Must be a class instance."`;
 

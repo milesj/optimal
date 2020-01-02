@@ -1,6 +1,7 @@
 import ObjectBuilder, { object, blueprint } from '../src/ObjectBuilder';
 import { number } from '../src/NumberBuilder';
 import { string } from '../src/StringBuilder';
+import { runChecks } from './helpers';
 
 describe('ObjectBuilder', () => {
   let builder: ObjectBuilder<string>;
@@ -9,57 +10,59 @@ describe('ObjectBuilder', () => {
     builder = object(string(), {});
   });
 
-  describe('constructor()', () => {
-    it('errors if a non-builder is passed', () => {
-      expect(() => {
-        // @ts-ignore Allow non-builder
-        builder = object(123);
-      }).toThrowErrorMatchingSnapshot();
-    });
+  it('errors if a non-builder is passed', () => {
+    expect(() => {
+      // @ts-ignore Allow non-builder
+      builder = object(123);
+    }).toThrowErrorMatchingSnapshot();
+  });
 
-    it('doesnt error if a builder is not passed', () => {
-      expect(() => {
-        object();
-      }).not.toThrow('A blueprint is required for object contents.');
-    });
+  it('doesnt error if a builder is not passed', () => {
+    expect(() => {
+      object();
+    }).not.toThrow();
+  });
 
-    it('doesnt error if a builder is passed', () => {
-      expect(() => {
-        builder = object(string());
-      }).not.toThrow('A blueprint is required for object contents.');
-    });
+  it('doesnt error if a builder is passed', () => {
+    expect(() => {
+      builder = object(string());
+    }).not.toThrow();
+  });
 
-    it('sets type and default value', () => {
-      builder = object(string(), { foo: 'bar' });
+  it('sets type and default value', () => {
+    builder = object(string(), { foo: 'bar' });
 
-      expect(builder.type).toBe('object');
-      expect(builder.defaultValue).toEqual({ foo: 'bar' });
-    });
+    expect(builder.type).toBe('object');
+    expect(builder.defaultValue).toEqual({ foo: 'bar' });
   });
 
   describe('runChecks()', () => {
     it('returns an empty object for no data', () => {
-      expect(builder.runChecks('key', {}, { key: {} })).toEqual({});
+      expect(runChecks(builder)).toEqual({});
     });
 
     it('errors if a non-object is passed', () => {
       expect(() => {
-        // @ts-ignore Test invalid type
-        builder.runChecks('key', 'foo', {});
+        runChecks(
+          builder,
+          // @ts-ignore Test invalid type
+          'foo',
+        );
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if a non-object is passed, when not using a builder', () => {
       expect(() => {
-        // @ts-ignore Test invalid type
-        object().runChecks('key', 'foo', {});
+        runChecks(
+          object(),
+          // @ts-ignore Test invalid type
+          'foo',
+        );
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('returns default value if value is undefined', () => {
-      expect(
-        object(string(), { foo: 'foo' }).runChecks('key', undefined, { key: undefined }),
-      ).toEqual({ foo: 'foo' });
+      expect(runChecks(object(string(), { foo: 'foo' }))).toEqual({ foo: 'foo' });
     });
 
     it('returns default value from factory if value is undefined', () => {
@@ -73,28 +76,26 @@ describe('ObjectBuilder', () => {
 
     it('checks each item in the object', () => {
       expect(() => {
-        builder.runChecks(
-          'key',
+        runChecks(
+          builder,
           // @ts-ignore Test invalid type
           {
             a: 'foo',
             b: 'bar',
             c: 123,
           },
-          {},
         );
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if an object item is invalid; persists path with index', () => {
       expect(() => {
-        builder.runChecks(
-          'key',
+        runChecks(
+          builder,
           // @ts-ignore Test invalid type
           {
             foo: 123,
           },
-          {},
         );
       }).toThrowErrorMatchingSnapshot();
     });
@@ -119,8 +120,8 @@ describe('ObjectBuilder', () => {
       const nestedBuilder = object(object(string()));
 
       expect(() => {
-        nestedBuilder.runChecks(
-          'key',
+        runChecks(
+          nestedBuilder,
           // @ts-ignore Test invalid type
           {
             a: {
@@ -131,58 +132,43 @@ describe('ObjectBuilder', () => {
               baz: '789',
             },
           },
-          {},
         );
       }).toThrowErrorMatchingSnapshot();
     });
   });
 
   describe('notEmpty()', () => {
-    it('adds a checker', () => {
+    beforeEach(() => {
       builder.notEmpty();
-
-      expect(builder.checks[2]).toEqual({
-        callback: builder.checkNotEmpty,
-        args: [],
-      });
     });
-  });
 
-  describe('checkNotEmpty()', () => {
     it('errors if value is empty', () => {
       expect(() => {
-        builder.checkNotEmpty('key', {});
+        runChecks(builder, {});
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('doesnt error if not empty', () => {
       expect(() => {
-        builder.checkNotEmpty('key', { foo: '123' });
-      }).not.toThrow('Invalid field "key". Object cannot be empty.');
+        runChecks(builder, { foo: '123' });
+      }).not.toThrow();
     });
   });
 
   describe('sizeOf()', () => {
-    it('adds a checker', () => {
+    beforeEach(() => {
       builder.sizeOf(3);
-
-      expect(builder.checks[2]).toEqual({
-        callback: builder.checkSizeOf,
-        args: [3],
-      });
     });
-  });
 
-  describe('checkSizeOf()', () => {
     it('errors if length doesnt match', () => {
       expect(() => {
-        builder.checkSizeOf('key', {}, 3);
+        runChecks(builder, {});
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('doesnt error if length matches', () => {
       expect(() => {
-        builder.checkSizeOf('key', { a: '1', b: '2', c: '3' }, 3);
+        runChecks(builder, { a: '1', b: '2', c: '3' });
       }).not.toThrow();
     });
   });

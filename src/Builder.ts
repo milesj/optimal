@@ -13,35 +13,30 @@ export interface TemporalStruct {
   [key: string]: unknown;
 }
 
-export interface Check {
-  args: unknown[];
-  callback: CheckerCallback;
-}
-
 export default class Builder<T> {
-  checks: Check[] = [];
-
-  currentStruct: object = {};
-
   defaultValue?: T;
 
-  defaultValueFactory?: DefaultValueFactory<T>;
-
-  deprecatedMessage: string = '';
-
-  errorMessage: string = '';
-
-  isNever: boolean = false;
-
-  isNullable: boolean = false;
-
-  isRequired: boolean = false;
-
-  noErrorPrefix: boolean = false;
-
-  options: OptimalOptions = {};
-
   type: SupportedType;
+
+  protected checks: CheckerCallback[] = [];
+
+  protected currentStruct: object = {};
+
+  protected defaultValueFactory?: DefaultValueFactory<T>;
+
+  protected deprecatedMessage: string = '';
+
+  protected errorMessage: string = '';
+
+  protected isNever: boolean = false;
+
+  protected isNullable: boolean = false;
+
+  protected isRequired: boolean = false;
+
+  protected noErrorPrefix: boolean = false;
+
+  protected options: OptimalOptions = {};
 
   constructor(type: SupportedType, defaultValue: DefaultValue<T>, bypassFactory: boolean = false) {
     if (__DEV__) {
@@ -63,78 +58,32 @@ export default class Builder<T> {
   }
 
   /**
-   * Add a checking function with optional arguments.
-   */
-  addCheck(checker: CheckerCallback, ...args: any[]): this {
-    if (__DEV__) {
-      this.checks.push({
-        args,
-        callback: checker,
-      });
-    }
-
-    return this;
-  }
-
-  /**
    * Map a list of names that must be defined alongside this field.
    */
   and(...keys: string[]): this {
     if (__DEV__) {
       this.invariant(keys.length > 0, 'AND requires a list of field names.');
+
+      this.addCheck(path => {
+        const checkedKeys = [this.key(path), ...keys];
+        const struct = this.currentStruct as TemporalStruct;
+        const undefs = checkedKeys.filter(
+          key => typeof struct[key] === 'undefined' || struct[key] === null,
+        );
+
+        // Only error once one of the struct is defined
+        if (undefs.length === checkedKeys.length) {
+          return;
+        }
+
+        this.invariant(
+          undefs.length === 0,
+          `All of these fields must be defined: ${checkedKeys.join(', ')}`,
+        );
+      });
     }
 
-    return this.addCheck(this.checkAnd, keys);
-  }
-
-  /**
-   * Validate that all fields have been defined.
-   */
-  checkAnd(path: string, value: T, otherKeys: string[]) {
-    if (__DEV__) {
-      const keys = [this.key(path), ...otherKeys];
-      const struct = this.currentStruct as TemporalStruct;
-      const undefs = keys.filter(key => typeof struct[key] === 'undefined' || struct[key] === null);
-
-      // Only error once one of the struct is defined
-      if (undefs.length === keys.length) {
-        return;
-      }
-
-      this.invariant(
-        undefs.length === 0,
-        `All of these fields must be defined: ${keys.join(', ')}`,
-      );
-    }
-  }
-
-  /**
-   * Validate the type of value.
-   */
-  checkType(path: string, value: T) {
-    if (__DEV__) {
-      switch (this.type) {
-        case 'array':
-          this.invariant(Array.isArray(value), 'Must be an array.', path);
-          break;
-
-        case 'custom':
-        case 'instance':
-        case 'union':
-          // Handle in the sub-class
-          break;
-
-        case 'object':
-        case 'shape':
-          this.invariant(isObject(value), 'Must be a plain object.', path);
-          break;
-
-        default:
-          // eslint-disable-next-line valid-typeof
-          this.invariant(typeof value === this.type, `Must be a ${this.type}.`, path);
-          break;
-      }
-    }
+    return this;
   }
 
   /**
@@ -146,22 +95,17 @@ export default class Builder<T> {
         typeof callback === 'function',
         'Custom blueprints require a validation function.',
       );
+
+      this.addCheck((path, value) => {
+        try {
+          callback(value, (this.currentStruct as unknown) as S);
+        } catch (error) {
+          this.invariant(false, error.message, path);
+        }
+      });
     }
 
-    return this.addCheck(this.checkCustom, callback);
-  }
-
-  /**
-   * Validate the value using a custom callback.
-   */
-  checkCustom(path: string, value: T, callback: CustomCallback<T>) {
-    if (__DEV__) {
-      try {
-        callback(value, this.currentStruct);
-      } catch (error) {
-        this.invariant(false, error.message, path);
-      }
-    }
+    return this;
   }
 
   /**
@@ -173,9 +117,9 @@ export default class Builder<T> {
         typeof message === 'string' && !!message,
         'A non-empty string is required for deprecated messages.',
       );
-
-      this.deprecatedMessage = message;
     }
+
+    this.deprecatedMessage = message;
 
     return this;
   }
@@ -216,22 +160,6 @@ export default class Builder<T> {
   }
 
   /**
-   * Return true if the value matches the default value and the builder is optional.
-   */
-  isOptionalDefault(value: unknown): boolean {
-    return !this.isRequired && value === this.defaultValue;
-  }
-
-  /**
-   * Return the current key from a path.
-   */
-  key(path: string): string {
-    const index = path.lastIndexOf('.');
-
-    return index > 0 ? path.slice(index + 1) : path;
-  }
-
-  /**
    * Set a custom error message for all checks.
    */
   message(message: string): this {
@@ -240,9 +168,9 @@ export default class Builder<T> {
         typeof message === 'string' && !!message,
         'A non-empty string is required for custom messages.',
       );
-
-      this.errorMessage = message;
     }
+
+    this.errorMessage = message;
 
     return this;
   }
@@ -251,10 +179,8 @@ export default class Builder<T> {
    * Field should never be used.
    */
   never(): Builder<never> {
-    if (__DEV__) {
-      this.defaultValue = (undefined as unknown) as T;
-      this.isNever = true;
-    }
+    this.defaultValue = (undefined as unknown) as T;
+    this.isNever = true;
 
     return (this as unknown) as Builder<never>;
   }
@@ -263,9 +189,7 @@ export default class Builder<T> {
    * Disallow null values.
    */
   notNullable(): Builder<NonNullable<T>> {
-    if (__DEV__) {
-      this.isNullable = false;
-    }
+    this.isNullable = false;
 
     return (this as unknown) as Builder<NonNullable<T>>;
   }
@@ -274,9 +198,7 @@ export default class Builder<T> {
    * Allow null values.
    */
   nullable(): Builder<T | null> {
-    if (__DEV__) {
-      this.isNullable = true;
-    }
+    this.isNullable = true;
 
     return (this as unknown) as Builder<T | null>;
   }
@@ -291,22 +213,17 @@ export default class Builder<T> {
         typeof this.defaultValue === this.type,
         `Only requires a default ${this.type} value.`,
       );
+
+      this.addCheck((path, value) => {
+        this.invariant(
+          value === this.defaultValue,
+          `Value may only be "${String(this.defaultValue)}".`,
+          path,
+        );
+      });
     }
 
-    return this.addCheck(this.checkOnly);
-  }
-
-  /**
-   * Validate the value matches only the default value.
-   */
-  checkOnly(path: string, value: T) {
-    if (__DEV__) {
-      this.invariant(
-        value === this.defaultValue,
-        `Value may only be "${String(this.defaultValue)}".`,
-        path,
-      );
-    }
+    return this;
   }
 
   /**
@@ -315,34 +232,29 @@ export default class Builder<T> {
   or(...keys: string[]): this {
     if (__DEV__) {
       this.invariant(keys.length > 0, 'OR requires a list of field names.');
+
+      this.addCheck(path => {
+        const orKeys = [this.key(path), ...keys];
+        const struct = this.currentStruct as TemporalStruct;
+        const defs = orKeys.filter(
+          key => typeof struct[key] !== 'undefined' && struct[key] !== null,
+        );
+
+        this.invariant(
+          defs.length > 0,
+          `At least one of these fields must be defined: ${orKeys.join(', ')}`,
+        );
+      });
     }
 
-    return this.addCheck(this.checkOr, keys);
-  }
-
-  /**
-   * Validate that at least 1 field is defined.
-   */
-  checkOr(path: string, value: T, otherKeys: string[]) {
-    if (__DEV__) {
-      const keys = [this.key(path), ...otherKeys];
-      const struct = this.currentStruct as TemporalStruct;
-      const defs = keys.filter(key => typeof struct[key] !== 'undefined' && struct[key] !== null);
-
-      this.invariant(
-        defs.length > 0,
-        `At least one of these fields must be defined: ${keys.join(', ')}`,
-      );
-    }
+    return this;
   }
 
   /**
    * Require an object property to be explicitly defined.
    */
   required(state: boolean = true): this {
-    if (__DEV__) {
-      this.isRequired = state;
-    }
+    this.isRequired = state;
 
     return this;
   }
@@ -398,7 +310,7 @@ export default class Builder<T> {
     // Run all checks against the value
     if (__DEV__) {
       this.checks.forEach(checker => {
-        const result = checker.callback.call(this, path, value, ...checker.args);
+        const result = checker.call(this, path, value);
 
         if (typeof result !== 'undefined') {
           value = result as T;
@@ -422,25 +334,78 @@ export default class Builder<T> {
   xor(...keys: string[]): this {
     if (__DEV__) {
       this.invariant(keys.length > 0, 'XOR requires a list of field names.');
+
+      this.addCheck(path => {
+        const xorKeys = [this.key(path), ...keys];
+        const struct = this.currentStruct as TemporalStruct;
+        const defs = xorKeys.filter(
+          key => typeof struct[key] !== 'undefined' && struct[key] !== null,
+        );
+
+        this.invariant(
+          defs.length === 1,
+          `Only one of these fields may be defined: ${xorKeys.join(', ')}`,
+        );
+      });
     }
 
-    return this.addCheck(this.checkXor, keys);
+    return this;
   }
 
   /**
-   * Validate that only 1 field is defined.
+   * Add a checking function with optional arguments.
    */
-  checkXor(path: string, value: T, otherKeys: string[]) {
+  protected addCheck(checker: CheckerCallback): this {
     if (__DEV__) {
-      const keys = [this.key(path), ...otherKeys];
-      const struct = this.currentStruct as TemporalStruct;
-      const defs = keys.filter(key => typeof struct[key] !== 'undefined' && struct[key] !== null);
-
-      this.invariant(
-        defs.length === 1,
-        `Only one of these fields may be defined: ${keys.join(', ')}`,
-      );
+      this.checks.push(checker);
     }
+
+    return this;
+  }
+
+  /**
+   * Validate the type of value.
+   */
+  protected checkType(path: string, value: T) {
+    if (__DEV__) {
+      switch (this.type) {
+        case 'array':
+          this.invariant(Array.isArray(value), 'Must be an array.', path);
+          break;
+
+        case 'custom':
+        case 'instance':
+        case 'union':
+          // Handle in the sub-class
+          break;
+
+        case 'object':
+        case 'shape':
+          this.invariant(isObject(value), 'Must be a plain object.', path);
+          break;
+
+        default:
+          // eslint-disable-next-line valid-typeof
+          this.invariant(typeof value === this.type, `Must be a ${this.type}.`, path);
+          break;
+      }
+    }
+  }
+
+  /**
+   * Return true if the value matches the default value and the builder is optional.
+   */
+  protected isOptionalDefault(value: unknown): boolean {
+    return !this.isRequired && value === this.defaultValue;
+  }
+
+  /**
+   * Return the current key from a path.
+   */
+  protected key(path: string): string {
+    const index = path.lastIndexOf('.');
+
+    return index > 0 ? path.slice(index + 1) : path;
   }
 }
 

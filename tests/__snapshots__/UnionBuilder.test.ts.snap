@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`UnionBuilder constructor() errors if a non-array is not passed 1`] = `"A non-empty array of blueprints are required for a union."`;
+exports[`UnionBuilder errors if a non-array is not passed 1`] = `"A non-empty array of blueprints are required for a union."`;
 
-exports[`UnionBuilder constructor() errors if an array with non-builders is passed 1`] = `"A non-empty array of blueprints are required for a union."`;
+exports[`UnionBuilder errors if an array with non-builders is passed 1`] = `"A non-empty array of blueprints are required for a union."`;
 
-exports[`UnionBuilder constructor() errors if an empty array is passed 1`] = `"A non-empty array of blueprints are required for a union."`;
+exports[`UnionBuilder errors if an empty array is passed 1`] = `"A non-empty array of blueprints are required for a union."`;
 
 exports[`UnionBuilder runChecks() errors if a nested union is used 1`] = `"Invalid field \\"key\\". Nested unions are not supported."`;
 
