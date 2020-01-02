@@ -1,5 +1,5 @@
 import NumberBuilder, { number } from '../src/NumberBuilder';
-import runChecks from './helpers';
+import { runChecks } from './helpers';
 
 describe('NumberBuilder', () => {
   let builder: NumberBuilder;

@@ -1,6 +1,6 @@
 import Builder from '../src/Builder';
 import InstanceBuilder, { instance, builder, date, regex } from '../src/InstanceBuilder';
-import runChecks from './helpers';
+import { runChecks } from './helpers';
 
 describe('instance()', () => {
   class Foo {}

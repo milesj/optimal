@@ -1,7 +1,7 @@
 import ObjectBuilder, { object, blueprint } from '../src/ObjectBuilder';
 import { number } from '../src/NumberBuilder';
 import { string } from '../src/StringBuilder';
-import runChecks from './helpers';
+import { runChecks } from './helpers';
 
 describe('ObjectBuilder', () => {
   let builder: ObjectBuilder<string>;

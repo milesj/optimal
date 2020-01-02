@@ -1,6 +1,6 @@
 import ArrayBuilder, { array } from '../src/ArrayBuilder';
 import { string } from '../src/StringBuilder';
-import runChecks from './helpers';
+import { runChecks } from './helpers';
 
 describe('ArrayBuilder', () => {
   let builder: ArrayBuilder<string>;

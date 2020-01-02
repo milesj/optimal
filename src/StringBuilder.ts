@@ -18,7 +18,7 @@ export default class StringBuilder<T extends string = string> extends Collection
     if (__DEV__) {
       this.invariant(isString(token), 'Contains requires a non-empty token.');
 
-      this.addCheck((value, path) => {
+      this.addCheck((path, value) => {
         if (this.isOptionalDefault(value)) {
           return;
         }

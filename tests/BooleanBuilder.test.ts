@@ -1,5 +1,5 @@
 import BooleanBuilder, { bool } from '../src/BooleanBuilder';
-import runChecks from './helpers';
+import { runChecks } from './helpers';
 
 describe('BooleanBuilder', () => {
   let builder: BooleanBuilder<boolean>;

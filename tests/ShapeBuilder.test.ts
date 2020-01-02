@@ -4,7 +4,7 @@ import ShapeBuilder, { shape } from '../src/ShapeBuilder';
 import { bool } from '../src/BooleanBuilder';
 import { number } from '../src/NumberBuilder';
 import { string } from '../src/StringBuilder';
-import runChecks from './helpers';
+import { runChecks } from './helpers';
 
 describe('shape()', () => {
   let builder: ShapeBuilder<{
