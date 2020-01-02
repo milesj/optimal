@@ -14,13 +14,13 @@ export interface TemporalStruct {
 }
 
 export default class Builder<T> {
+  defaultValue?: T;
+
   type: SupportedType;
 
   protected checks: CheckerCallback[] = [];
 
   protected currentStruct: object = {};
-
-  protected defaultValue?: T;
 
   protected defaultValueFactory?: DefaultValueFactory<T>;
 
@@ -118,9 +118,9 @@ export default class Builder<T> {
         typeof message === 'string' && !!message,
         'A non-empty string is required for deprecated messages.',
       );
-
-      this.deprecatedMessage = message;
     }
+
+    this.deprecatedMessage = message;
 
     return this;
   }
@@ -134,9 +134,9 @@ export default class Builder<T> {
         typeof message === 'string' && !!message,
         'A non-empty string is required for custom messages.',
       );
-
-      this.errorMessage = message;
     }
+
+    this.errorMessage = message;
 
     return this;
   }
@@ -145,10 +145,8 @@ export default class Builder<T> {
    * Field should never be used.
    */
   never(): Builder<never> {
-    if (__DEV__) {
-      this.defaultValue = (undefined as unknown) as T;
-      this.isNever = true;
-    }
+    this.defaultValue = (undefined as unknown) as T;
+    this.isNever = true;
 
     return (this as unknown) as Builder<never>;
   }
@@ -157,9 +155,7 @@ export default class Builder<T> {
    * Disallow null values.
    */
   notNullable(): Builder<NonNullable<T>> {
-    if (__DEV__) {
-      this.isNullable = false;
-    }
+    this.isNullable = false;
 
     return (this as unknown) as Builder<NonNullable<T>>;
   }
@@ -168,9 +164,7 @@ export default class Builder<T> {
    * Allow null values.
    */
   nullable(): Builder<T | null> {
-    if (__DEV__) {
-      this.isNullable = true;
-    }
+    this.isNullable = true;
 
     return (this as unknown) as Builder<T | null>;
   }
@@ -227,9 +221,7 @@ export default class Builder<T> {
    * Require an object property to be explicitly defined.
    */
   required(state: boolean = true): this {
-    if (__DEV__) {
-      this.isRequired = state;
-    }
+    this.isRequired = state;
 
     return this;
   }

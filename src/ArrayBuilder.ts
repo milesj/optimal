@@ -14,16 +14,14 @@ export default class ArrayBuilder<T> extends CollectionBuilder<ArrayOf<T>> {
         this.addCheck((path, value) => {
           const nextValue = [...value];
 
-          if (__DEV__) {
-            value.forEach((item: T, i: number) => {
-              nextValue[i] = contents.runChecks(
-                `${path}[${i}]`,
-                item,
-                this.currentStruct,
-                this.options,
-              )!;
-            });
-          }
+          value.forEach((item: T, i: number) => {
+            nextValue[i] = contents.runChecks(
+              `${path}[${i}]`,
+              item,
+              this.currentStruct,
+              this.options,
+            )!;
+          });
 
           return nextValue;
         });
