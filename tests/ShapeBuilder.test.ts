@@ -4,6 +4,7 @@ import ShapeBuilder, { shape } from '../src/ShapeBuilder';
 import { bool } from '../src/BooleanBuilder';
 import { number } from '../src/NumberBuilder';
 import { string } from '../src/StringBuilder';
+import runChecks from './helpers';
 
 describe('shape()', () => {
   let builder: ShapeBuilder<{
@@ -20,51 +21,53 @@ describe('shape()', () => {
     });
   });
 
-  describe('constructor()', () => {
-    it('errors if a non-object is not passed', () => {
-      expect(() => {
-        // @ts-ignore
-        shape('foo');
-      }).toThrowErrorMatchingSnapshot();
-    });
+  it('errors if a non-object is not passed', () => {
+    expect(() => {
+      // @ts-ignore
+      shape('foo');
+    }).toThrowErrorMatchingSnapshot();
+  });
 
-    it('errors if an empty object is passed', () => {
-      expect(() => {
-        shape({});
-      }).toThrowErrorMatchingSnapshot();
-    });
+  it('errors if an empty object is passed', () => {
+    expect(() => {
+      shape({});
+    }).toThrowErrorMatchingSnapshot();
+  });
 
-    it('errors if an object with non-builders is passed', () => {
-      expect(() => {
-        // @ts-ignore
-        shape({ foo: 123 });
-      }).toThrowErrorMatchingSnapshot();
-    });
+  it('errors if an object with non-builders is passed', () => {
+    expect(() => {
+      // @ts-ignore
+      shape({ foo: 123 });
+    }).toThrowErrorMatchingSnapshot();
+  });
 
-    it('doesnt error if a builder object is passed', () => {
-      expect(() => {
-        shape({
-          foo: string(),
-        });
-      }).not.toThrow('A non-empty object of properties to blueprints are required for a shape.');
-    });
+  it('doesnt error if a builder object is passed', () => {
+    expect(() => {
+      shape({
+        foo: string(),
+      });
+    }).not.toThrow();
   });
 
   describe('runChecks()', () => {
     it('errors if a non-object is passed', () => {
       expect(() => {
-        // @ts-ignore Allow invalid type
-        builder.runChecks('key', 'foo', {});
+        runChecks(
+          builder,
+          // @ts-ignore Allow invalid type
+          'foo',
+        );
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors for unknown fields when using exact', () => {
       expect(() => {
-        builder.exact().runChecks(
-          'key',
+        builder.exact();
+
+        runChecks(
+          builder,
           // @ts-ignore Allow invalid fields
           { qux: 123, oof: 'abc' },
-          {},
         );
       }).toThrowErrorMatchingSnapshot();
     });
@@ -83,29 +86,21 @@ describe('shape()', () => {
 
     it('checks each item in the object', () => {
       expect(() => {
-        builder.runChecks(
-          'key',
+        runChecks(builder, {
+          foo: 'foo',
           // @ts-ignore Allow invalid type
-          {
-            foo: 'foo',
-            bar: 'bar',
-            baz: true,
-          },
-          {},
-        );
+          bar: 'bar',
+          baz: true,
+        });
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if an object item is invalid; persists path with index', () => {
       expect(() => {
-        builder.runChecks(
-          'key',
+        runChecks(builder, {
           // @ts-ignore Allow invalid type
-          {
-            foo: 123,
-          },
-          {},
-        );
+          foo: 123,
+        });
       }).toThrowErrorMatchingSnapshot();
     });
 
@@ -125,7 +120,7 @@ describe('shape()', () => {
         },
       };
 
-      expect(nestedBuilder.runChecks('key', data as any, {})).toEqual({
+      expect(runChecks(nestedBuilder, data as any)).toEqual({
         foo: {
           ...data.foo,
           c: '',
@@ -140,13 +135,9 @@ describe('shape()', () => {
       });
 
       expect(() => {
-        nestedBuilder.runChecks(
-          'key',
-          {
-            foo: 'abc',
-          } as any,
-          {},
-        );
+        runChecks(nestedBuilder, {
+          foo: 'abc',
+        } as any);
       }).toThrowErrorMatchingSnapshot();
     });
 
@@ -160,23 +151,19 @@ describe('shape()', () => {
       });
 
       expect(() => {
-        nestedBuilder.runChecks(
-          'key',
-          // @ts-ignore Allow invalid type
-          {
-            foo: {
-              a: 123,
-              b: 456,
-              c: 789,
-            },
+        runChecks(nestedBuilder, {
+          foo: {
+            a: 123,
+            b: 456,
+            // @ts-ignore Allow invalid type
+            c: 789,
           },
-          {},
-        );
+        });
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('should be the object with defaults', () => {
-      expect(builder.runChecks('key', {} as any, {})).toEqual({
+      expect(runChecks(builder, {} as any)).toEqual({
         bar: 0,
         baz: false,
         foo: '',
