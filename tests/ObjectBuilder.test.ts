@@ -76,21 +76,27 @@ describe('ObjectBuilder', () => {
 
     it('checks each item in the object', () => {
       expect(() => {
-        runChecks(builder, {
-          a: 'foo',
-          b: 'bar',
+        runChecks(
+          builder,
           // @ts-ignore Test invalid type
-          c: 123,
-        });
+          {
+            a: 'foo',
+            b: 'bar',
+            c: 123,
+          },
+        );
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if an object item is invalid; persists path with index', () => {
       expect(() => {
-        runChecks(builder, {
+        runChecks(
+          builder,
           // @ts-ignore Test invalid type
-          foo: 123,
-        });
+          {
+            foo: 123,
+          },
+        );
       }).toThrowErrorMatchingSnapshot();
     });
 
@@ -114,19 +120,18 @@ describe('ObjectBuilder', () => {
       const nestedBuilder = object(object(string()));
 
       expect(() => {
-        nestedBuilder.runChecks(
-          'key',
+        runChecks(
+          nestedBuilder,
+          // @ts-ignore Test invalid type
           {
             a: {
               foo: '123',
-              // @ts-ignore Test invalid type
               bar: 456,
             },
             b: {
               baz: '789',
             },
           },
-          {},
         );
       }).toThrowErrorMatchingSnapshot();
     });

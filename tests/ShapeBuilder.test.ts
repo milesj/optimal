@@ -86,21 +86,27 @@ describe('shape()', () => {
 
     it('checks each item in the object', () => {
       expect(() => {
-        runChecks(builder, {
-          foo: 'foo',
+        runChecks(
+          builder,
           // @ts-ignore Allow invalid type
-          bar: 'bar',
-          baz: true,
-        });
+          {
+            foo: 'foo',
+            bar: 'bar',
+            baz: true,
+          },
+        );
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if an object item is invalid; persists path with index', () => {
       expect(() => {
-        runChecks(builder, {
+        runChecks(
+          builder,
           // @ts-ignore Allow invalid type
-          foo: 123,
-        });
+          {
+            foo: 123,
+          },
+        );
       }).toThrowErrorMatchingSnapshot();
     });
 
@@ -151,14 +157,17 @@ describe('shape()', () => {
       });
 
       expect(() => {
-        runChecks(nestedBuilder, {
-          foo: {
-            a: 123,
-            b: 456,
-            // @ts-ignore Allow invalid type
-            c: 789,
+        runChecks(
+          nestedBuilder,
+          // @ts-ignore Allow invalid type
+          {
+            foo: {
+              a: 123,
+              b: 456,
+              c: 789,
+            },
           },
-        });
+        );
       }).toThrowErrorMatchingSnapshot();
     });
 

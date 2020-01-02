@@ -52,7 +52,7 @@ describe('UnionBuilder', () => {
   it('doesnt error if a builder array is passed', () => {
     expect(() => {
       union([string()], []);
-    }).not.toThrow('A non-empty array of blueprints are required for a union.');
+    }).not.toThrow();
   });
 
   it('sets default value', () => {

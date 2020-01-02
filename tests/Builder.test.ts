@@ -63,7 +63,7 @@ describe('Builder', () => {
 
         expect(() => {
           runChecks(builder, []);
-        }).not.toThrow('Invalid field "key". Must be an array.');
+        }).not.toThrow();
       });
 
       it('errors on non-arrays', () => {
@@ -81,7 +81,7 @@ describe('Builder', () => {
 
         expect(() => {
           runChecks(builder, true);
-        }).not.toThrow('Invalid field "key". Must be a boolean.');
+        }).not.toThrow();
       });
 
       it('errors on non-booleans', () => {
@@ -99,7 +99,7 @@ describe('Builder', () => {
 
         expect(() => {
           runChecks(builder, () => {});
-        }).not.toThrow('Invalid field "key". Must be a function.');
+        }).not.toThrow();
       });
 
       it('errors on non-functions', () => {
@@ -117,7 +117,7 @@ describe('Builder', () => {
 
         expect(() => {
           runChecks(builder, 123);
-        }).not.toThrow('Invalid field "key". Must be a number.');
+        }).not.toThrow();
       });
 
       it('errors on non-numbers', () => {
@@ -135,7 +135,7 @@ describe('Builder', () => {
 
         expect(() => {
           runChecks(builder, {});
-        }).not.toThrow('Invalid field "key". Must be a plain object.');
+        }).not.toThrow();
       });
 
       it('errors on non-objects', () => {
@@ -169,7 +169,7 @@ describe('Builder', () => {
 
         expect(() => {
           runChecks(builder, 'foo');
-        }).not.toThrow('Invalid field "key". Must be a string.');
+        }).not.toThrow();
       });
 
       it('errors on non-strings', () => {
@@ -206,7 +206,7 @@ describe('Builder', () => {
 
       expect(() => {
         runChecks(builder, 456);
-      }).not.toThrow('Invalid field "error". This will error!');
+      }).not.toThrow();
     });
 
     it('is passed entire options object', () => {
@@ -491,13 +491,13 @@ describe('Builder', () => {
     it('doesnt error if at least 1 option is defined', () => {
       expect(() => {
         runChecks(builder, 'a', { key: 'foo', struct: { foo: 'a' } });
-      }).not.toThrow('Invalid field "foo".');
+      }).not.toThrow();
     });
 
     it('doesnt error if at least 1 option is defined that isnt the main field', () => {
       expect(() => {
         runChecks(builder, 'a', { key: 'foo', struct: { bar: 'b' } });
-      }).not.toThrow('Invalid field "foo".');
+      }).not.toThrow();
     });
   });
 
