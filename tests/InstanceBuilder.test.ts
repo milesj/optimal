@@ -13,26 +13,24 @@ describe('instance()', () => {
     inst = instance(Foo);
   });
 
-  describe('constructor()', () => {
-    it('errors if a non-class is passed', () => {
-      expect(() => {
-        // @ts-ignore Test invalid type
-        instance(123);
-      }).toThrowErrorMatchingSnapshot();
-    });
+  it('errors if a non-class is passed', () => {
+    expect(() => {
+      // @ts-ignore Test invalid type
+      instance(123);
+    }).toThrowErrorMatchingSnapshot();
+  });
 
-    it('errors if an object is passed', () => {
-      expect(() => {
-        // @ts-ignore Test invalid type
-        instance({});
-      }).toThrowErrorMatchingSnapshot();
-    });
+  it('errors if an object is passed', () => {
+    expect(() => {
+      // @ts-ignore Test invalid type
+      instance({});
+    }).toThrowErrorMatchingSnapshot();
+  });
 
-    it('doesnt error if a class is passed', () => {
-      expect(() => {
-        instance(Foo);
-      }).not.toThrow('A class reference is required.');
-    });
+  it('doesnt error if a class is passed', () => {
+    expect(() => {
+      instance(Foo);
+    }).not.toThrow();
   });
 
   describe('runChecks()', () => {
@@ -59,7 +57,7 @@ describe('instance()', () => {
     it('doesnt error if a generic class instance is passed', () => {
       expect(() => {
         runChecks(instance<Foo>(), new Foo());
-      }).not.toThrow('Invalid field "key". Must be a class instance.');
+      }).not.toThrow();
     });
 
     it('errors if a non-instance is passed when a class reference is set', () => {
@@ -71,7 +69,7 @@ describe('instance()', () => {
     it('doesnt error if the correct instance is passed', () => {
       expect(() => {
         runChecks(instance(Foo), new Foo());
-      }).not.toThrow('Invalid field "key". Must be an instance of "Foo".');
+      }).not.toThrow();
     });
 
     it('handles an instance of the same name when passed in loose mode', () => {
@@ -87,7 +85,7 @@ describe('instance()', () => {
 
       expect(() => {
         runChecks(instance(Foo, true), new Foo2());
-      }).not.toThrow('Invalid field "key". Must be an instance of "Foo".');
+      }).not.toThrow();
     });
 
     it('supports running checks on abstract classes', () => {

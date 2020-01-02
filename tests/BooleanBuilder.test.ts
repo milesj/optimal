@@ -8,44 +8,42 @@ describe('BooleanBuilder', () => {
     builder = bool();
   });
 
-  describe('bool()', () => {
-    it('returns a builder', () => {
-      expect(bool(true)).toBeInstanceOf(BooleanBuilder);
-    });
+  it('returns a builder', () => {
+    expect(bool(true)).toBeInstanceOf(BooleanBuilder);
+  });
 
-    it('sets type and default value', () => {
-      builder = bool(true);
+  it('sets type and default value', () => {
+    builder = bool(true);
 
-      expect(builder.type).toBe('boolean');
-      expect(builder.defaultValue).toBe(true);
-    });
+    expect(builder.type).toBe('boolean');
+    expect(builder.defaultValue).toBe(true);
+  });
 
-    it('returns default value if value is undefined', () => {
-      expect(runChecks(bool(true))).toEqual(true);
-    });
+  it('returns default value if value is undefined', () => {
+    expect(runChecks(bool(true))).toEqual(true);
+  });
 
-    it('returns default value from factory if value is undefined', () => {
-      expect(
-        bool(struct => !struct.boop).runChecks('key', undefined, {
-          key: undefined,
-          boop: true,
-        }),
-      ).toEqual(false);
-    });
+  it('returns default value from factory if value is undefined', () => {
+    expect(
+      bool(struct => !struct.boop).runChecks('key', undefined, {
+        key: undefined,
+        boop: true,
+      }),
+    ).toEqual(false);
+  });
 
-    it('errors if a non-boolean value is used', () => {
-      expect(() => {
-        runChecks(
-          bool(),
-          // @ts-ignore Test invalid type
-          123,
-        );
-      }).toThrowErrorMatchingSnapshot();
-    });
+  it('errors if a non-boolean value is used', () => {
+    expect(() => {
+      runChecks(
+        bool(),
+        // @ts-ignore Test invalid type
+        123,
+      );
+    }).toThrowErrorMatchingSnapshot();
+  });
 
-    it('returns the type alias', () => {
-      expect(bool().typeAlias()).toBe('boolean');
-    });
+  it('returns the type alias', () => {
+    expect(bool().typeAlias()).toBe('boolean');
   });
 
   describe('onlyFalse()', () => {
