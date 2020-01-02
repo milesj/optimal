@@ -5,9 +5,9 @@ import instanceOf from './instanceOf';
 export type Constructor<T> = (new (...args: unknown[]) => T) | (Function & { prototype: T });
 
 export default class InstanceBuilder<T> extends Builder<T | null> {
-  loose: boolean = false;
+  protected loose: boolean = false;
 
-  refClass: Constructor<T> | null = null;
+  protected refClass: Constructor<T> | null = null;
 
   constructor(refClass: Constructor<T> | null = null, loose: boolean = false) {
     super('instance', null);
@@ -22,27 +22,24 @@ export default class InstanceBuilder<T> extends Builder<T | null> {
 
       this.loose = loose;
       this.refClass = refClass;
-      this.addCheck(this.checkInstance, refClass);
-    }
-  }
 
-  checkInstance(path: string, value: T, refClass: T | null) {
-    if (__DEV__) {
-      if (refClass) {
-        this.invariant(
-          typeof refClass === 'function' &&
-            (value instanceof refClass ||
-              (this.loose && isObject(value) && instanceOf(value, refClass))),
-          `Must be an instance of "${this.typeAlias()}".`,
-          path,
-        );
-      } else {
-        this.invariant(
-          isObject(value) && value.constructor !== Object,
-          'Must be a class instance.',
-          path,
-        );
-      }
+      this.addCheck((path, value) => {
+        if (refClass) {
+          this.invariant(
+            typeof refClass === 'function' &&
+              (value instanceof refClass ||
+                (this.loose && isObject(value) && instanceOf(value, refClass))),
+            `Must be an instance of "${this.typeAlias()}".`,
+            path,
+          );
+        } else {
+          this.invariant(
+            isObject(value) && value.constructor !== Object,
+            'Must be a class instance.',
+            path,
+          );
+        }
+      });
     }
   }
 

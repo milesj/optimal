@@ -4,48 +4,42 @@ import { ObjectOf, DefaultValue } from './types';
 import { builder } from './InstanceBuilder';
 
 export default class ObjectBuilder<T> extends CollectionBuilder<ObjectOf<T>> {
-  contents: Builder<T> | null = null;
+  protected contents: Builder<T> | null = null;
 
   constructor(contents: Builder<T> | null = null, defaultValue: DefaultValue<ObjectOf<T>> = {}) {
     super('object', defaultValue);
 
-    if (__DEV__) {
-      if (contents) {
-        if (contents instanceof Builder) {
-          this.contents = contents;
-          this.addCheck(this.checkContents, contents);
-        } else {
-          this.invariant(false, 'A blueprint is required for object contents.');
-        }
+    if (__DEV__ && contents) {
+      if (contents instanceof Builder) {
+        this.contents = contents;
+        this.addCheck((path, value) => {
+          const nextValue = { ...value };
+
+          Object.keys(value).forEach(key => {
+            nextValue[key] = contents.runChecks(
+              `${path}.${key}`,
+              value[key],
+              this.currentStruct,
+              this.options,
+            )!;
+          });
+
+          return nextValue;
+        });
+      } else {
+        this.invariant(false, 'A blueprint is required for object contents.');
       }
     }
   }
 
-  checkContents(path: string, value: ObjectOf<T>, contents: Builder<T>): ObjectOf<T> {
-    const nextValue = { ...value };
-
+  notEmpty(): this {
     if (__DEV__) {
-      Object.keys(value).forEach(key => {
-        nextValue[key] = contents.runChecks(
-          `${path}.${key}`,
-          value[key],
-          this.currentStruct,
-          this.options,
-        )!;
+      this.addCheck((path, value) => {
+        this.invariant(Object.keys(value).length > 0, 'Object cannot be empty.', path);
       });
     }
 
-    return nextValue;
-  }
-
-  notEmpty(): this {
-    return this.addCheck(this.checkNotEmpty);
-  }
-
-  checkNotEmpty(path: string, value: ObjectOf<T>) {
-    if (__DEV__) {
-      this.invariant(Object.keys(value).length > 0, 'Object cannot be empty.', path);
-    }
+    return this;
   }
 
   /**

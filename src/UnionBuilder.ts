@@ -3,7 +3,7 @@ import typeOf from './typeOf';
 import { DefaultValue } from './types';
 
 export default class UnionBuilder<T = unknown> extends Builder<T> {
-  builders: Builder<unknown>[] = [];
+  protected builders: Builder<unknown>[] = [];
 
   constructor(builders: Builder<unknown>[], defaultValue: DefaultValue<T>) {
     super('union', defaultValue);
@@ -17,11 +17,19 @@ export default class UnionBuilder<T = unknown> extends Builder<T> {
       );
 
       this.builders = builders;
-      this.addCheck(this.checkUnions, builders);
+      this.addCheck(this.checkUnions);
     }
   }
 
-  checkUnions(path: string, value: unknown, builders: Builder<unknown>[]) {
+  /**
+   * Return the type name using pipe syntax.
+   */
+  typeAlias(): string {
+    return this.builders.map(builder => builder.typeAlias()).join(' | ');
+  }
+
+  protected checkUnions(path: string, value: unknown) {
+    const { builders } = this;
     let nextValue = value;
 
     if (__DEV__) {
@@ -39,8 +47,8 @@ export default class UnionBuilder<T = unknown> extends Builder<T> {
             (type === 'object' && builder.type === 'shape') ||
             builder.type === 'custom'
           ) {
-            // eslint-disable-next-line no-param-reassign
-            builder.noErrorPrefix = true;
+            // @ts-ignore
+            builder.noErrorPrefix = true; // eslint-disable-line no-param-reassign
             nextValue = builder.runChecks(path, value, this.currentStruct, this.options);
 
             return true;
@@ -66,13 +74,6 @@ export default class UnionBuilder<T = unknown> extends Builder<T> {
     }
 
     return nextValue;
-  }
-
-  /**
-   * Return the type name using pipe syntax.
-   */
-  typeAlias(): string {
-    return this.builders.map(builder => builder.typeAlias()).join(' | ');
   }
 }
 
