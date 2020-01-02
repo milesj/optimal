@@ -79,7 +79,6 @@ export default class Builder<T> {
         this.invariant(
           undefs.length === 0,
           `All of these fields must be defined: ${checkedKeys.join(', ')}`,
-          path,
         );
       });
     }
@@ -123,6 +122,41 @@ export default class Builder<T> {
     this.deprecatedMessage = message;
 
     return this;
+  }
+
+  /**
+   * Throw an error if the condition is falsy.
+   */
+  invariant(condition: boolean, message: string, path: string = '') {
+    if (__DEV__) {
+      if (condition) {
+        return;
+      }
+
+      const { file, name } = this.options;
+      const error = this.errorMessage || message;
+      let prefix = '';
+
+      if (path) {
+        if (name) {
+          prefix += `Invalid ${name} field "${path}"`;
+        } else {
+          prefix += `Invalid field "${path}"`;
+        }
+      } else if (name) {
+        prefix += name;
+      }
+
+      if (file) {
+        prefix += ` in ${file}`;
+      }
+
+      if (prefix && !this.noErrorPrefix) {
+        throw new Error(`${prefix}. ${error}`);
+      } else {
+        throw new Error(error);
+      }
+    }
   }
 
   /**
@@ -209,7 +243,6 @@ export default class Builder<T> {
         this.invariant(
           defs.length > 0,
           `At least one of these fields must be defined: ${orKeys.join(', ')}`,
-          path,
         );
       });
     }
@@ -312,7 +345,6 @@ export default class Builder<T> {
         this.invariant(
           defs.length === 1,
           `Only one of these fields may be defined: ${xorKeys.join(', ')}`,
-          path,
         );
       });
     }
@@ -356,41 +388,6 @@ export default class Builder<T> {
           // eslint-disable-next-line valid-typeof
           this.invariant(typeof value === this.type, `Must be a ${this.type}.`, path);
           break;
-      }
-    }
-  }
-
-  /**
-   * Throw an error if the condition is falsy.
-   */
-  protected invariant(condition: boolean, message: string, path: string = '') {
-    if (__DEV__) {
-      if (condition) {
-        return;
-      }
-
-      const { file, name } = this.options;
-      const error = this.errorMessage || message;
-      let prefix = '';
-
-      if (path) {
-        if (name) {
-          prefix += `Invalid ${name} field "${path}"`;
-        } else {
-          prefix += `Invalid field "${path}"`;
-        }
-      } else if (name) {
-        prefix += name;
-      }
-
-      if (file) {
-        prefix += ` in ${file}`;
-      }
-
-      if (prefix && !this.noErrorPrefix) {
-        throw new Error(`${prefix}. ${error}`);
-      } else {
-        throw new Error(error);
       }
     }
   }

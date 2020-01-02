@@ -1,5 +1,9 @@
 import Builder from '../src/Builder';
 
-export function runChecks<T>(builder: Builder<T>, value?: T): T {
-  return builder.runChecks('key', value, { key: value });
+export function runChecks<T>(
+  builder: Builder<T>,
+  value?: T,
+  { key = 'key', struct }: { key?: string; struct?: object } = {},
+): T {
+  return builder.runChecks(key, value, struct ?? { [key]: value });
 }
