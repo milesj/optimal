@@ -8,6 +8,7 @@ import Builder, { custom, func } from './Builder';
 import ArrayBuilder, { array } from './ArrayBuilder';
 import BooleanBuilder, { bool } from './BooleanBuilder';
 import InstanceBuilder, { builder, instance, date, regex } from './InstanceBuilder';
+import LazyBuilder, { lazy } from './LazyBuilder';
 import NumberBuilder, { number } from './NumberBuilder';
 import ObjectBuilder, { object, blueprint } from './ObjectBuilder';
 import ShapeBuilder, { shape } from './ShapeBuilder';
@@ -24,6 +25,7 @@ export const predicates = {
   date,
   func,
   instance,
+  lazy,
   number,
   object,
   regex,
@@ -42,6 +44,7 @@ export {
   date,
   func,
   instance,
+  lazy,
   number,
   object,
   regex,
@@ -56,6 +59,7 @@ export {
   ArrayBuilder,
   BooleanBuilder,
   InstanceBuilder,
+  LazyBuilder,
   NumberBuilder,
   ObjectBuilder,
   ShapeBuilder,
