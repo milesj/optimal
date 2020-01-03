@@ -28,6 +28,8 @@ exports[`StringBuilder kebabCase() errors if less than 2 characters 1`] = `"Inva
 
 exports[`StringBuilder kebabCase() errors if starts with a number 1`] = `"Invalid field \\"key\\". String must be in kebab case. (pattern \\"^[a-z][\\\\x2D0-9a-z]+$\\")"`;
 
+exports[`StringBuilder lowerCase() errors if value is not lower case 1`] = `"Invalid field \\"key\\". String must be lower cased."`;
+
 exports[`StringBuilder match() errors if pattern is not a regex 1`] = `"Match requires a regular expression to match against."`;
 
 exports[`StringBuilder match() errors if value does not match pattern 1`] = `"Invalid field \\"key\\". String does not match. (pattern \\"oo\\")"`;
@@ -67,3 +69,5 @@ exports[`StringBuilder snakeCase() errors if in pascal case 1`] = `"Invalid fiel
 exports[`StringBuilder snakeCase() errors if less than 2 characters 1`] = `"Invalid field \\"key\\". String must be in snake case. (pattern \\"^[a-z][0-9_a-z]+$\\")"`;
 
 exports[`StringBuilder snakeCase() errors if starts with a number 1`] = `"Invalid field \\"key\\". String must be in snake case. (pattern \\"^[a-z][0-9_a-z]+$\\")"`;
+
+exports[`StringBuilder upperCase() errors if value is not upper case 1`] = `"Invalid field \\"key\\". String must be upper cased."`;

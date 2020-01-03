@@ -199,6 +199,24 @@ describe('StringBuilder', () => {
     });
   });
 
+  describe('lowerCase()', () => {
+    beforeEach(() => {
+      builder.lowerCase();
+    });
+
+    it('errors if value is not lower case', () => {
+      expect(() => {
+        runChecks(builder, 'FooBar');
+      }).toThrowErrorMatchingSnapshot();
+    });
+
+    it('doesnt error if value is lower case', () => {
+      expect(() => {
+        runChecks(builder, 'foobar');
+      }).not.toThrow();
+    });
+  });
+
   describe('match()', () => {
     beforeEach(() => {
       builder.match(/oo/u);
@@ -401,6 +419,24 @@ describe('StringBuilder', () => {
       expect(() => {
         builder.snakeCase();
         runChecks(builder, snakeCase);
+      }).not.toThrow();
+    });
+  });
+
+  describe('upperCase()', () => {
+    beforeEach(() => {
+      builder.upperCase();
+    });
+
+    it('errors if value is not upper case', () => {
+      expect(() => {
+        runChecks(builder, 'FooBar');
+      }).toThrowErrorMatchingSnapshot();
+    });
+
+    it('doesnt error if value is upper case', () => {
+      expect(() => {
+        runChecks(builder, 'FOOBAR');
       }).not.toThrow();
     });
   });

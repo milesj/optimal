@@ -38,6 +38,16 @@ export default class StringBuilder<T extends string = string> extends Collection
     return this.match(/^[a-z][a-z0-9-]+$/u, 'String must be in kebab case.');
   }
 
+  lowerCase(): this {
+    if (__DEV__) {
+      this.addCheck((path, value) => {
+        this.invariant(value === value.toLocaleLowerCase(), 'String must be lower cased.', path);
+      });
+    }
+
+    return this;
+  }
+
   match(pattern: RegExp, message: string = ''): this {
     if (__DEV__) {
       this.invariant(
@@ -92,6 +102,16 @@ export default class StringBuilder<T extends string = string> extends Collection
 
   snakeCase(): this {
     return this.match(/^[a-z][a-z0-9_]+$/u, 'String must be in snake case.');
+  }
+
+  upperCase(): this {
+    if (__DEV__) {
+      this.addCheck((path, value) => {
+        this.invariant(value === value.toLocaleUpperCase(), 'String must be upper cased.', path);
+      });
+    }
+
+    return this;
   }
 }
 

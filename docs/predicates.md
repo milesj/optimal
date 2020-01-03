@@ -265,6 +265,7 @@ methods:
   Supports an optional start index.
 - `kebabCase()` - Checks that the string is in kebab case (`foo-bar-baz`). Must separate words with
   a dash and contain at minimum 2 characters.
+- `lowerCase()` - Checks that the value is lower cased.
 - `match(pattern: RegExp)` - Checks the value against a regex pattern.
 - `notEmpty()` - Requires the string to not be empty.
 - `oneOf(list: string[])` - Validate the value is one of the following strings.
@@ -273,6 +274,7 @@ methods:
 - `sizeOf(length: number)` - Requires the string to be an exact length.
 - `snakeCase()` - Checks that the string is in snake case (`foo_bar_baz`). Must separate words with
   an underscore and contain at minimum 2 characters.
+- `upperCase()` - Checks that the value is upper cased.
 
 ```ts
 optimal(

@@ -362,7 +362,7 @@ export default class Builder<T> {
   /**
    * Add a checking function with optional arguments.
    */
-  protected addCheck(checker: CheckerCallback): this {
+  protected addCheck(checker: CheckerCallback<T>): this {
     this.checks.push(checker);
 
     return this;
