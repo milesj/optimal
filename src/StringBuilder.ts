@@ -89,7 +89,11 @@ export default class StringBuilder<T extends string = string> extends Collection
       );
 
       this.addCheck((path, value) => {
-        this.invariant(list.includes(value), `String must be one of: ${list.join(', ')}`, path);
+        this.invariant(
+          list.includes((value as unknown) as U),
+          `String must be one of: ${list.join(', ')}`,
+          path,
+        );
       });
     }
 

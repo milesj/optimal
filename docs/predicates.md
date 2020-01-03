@@ -259,22 +259,22 @@ The `string(default?: string)` predicate verifies a value is a string. Defaults 
 (`''`) but can be customized with the 1st argument. String builder supports the following additional
 methods:
 
-- `camelCase()` - Checks that the string is in camel case (`fooBarBaz`). Must start with a lowercase
+- `camelCase()` - Validate the value is in camel case (`fooBarBaz`). Must start with a lowercase
   character and contain at minimum 2 characters.
-- `contains(token: string, index?: number)` - Checks if the value contains the defined token.
+- `contains(token: string, index?: number)` - Validate the value contains the defined token.
   Supports an optional start index.
-- `kebabCase()` - Checks that the string is in kebab case (`foo-bar-baz`). Must separate words with
-  a dash and contain at minimum 2 characters.
-- `lowerCase()` - Checks that the value is lower cased.
-- `match(pattern: RegExp)` - Checks the value against a regex pattern.
-- `notEmpty()` - Requires the string to not be empty.
+- `kebabCase()` - Validate the value is in kebab case (`foo-bar-baz`). Must separate words with a
+  dash and contain at minimum 2 characters.
+- `lowerCase()` - Validate the value is lower cased.
+- `match(pattern: RegExp)` - Validate the value against a regex pattern.
+- `notEmpty()` - Requires the value to not be empty.
 - `oneOf(list: string[])` - Validate the value is one of the following strings.
-- `pascalCase()` - Checks that the string is in pascal case (`FooBarBaz`). Must start with an
-  uppercase character and contain at minimum 2 characters.
+- `pascalCase()` - Validate the value is in pascal case (`FooBarBaz`). Must start with an uppercase
+  character and contain at minimum 2 characters.
 - `sizeOf(length: number)` - Requires the string to be an exact length.
-- `snakeCase()` - Checks that the string is in snake case (`foo_bar_baz`). Must separate words with
-  an underscore and contain at minimum 2 characters.
-- `upperCase()` - Checks that the value is upper cased.
+- `snakeCase()` - Validate the value is in snake case (`foo_bar_baz`). Must separate words with an
+  underscore and contain at minimum 2 characters.
+- `upperCase()` - Validate the value is upper cased.
 
 ```ts
 optimal(

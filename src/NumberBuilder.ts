@@ -124,7 +124,11 @@ export default class NumberBuilder<T extends number = number> extends Builder<T>
       );
 
       this.addCheck((path, value) => {
-        this.invariant(list.includes(value), `Number must be one of: ${list.join(', ')}`, path);
+        this.invariant(
+          list.includes((value as unknown) as U),
+          `Number must be one of: ${list.join(', ')}`,
+          path,
+        );
       });
     }
 
