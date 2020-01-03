@@ -34,7 +34,7 @@ optimal(
 
 ## Requirements
 
-- Node 8.9 (server)
+- Node 10 (server)
 - IE 11+ (browser)
 
 ## Installation

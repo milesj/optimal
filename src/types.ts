@@ -38,5 +38,6 @@ export type SupportedType =
   | 'object'
   | 'shape'
   | 'string'
+  | 'tuple'
   | 'union'
   | 'unknown';
