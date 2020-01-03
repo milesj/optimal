@@ -9,26 +9,33 @@ import optimal, {
   shape,
   string,
   union,
+  ObjectOf,
 } from '../src';
 
 class Plugin {}
 
 describe('Optimal', () => {
+  type PrimitiveType = string | number | boolean;
+  type ConditionType = string | Function | RegExp | RegExp[] | ObjectOf<RegExp>;
+
   // This blueprint is based on Webpack's configuration: https://webpack.js.org/configuration/
   // Webpack provides a pretty robust example of how to use this library.
-  const primitive = union([string(), number(), bool()], false);
+  const primitive = union<PrimitiveType>([string(), number(), bool()], false);
 
-  const condition = union([string(), regex(), func(), array(regex()), object(regex())], false);
+  const condition = union<ConditionType>(
+    [string(), func(), regex(), array(regex()), object(regex())],
+    '',
+  );
 
   const rule = shape({
-    enforce: string('post').oneOf(['pre', 'post']),
+    enforce: string('post').oneOf<'pre' | 'post'>(['pre', 'post']),
     exclude: condition,
     include: condition,
     issuer: condition,
     parser: object(bool()),
     resource: condition,
     use: array(
-      union(
+      union<string | object>(
         [
           string(),
           shape({
@@ -41,26 +48,43 @@ describe('Optimal', () => {
     ),
   });
 
+  type EntryType = string | string[] | ObjectOf<string | string[]> | Function;
+  type CrossOriginType = 'anonymous' | 'use-credentials';
+  type HashType = 'md5' | 'sha256' | 'sha512';
+  type NoParseType = RegExp | RegExp[] | Function;
+  type TargetType =
+    | 'async-node'
+    | 'electron-main'
+    | 'electron-renderer'
+    | 'node'
+    | 'node-webkit'
+    | 'web'
+    | 'webworker';
+  type NodeType = 'mock' | 'empty';
+
   const blueprint = {
     context: string(process.cwd()),
-    entry: union(
+    entry: union<EntryType>(
       [string(), array(string()), object(union([string(), array(string())], '')), func()],
       [],
     ).nullable(),
     output: shape({
       chunkFilename: string('[id].js'),
       chunkLoadTimeout: number(120000),
-      crossOriginLoading: union(
-        [bool(false).only(), string('anonymous').oneOf(['anonymous', 'use-credentials'])],
+      crossOriginLoading: union<false | CrossOriginType>(
+        [
+          bool(false).only(),
+          string('anonymous').oneOf<CrossOriginType>(['anonymous', 'use-credentials']),
+        ],
         false,
       ),
       filename: string('bundle.js'),
-      hashFunction: string('md5').oneOf(['md5', 'sha256', 'sha512']),
+      hashFunction: string('md5').oneOf<HashType>(['md5', 'sha256', 'sha512']),
       path: string(),
       publicPath: string(),
     }),
     module: shape({
-      noParse: union([regex(), array(regex()), func()], null).nullable(),
+      noParse: union<NoParseType | null>([regex(), array(regex()), func()], null).nullable(),
       rules: array(rule),
     }),
     resolve: shape({
@@ -70,7 +94,7 @@ describe('Optimal', () => {
       resolveLoader: object(array(string())),
     }),
     plugins: array(instance(Plugin)),
-    target: string('web').oneOf([
+    target: string('web').oneOf<TargetType>([
       'async-node',
       'electron-main',
       'electron-renderer',
@@ -80,7 +104,12 @@ describe('Optimal', () => {
       'webworker',
     ]),
     watch: bool(false),
-    node: object(union([bool(), string('mock').oneOf(['mock', 'empty'])], false)),
+    node: object(
+      union<boolean | NodeType>(
+        [bool(), string('mock').oneOf<NodeType>(['mock', 'empty'])],
+        false,
+      ),
+    ),
   };
 
   it('errors if a non-object is passed', () => {

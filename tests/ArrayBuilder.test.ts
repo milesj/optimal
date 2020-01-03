@@ -102,11 +102,14 @@ describe('ArrayBuilder', () => {
       const nestedBuilder = array(array(string()));
 
       expect(() => {
-        runChecks(nestedBuilder, [
-          ['foo', 'bar'],
+        runChecks(
+          nestedBuilder,
           // @ts-ignore Test invalid type
-          ['baz', 123],
-        ]);
+          [
+            ['foo', 'bar'],
+            ['baz', 123],
+          ],
+        );
       }).toThrowErrorMatchingSnapshot();
     });
   });

@@ -90,20 +90,21 @@ describe('TupleBuilder', () => {
 
     it('runs checks for array predicate', () => {
       expect(() => {
-        runChecks(builder, [
+        runChecks(
+          builder,
           // @ts-ignore Allow invalid type
-          [123],
-        ]);
+          [[123]],
+        );
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('runs checks for boolean predicate', () => {
       expect(() => {
-        runChecks(builder, [
-          ['a'],
+        runChecks(
+          builder,
           // @ts-ignore Allow invalid type
-          123,
-        ]);
+          [['a'], 123],
+        );
       }).toThrowErrorMatchingSnapshot();
     });
 
@@ -115,26 +116,21 @@ describe('TupleBuilder', () => {
 
     it('runs checks for object predicate', () => {
       expect(() => {
-        runChecks(builder, [
-          ['a'],
-          true,
-          3,
+        runChecks(
+          builder,
           // @ts-ignore Allow invalid type
-          { a: 'a' },
-        ]);
+          [['a'], true, 3, { a: 'a' }],
+        );
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('runs checks for string predicate', () => {
       expect(() => {
-        runChecks(builder, [
-          ['a'],
-          true,
-          3,
-          {},
+        runChecks(
+          builder,
           // @ts-ignore Allow invalid type
-          'qux',
-        ]);
+          [['a'], true, 3, {}, 'qux'],
+        );
       }).toThrowErrorMatchingSnapshot();
     });
   });
