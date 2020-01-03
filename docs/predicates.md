@@ -302,7 +302,8 @@ optimal(
 );
 ```
 
-> When using TypeScript, a generic type is required for builders to type correctly.
+> When using TypeScript, a generic type is required for builders to type correctly. Furthermore, the
+> builder only supports a max length of 5 items.
 
 ## Union
 
