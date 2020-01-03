@@ -29,15 +29,11 @@ describe('StringBuilder', () => {
     });
 
     it('returns default value if value is undefined', () => {
-      expect(string('abc').runChecks('key', undefined, { key: undefined })).toEqual('abc');
+      expect(runChecks(string('abc'))).toEqual('abc');
     });
 
     it('returns default value from factory if value is undefined', () => {
-      expect(
-        string(() => 'XYZ').runChecks('key', undefined, {
-          key: undefined,
-        }),
-      ).toEqual('XYZ');
+      expect(runChecks(string(() => 'XYZ'))).toEqual('XYZ');
     });
 
     describe('production', () => {
@@ -64,7 +60,7 @@ describe('StringBuilder', () => {
               // @ts-ignore Test invalid type
               123,
             ),
-          ).toBe(123);
+          ).toBe('123');
         }),
       );
     });
@@ -74,42 +70,42 @@ describe('StringBuilder', () => {
     it('errors if less than 2 characters', () => {
       expect(() => {
         builder.camelCase();
-        builder.runChecks('key', 'a', { key: 'a' });
+        runChecks(builder, 'a');
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if starts with a number', () => {
       expect(() => {
         builder.camelCase();
-        builder.runChecks('key', '1', { key: '1' });
+        runChecks(builder, '1');
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if in kebab case', () => {
       expect(() => {
         builder.camelCase();
-        builder.runChecks('key', kebabCase, { key: kebabCase });
+        runChecks(builder, kebabCase);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if in pascal case', () => {
       expect(() => {
         builder.camelCase();
-        builder.runChecks('key', pascalCase, { key: pascalCase });
+        runChecks(builder, pascalCase);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if in snake case', () => {
       expect(() => {
         builder.camelCase();
-        builder.runChecks('key', snakeCase, { key: snakeCase });
+        runChecks(builder, snakeCase);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('passes if in camel case', () => {
       expect(() => {
         builder.camelCase();
-        builder.runChecks('key', camelCase, { key: camelCase });
+        runChecks(builder, camelCase);
       }).not.toThrow();
     });
   });
@@ -163,42 +159,42 @@ describe('StringBuilder', () => {
     it('errors if less than 2 characters', () => {
       expect(() => {
         builder.kebabCase();
-        builder.runChecks('key', 'a', { key: 'a' });
+        runChecks(builder, 'a');
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if starts with a number', () => {
       expect(() => {
         builder.kebabCase();
-        builder.runChecks('key', '1', { key: '1' });
+        runChecks(builder, '1');
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if in camel case', () => {
       expect(() => {
         builder.kebabCase();
-        builder.runChecks('key', camelCase, { key: camelCase });
+        runChecks(builder, camelCase);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if in pascal case', () => {
       expect(() => {
         builder.kebabCase();
-        builder.runChecks('key', pascalCase, { key: pascalCase });
+        runChecks(builder, pascalCase);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if in snake case', () => {
       expect(() => {
         builder.kebabCase();
-        builder.runChecks('key', snakeCase, { key: snakeCase });
+        runChecks(builder, snakeCase);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('passes if in kebab case', () => {
       expect(() => {
         builder.kebabCase();
-        builder.runChecks('key', kebabCase, { key: kebabCase });
+        runChecks(builder, kebabCase);
       }).not.toThrow();
     });
   });
@@ -307,42 +303,42 @@ describe('StringBuilder', () => {
     it('errors if less than 2 characters', () => {
       expect(() => {
         builder.pascalCase();
-        builder.runChecks('key', 'A', { key: 'A' });
+        runChecks(builder, 'A');
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if starts with a number', () => {
       expect(() => {
         builder.pascalCase();
-        builder.runChecks('key', '1', { key: '1' });
+        runChecks(builder, '1');
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if in camel case', () => {
       expect(() => {
         builder.pascalCase();
-        builder.runChecks('key', camelCase, { key: camelCase });
+        runChecks(builder, camelCase);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if in kebab case', () => {
       expect(() => {
         builder.pascalCase();
-        builder.runChecks('key', kebabCase, { key: kebabCase });
+        runChecks(builder, kebabCase);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if in snake case', () => {
       expect(() => {
         builder.pascalCase();
-        builder.runChecks('key', snakeCase, { key: snakeCase });
+        runChecks(builder, snakeCase);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('passes if in pascal case', () => {
       expect(() => {
         builder.pascalCase();
-        builder.runChecks('key', pascalCase, { key: pascalCase });
+        runChecks(builder, pascalCase);
       }).not.toThrow();
     });
   });
@@ -369,42 +365,42 @@ describe('StringBuilder', () => {
     it('errors if less than 2 characters', () => {
       expect(() => {
         builder.snakeCase();
-        builder.runChecks('key', 'a', { key: 'a' });
+        runChecks(builder, 'a');
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if starts with a number', () => {
       expect(() => {
         builder.snakeCase();
-        builder.runChecks('key', '1', { key: '1' });
+        runChecks(builder, '1');
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if in camel case', () => {
       expect(() => {
         builder.snakeCase();
-        builder.runChecks('key', camelCase, { key: camelCase });
+        runChecks(builder, camelCase);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if in kebab case', () => {
       expect(() => {
         builder.snakeCase();
-        builder.runChecks('key', kebabCase, { key: kebabCase });
+        runChecks(builder, kebabCase);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if in pascal case', () => {
       expect(() => {
         builder.snakeCase();
-        builder.runChecks('key', pascalCase, { key: pascalCase });
+        runChecks(builder, pascalCase);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('passes if in snake case', () => {
       expect(() => {
         builder.snakeCase();
-        builder.runChecks('key', snakeCase, { key: snakeCase });
+        runChecks(builder, snakeCase);
       }).not.toThrow();
     });
   });

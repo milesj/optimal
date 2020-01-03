@@ -67,10 +67,13 @@ describe('ObjectBuilder', () => {
 
     it('returns default value from factory if value is undefined', () => {
       expect(
-        object(string(), () => ({ foo: 'bar' })).runChecks('key', undefined, {
-          key: undefined,
-          multiplier: 3,
-        }),
+        runChecks(
+          object(string(), () => ({ foo: 'bar' })),
+          undefined,
+          {
+            struct: { multiplier: 3 },
+          },
+        ),
       ).toEqual({ foo: 'bar' });
     });
 
@@ -113,7 +116,7 @@ describe('ObjectBuilder', () => {
         },
       };
 
-      expect(nestedBuilder.runChecks('key', data, {})).toEqual(data);
+      expect(runChecks(nestedBuilder, data)).toEqual(data);
     });
 
     it('errors correctly for objects in objects', () => {
@@ -150,7 +153,7 @@ describe('ObjectBuilder', () => {
           const def = { foo: 'foo' };
           builder.defaultValue = def;
 
-          expect(runChecks(builder)).toBe(def);
+          expect(runChecks(builder)).toEqual(def);
         }),
       );
 
@@ -170,7 +173,7 @@ describe('ObjectBuilder', () => {
               // @ts-ignore Test invalid type
               { foo: 123 },
             ),
-          ).toEqual({ foo: 123 });
+          ).toEqual({ foo: '123' });
         }),
       );
     });
@@ -230,11 +233,10 @@ describe('blueprint()', () => {
 
   it('errors if a non-Builder is passed', () => {
     expect(() => {
-      blueprint().runChecks(
-        'key',
+      runChecks(
+        blueprint(),
         // @ts-ignore Allow invalid type
         { value: 123 },
-        {},
       );
     }).toThrow('Invalid field "key.value". Must be an instance of "Builder".');
   });

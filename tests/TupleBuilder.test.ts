@@ -158,7 +158,7 @@ describe('TupleBuilder', () => {
               // @ts-ignore Test invalid type
               [[123], true, 500],
             ),
-          ).toEqual([[123], true, 500, {}, 'foo']);
+          ).toEqual([['123'], true, 500, {}, 'foo']);
         }),
       );
     });

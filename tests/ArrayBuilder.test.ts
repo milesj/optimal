@@ -144,7 +144,7 @@ describe('ArrayBuilder', () => {
               // @ts-ignore Test invalid type
               ['foo', 'bar', 'baz', 123],
             ),
-          ).toEqual(['foo', 'bar', 'baz', 123]);
+          ).toEqual(['foo', 'bar', 'baz', '123']);
         }),
       );
     });

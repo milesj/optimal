@@ -14,6 +14,10 @@ export default class StringBuilder<T extends string = string> extends Collection
     return this.match(/^[a-z][a-zA-Z0-9]+$/u, 'String must be in camel case.');
   }
 
+  cast(value: unknown): T {
+    return String(value) as T;
+  }
+
   contains(token: string, index: number = 0): this {
     if (__DEV__) {
       this.invariant(isString(token), 'Contains requires a non-empty token.');

@@ -6,8 +6,13 @@ export default class BooleanBuilder<T extends boolean = boolean> extends Builder
     super('boolean', defaultValue || (false as T));
   }
 
+  cast(value: unknown): T {
+    return Boolean(value) as T;
+  }
+
   onlyFalse(): BooleanBuilder<false> {
     this.defaultValue = false as T;
+    this.defaultValueFactory = undefined;
 
     if (__DEV__) {
       this.addCheck((path, value) => {
@@ -20,6 +25,7 @@ export default class BooleanBuilder<T extends boolean = boolean> extends Builder
 
   onlyTrue(): BooleanBuilder<true> {
     this.defaultValue = true as T;
+    this.defaultValueFactory = undefined;
 
     if (__DEV__) {
       this.addCheck((path, value) => {

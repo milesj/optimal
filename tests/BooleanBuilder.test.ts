@@ -25,10 +25,13 @@ describe('BooleanBuilder', () => {
 
   it('returns default value from factory if value is undefined', () => {
     expect(
-      bool(struct => !struct.boop).runChecks('key', undefined, {
-        key: undefined,
-        boop: true,
-      }),
+      runChecks(
+        bool(struct => !struct.boop),
+        undefined,
+        {
+          struct: { boop: true },
+        },
+      ),
     ).toEqual(false);
   });
 

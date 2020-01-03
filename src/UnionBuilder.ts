@@ -16,9 +16,10 @@ export default class UnionBuilder<T = unknown> extends Builder<T> {
         'A non-empty array of blueprints are required for a union.',
       );
 
-      this.builders = builders;
       this.addCheck(this.checkUnions);
     }
+
+    this.builders = builders;
   }
 
   /**

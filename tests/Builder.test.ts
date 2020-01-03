@@ -217,7 +217,9 @@ describe('Builder', () => {
       }, 0);
 
       expect(() => {
-        builder.runChecks('error', 123, { foo: 123, bar: 456, error: '' });
+        runChecks(builder, 123, {
+          struct: { foo: 123, bar: 456, error: '' },
+        });
       }).toThrowErrorMatchingSnapshot();
     });
   });
@@ -374,45 +376,52 @@ describe('Builder', () => {
 
   describe('runChecks()', () => {
     it('returns valid value', () => {
-      expect(builder.runChecks('key', 'bar', {})).toBe('bar');
+      expect(runChecks(builder, 'bar')).toBe('bar');
     });
 
     it('returns default value if value passed is undefined', () => {
-      expect(builder.runChecks('key', undefined, {})).toBe('foo');
+      expect(runChecks(builder)).toBe('foo');
     });
 
     it('returns null if value passed is null and builder is nullable', () => {
-      expect(builder.nullable().runChecks('key', null, {})).toBeNull();
+      builder.nullable();
+
+      expect(runChecks(builder, null)).toBeNull();
     });
 
     it('errors if value passed is undefined and builder is required', () => {
+      builder.required();
+
       expect(() => {
-        builder.required().runChecks('key', undefined, {});
+        runChecks(builder);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if value passed is null and builder is non-nullable', () => {
       expect(() => {
-        builder.runChecks('key', null, {});
+        runChecks(builder, null);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if value passed is defined and builder is never', () => {
+      builder.never();
+
       expect(() => {
-        // @ts-ignore Allow values
-        expect(builder.never().runChecks('key', 'bar', { key: 'bar' })).toBeUndefined();
+        expect(runChecks(builder, 'bar')).toBeUndefined();
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('runs default type of check', () => {
       expect(() => {
-        builder.runChecks('key', 123, {});
+        runChecks(builder, 123);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('uses custom message', () => {
+      builder.message('Oops, something is broken.');
+
       expect(() => {
-        builder.message('Oops, something is broken.').runChecks('key', 123, {});
+        runChecks(builder, 123);
       }).toThrowErrorMatchingSnapshot();
     });
 
@@ -429,14 +438,14 @@ describe('Builder', () => {
 
       it('logs a message', () => {
         builder.deprecate('Use something else.');
-        builder.runChecks('key', 'foo', {});
+        runChecks(builder, 'foo');
 
         expect(console.info).toHaveBeenCalledWith('Field "key" is deprecated. Use something else.');
       });
 
       it('doesnt log if undefined', () => {
         builder.deprecate('Use something else.');
-        builder.runChecks('key', undefined, {});
+        runChecks(builder);
 
         expect(console.info).not.toHaveBeenCalledWith(
           'Field "key" is deprecated. Use something else.',
@@ -575,11 +584,10 @@ describe('func()', () => {
 
   it('errors if a non-function value is used', () => {
     expect(() => {
-      func().runChecks(
-        'key',
+      runChecks(
+        func(),
         // @ts-ignore Test invalid type
         123,
-        {},
       );
     }).toThrowErrorMatchingSnapshot();
   });

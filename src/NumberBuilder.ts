@@ -30,6 +30,10 @@ export default class NumberBuilder<T extends number = number> extends Builder<T>
     return this;
   }
 
+  cast(value: unknown): T {
+    return Number(value) as T;
+  }
+
   gt(min: number, inclusive: boolean = false): this {
     if (__DEV__) {
       this.invariant(isNumber(min), 'Greater-than requires a minimum number.');

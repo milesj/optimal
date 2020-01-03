@@ -20,7 +20,7 @@ exports[`Builder checkType() object errors on nulls 1`] = `"Invalid field \\"key
 
 exports[`Builder checkType() string errors on non-strings 1`] = `"Invalid field \\"key\\". Must be a string."`;
 
-exports[`Builder custom() is passed entire options object 1`] = `"Invalid field \\"error\\". This will error!"`;
+exports[`Builder custom() is passed entire options object 1`] = `"Invalid field \\"key\\". This will error!"`;
 
 exports[`Builder custom() triggers callback function 1`] = `"Invalid field \\"key\\". This will error!"`;
 

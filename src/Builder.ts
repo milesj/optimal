@@ -87,6 +87,13 @@ export default class Builder<T> {
   }
 
   /**
+   * Cast the value if need be.
+   */
+  cast(value: unknown): T {
+    return value as T;
+  }
+
+  /**
    * Set a callback to run custom logic.
    */
   custom<S = object>(callback: CustomCallback<T, S>): this {
@@ -208,16 +215,18 @@ export default class Builder<T> {
    */
   only(): this {
     if (__DEV__) {
+      const defaultValue = this.getDefaultValue(this.currentStruct);
+
       this.invariant(
         // eslint-disable-next-line valid-typeof
-        typeof this.defaultValue === this.type,
+        typeof defaultValue === this.type,
         `Only requires a default ${this.type} value.`,
       );
 
       this.addCheck((path, value) => {
         this.invariant(
-          value === this.defaultValue,
-          `Value may only be "${String(this.defaultValue)}".`,
+          value === defaultValue,
+          `Value may only be "${String(defaultValue)}".`,
           path,
         );
       });
@@ -262,7 +271,6 @@ export default class Builder<T> {
   /**
    * Run all validation checks that have been enqueued.
    */
-  // eslint-disable-next-line complexity
   runChecks(
     path: string,
     initialValue: T | undefined,
@@ -271,10 +279,7 @@ export default class Builder<T> {
   ): T | null {
     this.currentStruct = struct;
     this.options = options;
-
-    if (this.defaultValueFactory) {
-      this.defaultValue = this.defaultValueFactory(struct);
-    }
+    this.defaultValue = this.getDefaultValue(struct);
 
     let value = initialValue;
 
@@ -308,17 +313,19 @@ export default class Builder<T> {
     }
 
     // Run all checks against the value
-    if (__DEV__) {
-      this.checks.forEach(checker => {
-        const result = checker.call(this, path, value);
+    this.checks.forEach(checker => {
+      const result = checker.call(this, path, value);
 
-        if (typeof result !== 'undefined') {
-          value = result as T;
-        }
-      });
+      if (typeof result !== 'undefined') {
+        value = result as T;
+      }
+    });
+
+    if (value !== null) {
+      value = this.cast(value);
     }
 
-    return value!;
+    return value;
   }
 
   /**
@@ -356,9 +363,7 @@ export default class Builder<T> {
    * Add a checking function with optional arguments.
    */
   protected addCheck(checker: CheckerCallback): this {
-    if (__DEV__) {
-      this.checks.push(checker);
-    }
+    this.checks.push(checker);
 
     return this;
   }
@@ -393,10 +398,21 @@ export default class Builder<T> {
   }
 
   /**
+   * Return the possible default value.
+   */
+  protected getDefaultValue(struct: object) {
+    if (this.defaultValueFactory) {
+      return this.defaultValueFactory(struct);
+    }
+
+    return this.defaultValue;
+  }
+
+  /**
    * Return true if the value matches the default value and the builder is optional.
    */
   protected isOptionalDefault(value: unknown): boolean {
-    return !this.isRequired && value === this.defaultValue;
+    return !this.isRequired && value === this.getDefaultValue(this.currentStruct);
   }
 
   /**

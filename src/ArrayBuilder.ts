@@ -10,26 +10,28 @@ export default class ArrayBuilder<T> extends CollectionBuilder<ArrayOf<T>> {
 
     this.contents = contents;
 
-    if (__DEV__) {
-      if (contents instanceof Builder) {
-        this.addCheck((path, value) => {
-          const nextValue = [...value];
+    if (contents instanceof Builder) {
+      this.addCheck((path, value) => {
+        const nextValue = [...value];
 
-          value.forEach((item: T, i: number) => {
-            nextValue[i] = contents.runChecks(
-              `${path}[${i}]`,
-              item,
-              this.currentStruct,
-              this.options,
-            )!;
-          });
-
-          return nextValue;
+        value.forEach((item: T, i: number) => {
+          nextValue[i] = contents.runChecks(
+            `${path}[${i}]`,
+            item,
+            this.currentStruct,
+            this.options,
+          )!;
         });
-      } else if (contents) {
-        this.invariant(false, 'A blueprint is required for array contents.');
-      }
+
+        return nextValue;
+      });
+    } else if (__DEV__ && contents) {
+      this.invariant(false, 'A blueprint is required for array contents.');
     }
+  }
+
+  cast(value: unknown): ArrayOf<T> {
+    return Array.isArray(value) ? value : [value];
   }
 
   notEmpty(): this {

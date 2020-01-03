@@ -2,6 +2,7 @@ import Builder from './Builder';
 import CollectionBuilder from './CollectionBuilder';
 import { ObjectOf, DefaultValue } from './types';
 import { builder } from './InstanceBuilder';
+import isObject from './isObject';
 
 export default class ObjectBuilder<T> extends CollectionBuilder<ObjectOf<T>> {
   protected contents: Builder<T> | null = null;
@@ -11,26 +12,30 @@ export default class ObjectBuilder<T> extends CollectionBuilder<ObjectOf<T>> {
 
     this.contents = contents;
 
-    if (__DEV__) {
-      if (contents instanceof Builder) {
-        this.addCheck((path, value) => {
-          const nextValue = { ...value };
+    if (contents instanceof Builder) {
+      this.addCheck((path, value) => {
+        const nextValue = { ...value };
 
-          Object.keys(value).forEach(key => {
-            nextValue[key] = contents.runChecks(
-              `${path}.${key}`,
-              value[key],
-              this.currentStruct,
-              this.options,
-            )!;
-          });
-
-          return nextValue;
+        Object.keys(value).forEach(key => {
+          nextValue[key] = contents.runChecks(
+            `${path}.${key}`,
+            value[key],
+            this.currentStruct,
+            this.options,
+          )!;
         });
-      } else if (contents) {
-        this.invariant(false, 'A blueprint is required for object contents.');
-      }
+
+        return nextValue;
+      });
+    } else if (__DEV__ && contents) {
+      this.invariant(false, 'A blueprint is required for object contents.');
     }
+  }
+
+  cast(value: unknown): ObjectOf<T> {
+    const obj = isObject(value) ? value : {};
+
+    return (obj as unknown) as ObjectOf<T>;
   }
 
   notEmpty(): this {

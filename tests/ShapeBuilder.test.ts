@@ -6,7 +6,7 @@ import { number } from '../src/NumberBuilder';
 import { string } from '../src/StringBuilder';
 import { runChecks, runInProd } from './helpers';
 
-describe('shape()', () => {
+describe('ShapeBuilder', () => {
   let builder: ShapeBuilder<{
     foo: string;
     bar: number;
@@ -206,7 +206,7 @@ describe('shape()', () => {
               // @ts-ignore Test invalid type
               { foo: 123 },
             ),
-          ).toEqual({ foo: 123, bar: 0, baz: false });
+          ).toEqual({ foo: '123', bar: 0, baz: false });
         }),
       );
     });

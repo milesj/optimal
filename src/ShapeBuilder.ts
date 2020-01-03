@@ -31,13 +31,8 @@ export default class ShapeBuilder<T extends object> extends Builder<T> {
     return this;
   }
 
-  runChecks(
-    path: string,
-    initialValue: T | undefined,
-    struct: object,
-    options: OptimalOptions = {},
-  ) {
-    const object = initialValue || this.defaultValue || {};
+  runChecks(path: string, value: T | undefined, struct: object, options: OptimalOptions = {}) {
+    const object = value || this.getDefaultValue(struct) || {};
 
     if (__DEV__) {
       this.invariant(isObject(object), 'Value passed to shape must be an object.', path);

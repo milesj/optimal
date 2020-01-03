@@ -29,10 +29,13 @@ describe('NumberBuilder', () => {
 
     it('returns default value from factory if value is undefined', () => {
       expect(
-        number(struct => struct.multiplier * 123).runChecks('key', undefined, {
-          key: undefined,
-          multiplier: 3,
-        }),
+        runChecks(
+          number(struct => struct.multiplier * 123),
+          undefined,
+          {
+            struct: { multiplier: 3 },
+          },
+        ),
       ).toEqual(369);
     });
 
@@ -60,7 +63,7 @@ describe('NumberBuilder', () => {
               // @ts-ignore Test invalid type
               '123',
             ),
-          ).toBe('123');
+          ).toBe(123);
         }),
       );
     });
