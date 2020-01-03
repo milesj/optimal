@@ -2,7 +2,7 @@ import Builder from './Builder';
 import { DefaultValue } from './types';
 
 function isNumber(value: unknown): value is number {
-  return typeof value === 'number';
+  return typeof value === 'number' && !Number.isNaN(value);
 }
 
 export default class NumberBuilder<T extends number = number> extends Builder<T> {
@@ -34,6 +34,16 @@ export default class NumberBuilder<T extends number = number> extends Builder<T>
     return Number(value) as T;
   }
 
+  float(): this {
+    if (__DEV__) {
+      this.addCheck((path, value) => {
+        this.invariant(isNumber(value) && value % 1 !== 0, 'Number must be a float.', path);
+      });
+    }
+
+    return this;
+  }
+
   gt(min: number, inclusive: boolean = false): this {
     if (__DEV__) {
       this.invariant(isNumber(min), 'Greater-than requires a minimum number.');
@@ -62,6 +72,16 @@ export default class NumberBuilder<T extends number = number> extends Builder<T>
     return this.gt(min, true);
   }
 
+  int(): this {
+    if (__DEV__) {
+      this.addCheck((path, value) => {
+        this.invariant(Number.isSafeInteger(value), 'Number must be an integer.', path);
+      });
+    }
+
+    return this;
+  }
+
   lt(max: number, inclusive: boolean = false): this {
     if (__DEV__) {
       this.invariant(isNumber(max), 'Less-than requires a maximum number.');
@@ -86,6 +106,16 @@ export default class NumberBuilder<T extends number = number> extends Builder<T>
     return this.lt(max, true);
   }
 
+  negative(): this {
+    if (__DEV__) {
+      this.addCheck((path, value) => {
+        this.invariant(isNumber(value) && value < 0, 'Number must be negative.', path);
+      });
+    }
+
+    return this;
+  }
+
   oneOf<U extends number>(list: U[]): NumberBuilder<U> {
     if (__DEV__) {
       this.invariant(
@@ -99,6 +129,16 @@ export default class NumberBuilder<T extends number = number> extends Builder<T>
     }
 
     return (this as unknown) as NumberBuilder<U>;
+  }
+
+  positive(): this {
+    if (__DEV__) {
+      this.addCheck((path, value) => {
+        this.invariant(isNumber(value) && value > 0, 'Number must be positive.', path);
+      });
+    }
+
+    return this;
   }
 }
 

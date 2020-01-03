@@ -12,6 +12,10 @@ exports[`NumberBuilder between() errors if value is not a number 1`] = `"Invalid
 
 exports[`NumberBuilder between(): inclusive errors if out of range 1`] = `"Invalid field \\"key\\". Number must be between 0 and 5 inclusive."`;
 
+exports[`NumberBuilder float() errors if value is NaN 1`] = `"Invalid field \\"key\\". Number must be a float."`;
+
+exports[`NumberBuilder float() errors if value is an integer 1`] = `"Invalid field \\"key\\". Number must be a float."`;
+
 exports[`NumberBuilder gt() errors if below minimum 1`] = `"Invalid field \\"key\\". Number must be greater than 5."`;
 
 exports[`NumberBuilder gt() errors if edge 1`] = `"Invalid field \\"key\\". Number must be greater than 5."`;
@@ -21,6 +25,10 @@ exports[`NumberBuilder gt() errors if min is a not a number 1`] = `"Greater-than
 exports[`NumberBuilder gte() errors if below minimum 1`] = `"Invalid field \\"key\\". Number must be greater than or equal to 5."`;
 
 exports[`NumberBuilder gte() errors if min is a not a number 1`] = `"Greater-than requires a minimum number."`;
+
+exports[`NumberBuilder int() errors if value is NaN 1`] = `"Invalid field \\"key\\". Number must be an integer."`;
+
+exports[`NumberBuilder int() errors if value is a float 1`] = `"Invalid field \\"key\\". Number must be an integer."`;
 
 exports[`NumberBuilder lt() errors if above maximum 1`] = `"Invalid field \\"key\\". Number must be less than 5."`;
 
@@ -32,6 +40,10 @@ exports[`NumberBuilder lte() errors if above maximum 1`] = `"Invalid field \\"ke
 
 exports[`NumberBuilder lte() errors if max is a not a number 1`] = `"Less-than requires a maximum number."`;
 
+exports[`NumberBuilder negative() errors if value is positive 1`] = `"Invalid field \\"key\\". Number must be negative."`;
+
+exports[`NumberBuilder negative() errors if value is zero 1`] = `"Invalid field \\"key\\". Number must be negative."`;
+
 exports[`NumberBuilder oneOf() errors if array contains a non-number 1`] = `"One of requires a non-empty array of numbers."`;
 
 exports[`NumberBuilder oneOf() errors if array is empty 1`] = `"One of requires a non-empty array of numbers."`;
@@ -39,5 +51,9 @@ exports[`NumberBuilder oneOf() errors if array is empty 1`] = `"One of requires 
 exports[`NumberBuilder oneOf() errors if not an array 1`] = `"One of requires a non-empty array of numbers."`;
 
 exports[`NumberBuilder oneOf() errors if value is not in the list 1`] = `"Invalid field \\"key\\". Number must be one of: 123, 456, 789"`;
+
+exports[`NumberBuilder positive() errors if value is negative 1`] = `"Invalid field \\"key\\". Number must be positive."`;
+
+exports[`NumberBuilder positive() errors if value is zero 1`] = `"Invalid field \\"key\\". Number must be positive."`;
 
 exports[`NumberBuilder runChecks() errors if a non-number value is used 1`] = `"Invalid field \\"key\\". Must be a number."`;

@@ -135,6 +135,30 @@ describe('NumberBuilder', () => {
     });
   });
 
+  describe('float()', () => {
+    beforeEach(() => {
+      builder.float();
+    });
+
+    it('errors if value is an integer', () => {
+      expect(() => {
+        runChecks(builder, 123);
+      }).toThrowErrorMatchingSnapshot();
+    });
+
+    it('errors if value is NaN', () => {
+      expect(() => {
+        runChecks(builder, NaN);
+      }).toThrowErrorMatchingSnapshot();
+    });
+
+    it('doesnt error if value is a float', () => {
+      expect(() => {
+        runChecks(builder, 1.23);
+      }).not.toThrow();
+    });
+  });
+
   describe('gt()', () => {
     beforeEach(() => {
       builder.gt(5);
@@ -193,6 +217,30 @@ describe('NumberBuilder', () => {
     it('doesnt error if above minimum', () => {
       expect(() => {
         runChecks(builder, 10);
+      }).not.toThrow();
+    });
+  });
+
+  describe('int()', () => {
+    beforeEach(() => {
+      builder.int();
+    });
+
+    it('errors if value is a float', () => {
+      expect(() => {
+        runChecks(builder, 1.23);
+      }).toThrowErrorMatchingSnapshot();
+    });
+
+    it('errors if value is NaN', () => {
+      expect(() => {
+        runChecks(builder, NaN);
+      }).toThrowErrorMatchingSnapshot();
+    });
+
+    it('doesnt error if value is an integer', () => {
+      expect(() => {
+        runChecks(builder, 123);
       }).not.toThrow();
     });
   });
@@ -259,6 +307,30 @@ describe('NumberBuilder', () => {
     });
   });
 
+  describe('negative()', () => {
+    beforeEach(() => {
+      builder.negative();
+    });
+
+    it('errors if value is positive', () => {
+      expect(() => {
+        runChecks(builder, 1);
+      }).toThrowErrorMatchingSnapshot();
+    });
+
+    it('errors if value is zero', () => {
+      expect(() => {
+        runChecks(builder, 1);
+      }).toThrowErrorMatchingSnapshot();
+    });
+
+    it('doesnt error if value is negative', () => {
+      expect(() => {
+        runChecks(builder, -1);
+      }).not.toThrow();
+    });
+  });
+
   describe('oneOf()', () => {
     beforeEach(() => {
       builder.oneOf([123, 456, 789]);
@@ -293,6 +365,30 @@ describe('NumberBuilder', () => {
     it('doesnt error if value contains token', () => {
       expect(() => {
         runChecks(builder, 123);
+      }).not.toThrow();
+    });
+  });
+
+  describe('positive()', () => {
+    beforeEach(() => {
+      builder.positive();
+    });
+
+    it('errors if value is negative', () => {
+      expect(() => {
+        runChecks(builder, -1);
+      }).toThrowErrorMatchingSnapshot();
+    });
+
+    it('errors if value is zero', () => {
+      expect(() => {
+        runChecks(builder, 0);
+      }).toThrowErrorMatchingSnapshot();
+    });
+
+    it('doesnt error if value is positive', () => {
+      expect(() => {
+        runChecks(builder, 1);
       }).not.toThrow();
     });
   });

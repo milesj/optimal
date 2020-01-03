@@ -178,11 +178,15 @@ customized with the 1st argument. Number builder supports the following addition
 
 - `between(min: number, max: number, inclusive?: boolean)` - Validate value is between 2 numbers.
   When `inclusive`, will compare against outer bounds, otherwise only compares between bounds.
+- `float()` - Require a floating point / decimal number.
 - `gt(min: number)` - Validate the value is greater than the minimum.
 - `gte(min: number)` - Validate the value is greater than or equal to the minimum.
+- `int()` - Require an integer.
 - `lt(max: number)` - Validate the value is less than the maximum.
 - `lte(max: number)` - Validate the value is less than or equal to the maximum.
+- `negative()` - Validate the value is negative and not zero.
 - `oneOf(list: number[])` - Validate the value is one of the following numbers.
+- `positive()` - Validate the value is positive and not zero.
 
 ```ts
 optimal(
