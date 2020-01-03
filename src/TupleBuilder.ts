@@ -30,22 +30,14 @@ export default class TupleBuilder<T extends unknown[] = unknown[]> extends Build
     this.contents = contents;
   }
 
-  notEmpty(): this {
-    if (__DEV__) {
-      this.addCheck((path, value) => {
-        this.invariant(value.length > 0, 'Tuple cannot be empty.', path);
-      });
-    }
-
-    return this;
-  }
-
   runChecks(path: string, value: T | undefined): T | null {
     if (__DEV__) {
-      this.invariant(
-        !!value && Array.isArray(value) && value.length <= this.contents.length,
-        `Value must be a tuple with less than or equal to ${this.contents.length} items.`,
-      );
+      if (value) {
+        this.invariant(
+          Array.isArray(value) && value.length <= this.contents.length,
+          `Value must be a tuple with less than or equal to ${this.contents.length} items.`,
+        );
+      }
     }
 
     const nextValue = value ? [...value] : [];
