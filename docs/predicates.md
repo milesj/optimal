@@ -280,6 +280,30 @@ optimal(
 );
 ```
 
+## Tuple
+
+A tuple is an array-like structure with a defined set of items, each with their own unique type. The
+`tuple(predicates: Builder[])` predicate will validate each item and return an array of the same
+length and types. Defaults to the structure of the tuple and _cannot_ be customized.
+
+```ts
+type Record = [number, string]; // ID, name
+
+optimal(
+  {},
+  {
+    record: tuple<Record>([
+      number()
+        .gt(0)
+        .required(),
+      string().notEmpty(),
+    ]),
+  },
+);
+```
+
+> When using TypeScript, a generic type is required for builders to type correctly.
+
 ## Union
 
 The `union(predicates: Builder[], default: any)` predicate verifies a value against a list of
