@@ -1,5 +1,5 @@
 import NumberBuilder, { number } from '../src/NumberBuilder';
-import { runChecks } from './helpers';
+import { runChecks, runInProd } from './helpers';
 
 describe('NumberBuilder', () => {
   let builder: NumberBuilder;
@@ -34,6 +34,35 @@ describe('NumberBuilder', () => {
           multiplier: 3,
         }),
       ).toEqual(369);
+    });
+
+    describe('production', () => {
+      it(
+        'returns default value if value is undefined',
+        runInProd(() => {
+          expect(runChecks(builder)).toBe(123);
+        }),
+      );
+
+      it(
+        'returns default value from factory if value is undefined',
+        runInProd(() => {
+          expect(runChecks(number(() => 456))).toBe(456);
+        }),
+      );
+
+      it(
+        'bypasses checks and returns value',
+        runInProd(() => {
+          expect(
+            runChecks(
+              builder,
+              // @ts-ignore Test invalid type
+              '123',
+            ),
+          ).toBe('123');
+        }),
+      );
     });
   });
 

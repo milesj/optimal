@@ -11,6 +11,7 @@ import optimal, {
   union,
   ObjectOf,
 } from '../src';
+import { runInProd } from './helpers';
 
 class Plugin {}
 
@@ -256,6 +257,56 @@ describe('Optimal', () => {
       );
     }).toThrow(
       'Invalid FooBar field "entry". Type must be one of: string, array<string>, object<string | array<string>>, function',
+    );
+  });
+
+  describe('production', () => {
+    it(
+      'sets and returns correct propertes',
+      runInProd(() => {
+        const options = optimal(
+          {
+            entry: ['foo.js'],
+            output: {
+              hashFunction: 'sha256',
+            },
+            module: {
+              noParse: /foo/u,
+            },
+            // Invalid, should not error
+            target: 'unknown',
+          },
+          blueprint,
+        );
+
+        expect(options).toEqual({
+          context: process.cwd(),
+          entry: ['foo.js'],
+          output: {
+            chunkFilename: '[id].js',
+            chunkLoadTimeout: 120000,
+            crossOriginLoading: false,
+            filename: 'bundle.js',
+            hashFunction: 'sha256',
+            path: '',
+            publicPath: '',
+          },
+          module: {
+            noParse: /foo/u,
+            rules: [],
+          },
+          resolve: {
+            alias: {},
+            extensions: [],
+            plugins: [],
+            resolveLoader: {},
+          },
+          plugins: [],
+          target: 'unknown',
+          watch: false,
+          node: {},
+        });
+      }),
     );
   });
 

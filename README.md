@@ -6,7 +6,7 @@
 
 A system for building and validating defined object structures, like argument options, configuration
 files, data bags, validation fields, and more! Runs checks in development and strips checks in
-production using dead code elimination.
+production using dead code elimination (should not be used on user input!).
 
 - Recursively builds and validates nested structures.
 - Supports common data types.

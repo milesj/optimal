@@ -4,7 +4,7 @@ import ShapeBuilder, { shape } from '../src/ShapeBuilder';
 import { bool } from '../src/BooleanBuilder';
 import { number } from '../src/NumberBuilder';
 import { string } from '../src/StringBuilder';
-import { runChecks } from './helpers';
+import { runChecks, runInProd } from './helpers';
 
 describe('shape()', () => {
   let builder: ShapeBuilder<{
@@ -177,6 +177,38 @@ describe('shape()', () => {
         baz: false,
         foo: '',
       });
+    });
+
+    describe('production', () => {
+      it(
+        'returns default shape if value is object',
+        runInProd(() => {
+          expect(runChecks(builder, {})).toEqual({ foo: '', bar: 0, baz: false });
+        }),
+      );
+
+      it(
+        'returns default shape if value is undefined',
+        runInProd(() => {
+          const def = { foo: 'foo', bar: 123, baz: true };
+          builder.defaultValue = def;
+
+          expect(runChecks(builder)).toEqual(def);
+        }),
+      );
+
+      it(
+        'bypasses checks and returns value',
+        runInProd(() => {
+          expect(
+            runChecks(
+              builder,
+              // @ts-ignore Test invalid type
+              { foo: 123 },
+            ),
+          ).toEqual({ foo: 123, bar: 0, baz: false });
+        }),
+      );
     });
   });
 

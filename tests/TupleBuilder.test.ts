@@ -4,8 +4,8 @@ import { bool } from '../src/BooleanBuilder';
 import { object } from '../src/ObjectBuilder';
 import { number } from '../src/NumberBuilder';
 import { string } from '../src/StringBuilder';
-import { runChecks } from './helpers';
 import { ObjectOf, ArrayOf } from '../src/types';
+import { runChecks, runInProd } from './helpers';
 
 describe('TupleBuilder', () => {
   type TupleStrings = 'foo' | 'bar' | 'baz';
@@ -132,6 +132,35 @@ describe('TupleBuilder', () => {
           [['a'], true, 3, {}, 'qux'],
         );
       }).toThrowErrorMatchingSnapshot();
+    });
+
+    describe('production', () => {
+      it(
+        'returns default shape if value is empty',
+        runInProd(() => {
+          expect(runChecks(builder, [])).toEqual([[], true, 1, {}, 'foo']);
+        }),
+      );
+
+      it(
+        'returns default shape if value is undefined',
+        runInProd(() => {
+          expect(runChecks(builder)).toEqual([[], true, 1, {}, 'foo']);
+        }),
+      );
+
+      it(
+        'bypasses checks and returns value',
+        runInProd(() => {
+          expect(
+            runChecks(
+              builder,
+              // @ts-ignore Test invalid type
+              [[123], true, 500],
+            ),
+          ).toEqual([[123], true, 500, {}, 'foo']);
+        }),
+      );
     });
   });
 

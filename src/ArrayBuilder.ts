@@ -8,9 +8,10 @@ export default class ArrayBuilder<T> extends CollectionBuilder<ArrayOf<T>> {
   constructor(contents: Builder<T> | null = null, defaultValue: DefaultValue<ArrayOf<T>> = []) {
     super('array', defaultValue);
 
-    if (__DEV__ && contents) {
+    this.contents = contents;
+
+    if (__DEV__) {
       if (contents instanceof Builder) {
-        this.contents = contents;
         this.addCheck((path, value) => {
           const nextValue = [...value];
 
@@ -25,7 +26,7 @@ export default class ArrayBuilder<T> extends CollectionBuilder<ArrayOf<T>> {
 
           return nextValue;
         });
-      } else {
+      } else if (contents) {
         this.invariant(false, 'A blueprint is required for array contents.');
       }
     }

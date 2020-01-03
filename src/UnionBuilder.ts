@@ -29,10 +29,10 @@ export default class UnionBuilder<T = unknown> extends Builder<T> {
   }
 
   protected checkUnions(path: string, value: unknown) {
-    const { builders } = this;
     let nextValue = value;
 
     if (__DEV__) {
+      const { builders } = this;
       const keys = builders.map(builder => builder.typeAlias()).join(', ');
       const type = typeOf(value);
       const errors = new Set();

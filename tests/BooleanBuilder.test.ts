@@ -1,5 +1,5 @@
 import BooleanBuilder, { bool } from '../src/BooleanBuilder';
-import { runChecks } from './helpers';
+import { runChecks, runInProd } from './helpers';
 
 describe('BooleanBuilder', () => {
   let builder: BooleanBuilder<boolean>;
@@ -44,6 +44,31 @@ describe('BooleanBuilder', () => {
 
   it('returns the type alias', () => {
     expect(bool().typeAlias()).toBe('boolean');
+  });
+
+  describe('runChecks()', () => {
+    describe('production', () => {
+      it(
+        'returns default value if value is undefined',
+        runInProd(() => {
+          expect(runChecks(bool(true))).toBe(true);
+        }),
+      );
+
+      it(
+        'returns default value from factory if value is undefined',
+        runInProd(() => {
+          expect(runChecks(bool(() => true))).toBe(true);
+        }),
+      );
+
+      it(
+        'bypasses checks and returns value',
+        runInProd(() => {
+          expect(runChecks(builder, false)).toBe(false);
+        }),
+      );
+    });
   });
 
   describe('onlyFalse()', () => {

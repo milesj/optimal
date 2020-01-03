@@ -7,7 +7,7 @@ import { instance } from '../src/InstanceBuilder';
 import { number } from '../src/NumberBuilder';
 import { shape } from '../src/ShapeBuilder';
 import { string } from '../src/StringBuilder';
-import { runChecks } from './helpers';
+import { runChecks, runInProd } from './helpers';
 
 describe('UnionBuilder', () => {
   let builder: UnionBuilder;
@@ -295,6 +295,28 @@ describe('UnionBuilder', () => {
           baz: true,
         },
       ]);
+    });
+
+    describe('production', () => {
+      it(
+        'returns default value if value is undefined',
+        runInProd(() => {
+          expect(runChecks(builder)).toBe('');
+        }),
+      );
+
+      it(
+        'bypasses checks and returns value',
+        runInProd(() => {
+          expect(
+            runChecks(
+              builder,
+              // @ts-ignore Test invalid type
+              'qux',
+            ),
+          ).toBe('qux');
+        }),
+      );
     });
   });
 

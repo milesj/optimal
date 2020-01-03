@@ -1,7 +1,7 @@
 import ObjectBuilder, { object, blueprint } from '../src/ObjectBuilder';
 import { number } from '../src/NumberBuilder';
 import { string } from '../src/StringBuilder';
-import { runChecks } from './helpers';
+import { runChecks, runInProd } from './helpers';
 
 describe('ObjectBuilder', () => {
   let builder: ObjectBuilder<string>;
@@ -134,6 +134,45 @@ describe('ObjectBuilder', () => {
           },
         );
       }).toThrowErrorMatchingSnapshot();
+    });
+
+    describe('production', () => {
+      it(
+        'returns an empty object if value is object',
+        runInProd(() => {
+          expect(runChecks(builder, {})).toEqual({});
+        }),
+      );
+
+      it(
+        'returns default value if value is undefined',
+        runInProd(() => {
+          const def = { foo: 'foo' };
+          builder.defaultValue = def;
+
+          expect(runChecks(builder)).toBe(def);
+        }),
+      );
+
+      it(
+        'returns default value from factory if value is undefined',
+        runInProd(() => {
+          expect(runChecks(object(string(), () => ({ foo: 'foo' })))).toEqual({ foo: 'foo' });
+        }),
+      );
+
+      it(
+        'bypasses checks and returns value',
+        runInProd(() => {
+          expect(
+            runChecks(
+              builder,
+              // @ts-ignore Test invalid type
+              { foo: 123 },
+            ),
+          ).toEqual({ foo: 123 });
+        }),
+      );
     });
   });
 

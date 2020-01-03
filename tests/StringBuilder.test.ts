@@ -1,5 +1,5 @@
 import StringBuilder, { string } from '../src/StringBuilder';
-import { runChecks } from './helpers';
+import { runChecks, runInProd } from './helpers';
 
 const camelCase = 'fooBarBaz1';
 const kebabCase = 'foo-bar-baz2';
@@ -38,6 +38,35 @@ describe('StringBuilder', () => {
           key: undefined,
         }),
       ).toEqual('XYZ');
+    });
+
+    describe('production', () => {
+      it(
+        'returns default value if value is undefined',
+        runInProd(() => {
+          expect(runChecks(string('foo'))).toBe('foo');
+        }),
+      );
+
+      it(
+        'returns default value from factory if value is undefined',
+        runInProd(() => {
+          expect(runChecks(string(() => 'bar'))).toBe('bar');
+        }),
+      );
+
+      it(
+        'bypasses checks and returns value',
+        runInProd(() => {
+          expect(
+            runChecks(
+              builder,
+              // @ts-ignore Test invalid type
+              123,
+            ),
+          ).toBe(123);
+        }),
+      );
     });
   });
 

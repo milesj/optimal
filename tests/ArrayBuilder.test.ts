@@ -1,6 +1,6 @@
 import ArrayBuilder, { array } from '../src/ArrayBuilder';
 import { string } from '../src/StringBuilder';
-import { runChecks } from './helpers';
+import { runChecks, runInProd } from './helpers';
 
 describe('ArrayBuilder', () => {
   let builder: ArrayBuilder<string>;
@@ -111,6 +111,42 @@ describe('ArrayBuilder', () => {
           ],
         );
       }).toThrowErrorMatchingSnapshot();
+    });
+
+    describe('production', () => {
+      it(
+        'returns an empty array if value is empty',
+        runInProd(() => {
+          expect(runChecks(builder, [])).toEqual([]);
+        }),
+      );
+
+      it(
+        'returns default value if value is undefined',
+        runInProd(() => {
+          expect(runChecks(array(string(), ['abc']))).toEqual(['abc']);
+        }),
+      );
+
+      it(
+        'returns default value from factory if value is undefined',
+        runInProd(() => {
+          expect(runChecks(array(string(), () => ['abc']))).toEqual(['abc']);
+        }),
+      );
+
+      it(
+        'bypasses checks and returns value',
+        runInProd(() => {
+          expect(
+            runChecks(
+              builder,
+              // @ts-ignore Test invalid type
+              ['foo', 'bar', 'baz', 123],
+            ),
+          ).toEqual(['foo', 'bar', 'baz', 123]);
+        }),
+      );
     });
   });
 

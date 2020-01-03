@@ -1,6 +1,6 @@
 import Builder from '../src/Builder';
 import InstanceBuilder, { instance, builder, date, regex } from '../src/InstanceBuilder';
-import { runChecks } from './helpers';
+import { runChecks, runInProd } from './helpers';
 
 describe('instance()', () => {
   class Foo {}
@@ -92,6 +92,38 @@ describe('instance()', () => {
       expect(() => {
         runChecks(instance(Bar), new BarImpl());
       }).not.toThrow();
+    });
+
+    describe('production', () => {
+      it(
+        'returns null if value is empty',
+        runInProd(() => {
+          expect(runChecks(inst, null)).toBeNull();
+        }),
+      );
+
+      it(
+        'returns default value if value is undefined',
+        runInProd(() => {
+          const foo = new Foo();
+          inst.defaultValue = foo;
+
+          expect(runChecks(inst)).toBe(foo);
+        }),
+      );
+
+      it(
+        'bypasses checks and returns value',
+        runInProd(() => {
+          expect(
+            runChecks(
+              inst,
+              // @ts-ignore Test invalid type
+              {},
+            ),
+          ).toEqual({});
+        }),
+      );
     });
   });
 
