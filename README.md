@@ -16,6 +16,8 @@ production using dead code elimination (should not be used on user input!).
 - Handles logical operators AND, OR, and XOR.
 
 ```ts
+import optimal, { array, string, number } from 'optimal';
+
 // Pass a partial object and define an explicit blueprint
 optimal(
   { name: 'Optimal' },
@@ -45,8 +47,6 @@ optimal(
 
 ```
 yarn add optimal
-// Or
-npm install optimal
 ```
 
 ## Documentation
