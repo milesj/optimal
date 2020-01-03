@@ -30,7 +30,7 @@ export default class TupleBuilder<T extends unknown[] = unknown[]> extends Build
     this.contents = contents;
   }
 
-  runChecks(path: string, value: T | undefined): T | null {
+  run(value: T | undefined, path: string): T | null {
     if (__DEV__) {
       if (value) {
         this.invariant(
@@ -43,12 +43,7 @@ export default class TupleBuilder<T extends unknown[] = unknown[]> extends Build
     const nextValue = value ? [...value] : [];
 
     this.contents.forEach((content, i) => {
-      nextValue[i] = content.runChecks(
-        `${path}[${i}]`,
-        nextValue[i],
-        this.currentStruct,
-        this.options,
-      )!;
+      nextValue[i] = content.run(nextValue[i], `${path}[${i}]`, this.currentStruct, this.options)!;
     });
 
     return nextValue as T;

@@ -31,7 +31,7 @@ export default class ShapeBuilder<T extends object> extends Builder<T> {
     return this;
   }
 
-  runChecks(path: string, value: T | undefined, struct: object, options: OptimalOptions = {}) {
+  run(value: T | undefined, path: string, struct: object, options: OptimalOptions = {}) {
     const object = value || this.getDefaultValue(struct) || {};
 
     if (__DEV__) {

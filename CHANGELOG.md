@@ -6,6 +6,7 @@
 - Values are now type cast once all checks and validations have ran. This may cause unexpected
   results in production, but is not exactly breaking.
 - Removed and inlined all `check*` methods as we don't want them publicly chainable.
+- Renamed `Builder#runChecks()` method to `run()`.
 - **[ts]** Added visibility modifiers to many internal properties and methods.
 
 #### 🚀 Updates

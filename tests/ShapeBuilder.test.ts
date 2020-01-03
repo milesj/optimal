@@ -49,7 +49,7 @@ describe('ShapeBuilder', () => {
     }).not.toThrow();
   });
 
-  describe('runChecks()', () => {
+  describe('run()', () => {
     it('errors if a non-object is passed', () => {
       expect(() => {
         runChecks(
@@ -74,10 +74,10 @@ describe('ShapeBuilder', () => {
 
     it('doesnt error for unknown fields if unknown is true', () => {
       expect(() => {
-        builder.runChecks(
-          'key',
+        builder.run(
           // @ts-ignore Allow invalid fields
           { qux: 123, oof: 'abc' },
+          'key',
           {},
           { unknown: true },
         );

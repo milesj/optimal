@@ -56,7 +56,7 @@ exports[`StringBuilder pascalCase() errors if less than 2 characters 1`] = `"Inv
 
 exports[`StringBuilder pascalCase() errors if starts with a number 1`] = `"Invalid field \\"key\\". String must be in pascal case. (pattern \\"^[A-Z][0-9A-Za-z]+$\\")"`;
 
-exports[`StringBuilder runChecks() errors if a non-string value is used 1`] = `"Invalid field \\"key\\". Must be a string."`;
+exports[`StringBuilder run() errors if a non-string value is used 1`] = `"Invalid field \\"key\\". Must be a string."`;
 
 exports[`StringBuilder sizeOf() errors if length doesnt match 1`] = `"Invalid field \\"key\\". String length must be 3."`;
 

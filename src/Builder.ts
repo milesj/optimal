@@ -273,9 +273,9 @@ export default class Builder<T> {
    * If a value is undefined, inherit the default value, else throw if required.
    * If nullable and the value is null, return early.
    */
-  runChecks(
-    path: string,
+  run(
     initialValue: T | undefined,
+    path: string,
     struct: object,
     options: OptimalOptions = {},
   ): T | null {

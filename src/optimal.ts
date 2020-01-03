@@ -24,7 +24,7 @@ function buildAndCheck<Struct extends object>(
       builder instanceof Builder ||
       (isObject(builder) && (builder as Function).constructor.name.endsWith('Builder'))
     ) {
-      builtStruct[key] = builder.runChecks(path, value, struct, options)!;
+      builtStruct[key] = builder.run(value, path, struct, options)!;
 
       // Oops
     } else if (__DEV__) {

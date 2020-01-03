@@ -53,7 +53,7 @@ describe('TupleBuilder', () => {
     }).not.toThrow();
   });
 
-  describe('runChecks()', () => {
+  describe('run()', () => {
     it('returns an array of default values if undefined provided', () => {
       expect(runChecks(builder)).toEqual([[], true, 1, {}, 'foo']);
     });

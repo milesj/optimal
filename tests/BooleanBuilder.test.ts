@@ -49,7 +49,7 @@ describe('BooleanBuilder', () => {
     expect(bool().typeAlias()).toBe('boolean');
   });
 
-  describe('runChecks()', () => {
+  describe('run()', () => {
     describe('production', () => {
       it(
         'returns default value if value is undefined',

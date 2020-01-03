@@ -35,7 +35,7 @@ describe('ArrayBuilder', () => {
     expect(builder.defaultValue).toEqual(['foo']);
   });
 
-  describe('runChecks()', () => {
+  describe('run()', () => {
     it('returns an empty array for no data', () => {
       expect(runChecks(builder, [])).toEqual([]);
     });

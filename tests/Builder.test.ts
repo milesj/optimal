@@ -374,7 +374,7 @@ describe('Builder', () => {
     });
   });
 
-  describe('runChecks()', () => {
+  describe('run()', () => {
     it('returns valid value', () => {
       expect(runChecks(builder, 'bar')).toBe('bar');
     });

@@ -59,7 +59,7 @@ describe('UnionBuilder', () => {
     expect(union([string()], 'bar').defaultValue).toBe('bar');
   });
 
-  describe('runChecks()', () => {
+  describe('run()', () => {
     it('errors if a unsupported type is used', () => {
       expect(() => {
         runChecks(union([string(), number(), bool()], []), []);

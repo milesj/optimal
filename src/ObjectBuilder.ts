@@ -17,9 +17,9 @@ export default class ObjectBuilder<T> extends CollectionBuilder<ObjectOf<T>> {
         const nextValue = { ...value };
 
         Object.keys(value).forEach(key => {
-          nextValue[key] = contents.runChecks(
-            `${path}.${key}`,
+          nextValue[key] = contents.run(
             value[key],
+            `${path}.${key}`,
             this.currentStruct,
             this.options,
           )!;

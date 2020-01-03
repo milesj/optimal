@@ -36,7 +36,7 @@ describe('ObjectBuilder', () => {
     expect(builder.defaultValue).toEqual({ foo: 'bar' });
   });
 
-  describe('runChecks()', () => {
+  describe('run()', () => {
     it('returns an empty object for no data', () => {
       expect(runChecks(builder)).toEqual({});
     });

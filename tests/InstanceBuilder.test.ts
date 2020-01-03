@@ -33,7 +33,7 @@ describe('instance()', () => {
     }).not.toThrow();
   });
 
-  describe('runChecks()', () => {
+  describe('run()', () => {
     it('returns null for no data', () => {
       expect(runChecks(inst, null)).toBeNull();
     });

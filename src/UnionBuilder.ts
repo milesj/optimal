@@ -50,7 +50,7 @@ export default class UnionBuilder<T = unknown> extends Builder<T> {
           ) {
             // @ts-ignore
             builder.noErrorPrefix = true; // eslint-disable-line no-param-reassign
-            nextValue = builder.runChecks(path, value, this.currentStruct, this.options);
+            nextValue = builder.run(value, path, this.currentStruct, this.options);
 
             return true;
           }

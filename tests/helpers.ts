@@ -5,7 +5,7 @@ export function runChecks<T>(
   value?: Partial<T> | null,
   { key = 'key', struct }: { key?: string; struct?: object } = {},
 ): T | null {
-  return builder.runChecks(key, value as T, struct ?? { [key]: value });
+  return builder.run(value as T, key, struct ?? { [key]: value });
 }
 
 export function runInProd(cb: () => unknown) {

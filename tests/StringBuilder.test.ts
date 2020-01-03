@@ -17,7 +17,7 @@ describe('StringBuilder', () => {
     expect(string('bar').defaultValue).toBe('bar');
   });
 
-  describe('runChecks()', () => {
+  describe('run()', () => {
     it('errors if a non-string value is used', () => {
       expect(() => {
         runChecks(

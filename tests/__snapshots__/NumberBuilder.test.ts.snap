@@ -56,4 +56,4 @@ exports[`NumberBuilder positive() errors if value is negative 1`] = `"Invalid fi
 
 exports[`NumberBuilder positive() errors if value is zero 1`] = `"Invalid field \\"key\\". Number must be positive."`;
 
-exports[`NumberBuilder runChecks() errors if a non-number value is used 1`] = `"Invalid field \\"key\\". Must be a number."`;
+exports[`NumberBuilder run() errors if a non-number value is used 1`] = `"Invalid field \\"key\\". Must be a number."`;

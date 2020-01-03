@@ -58,15 +58,15 @@ exports[`Builder or() errors if not 1 option is defined 1`] = `"At least one of 
 
 exports[`Builder required() errors if field is undefined 1`] = `"Invalid field \\"key\\". Field is required and must be defined."`;
 
-exports[`Builder runChecks() errors if value passed is defined and builder is never 1`] = `"Invalid field \\"key\\". Field should never be used."`;
+exports[`Builder run() errors if value passed is defined and builder is never 1`] = `"Invalid field \\"key\\". Field should never be used."`;
 
-exports[`Builder runChecks() errors if value passed is null and builder is non-nullable 1`] = `"Invalid field \\"key\\". Null is not allowed."`;
+exports[`Builder run() errors if value passed is null and builder is non-nullable 1`] = `"Invalid field \\"key\\". Null is not allowed."`;
 
-exports[`Builder runChecks() errors if value passed is undefined and builder is required 1`] = `"Invalid field \\"key\\". Field is required and must be defined."`;
+exports[`Builder run() errors if value passed is undefined and builder is required 1`] = `"Invalid field \\"key\\". Field is required and must be defined."`;
 
-exports[`Builder runChecks() runs default type of check 1`] = `"Invalid field \\"key\\". Must be a string."`;
+exports[`Builder run() runs default type of check 1`] = `"Invalid field \\"key\\". Must be a string."`;
 
-exports[`Builder runChecks() uses custom message 1`] = `"Invalid field \\"key\\". Oops, something is broken."`;
+exports[`Builder run() uses custom message 1`] = `"Invalid field \\"key\\". Oops, something is broken."`;
 
 exports[`Builder validate() can run the builder by itself 1`] = `"Must be a function."`;
 

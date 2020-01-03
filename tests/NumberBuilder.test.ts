@@ -12,7 +12,7 @@ describe('NumberBuilder', () => {
     expect(number(456).defaultValue).toBe(456);
   });
 
-  describe('runChecks()', () => {
+  describe('run()', () => {
     it('errors if a non-number value is used', () => {
       expect(() => {
         runChecks(
