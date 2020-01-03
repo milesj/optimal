@@ -550,6 +550,17 @@ describe('Builder', () => {
       }).not.toThrow();
     });
   });
+
+  describe('validate()', () => {
+    it('can run the builder by itself', () => {
+      expect(() => {
+        func().validate(
+          // @ts-ignore Allow invalid type
+          123,
+        );
+      }).toThrowErrorMatchingSnapshot();
+    });
+  });
 });
 
 describe('custom()', () => {

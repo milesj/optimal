@@ -269,7 +269,9 @@ export default class Builder<T> {
   }
 
   /**
-   * Run all validation checks that have been enqueued.
+   * Run all validation checks that have been enqueued and return a type casted value.
+   * If a value is undefined, inherit the default value, else throw if required.
+   * If nullable and the value is null, return early.
    */
   runChecks(
     path: string,
@@ -313,19 +315,9 @@ export default class Builder<T> {
     }
 
     // Run all checks against the value
-    this.checks.forEach(checker => {
-      const result = checker.call(this, path, value);
+    value = this.validate(value!, path);
 
-      if (typeof result !== 'undefined') {
-        value = result as T;
-      }
-    });
-
-    if (value !== null) {
-      value = this.cast(value);
-    }
-
-    return value;
+    return this.cast(value);
   }
 
   /**
@@ -333,6 +325,24 @@ export default class Builder<T> {
    */
   typeAlias(): string {
     return this.type;
+  }
+
+  /**
+   * Validate the passed value and return it.
+   * Will not inherit default value if undefined.
+   */
+  validate(value: T, path: string = ''): T {
+    let nextValue = value;
+
+    this.checks.forEach(checker => {
+      const result = checker.call(this, path, nextValue);
+
+      if (typeof result !== 'undefined') {
+        nextValue = result as T;
+      }
+    });
+
+    return nextValue;
   }
 
   /**

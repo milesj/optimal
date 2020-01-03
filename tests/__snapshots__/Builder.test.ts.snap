@@ -68,6 +68,8 @@ exports[`Builder runChecks() runs default type of check 1`] = `"Invalid field \\
 
 exports[`Builder runChecks() uses custom message 1`] = `"Invalid field \\"key\\". Oops, something is broken."`;
 
+exports[`Builder validate() can run the builder by itself 1`] = `"Must be a function."`;
+
 exports[`Builder xor() errors if more than 1 option is defined 1`] = `"Only one of these fields may be defined: foo, bar, baz"`;
 
 exports[`Builder xor() errors if no keys are defined 1`] = `"XOR requires a list of field names."`;

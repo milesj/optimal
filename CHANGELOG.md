@@ -10,7 +10,8 @@
 
 #### 🚀 Updates
 
-- Add factory function based default values.
+- Add support for default values via factory functions.
+- Add `Builder#validate()` to run stand-alone validation with a builder.
 - Add new `tuple()` predicate and builder.
 - **[array,object,string]** Add `sizeOf()` method.
 - **[number]** Add `float()`, `int()`, `negative()`, and `positive()` methods.

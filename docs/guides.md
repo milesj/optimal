@@ -109,3 +109,19 @@ optimal(
   },
 );
 ```
+
+## Stand-alone Validation
+
+All of the examples in this documentation handle validation through the `optimal()` function, which
+requires an object and blueprint ahead of time. But what if you just want to validate a number,
+string, or array by itself? You can with the `validate(value)` method found on every predicate!
+
+This method will run all checks on the provided value, throw an error for any failure, and return a
+new value if applicable. It _will not_ inherit a default value if undefined is provided.
+
+```ts
+number()
+  .positive()
+  .integer()
+  .validate(12.34); // Invalid
+```
