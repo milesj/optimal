@@ -4,6 +4,7 @@
  */
 
 import optimal from './optimal';
+import Schema from './Schema';
 import Builder, { custom, func } from './Builder';
 import ArrayBuilder, { array } from './ArrayBuilder';
 import BooleanBuilder, { bool } from './BooleanBuilder';
@@ -52,6 +53,7 @@ export {
 };
 
 export {
+  Schema,
   Builder,
   ArrayBuilder,
   BooleanBuilder,

@@ -2,17 +2,17 @@
 
 exports[`Optimal errors if a non-builder is passed within the blueprint 1`] = `"Unknown blueprint for \\"foo\\". Must be a builder."`;
 
-exports[`Optimal errors if a non-object config is passed 1`] = `"Optimal options must be a plain object."`;
+exports[`Optimal errors if a non-object config is passed 1`] = `"Schema options must be a plain object."`;
 
-exports[`Optimal errors if a non-object is passed 1`] = `"Optimal requires a plain object, found array."`;
+exports[`Optimal errors if a non-object is passed 1`] = `"Schema requires a plain object, found array."`;
 
-exports[`Optimal errors if a non-object is passed 2`] = `"Optimal requires a plain object, found number."`;
+exports[`Optimal errors if a non-object is passed 2`] = `"Schema requires a plain object, found number."`;
 
-exports[`Optimal errors if a non-object is passed 3`] = `"Optimal requires a plain object, found string."`;
+exports[`Optimal errors if a non-object is passed 3`] = `"Schema requires a plain object, found string."`;
 
-exports[`Optimal errors if a non-object is passed 4`] = `"Optimal requires a plain object, found function."`;
+exports[`Optimal errors if a non-object is passed 4`] = `"Schema requires a plain object, found function."`;
 
-exports[`Optimal errors if a non-object is passed as a blueprint 1`] = `"A blueprint is required."`;
+exports[`Optimal errors if a non-object is passed as a blueprint 1`] = `"A schema blueprint is required."`;
 
 exports[`Optimal logical operators handles AND 1`] = `"All of these fields must be defined: foo, bar, baz"`;
 

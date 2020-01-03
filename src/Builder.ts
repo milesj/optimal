@@ -3,10 +3,10 @@ import {
   SupportedType,
   CheckerCallback,
   CustomCallback,
-  OptimalOptions,
   FuncOf,
   DefaultValue,
   DefaultValueFactory,
+  SchemaOptions,
 } from './types';
 
 export interface TemporalStruct {
@@ -36,7 +36,7 @@ export default class Builder<T> {
 
   protected noErrorPrefix: boolean = false;
 
-  protected options: OptimalOptions = {};
+  protected options: SchemaOptions = {};
 
   constructor(type: SupportedType, defaultValue: DefaultValue<T>, bypassFactory: boolean = false) {
     if (__DEV__) {
@@ -277,7 +277,7 @@ export default class Builder<T> {
     initialValue: T | undefined,
     path: string,
     struct: object,
-    options: OptimalOptions = {},
+    options: SchemaOptions = {},
   ): T | null {
     this.currentStruct = struct;
     this.options = options;

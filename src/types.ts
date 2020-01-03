@@ -21,7 +21,7 @@ export type DefaultValueFactory<T> = (struct: any) => T;
 
 export type DefaultValue<T> = T | DefaultValueFactory<T>;
 
-export interface OptimalOptions {
+export interface SchemaOptions {
   file?: string;
   name?: string;
   prefix?: string;

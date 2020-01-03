@@ -1,7 +1,7 @@
 import Builder from './Builder';
 import isObject from './isObject';
 import optimal from './optimal';
-import { Blueprint, OptimalOptions } from './types';
+import { Blueprint, SchemaOptions } from './types';
 
 export default class ShapeBuilder<T extends object> extends Builder<T> {
   protected contents: Blueprint<T>;
@@ -31,7 +31,7 @@ export default class ShapeBuilder<T extends object> extends Builder<T> {
     return this;
   }
 
-  run(value: T | undefined, path: string, struct: object, options: OptimalOptions = {}) {
+  run(value: T | undefined, path: string, struct: object, options: SchemaOptions = {}) {
     const object = value || this.getDefaultValue(struct) || {};
 
     if (__DEV__) {
