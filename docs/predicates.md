@@ -1,7 +1,7 @@
 # Predicates
 
 A predicate is a factory function that returns a fluent type-specific builder interface. This
-builder can be used to chain validation rules and define a default value. All builders support the
+builder can be used to chain validation rules and define a default value. All predicates support the
 following methods:
 
 - `and(...names: string[])` - Requires all of the additional fields by name to be defined.
@@ -24,9 +24,9 @@ following methods:
 
 ## Array
 
-The `array(predicate?: Builder | null, default?: any[])` predicate verifies a value is an array or
+The `array(predicate?: Predicate | null, default?: any[])` predicate verifies a value is an array or
 an array of a specific type by accepting a predicate. Defaults to `[]` but can be customized with
-the 2nd argument. Array builder supports the following additional method:
+the 2nd argument. Array predicate supports the following additional method:
 
 - `notEmpty()` - Requires the array to not be empty.
 - `sizeOf(length: number)` - Requires the array to be an exact length.
@@ -43,8 +43,8 @@ optimal(
 
 ## Blueprint
 
-The `blueprint(default?: { [key: string]: Builder })` predicate verifies a value is an object that
-maps properties to builder instances.
+The `blueprint(default?: { [key: string]: Predicate })` predicate verifies a value is an object that
+maps properties to predicate instances.
 
 ```ts
 optimal(
@@ -60,13 +60,13 @@ optimal(
 );
 ```
 
-> This works in a similar fashion to `shape()` but without the wrapping builder. It allows the
+> This works in a similar fashion to `shape()` but without the wrapping predicate. It allows the
 > object to be passed to other `optimal` calls.
 
 ## Boolean
 
 The `bool(default?: boolean)` predicate verifies a value is a boolean. Defaults to `false` but can
-be customized with the 1st argument. Boolean builder supports the following additional methods:
+be customized with the 1st argument. Boolean predicate supports the following additional methods:
 
 - `onlyFalse()` - Validate the value is only ever `false` (or undefined).
 - `onlyTrue()` - Validate the value is only ever `true` (or undefined).
@@ -77,22 +77,6 @@ optimal(
   {
     watch: bool(), // false
     debug: bool(true),
-  },
-);
-```
-
-## Builder
-
-The `builder()` predicate verifies a value is a builder instance. This is useful for composing
-blueprints.
-
-```ts
-optimal(
-  {
-    value: string(),
-  },
-  {
-    value: builder(),
   },
 );
 ```
@@ -174,7 +158,7 @@ names, which is brittle, but unblocks certain scenarios.
 ## Number
 
 The `number(default?: number)` predicate verifies a value is a number. Defaults to `0` but can be
-customized with the 1st argument. Number builder supports the following additional methods:
+customized with the 1st argument. Number predicate supports the following additional methods:
 
 - `between(min: number, max: number, inclusive?: boolean)` - Validate value is between 2 numbers.
   When `inclusive`, will compare against outer bounds, otherwise only compares between bounds.
@@ -200,10 +184,10 @@ optimal(
 
 ## Object
 
-The `object(predicate?: Builder | null, default?: { [key: string]: any })` predicate verifies a
+The `object(predicate?: Predicate | null, default?: { [key: string]: any })` predicate verifies a
 value is a plain object or an object with all values of a specific type by accepting a predicate.
-Defaults to `{}` but can be customized with the 2nd argument. Object builder supports the following
-additional method:
+Defaults to `{}` but can be customized with the 2nd argument. Object predicate supports the
+following additional method:
 
 - `notEmpty()` - Requires the object to not be empty.
 - `sizeOf(length: number)` - Requires the object to have an exact number of properties.
@@ -214,6 +198,22 @@ optimal(
   {
     settings: object().notEmpty(),
     flags: object(bool()),
+  },
+);
+```
+
+## Predicate
+
+The `predicate()` predicate verifies a value is a predicate instance. This is useful for composing
+blueprints.
+
+```ts
+optimal(
+  {
+    value: string(),
+  },
+  {
+    value: predicate(),
   },
 );
 ```
@@ -233,9 +233,9 @@ optimal(
 
 ## Shape
 
-The `shape(shape: { [key: string]: Builder })` predicate verifies a value matches a specific object
-shape, defined by a collection of properties to builders. Defaults to the structure of the shape and
-_cannot_ be customized. Shape builder supports the following additional method:
+The `shape(shape: { [key: string]: Predicate })` predicate verifies a value matches a specific
+object shape, defined by a collection of properties to predicates. Defaults to the structure of the
+shape and _cannot_ be customized. Shape predicate supports the following additional method:
 
 - `exact()` - Requires the object to be exact. Unknown fields will error.
 
@@ -256,8 +256,8 @@ optimal(
 ## String
 
 The `string(default?: string)` predicate verifies a value is a string. Defaults to an empty string
-(`''`) but can be customized with the 1st argument. String builder supports the following additional
-methods:
+(`''`) but can be customized with the 1st argument. String predicate supports the following
+additional methods:
 
 - `camelCase()` - Validate the value is in camel case (`fooBarBaz`). Must start with a lowercase
   character and contain at minimum 2 characters.
@@ -289,7 +289,7 @@ optimal(
 ## Tuple
 
 A tuple is an array-like structure with a defined set of items, each with their own unique type. The
-`tuple(predicates: Builder[])` predicate will validate each item and return an array of the same
+`tuple(predicates: Predicate[])` predicate will validate each item and return an array of the same
 length and types. Defaults to the structure of the tuple and _cannot_ be customized.
 
 ```ts
@@ -308,12 +308,12 @@ optimal(
 );
 ```
 
-> When using TypeScript, a generic type is required for builders to type correctly. Furthermore, the
-> builder only supports a max length of 5 items.
+> When using TypeScript, a generic type is required for predicates to type correctly. Furthermore,
+> the predicate only supports a max length of 5 items.
 
 ## Union
 
-The `union(predicates: Builder[], default: any)` predicate verifies a value against a list of
+The `union(predicates: Predicate[], default: any)` predicate verifies a value against a list of
 possible values. The 1st argument is a list of predicates to compare against. The 2nd argument is
 the default value, which must be explicitly defined.
 
@@ -335,7 +335,7 @@ optimal(
 );
 ```
 
-Unions support multiple builders of the same type in unison, and the first one that passes
+Unions support multiple predicates of the same type in unison, and the first one that passes
 validation will be used.
 
 ```ts
