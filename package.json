@@ -7,8 +7,7 @@
   "types": "./lib/index.d.ts",
   "scripts": {
     "prepare": "beemo create-config --silent",
-    "build": "beemo run-script build",
-    "build2": "beemo create-config babel --esm --silent && rollup --config",
+    "build": "beemo create-config babel --esm --silent && rollup --config && beemo typescript --emitDeclarationOnly",
     "coverage": "yarn run jest --coverage",
     "eslint": "beemo eslint",
     "jest": "beemo jest",
