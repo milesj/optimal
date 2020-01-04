@@ -260,10 +260,10 @@ export default class Predicate<T> {
   /**
    * Require an object property to be explicitly defined.
    */
-  required(state: boolean = true): Predicate<NonNullable<T>> {
+  required(state: boolean = true): this {
     this.isRequired = state;
 
-    return (this as unknown) as Predicate<NonNullable<T>>;
+    return this;
   }
 
   /**
