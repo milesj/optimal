@@ -4,11 +4,13 @@ import Predicate from '../Predicate';
 import { ObjectOf, DefaultValue } from '../types';
 import isObject from '../isObject';
 
-export default class ObjectPredicate<T> extends CollectionPredicate<ObjectOf<T>> {
+export default class ObjectPredicate<T, K extends string = string> extends CollectionPredicate<
+  ObjectOf<T, K>
+> {
   protected contents: Predicate<T> | null = null;
 
-  constructor(contents: Predicate<T> | null = null, defaultValue: DefaultValue<ObjectOf<T>> = {}) {
-    super('object', defaultValue);
+  constructor(contents: Predicate<T> | null = null, defaultValue?: DefaultValue<ObjectOf<T, K>>) {
+    super('object', defaultValue || (({} as unknown) as ObjectOf<T, K>));
 
     this.contents = contents;
 
@@ -16,7 +18,9 @@ export default class ObjectPredicate<T> extends CollectionPredicate<ObjectOf<T>>
       this.addCheck((path, value) => {
         const nextValue = { ...value };
 
-        Object.keys(value).forEach(key => {
+        Object.keys(value).forEach(baseKey => {
+          const key = baseKey as keyof typeof value;
+
           nextValue[key] = contents.run(value[key], `${path}.${key}`, this.schema!)!;
         });
 
@@ -27,10 +31,10 @@ export default class ObjectPredicate<T> extends CollectionPredicate<ObjectOf<T>>
     }
   }
 
-  cast(value: unknown): ObjectOf<T> {
+  cast(value: unknown): ObjectOf<T, K> {
     const obj = isObject(value) ? value : {};
 
-    return (obj as unknown) as ObjectOf<T>;
+    return (obj as unknown) as ObjectOf<T, K>;
   }
 
   notEmpty(): this {
@@ -54,15 +58,15 @@ export default class ObjectPredicate<T> extends CollectionPredicate<ObjectOf<T>>
   }
 }
 
-export function object<T = unknown>(
+export function object<T = unknown, K extends string = string>(
   contents: Predicate<T> | null = null,
-  defaultValue?: DefaultValue<ObjectOf<T>>,
+  defaultValue?: DefaultValue<ObjectOf<T, K>>,
 ) /* infer */ {
-  return new ObjectPredicate<T>(contents, defaultValue);
+  return new ObjectPredicate<T, K>(contents, defaultValue);
 }
 
-export function blueprint<T = unknown>(
-  defaultValue?: DefaultValue<ObjectOf<Predicate<T>>>,
+export function blueprint<T = unknown, K extends string = string>(
+  defaultValue?: DefaultValue<ObjectOf<Predicate<T>, K>>,
 ) /* infer */ {
-  return new ObjectPredicate<Predicate<T>>(predicate<T>().notNullable(), defaultValue);
+  return new ObjectPredicate<Predicate<T>, K>(predicate<T>().notNullable(), defaultValue);
 }

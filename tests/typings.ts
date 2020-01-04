@@ -370,3 +370,25 @@ const neverInferred = optimal(
     baz: bool(),
   },
 );
+
+type Keys = 'foo' | 'bar' | 'baz';
+type MappedObj<T extends string = Keys> = { [K in T]: string };
+type MappedObjBlueprint = Blueprint<MappedObj>;
+
+interface Mapped {
+  object: MappedObj;
+}
+
+const mapped: Mapped = optimal(
+  {},
+  {
+    object: object(string()),
+  },
+);
+
+const mappedInferred = optimal(
+  {},
+  {
+    object: object<string, Keys>(string()),
+  },
+);

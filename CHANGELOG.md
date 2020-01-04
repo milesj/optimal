@@ -22,6 +22,10 @@
 - **[number]** Add `float()`, `int()`, `negative()`, and `positive()` methods.
 - **[string]** Add `lowerCase()` and `upperCase()` methods.
 
+#### ⚙️ Types
+
+- Updated `object()` and `ObjectOf` to support mapped types through a keys generic.
+
 #### 🛠 Internals
 
 - Package is now built with Rollup to reduce filesize.

@@ -8,9 +8,9 @@ export type ArrayOf<T> = T[];
 
 export type FuncOf = (...args: unknown[]) => unknown;
 
-export interface ObjectOf<T> {
-  [key: string]: T;
-}
+export type ObjectOf<T, Keys extends string = string> = {
+  [K in Keys]: T;
+};
 
 export type Blueprint<Struct extends object> = { [K in keyof Struct]-?: Predicate<Struct[K]> };
 
