@@ -427,13 +427,13 @@ export default class Predicate<T> {
   }
 }
 
-export function custom<T, S extends object = object>(
+export function custom<T, S extends object = {}>(
   callback: CustomCallback<T, S>,
   defaultValue: DefaultValue<T>,
 ) /* infer */ {
   return new Predicate<T>('custom', defaultValue).custom(callback);
 }
 
-export function func<T = FuncOf>(defaultValue: T | null = null) /* infer */ {
+export function func<T extends FuncOf = FuncOf>(defaultValue: T | null = null) /* infer */ {
   return new Predicate<T | null>('function', defaultValue, true).nullable();
 }

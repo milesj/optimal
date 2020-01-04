@@ -176,19 +176,16 @@ describe('ShapePredicate', () => {
 
     describe('production', () => {
       it(
-        'returns default shape if value is object',
+        'returns default shape if value is undefined',
         runInProd(() => {
-          expect(runChecks(predicate, {})).toEqual({ foo: '', bar: 0, baz: false });
+          expect(runChecks(predicate)).toEqual({ foo: '', bar: 0, baz: false });
         }),
       );
 
       it(
-        'returns default shape if value is undefined',
+        'returns default shape if value is an empty object',
         runInProd(() => {
-          const def = { foo: 'foo', bar: 123, baz: true };
-          predicate.defaultValue = def;
-
-          expect(runChecks(predicate)).toEqual(def);
+          expect(runChecks(predicate, {})).toEqual({ foo: '', bar: 0, baz: false });
         }),
       );
 

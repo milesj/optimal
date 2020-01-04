@@ -1,8 +1,8 @@
-import optimal from '../optimal';
 import Predicate from '../Predicate';
 import Schema from '../Schema';
 import isObject from '../isObject';
 import { Blueprint } from '../types';
+import logUnknown from '../logUnknown';
 
 export default class ShapePredicate<T extends object> extends Predicate<T> {
   protected contents: Blueprint<T>;
@@ -30,19 +30,34 @@ export default class ShapePredicate<T extends object> extends Predicate<T> {
     return this;
   }
 
-  run(value: T | undefined, path: string, schema: Schema<{}>) {
-    const object = value || this.getDefaultValue() || {};
-
-    if (__DEV__) {
-      this.invariant(isObject(object), 'Value passed to shape must be an object.', path);
+  run(value: T | undefined, path: string, schema: Schema<{}>): T {
+    if (__DEV__ && value) {
+      this.invariant(isObject(value), 'Value passed to shape must be an object.', path);
     }
 
-    return optimal(object, this.contents, {
-      file: schema.filePath,
-      name: schema.schemaName,
-      prefix: path,
-      unknown: !this.isExact,
+    const unknownFields: Partial<T> = { ...value };
+    const struct: Partial<T> = {};
+
+    Object.keys(this.contents).forEach(baseKey => {
+      const key = baseKey as keyof T;
+      const content = this.contents[key];
+
+      struct[key] = content.run(value?.[key], `${path}.${key}`, schema)!;
+
+      // Delete the prop and mark it as known
+      delete unknownFields[key];
     });
+
+    // Handle unknown options
+    if (this.isExact) {
+      if (__DEV__) {
+        logUnknown(unknownFields, path);
+      }
+    } else {
+      Object.assign(struct, unknownFields);
+    }
+
+    return struct as T;
   }
 }
 

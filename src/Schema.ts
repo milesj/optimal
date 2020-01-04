@@ -1,6 +1,7 @@
 import Predicate from './Predicate';
 import isObject from './isObject';
 import typeOf from './typeOf';
+import logUnknown from './logUnknown';
 import { Blueprint } from './types';
 
 export default class Schema<T extends object> {
@@ -78,13 +79,7 @@ export default class Schema<T extends object> {
     if (this.unknown) {
       Object.assign(this.currentStruct, unknownFields);
     } else if (__DEV__) {
-      const unknownKeys = Object.keys(unknownFields);
-
-      if (unknownKeys.length > 0) {
-        const message = pathPrefix ? `Unknown "${pathPrefix}" fields` : 'Unknown fields';
-
-        throw new Error(`${message}: ${unknownKeys.join(', ')}.`);
-      }
+      logUnknown(unknownFields, pathPrefix);
     }
 
     return this.currentStruct as Required<T>;
