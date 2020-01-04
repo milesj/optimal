@@ -59,7 +59,8 @@
     ],
     "eslint": {
       "rules": {
-        "default-param-last": "off"
+        "default-param-last": "off",
+        "no-param-reassign": "off"
       }
     }
   },

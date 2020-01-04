@@ -1,11 +1,15 @@
+import { Schema } from '../src';
 import Builder, { custom, func } from '../src/Builder';
 import { runChecks } from './helpers';
 
 describe('Builder', () => {
+  let schema: Schema<{}>;
   let builder: Builder<unknown>;
 
   beforeEach(() => {
+    schema = new Schema({});
     builder = new Builder('string', 'foo');
+    builder.schema = schema;
   });
 
   it('errors if default value is undefined', () => {
@@ -184,13 +188,17 @@ describe('Builder', () => {
 
   describe('custom()', () => {
     it('errors if no callback', () => {
-      // @ts-ignore
-      expect(() => builder.custom()).toThrow('Custom blueprints require a validation function.');
+      expect(() =>
+        // @ts-ignore
+        builder.custom(),
+      ).toThrow('Custom blueprints require a validation function.');
     });
 
     it('errors if callback is not a function', () => {
-      // @ts-ignore
-      expect(() => builder.custom(123)).toThrow('Custom blueprints require a validation function.');
+      expect(() =>
+        // @ts-ignore
+        builder.custom(123),
+      ).toThrow('Custom blueprints require a validation function.');
     });
 
     it('triggers callback function', () => {
@@ -210,8 +218,8 @@ describe('Builder', () => {
     });
 
     it('is passed entire options object', () => {
-      builder = custom<unknown, { foo?: number; bar?: number }>((value, options) => {
-        if (options.foo && options.bar) {
+      builder = custom<unknown, { foo?: number; bar?: number }>((value, s) => {
+        if (s.struct.foo && s.struct.bar) {
           throw new Error('This will error!');
         }
       }, 0);
@@ -245,8 +253,7 @@ describe('Builder', () => {
 
     it('includes a class name', () => {
       expect(() => {
-        // @ts-ignore Allow access
-        builder.options.name = 'FooBar';
+        schema.setName('FooBar');
 
         builder.invariant(false, 'Failure', 'foo.bar');
       }).toThrowErrorMatchingSnapshot();
@@ -254,8 +261,7 @@ describe('Builder', () => {
 
     it('includes a class name when no path', () => {
       expect(() => {
-        // @ts-ignore Allow access
-        builder.options.name = 'FooBar';
+        schema.setName('FooBar');
 
         builder.invariant(false, 'Failure');
       }).toThrowErrorMatchingSnapshot();
@@ -263,8 +269,7 @@ describe('Builder', () => {
 
     it('includes a file name', () => {
       expect(() => {
-        // @ts-ignore Allow access
-        builder.options.file = 'package.json';
+        schema.setFile('package.json');
 
         builder.invariant(false, 'Failure', 'foo.bar');
       }).toThrowErrorMatchingSnapshot();
@@ -272,10 +277,7 @@ describe('Builder', () => {
 
     it('includes a file and class name', () => {
       expect(() => {
-        // @ts-ignore Allow access
-        builder.options.file = 'package.json';
-        // @ts-ignore Allow access
-        builder.options.name = 'FooBar';
+        schema.setName('FooBar').setFile('package.json');
 
         builder.invariant(false, 'Failure', 'foo.bar');
       }).toThrowErrorMatchingSnapshot();

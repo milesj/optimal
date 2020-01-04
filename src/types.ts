@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import Builder from './Builder';
+import Schema from './Schema';
 
 export type ArrayOf<T> = T[];
 
@@ -15,7 +16,7 @@ export type Blueprint<Struct extends object> = { [K in keyof Struct]-?: Builder<
 
 export type CheckerCallback<T = any> = (path: string, value: T) => unknown;
 
-export type CustomCallback<T, S = object> = (value: T, struct: S) => void;
+export type CustomCallback<T, S extends object = object> = (value: T, schema: Schema<S>) => void;
 
 export type DefaultValueFactory<T> = (struct: any) => T;
 

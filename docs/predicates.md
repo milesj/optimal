@@ -99,7 +99,7 @@ optimal(
 
 ## Custom
 
-The `custom(cb: (value: any, struct: object) => void, default: any)` predicate verifies a value
+The `custom(cb: (value: any, schema: Schema) => void, default: any)` predicate verifies a value
 based on a callback. The 1st argument is the callback, which accepts the value to be validated, and
 the struct object. The 2nd argument is the default value, which must be explicitly defined.
 

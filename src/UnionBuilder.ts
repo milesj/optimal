@@ -49,8 +49,8 @@ export default class UnionBuilder<T = unknown> extends Builder<T> {
             builder.type === 'custom'
           ) {
             // @ts-ignore
-            builder.noErrorPrefix = true; // eslint-disable-line no-param-reassign
-            nextValue = builder.run(value, path, this.currentStruct, this.options);
+            builder.noErrorPrefix = true;
+            nextValue = builder.run(value, path, this.schema!);
 
             return true;
           }

@@ -2,18 +2,20 @@
 
 #### 💥 Breaking
 
-- Update Node.js requirement to v10.
+- Updated Node.js requirement to v10.
 - Values are now type cast once all checks and validations have ran. This may cause unexpected
   results in production, but is not exactly breaking.
+- Updated `custom()` callbacks to receive a `Schema` as the 2nd argument instead of a struct object.
 - Removed and inlined all `check*` methods as we don't want them publicly chainable.
-- Renamed `Builder#runChecks()` method to `run()`.
+- Renamed `Builder#runChecks()` method to `run()` and reworked the arguments.
 - **[ts]** Added visibility modifiers to many internal properties and methods.
 
 #### 🚀 Updates
 
+- Add new `Schema` class for handling the building and validation of structs.
+- Add new `tuple()` predicate and builder.
 - Add support for default values via factory functions.
 - Add `Builder#validate()` to run stand-alone validation with a builder.
-- Add new `tuple()` predicate and builder.
 - **[array,object,string]** Add `sizeOf()` method.
 - **[number]** Add `float()`, `int()`, `negative()`, and `positive()` methods.
 - **[string]** Add `lowerCase()` and `upperCase()` methods.

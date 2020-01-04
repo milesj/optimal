@@ -1,9 +1,9 @@
+import Schema from './Schema';
 import isObject from './isObject';
 import {
   SupportedType,
   CheckerCallback,
   CustomCallback,
-  OptimalOptions,
   FuncOf,
   DefaultValue,
   DefaultValueFactory,
@@ -16,11 +16,11 @@ export interface TemporalStruct {
 export default class Builder<T> {
   defaultValue?: T;
 
+  schema?: Schema<{}>;
+
   type: SupportedType;
 
   protected checks: CheckerCallback[] = [];
-
-  protected currentStruct: object = {};
 
   protected defaultValueFactory?: DefaultValueFactory<T>;
 
@@ -35,8 +35,6 @@ export default class Builder<T> {
   protected isRequired: boolean = false;
 
   protected noErrorPrefix: boolean = false;
-
-  protected options: OptimalOptions = {};
 
   constructor(type: SupportedType, defaultValue: DefaultValue<T>, bypassFactory: boolean = false) {
     if (__DEV__) {
@@ -66,7 +64,7 @@ export default class Builder<T> {
 
       this.addCheck(path => {
         const checkedKeys = [this.key(path), ...keys];
-        const struct = this.currentStruct as TemporalStruct;
+        const struct = (this.schema?.struct ?? {}) as TemporalStruct;
         const undefs = checkedKeys.filter(
           key => typeof struct[key] === 'undefined' || struct[key] === null,
         );
@@ -96,7 +94,7 @@ export default class Builder<T> {
   /**
    * Set a callback to run custom logic.
    */
-  custom<S = object>(callback: CustomCallback<T, S>): this {
+  custom<S extends object = object>(callback: CustomCallback<T, S>): this {
     if (__DEV__) {
       this.invariant(
         typeof callback === 'function',
@@ -105,7 +103,7 @@ export default class Builder<T> {
 
       this.addCheck((path, value) => {
         try {
-          callback(value, (this.currentStruct as unknown) as S);
+          callback(value, this.schema as Schema<S>);
         } catch (error) {
           this.invariant(false, error.message, path);
         }
@@ -140,22 +138,22 @@ export default class Builder<T> {
         return;
       }
 
-      const { file, name } = this.options;
+      const { filePath, schemaName } = this.schema || {};
       const error = this.errorMessage || message;
       let prefix = '';
 
       if (path) {
-        if (name) {
-          prefix += `Invalid ${name} field "${path}"`;
+        if (schemaName) {
+          prefix += `Invalid ${schemaName} field "${path}"`;
         } else {
           prefix += `Invalid field "${path}"`;
         }
-      } else if (name) {
-        prefix += name;
+      } else if (schemaName) {
+        prefix += schemaName;
       }
 
-      if (file) {
-        prefix += ` in ${file}`;
+      if (filePath) {
+        prefix += ` in ${filePath}`;
       }
 
       if (prefix && !this.noErrorPrefix) {
@@ -215,7 +213,7 @@ export default class Builder<T> {
    */
   only(): this {
     if (__DEV__) {
-      const defaultValue = this.getDefaultValue(this.currentStruct);
+      const defaultValue = this.getDefaultValue();
 
       this.invariant(
         // eslint-disable-next-line valid-typeof
@@ -244,7 +242,7 @@ export default class Builder<T> {
 
       this.addCheck(path => {
         const orKeys = [this.key(path), ...keys];
-        const struct = this.currentStruct as TemporalStruct;
+        const struct = (this.schema?.struct ?? {}) as TemporalStruct;
         const defs = orKeys.filter(
           key => typeof struct[key] !== 'undefined' && struct[key] !== null,
         );
@@ -273,15 +271,9 @@ export default class Builder<T> {
    * If a value is undefined, inherit the default value, else throw if required.
    * If nullable and the value is null, return early.
    */
-  run(
-    initialValue: T | undefined,
-    path: string,
-    struct: object,
-    options: OptimalOptions = {},
-  ): T | null {
-    this.currentStruct = struct;
-    this.options = options;
-    this.defaultValue = this.getDefaultValue(struct);
+  run(initialValue: T | undefined, path: string, schema: Schema<{}>): T | null {
+    this.schema = schema;
+    this.defaultValue = this.getDefaultValue();
 
     let value = initialValue;
 
@@ -354,7 +346,7 @@ export default class Builder<T> {
 
       this.addCheck(path => {
         const xorKeys = [this.key(path), ...keys];
-        const struct = this.currentStruct as TemporalStruct;
+        const struct = (this.schema?.struct ?? {}) as TemporalStruct;
         const defs = xorKeys.filter(
           key => typeof struct[key] !== 'undefined' && struct[key] !== null,
         );
@@ -410,9 +402,9 @@ export default class Builder<T> {
   /**
    * Return the possible default value.
    */
-  protected getDefaultValue(struct: object) {
+  protected getDefaultValue() {
     if (this.defaultValueFactory) {
-      return this.defaultValueFactory(struct);
+      return this.defaultValueFactory(this.schema?.struct ?? {});
     }
 
     return this.defaultValue;
@@ -422,7 +414,7 @@ export default class Builder<T> {
    * Return true if the value matches the default value and the builder is optional.
    */
   protected isOptionalDefault(value: unknown): boolean {
-    return !this.isRequired && value === this.getDefaultValue(this.currentStruct);
+    return !this.isRequired && value === this.getDefaultValue();
   }
 
   /**
@@ -435,7 +427,7 @@ export default class Builder<T> {
   }
 }
 
-export function custom<T, S = object>(
+export function custom<T, S extends object = object>(
   callback: CustomCallback<T, S>,
   defaultValue: DefaultValue<T>,
 ) /* infer */ {

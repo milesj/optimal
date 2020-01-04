@@ -110,7 +110,7 @@ optimal(
 );
 ```
 
-## Stand-alone Validation
+## Predicate Validation
 
 All of the examples in this documentation handle validation through the `optimal()` function, which
 requires an object and blueprint ahead of time. But what if you just want to validate a number,

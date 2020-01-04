@@ -1,7 +1,8 @@
-import Builder from './Builder';
-import isObject from './isObject';
 import optimal from './optimal';
-import { Blueprint, OptimalOptions } from './types';
+import Builder from './Builder';
+import Schema from './Schema';
+import isObject from './isObject';
+import { Blueprint } from './types';
 
 export default class ShapeBuilder<T extends object> extends Builder<T> {
   protected contents: Blueprint<T>;
@@ -31,15 +32,16 @@ export default class ShapeBuilder<T extends object> extends Builder<T> {
     return this;
   }
 
-  run(value: T | undefined, path: string, struct: object, options: OptimalOptions = {}) {
-    const object = value || this.getDefaultValue(struct) || {};
+  run(value: T | undefined, path: string, schema: Schema<{}>) {
+    const object = value || this.getDefaultValue() || {};
 
     if (__DEV__) {
       this.invariant(isObject(object), 'Value passed to shape must be an object.', path);
     }
 
     return optimal(object, this.contents, {
-      ...options,
+      file: schema.filePath,
+      name: schema.schemaName,
       prefix: path,
       unknown: !this.isExact,
     });
