@@ -1,7 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`BooleanBuilder errors if a non-boolean value is used 1`] = `"Invalid field \\"key\\". Must be a boolean."`;
-
-exports[`BooleanBuilder onlyFalse() errors if value is \`true\` 1`] = `"Invalid field \\"key\\". May only be \`false\`."`;
-
-exports[`BooleanBuilder onlyTrue() errors if value is \`false\` 1`] = `"Invalid field \\"key\\". May only be \`true\`."`;

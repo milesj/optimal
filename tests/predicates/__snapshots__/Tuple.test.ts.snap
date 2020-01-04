@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TuplePredicate errors if a non-array is not passed 1`] = `"union is not defined"`;
+
+exports[`TuplePredicate errors if an array with non-predicates is passed 1`] = `"A non-empty array of blueprints are required for a tuple."`;
+
+exports[`TuplePredicate errors if an empty array is passed 1`] = `"A non-empty array of blueprints are required for a tuple."`;
+
+exports[`TuplePredicate run() errors if too many values defined 1`] = `"Value must be a tuple with less than or equal to 5 items."`;
+
+exports[`TuplePredicate run() runs checks for array predicate 1`] = `"Invalid field \\"key[0][0]\\". Must be a string."`;
+
+exports[`TuplePredicate run() runs checks for boolean predicate 1`] = `"Invalid field \\"key[1]\\". Must be a boolean."`;
+
+exports[`TuplePredicate run() runs checks for number predicate 1`] = `"Invalid field \\"key[2]\\". Number must be between 0 and 5."`;
+
+exports[`TuplePredicate run() runs checks for object predicate 1`] = `"Invalid field \\"key[3].a\\". Must be a number."`;
+
+exports[`TuplePredicate run() runs checks for string predicate 1`] = `"Invalid field \\"key[4]\\". String must be one of: foo, bar, baz"`;

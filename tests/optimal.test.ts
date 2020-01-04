@@ -140,7 +140,7 @@ describe('Optimal', () => {
     }).toThrowErrorMatchingSnapshot();
   });
 
-  it('errors if a non-builder is passed within the blueprint', () => {
+  it('errors if a non-predicate is passed within the blueprint', () => {
     expect(() => {
       optimal(
         {},

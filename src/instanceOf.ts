@@ -1,4 +1,4 @@
-import { Constructor } from './InstanceBuilder';
+import { Constructor } from './predicates/Instance';
 
 /**
  * Native `instanceof` checks are problematic, as cross realm checks fail.

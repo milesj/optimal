@@ -5,28 +5,28 @@
 
 import optimal from './optimal';
 import Schema from './Schema';
-import Builder, { custom, func } from './Builder';
-import ArrayBuilder, { array } from './ArrayBuilder';
-import BooleanBuilder, { bool } from './BooleanBuilder';
-import InstanceBuilder, { builder, instance, date, regex } from './InstanceBuilder';
-import NumberBuilder, { number } from './NumberBuilder';
-import ObjectBuilder, { object, blueprint } from './ObjectBuilder';
-import ShapeBuilder, { shape } from './ShapeBuilder';
-import StringBuilder, { string } from './StringBuilder';
-import TupleBuilder, { tuple } from './TupleBuilder';
-import UnionBuilder, { union } from './UnionBuilder';
+import Predicate, { custom, func } from './Predicate';
+import ArrayPredicate, { array } from './predicates/Array';
+import BooleanPredicate, { bool } from './predicates/Boolean';
+import InstancePredicate, { instance, date, predicate, regex } from './predicates/Instance';
+import NumberPredicate, { number } from './predicates/Number';
+import ObjectPredicate, { object, blueprint } from './predicates/Object';
+import ShapePredicate, { shape } from './predicates/Shape';
+import StringPredicate, { string } from './predicates/String';
+import TuplePredicate, { tuple } from './predicates/Tuple';
+import UnionPredicate, { union } from './predicates/Union';
 
 export const predicates = {
   array,
   blueprint,
   bool,
-  builder,
   custom,
   date,
   func,
   instance,
   number,
   object,
+  predicate,
   regex,
   shape,
   string,
@@ -38,13 +38,13 @@ export {
   array,
   blueprint,
   bool,
-  builder,
   custom,
   date,
   func,
   instance,
   number,
   object,
+  predicate,
   regex,
   shape,
   string,
@@ -54,16 +54,16 @@ export {
 
 export {
   Schema,
-  Builder,
-  ArrayBuilder,
-  BooleanBuilder,
-  InstanceBuilder,
-  NumberBuilder,
-  ObjectBuilder,
-  ShapeBuilder,
-  StringBuilder,
-  TupleBuilder,
-  UnionBuilder,
+  Predicate,
+  ArrayPredicate,
+  BooleanPredicate,
+  InstancePredicate,
+  NumberPredicate,
+  ObjectPredicate,
+  ShapePredicate,
+  StringPredicate,
+  TuplePredicate,
+  UnionPredicate,
 };
 
 export type Predicates = typeof predicates;

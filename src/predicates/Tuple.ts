@@ -1,18 +1,18 @@
-import Builder from './Builder';
+import Predicate from '../Predicate';
 
 export type InferTupleContents<T> = T extends [infer A, infer B, infer C, infer D, infer E]
-  ? [Builder<A>, Builder<B>, Builder<C>, Builder<D>, Builder<E>]
+  ? [Predicate<A>, Predicate<B>, Predicate<C>, Predicate<D>, Predicate<E>]
   : T extends [infer A, infer B, infer C, infer D]
-  ? [Builder<A>, Builder<B>, Builder<C>, Builder<D>]
+  ? [Predicate<A>, Predicate<B>, Predicate<C>, Predicate<D>]
   : T extends [infer A, infer B, infer C]
-  ? [Builder<A>, Builder<B>, Builder<C>]
+  ? [Predicate<A>, Predicate<B>, Predicate<C>]
   : T extends [infer A, infer B]
-  ? [Builder<A>, Builder<B>]
+  ? [Predicate<A>, Predicate<B>]
   : T extends [infer A]
-  ? [Builder<A>]
+  ? [Predicate<A>]
   : never;
 
-export default class TupleBuilder<T extends unknown[] = unknown[]> extends Builder<T> {
+export default class TuplePredicate<T extends unknown[] = unknown[]> extends Predicate<T> {
   protected contents: InferTupleContents<T>;
 
   constructor(contents: InferTupleContents<T>) {
@@ -22,7 +22,7 @@ export default class TupleBuilder<T extends unknown[] = unknown[]> extends Build
       this.invariant(
         Array.isArray(contents) &&
           contents.length > 0 &&
-          contents.every(content => content instanceof Builder),
+          contents.every(content => content instanceof Predicate),
         'A non-empty array of blueprints are required for a tuple.',
       );
     }
@@ -60,5 +60,5 @@ export default class TupleBuilder<T extends unknown[] = unknown[]> extends Build
 export function tuple<T extends unknown[] = unknown[]>(
   contents: InferTupleContents<T>,
 ) /* infer */ {
-  return new TupleBuilder<T>(contents);
+  return new TuplePredicate<T>(contents);
 }

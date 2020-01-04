@@ -1,43 +1,42 @@
-import ArrayBuilder, { array } from '../src/ArrayBuilder';
-import { string } from '../src/StringBuilder';
-import { runChecks, runInProd } from './helpers';
+import { array, string, ArrayPredicate } from '../../src';
+import { runChecks, runInProd } from '../helpers';
 
-describe('ArrayBuilder', () => {
-  let builder: ArrayBuilder<string>;
+describe('ArrayPredicate', () => {
+  let predicate: ArrayPredicate<string>;
 
   beforeEach(() => {
-    builder = array(string());
+    predicate = array(string());
   });
 
-  it('errors if a non-builder is passed', () => {
+  it('errors if a non-predicate is passed', () => {
     expect(() => {
-      // @ts-ignore Allow non-builder
+      // @ts-ignore Allow non-predicate
       array(123);
     }).toThrowErrorMatchingSnapshot();
   });
 
-  it('doesnt error if a builder is passed', () => {
+  it('doesnt error if a predicate is passed', () => {
     expect(() => {
       array(string());
     }).not.toThrow();
   });
 
-  it('doesnt error if a builder is not passed', () => {
+  it('doesnt error if a predicate is not passed', () => {
     expect(() => {
       array();
     }).not.toThrow();
   });
 
   it('sets type and default value', () => {
-    builder = array(string(), ['foo']);
+    predicate = array(string(), ['foo']);
 
-    expect(builder.type).toBe('array');
-    expect(builder.defaultValue).toEqual(['foo']);
+    expect(predicate.type).toBe('array');
+    expect(predicate.defaultValue).toEqual(['foo']);
   });
 
   describe('run()', () => {
     it('returns an empty array for no data', () => {
-      expect(runChecks(builder, [])).toEqual([]);
+      expect(runChecks(predicate, [])).toEqual([]);
     });
 
     it('returns default value if value is undefined', () => {
@@ -51,14 +50,14 @@ describe('ArrayBuilder', () => {
     it('errors if a non-array is passed', () => {
       expect(() => {
         runChecks(
-          builder,
+          predicate,
           // @ts-ignore Test invalid type
           'foo',
         );
       }).toThrowErrorMatchingSnapshot();
     });
 
-    it('errors if a non-array is passed, when not using a builder', () => {
+    it('errors if a non-array is passed, when not using a predicate', () => {
       expect(() => {
         runChecks(
           array(),
@@ -71,7 +70,7 @@ describe('ArrayBuilder', () => {
     it('checks each item in the array', () => {
       expect(() => {
         runChecks(
-          builder,
+          predicate,
           // @ts-ignore Test invalid type
           ['foo', 'bar', 'baz', 123],
         );
@@ -81,7 +80,7 @@ describe('ArrayBuilder', () => {
     it('errors if an array item is invalid; persists path with index', () => {
       expect(() => {
         runChecks(
-          builder,
+          predicate,
           // @ts-ignore Test invalid type
           [123],
         );
@@ -89,21 +88,21 @@ describe('ArrayBuilder', () => {
     });
 
     it('supports arrays of arrays', () => {
-      const nestedBuilder = array(array(string()));
+      const nestedPredicate = array(array(string()));
       const data = [
         ['foo', 'bar'],
         ['baz', 'qux'],
       ];
 
-      expect(runChecks(nestedBuilder, data)).toEqual(data);
+      expect(runChecks(nestedPredicate, data)).toEqual(data);
     });
 
     it('errors correctly for arrays in arrays', () => {
-      const nestedBuilder = array(array(string()));
+      const nestedPredicate = array(array(string()));
 
       expect(() => {
         runChecks(
-          nestedBuilder,
+          nestedPredicate,
           // @ts-ignore Test invalid type
           [
             ['foo', 'bar'],
@@ -117,7 +116,7 @@ describe('ArrayBuilder', () => {
       it(
         'returns an empty array if value is empty',
         runInProd(() => {
-          expect(runChecks(builder, [])).toEqual([]);
+          expect(runChecks(predicate, [])).toEqual([]);
         }),
       );
 
@@ -140,7 +139,7 @@ describe('ArrayBuilder', () => {
         runInProd(() => {
           expect(
             runChecks(
-              builder,
+              predicate,
               // @ts-ignore Test invalid type
               ['foo', 'bar', 'baz', 123],
             ),
@@ -152,36 +151,36 @@ describe('ArrayBuilder', () => {
 
   describe('notEmpty()', () => {
     beforeEach(() => {
-      builder.notEmpty();
+      predicate.notEmpty();
     });
 
     it('errors if value is empty', () => {
       expect(() => {
-        runChecks(builder, []);
+        runChecks(predicate, []);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('doesnt error if not empty', () => {
       expect(() => {
-        runChecks(builder, ['123']);
+        runChecks(predicate, ['123']);
       }).not.toThrow();
     });
   });
 
   describe('sizeOf()', () => {
     beforeEach(() => {
-      builder.sizeOf(3);
+      predicate.sizeOf(3);
     });
 
     it('errors if length doesnt match', () => {
       expect(() => {
-        runChecks(builder, []);
+        runChecks(predicate, []);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('doesnt error if length matches', () => {
       expect(() => {
-        runChecks(builder, ['1', '2', '3']);
+        runChecks(predicate, ['1', '2', '3']);
       }).not.toThrow();
     });
   });

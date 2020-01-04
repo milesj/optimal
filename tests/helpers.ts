@@ -1,17 +1,17 @@
-import Builder from '../src/Builder';
+import Predicate from '../src/Predicate';
 import Schema from '../src/Schema';
 
 export function runChecks<T>(
-  builder: Builder<T>,
+  predicate: Predicate<T>,
   value?: Partial<T> | null,
   { key = 'key', struct }: { key?: string; struct?: object } = {},
 ): T | null {
   const schema = new Schema({});
   schema.struct = struct ?? { [key]: value };
 
-  builder.schema = schema;
+  predicate.schema = schema;
 
-  return builder.run(value as T, key, schema);
+  return predicate.run(value as T, key, schema);
 }
 
 export function runInProd(cb: () => unknown) {

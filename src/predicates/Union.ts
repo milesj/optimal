@@ -1,56 +1,56 @@
-import Builder from './Builder';
-import typeOf from './typeOf';
-import { DefaultValue } from './types';
+import Predicate from '../Predicate';
+import typeOf from '../typeOf';
+import { DefaultValue } from '../types';
 
-export default class UnionBuilder<T = unknown> extends Builder<T> {
-  protected builders: Builder<unknown>[] = [];
+export default class UnionPredicate<T = unknown> extends Predicate<T> {
+  protected contents: Predicate<unknown>[] = [];
 
-  constructor(builders: Builder<unknown>[], defaultValue: DefaultValue<T>) {
+  constructor(contents: Predicate<unknown>[], defaultValue: DefaultValue<T>) {
     super('union', defaultValue);
 
     if (__DEV__) {
       this.invariant(
-        Array.isArray(builders) &&
-          builders.length > 0 &&
-          builders.every(builder => builder instanceof Builder),
+        Array.isArray(contents) &&
+          contents.length > 0 &&
+          contents.every(content => content instanceof Predicate),
         'A non-empty array of blueprints are required for a union.',
       );
 
       this.addCheck(this.checkUnions);
     }
 
-    this.builders = builders;
+    this.contents = contents;
   }
 
   /**
    * Return the type name using pipe syntax.
    */
   typeAlias(): string {
-    return this.builders.map(builder => builder.typeAlias()).join(' | ');
+    return this.contents.map(content => content.typeAlias()).join(' | ');
   }
 
   protected checkUnions(path: string, value: unknown) {
     let nextValue = value;
 
     if (__DEV__) {
-      const { builders } = this;
-      const keys = builders.map(builder => builder.typeAlias()).join(', ');
+      const { contents } = this;
+      const keys = contents.map(content => content.typeAlias()).join(', ');
       const type = typeOf(value);
       const errors = new Set();
-      const passed = builders.some(builder => {
-        if (builder.type === 'union') {
+      const passed = contents.some(content => {
+        if (content.type === 'union') {
           this.invariant(false, 'Nested unions are not supported.', path);
         }
 
         try {
           if (
-            type === builder.type ||
-            (type === 'object' && builder.type === 'shape') ||
-            builder.type === 'custom'
+            type === content.type ||
+            (type === 'object' && content.type === 'shape') ||
+            content.type === 'custom'
           ) {
             // @ts-ignore
-            builder.noErrorPrefix = true;
-            nextValue = builder.run(value, path, this.schema!);
+            content.noErrorPrefix = true;
+            nextValue = content.run(value, path, this.schema!);
 
             return true;
           }
@@ -79,8 +79,8 @@ export default class UnionBuilder<T = unknown> extends Builder<T> {
 }
 
 export function union<T = unknown>(
-  builders: Builder<unknown>[],
+  contents: Predicate<unknown>[],
   defaultValue: DefaultValue<T>,
 ) /* infer */ {
-  return new UnionBuilder<T>(builders, defaultValue);
+  return new UnionPredicate<T>(contents, defaultValue);
 }

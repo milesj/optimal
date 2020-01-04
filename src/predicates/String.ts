@@ -1,11 +1,11 @@
-import CollectionBuilder from './CollectionBuilder';
-import { DefaultValue } from './types';
+import CollectionPredicate from './Collection';
+import { DefaultValue } from '../types';
 
 function isString(value: unknown): value is string {
   return typeof value === 'string' && value !== '';
 }
 
-export default class StringBuilder<T extends string = string> extends CollectionBuilder<T> {
+export default class StringPredicate<T extends string = string> extends CollectionPredicate<T> {
   constructor(defaultValue?: DefaultValue<T>) {
     super('string', defaultValue || ('' as T));
   }
@@ -81,7 +81,7 @@ export default class StringBuilder<T extends string = string> extends Collection
     return this;
   }
 
-  oneOf<U extends string>(list: U[]): StringBuilder<U> {
+  oneOf<U extends string>(list: U[]): StringPredicate<U> {
     if (__DEV__) {
       this.invariant(
         Array.isArray(list) && list.length > 0 && list.every(item => isString(item)),
@@ -97,7 +97,7 @@ export default class StringBuilder<T extends string = string> extends Collection
       });
     }
 
-    return (this as unknown) as StringBuilder<U>;
+    return (this as unknown) as StringPredicate<U>;
   }
 
   pascalCase(): this {
@@ -120,5 +120,5 @@ export default class StringBuilder<T extends string = string> extends Collection
 }
 
 export function string<T extends string = string>(defaultValue?: DefaultValue<string>) /* infer */ {
-  return new StringBuilder<T>(defaultValue as T);
+  return new StringPredicate<T>(defaultValue as T);
 }

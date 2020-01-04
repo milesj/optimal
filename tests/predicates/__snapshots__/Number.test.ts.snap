@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NumberPredicate between() errors if edge of range 1`] = `"Invalid field \\"key\\". Number must be between 0 and 5."`;
+
+exports[`NumberPredicate between() errors if max is a not a number 1`] = `"Between requires a minimum and maximum number."`;
+
+exports[`NumberPredicate between() errors if min is a not a number 1`] = `"Between requires a minimum and maximum number."`;
+
+exports[`NumberPredicate between() errors if out of range 1`] = `"Invalid field \\"key\\". Number must be between 0 and 5."`;
+
+exports[`NumberPredicate between() errors if value is not a number 1`] = `"Invalid field \\"key\\". Must be a number."`;
+
+exports[`NumberPredicate between(): inclusive errors if out of range 1`] = `"Invalid field \\"key\\". Number must be between 0 and 5 inclusive."`;
+
+exports[`NumberPredicate float() errors if value is NaN 1`] = `"Invalid field \\"key\\". Number must be a float."`;
+
+exports[`NumberPredicate float() errors if value is an integer 1`] = `"Invalid field \\"key\\". Number must be a float."`;
+
+exports[`NumberPredicate gt() errors if below minimum 1`] = `"Invalid field \\"key\\". Number must be greater than 5."`;
+
+exports[`NumberPredicate gt() errors if edge 1`] = `"Invalid field \\"key\\". Number must be greater than 5."`;
+
+exports[`NumberPredicate gt() errors if min is a not a number 1`] = `"Greater-than requires a minimum number."`;
+
+exports[`NumberPredicate gte() errors if below minimum 1`] = `"Invalid field \\"key\\". Number must be greater than or equal to 5."`;
+
+exports[`NumberPredicate gte() errors if min is a not a number 1`] = `"Greater-than requires a minimum number."`;
+
+exports[`NumberPredicate int() errors if value is NaN 1`] = `"Invalid field \\"key\\". Number must be an integer."`;
+
+exports[`NumberPredicate int() errors if value is a float 1`] = `"Invalid field \\"key\\". Number must be an integer."`;
+
+exports[`NumberPredicate lt() errors if above maximum 1`] = `"Invalid field \\"key\\". Number must be less than 5."`;
+
+exports[`NumberPredicate lt() errors if edge 1`] = `"Invalid field \\"key\\". Number must be less than 5."`;
+
+exports[`NumberPredicate lt() errors if max is a not a number 1`] = `"Less-than requires a maximum number."`;
+
+exports[`NumberPredicate lte() errors if above maximum 1`] = `"Invalid field \\"key\\". Number must be less than or equal to 5."`;
+
+exports[`NumberPredicate lte() errors if max is a not a number 1`] = `"Less-than requires a maximum number."`;
+
+exports[`NumberPredicate negative() errors if value is positive 1`] = `"Invalid field \\"key\\". Number must be negative."`;
+
+exports[`NumberPredicate negative() errors if value is zero 1`] = `"Invalid field \\"key\\". Number must be negative."`;
+
+exports[`NumberPredicate oneOf() errors if array contains a non-number 1`] = `"One of requires a non-empty array of numbers."`;
+
+exports[`NumberPredicate oneOf() errors if array is empty 1`] = `"One of requires a non-empty array of numbers."`;
+
+exports[`NumberPredicate oneOf() errors if not an array 1`] = `"One of requires a non-empty array of numbers."`;
+
+exports[`NumberPredicate oneOf() errors if value is not in the list 1`] = `"Invalid field \\"key\\". Number must be one of: 123, 456, 789"`;
+
+exports[`NumberPredicate positive() errors if value is negative 1`] = `"Invalid field \\"key\\". Number must be positive."`;
+
+exports[`NumberPredicate positive() errors if value is zero 1`] = `"Invalid field \\"key\\". Number must be positive."`;
+
+exports[`NumberPredicate run() errors if a non-number value is used 1`] = `"Invalid field \\"key\\". Must be a number."`;

@@ -1,22 +1,22 @@
-import BooleanBuilder, { bool } from '../src/BooleanBuilder';
-import { runChecks, runInProd } from './helpers';
+import { bool, BooleanPredicate } from '../../src';
+import { runChecks, runInProd } from '../helpers';
 
-describe('BooleanBuilder', () => {
-  let builder: BooleanBuilder<boolean>;
+describe('BooleanPredicate', () => {
+  let predicate: BooleanPredicate<boolean>;
 
   beforeEach(() => {
-    builder = bool();
+    predicate = bool();
   });
 
-  it('returns a builder', () => {
-    expect(bool(true)).toBeInstanceOf(BooleanBuilder);
+  it('returns a predicate', () => {
+    expect(bool(true)).toBeInstanceOf(BooleanPredicate);
   });
 
   it('sets type and default value', () => {
-    builder = bool(true);
+    predicate = bool(true);
 
-    expect(builder.type).toBe('boolean');
-    expect(builder.defaultValue).toBe(true);
+    expect(predicate.type).toBe('boolean');
+    expect(predicate.defaultValue).toBe(true);
   });
 
   it('returns default value if value is undefined', () => {
@@ -68,7 +68,7 @@ describe('BooleanBuilder', () => {
       it(
         'bypasses checks and returns value',
         runInProd(() => {
-          expect(runChecks(builder, false)).toBe(false);
+          expect(runChecks(predicate, false)).toBe(false);
         }),
       );
     });
@@ -76,48 +76,48 @@ describe('BooleanBuilder', () => {
 
   describe('onlyFalse()', () => {
     beforeEach(() => {
-      builder.onlyFalse();
+      predicate.onlyFalse();
     });
 
     it('errors if value is `true`', () => {
       expect(() => {
-        runChecks(builder, true);
+        runChecks(predicate, true);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('passes if value is `false`', () => {
       expect(() => {
-        runChecks(builder, false);
+        runChecks(predicate, false);
       }).not.toThrow();
     });
 
     it('passes if value is undefined', () => {
       expect(() => {
-        runChecks(builder);
+        runChecks(predicate);
       }).not.toThrow();
     });
   });
 
   describe('onlyTrue()', () => {
     beforeEach(() => {
-      builder.onlyTrue();
+      predicate.onlyTrue();
     });
 
     it('errors if value is `false`', () => {
       expect(() => {
-        runChecks(builder, false);
+        runChecks(predicate, false);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('passes if value is `true`', () => {
       expect(() => {
-        runChecks(builder, true);
+        runChecks(predicate, true);
       }).not.toThrow();
     });
 
     it('passes if value is undefined', () => {
       expect(() => {
-        runChecks(builder);
+        runChecks(predicate);
       }).not.toThrow();
     });
   });

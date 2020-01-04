@@ -1,4 +1,4 @@
-import Builder from './Builder';
+import Predicate from './Predicate';
 import isObject from './isObject';
 import typeOf from './typeOf';
 import { Blueprint } from './types';
@@ -55,19 +55,19 @@ export default class Schema<T extends object> {
     Object.keys(this.blueprint).forEach(baseKey => {
       const key = baseKey as keyof T;
       const value = struct[key];
-      const builder = this.blueprint[key];
+      const predicate = this.blueprint[key];
       const path = String(pathPrefix ? `${pathPrefix}.${key}` : key);
 
       // Run validation checks and support both v1 and v2
       if (
-        builder instanceof Builder ||
-        (isObject(builder) && (builder as Function).constructor.name.endsWith('Builder'))
+        predicate instanceof Predicate ||
+        (isObject(predicate) && (predicate as Function).constructor.name.endsWith('Predicate'))
       ) {
-        this.currentStruct[key] = builder.run(value, path, this)!;
+        this.currentStruct[key] = predicate.run(value, path, this)!;
 
         // Oops
       } else if (__DEV__) {
-        throw new Error(`Unknown blueprint for "${path}". Must be a builder.`);
+        throw new Error(`Unknown blueprint for "${path}". Must be a predicate.`);
       }
 
       // Delete the prop and mark it as known

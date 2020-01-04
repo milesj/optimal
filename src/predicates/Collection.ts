@@ -1,6 +1,6 @@
-import Builder from './Builder';
+import Predicate from '../Predicate';
 
-export default class CollectionBuilder<T> extends Builder<T> {
+export default class CollectionPredicate<T> extends Predicate<T> {
   sizeOf(length: number): this {
     if (__DEV__) {
       this.invariant(

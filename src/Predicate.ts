@@ -13,7 +13,7 @@ export interface TemporalStruct {
   [key: string]: unknown;
 }
 
-export default class Builder<T> {
+export default class Predicate<T> {
   defaultValue?: T;
 
   schema?: Schema<{}>;
@@ -183,29 +183,29 @@ export default class Builder<T> {
   /**
    * Field should never be used.
    */
-  never(): Builder<never> {
+  never(): Predicate<never> {
     this.defaultValue = (undefined as unknown) as T;
     this.isNever = true;
 
-    return (this as unknown) as Builder<never>;
+    return (this as unknown) as Predicate<never>;
   }
 
   /**
    * Disallow null values.
    */
-  notNullable(): Builder<NonNullable<T>> {
+  notNullable(): Predicate<NonNullable<T>> {
     this.isNullable = false;
 
-    return (this as unknown) as Builder<NonNullable<T>>;
+    return (this as unknown) as Predicate<NonNullable<T>>;
   }
 
   /**
    * Allow null values.
    */
-  nullable(): Builder<T | null> {
+  nullable(): Predicate<T | null> {
     this.isNullable = true;
 
-    return (this as unknown) as Builder<T | null>;
+    return (this as unknown) as Predicate<T | null>;
   }
 
   /**
@@ -260,10 +260,10 @@ export default class Builder<T> {
   /**
    * Require an object property to be explicitly defined.
    */
-  required(state: boolean = true): this {
+  required(state: boolean = true): Predicate<NonNullable<T>> {
     this.isRequired = state;
 
-    return this;
+    return (this as unknown) as Predicate<NonNullable<T>>;
   }
 
   /**
@@ -411,7 +411,7 @@ export default class Builder<T> {
   }
 
   /**
-   * Return true if the value matches the default value and the builder is optional.
+   * Return true if the value matches the default value and the predicate is optional.
    */
   protected isOptionalDefault(value: unknown): boolean {
     return !this.isRequired && value === this.getDefaultValue();
@@ -431,9 +431,9 @@ export function custom<T, S extends object = object>(
   callback: CustomCallback<T, S>,
   defaultValue: DefaultValue<T>,
 ) /* infer */ {
-  return new Builder<T>('custom', defaultValue).custom(callback);
+  return new Predicate<T>('custom', defaultValue).custom(callback);
 }
 
 export function func<T = FuncOf>(defaultValue: T | null = null) /* infer */ {
-  return new Builder<T | null>('function', defaultValue, true).nullable();
+  return new Predicate<T | null>('function', defaultValue, true).nullable();
 }

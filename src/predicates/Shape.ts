@@ -1,10 +1,10 @@
-import optimal from './optimal';
-import Builder from './Builder';
-import Schema from './Schema';
-import isObject from './isObject';
-import { Blueprint } from './types';
+import optimal from '../optimal';
+import Predicate from '../Predicate';
+import Schema from '../Schema';
+import isObject from '../isObject';
+import { Blueprint } from '../types';
 
-export default class ShapeBuilder<T extends object> extends Builder<T> {
+export default class ShapePredicate<T extends object> extends Predicate<T> {
   protected contents: Blueprint<T>;
 
   protected isExact: boolean = false;
@@ -16,9 +16,7 @@ export default class ShapeBuilder<T extends object> extends Builder<T> {
       this.invariant(
         isObject(contents) &&
           Object.keys(contents).length > 0 &&
-          Object.keys(contents).every(
-            key => contents[key as keyof typeof contents] instanceof Builder,
-          ),
+          Object.values(contents).every(content => content instanceof Predicate),
         'A non-empty object of properties to blueprints are required for a shape.',
       );
     }
@@ -49,5 +47,5 @@ export default class ShapeBuilder<T extends object> extends Builder<T> {
 }
 
 export function shape<T extends object>(contents: Blueprint<T>) /* infer */ {
-  return new ShapeBuilder<T>(contents);
+  return new ShapePredicate<T>(contents);
 }

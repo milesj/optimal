@@ -1,19 +1,23 @@
-import TupleBuilder, { tuple } from '../src/TupleBuilder';
-import { array } from '../src/ArrayBuilder';
-import { bool } from '../src/BooleanBuilder';
-import { object } from '../src/ObjectBuilder';
-import { number } from '../src/NumberBuilder';
-import { string } from '../src/StringBuilder';
-import { ObjectOf, ArrayOf } from '../src/types';
-import { runChecks, runInProd } from './helpers';
+import {
+  tuple,
+  array,
+  bool,
+  object,
+  number,
+  string,
+  ObjectOf,
+  ArrayOf,
+  TuplePredicate,
+} from '../../src';
+import { runChecks, runInProd } from '../helpers';
 
-describe('TupleBuilder', () => {
+describe('TuplePredicate', () => {
   type TupleStrings = 'foo' | 'bar' | 'baz';
   type Tuple = [ArrayOf<string>, boolean, number, ObjectOf<number>, TupleStrings];
-  let builder: TupleBuilder<Tuple>;
+  let predicate: TuplePredicate<Tuple>;
 
   beforeEach(() => {
-    builder = tuple([
+    predicate = tuple([
       array(string()),
       bool(true),
       number(1).between(0, 5),
@@ -38,7 +42,7 @@ describe('TupleBuilder', () => {
     }).toThrowErrorMatchingSnapshot();
   });
 
-  it('errors if an array with non-builders is passed', () => {
+  it('errors if an array with non-predicates is passed', () => {
     expect(() => {
       tuple([
         // @ts-ignore
@@ -47,7 +51,7 @@ describe('TupleBuilder', () => {
     }).toThrowErrorMatchingSnapshot();
   });
 
-  it('doesnt error if a builder array is passed', () => {
+  it('doesnt error if a predicate array is passed', () => {
     expect(() => {
       tuple<[string]>([string()]);
     }).not.toThrow();
@@ -55,11 +59,11 @@ describe('TupleBuilder', () => {
 
   describe('run()', () => {
     it('returns an array of default values if undefined provided', () => {
-      expect(runChecks(builder)).toEqual([[], true, 1, {}, 'foo']);
+      expect(runChecks(predicate)).toEqual([[], true, 1, {}, 'foo']);
     });
 
     it('returns an array of values if half the tuple was defined', () => {
-      expect(runChecks(builder, [['a', 'b', 'c'], false])).toEqual([
+      expect(runChecks(predicate, [['a', 'b', 'c'], false])).toEqual([
         ['a', 'b', 'c'],
         false,
         1,
@@ -69,7 +73,7 @@ describe('TupleBuilder', () => {
     });
 
     it('returns an array of all values if defined', () => {
-      expect(runChecks(builder, [['a', 'b', 'c'], false, 3, { a: 1 }, 'bar'])).toEqual([
+      expect(runChecks(predicate, [['a', 'b', 'c'], false, 3, { a: 1 }, 'bar'])).toEqual([
         ['a', 'b', 'c'],
         false,
         3,
@@ -81,7 +85,7 @@ describe('TupleBuilder', () => {
     it('errors if too many values defined', () => {
       expect(() => {
         runChecks(
-          builder,
+          predicate,
           // @ts-ignore Allow extra
           [['a', 'b', 'c'], false, 3, { a: 1 }, 'bar', 'unknown'],
         );
@@ -91,7 +95,7 @@ describe('TupleBuilder', () => {
     it('runs checks for array predicate', () => {
       expect(() => {
         runChecks(
-          builder,
+          predicate,
           // @ts-ignore Allow invalid type
           [[123]],
         );
@@ -101,7 +105,7 @@ describe('TupleBuilder', () => {
     it('runs checks for boolean predicate', () => {
       expect(() => {
         runChecks(
-          builder,
+          predicate,
           // @ts-ignore Allow invalid type
           [['a'], 123],
         );
@@ -110,14 +114,14 @@ describe('TupleBuilder', () => {
 
     it('runs checks for number predicate', () => {
       expect(() => {
-        runChecks(builder, [['a'], true, 10]);
+        runChecks(predicate, [['a'], true, 10]);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('runs checks for object predicate', () => {
       expect(() => {
         runChecks(
-          builder,
+          predicate,
           // @ts-ignore Allow invalid type
           [['a'], true, 3, { a: 'a' }],
         );
@@ -127,7 +131,7 @@ describe('TupleBuilder', () => {
     it('runs checks for string predicate', () => {
       expect(() => {
         runChecks(
-          builder,
+          predicate,
           // @ts-ignore Allow invalid type
           [['a'], true, 3, {}, 'qux'],
         );
@@ -138,14 +142,14 @@ describe('TupleBuilder', () => {
       it(
         'returns default shape if value is empty',
         runInProd(() => {
-          expect(runChecks(builder, [])).toEqual([[], true, 1, {}, 'foo']);
+          expect(runChecks(predicate, [])).toEqual([[], true, 1, {}, 'foo']);
         }),
       );
 
       it(
         'returns default shape if value is undefined',
         runInProd(() => {
-          expect(runChecks(builder)).toEqual([[], true, 1, {}, 'foo']);
+          expect(runChecks(predicate)).toEqual([[], true, 1, {}, 'foo']);
         }),
       );
 
@@ -154,7 +158,7 @@ describe('TupleBuilder', () => {
         runInProd(() => {
           expect(
             runChecks(
-              builder,
+              predicate,
               // @ts-ignore Test invalid type
               [[123], true, 500],
             ),
@@ -166,7 +170,9 @@ describe('TupleBuilder', () => {
 
   describe('typeAlias()', () => {
     it('returns the type name', () => {
-      expect(builder.typeAlias()).toBe('[array<string>, boolean, number, object<number>, string]');
+      expect(predicate.typeAlias()).toBe(
+        '[array<string>, boolean, number, object<number>, string]',
+      );
     });
   });
 });

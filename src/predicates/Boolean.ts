@@ -1,7 +1,7 @@
-import Builder from './Builder';
-import { DefaultValue } from './types';
+import Predicate from '../Predicate';
+import { DefaultValue } from '../types';
 
-export default class BooleanBuilder<T extends boolean = boolean> extends Builder<T> {
+export default class BooleanPredicate<T extends boolean = boolean> extends Predicate<T> {
   constructor(defaultValue?: DefaultValue<T>) {
     super('boolean', defaultValue || (false as T));
   }
@@ -10,7 +10,7 @@ export default class BooleanBuilder<T extends boolean = boolean> extends Builder
     return Boolean(value) as T;
   }
 
-  onlyFalse(): BooleanBuilder<false> {
+  onlyFalse(): BooleanPredicate<false> {
     this.defaultValue = false as T;
     this.defaultValueFactory = undefined;
 
@@ -20,10 +20,10 @@ export default class BooleanBuilder<T extends boolean = boolean> extends Builder
       });
     }
 
-    return (this as unknown) as BooleanBuilder<false>;
+    return (this as unknown) as BooleanPredicate<false>;
   }
 
-  onlyTrue(): BooleanBuilder<true> {
+  onlyTrue(): BooleanPredicate<true> {
     this.defaultValue = true as T;
     this.defaultValueFactory = undefined;
 
@@ -33,10 +33,10 @@ export default class BooleanBuilder<T extends boolean = boolean> extends Builder
       });
     }
 
-    return (this as unknown) as BooleanBuilder<true>;
+    return (this as unknown) as BooleanPredicate<true>;
   }
 }
 
 export function bool(defaultValue: DefaultValue<boolean> = false) /* infer */ {
-  return new BooleanBuilder<boolean>(defaultValue);
+  return new BooleanPredicate<boolean>(defaultValue);
 }

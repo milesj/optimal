@@ -1,13 +1,12 @@
-import Builder from '../src/Builder';
-import InstanceBuilder, { instance, builder, date, regex } from '../src/InstanceBuilder';
-import { runChecks, runInProd } from './helpers';
+import { instance, date, predicate, regex, Predicate, InstancePredicate } from '../../src';
+import { runChecks, runInProd } from '../helpers';
 
 describe('instance()', () => {
   class Foo {}
   abstract class Bar {}
   class BarImpl extends Bar {}
 
-  let inst: InstanceBuilder<Foo>;
+  let inst: InstancePredicate<Foo>;
 
   beforeEach(() => {
     inst = instance(Foo);
@@ -138,31 +137,31 @@ describe('instance()', () => {
   });
 });
 
-describe('builder()', () => {
-  it('returns a builder instance', () => {
-    expect(builder()).toBeInstanceOf(InstanceBuilder);
+describe('predicate()', () => {
+  it('returns a predicate instance', () => {
+    expect(predicate()).toBeInstanceOf(InstancePredicate);
     // @ts-ignore Allow access
-    expect(builder().refClass).toBe(Builder);
+    expect(predicate().refClass).toBe(Predicate);
   });
 
   it('returns the class name for type alias', () => {
-    expect(builder().typeAlias()).toBe('Builder');
+    expect(predicate().typeAlias()).toBe('Predicate');
   });
 
-  it('errors if a non-builder is passed', () => {
+  it('errors if a non-predicate is passed', () => {
     expect(() => {
       runChecks(
-        builder(),
+        predicate(),
         // @ts-ignore Allow invalid type
         123,
       );
-    }).toThrow('Invalid field "key". Must be an instance of "Builder".');
+    }).toThrow('Invalid field "key". Must be an instance of "Predicate".');
   });
 });
 
 describe('date()', () => {
-  it('returns a builder for Date', () => {
-    expect(date()).toBeInstanceOf(InstanceBuilder);
+  it('returns a predicate for Date', () => {
+    expect(date()).toBeInstanceOf(InstancePredicate);
     // @ts-ignore Allow access
     expect(date().refClass).toBe(Date);
   });
@@ -183,8 +182,8 @@ describe('date()', () => {
 });
 
 describe('regex()', () => {
-  it('returns a builder for RegExp', () => {
-    expect(regex()).toBeInstanceOf(InstanceBuilder);
+  it('returns a predicate for RegExp', () => {
+    expect(regex()).toBeInstanceOf(InstancePredicate);
     // @ts-ignore Allow access
     expect(regex().refClass).toBe(RegExp);
   });
