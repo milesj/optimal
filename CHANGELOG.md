@@ -22,6 +22,10 @@
 - **[number]** Add `float()`, `int()`, `negative()`, and `positive()` methods.
 - **[string]** Add `lowerCase()` and `upperCase()` methods.
 
+#### 🛠 Internals
+
+- Package is now built with Rollup to reduce filesize.
+
 ## 3.4.0 - 2019-12-28
 
 #### 🚀 Updates
