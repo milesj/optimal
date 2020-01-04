@@ -16,7 +16,7 @@ exports[`StringPredicate contains() errors if token is not string 1`] = `"Contai
 
 exports[`StringPredicate contains() errors if value does not contain token 1`] = `"Invalid field \\"key\\". String does not include \\"oo\\"."`;
 
-exports[`StringPredicate contains() errors if value matches default value and builder is required 1`] = `"Invalid field \\"key\\". String does not include \\"oo\\"."`;
+exports[`StringPredicate contains() errors if value matches default value and predicate is required 1`] = `"Invalid field \\"key\\". String does not include \\"oo\\"."`;
 
 exports[`StringPredicate kebabCase() errors if in camel case 1`] = `"Invalid field \\"key\\". String must be in kebab case. (pattern \\"^[a-z][\\\\x2D0-9a-z]+$\\")"`;
 
@@ -34,7 +34,7 @@ exports[`StringPredicate match() errors if pattern is not a regex 1`] = `"Match 
 
 exports[`StringPredicate match() errors if value does not match pattern 1`] = `"Invalid field \\"key\\". String does not match. (pattern \\"oo\\")"`;
 
-exports[`StringPredicate match() errors if value matches default value and builder is required 1`] = `"Invalid field \\"key\\". String does not match. (pattern \\"oo\\")"`;
+exports[`StringPredicate match() errors if value matches default value and predicate is required 1`] = `"Invalid field \\"key\\". String does not match. (pattern \\"oo\\")"`;
 
 exports[`StringPredicate notEmpty() errors if value is empty 1`] = `"Invalid field \\"key\\". String cannot be empty."`;
 

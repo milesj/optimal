@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ObjectPredicate errors if a non-builder is passed 1`] = `"A blueprint is required for object contents."`;
+exports[`ObjectPredicate errors if a non-predicate is passed 1`] = `"A blueprint is required for object contents."`;
 
 exports[`ObjectPredicate notEmpty() errors if value is empty 1`] = `"Invalid field \\"key\\". Object cannot be empty."`;
 
@@ -10,7 +10,7 @@ exports[`ObjectPredicate run() errors correctly for objects in objects 1`] = `"I
 
 exports[`ObjectPredicate run() errors if a non-object is passed 1`] = `"Invalid field \\"key\\". Must be a plain object."`;
 
-exports[`ObjectPredicate run() errors if a non-object is passed, when not using a builder 1`] = `"Invalid field \\"key\\". Must be a plain object."`;
+exports[`ObjectPredicate run() errors if a non-object is passed, when not using a predicate 1`] = `"Invalid field \\"key\\". Must be a plain object."`;
 
 exports[`ObjectPredicate run() errors if an object item is invalid; persists path with index 1`] = `"Invalid field \\"key.foo\\". Must be a string."`;
 

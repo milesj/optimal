@@ -138,7 +138,7 @@ describe('instance()', () => {
 });
 
 describe('predicate()', () => {
-  it('returns a builder instance', () => {
+  it('returns a predicate instance', () => {
     expect(predicate()).toBeInstanceOf(InstancePredicate);
     // @ts-ignore Allow access
     expect(predicate().refClass).toBe(Predicate);
@@ -148,7 +148,7 @@ describe('predicate()', () => {
     expect(predicate().typeAlias()).toBe('Predicate');
   });
 
-  it('errors if a non-builder is passed', () => {
+  it('errors if a non-predicate is passed', () => {
     expect(() => {
       runChecks(
         predicate(),
@@ -160,7 +160,7 @@ describe('predicate()', () => {
 });
 
 describe('date()', () => {
-  it('returns a builder for Date', () => {
+  it('returns a predicate for Date', () => {
     expect(date()).toBeInstanceOf(InstancePredicate);
     // @ts-ignore Allow access
     expect(date().refClass).toBe(Date);
@@ -182,7 +182,7 @@ describe('date()', () => {
 });
 
 describe('regex()', () => {
-  it('returns a builder for RegExp', () => {
+  it('returns a predicate for RegExp', () => {
     expect(regex()).toBeInstanceOf(InstancePredicate);
     // @ts-ignore Allow access
     expect(regex().refClass).toBe(RegExp);

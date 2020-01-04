@@ -4,7 +4,7 @@ exports[`ShapePredicate errors if a non-object is not passed 1`] = `"A non-empty
 
 exports[`ShapePredicate errors if an empty object is passed 1`] = `"A non-empty object of properties to blueprints are required for a shape."`;
 
-exports[`ShapePredicate errors if an object with non-builders is passed 1`] = `"A non-empty object of properties to blueprints are required for a shape."`;
+exports[`ShapePredicate errors if an object with non-predicates is passed 1`] = `"A non-empty object of properties to blueprints are required for a shape."`;
 
 exports[`ShapePredicate run() checks each item in the object 1`] = `"Invalid field \\"key.bar\\". Must be a number."`;
 

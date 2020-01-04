@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ArrayPredicate errors if a non-builder is passed 1`] = `"A blueprint is required for array contents."`;
+exports[`ArrayPredicate errors if a non-predicate is passed 1`] = `"A blueprint is required for array contents."`;
 
 exports[`ArrayPredicate notEmpty() errors if value is empty 1`] = `"Invalid field \\"key\\". Array cannot be empty."`;
 
@@ -10,7 +10,7 @@ exports[`ArrayPredicate run() errors correctly for arrays in arrays 1`] = `"Inva
 
 exports[`ArrayPredicate run() errors if a non-array is passed 1`] = `"Invalid field \\"key\\". Must be an array."`;
 
-exports[`ArrayPredicate run() errors if a non-array is passed, when not using a builder 1`] = `"Invalid field \\"key\\". Must be an array."`;
+exports[`ArrayPredicate run() errors if a non-array is passed, when not using a predicate 1`] = `"Invalid field \\"key\\". Must be an array."`;
 
 exports[`ArrayPredicate run() errors if an array item is invalid; persists path with index 1`] = `"Invalid field \\"key[0]\\". Must be a string."`;
 

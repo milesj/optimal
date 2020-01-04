@@ -13,13 +13,13 @@ import {
 import { runChecks, runInProd } from '../helpers';
 
 describe('UnionPredicate', () => {
-  let builder: UnionPredicate;
+  let predicate: UnionPredicate;
 
   class Foo {}
   class Bar {}
 
   beforeEach(() => {
-    builder = union(
+    predicate = union(
       [
         array(string()),
         bool(true).only(),
@@ -45,14 +45,14 @@ describe('UnionPredicate', () => {
     }).toThrowErrorMatchingSnapshot();
   });
 
-  it('errors if an array with non-builders is passed', () => {
+  it('errors if an array with non-predicates is passed', () => {
     expect(() => {
       // @ts-ignore
       union([123], []);
     }).toThrowErrorMatchingSnapshot();
   });
 
-  it('doesnt error if a builder array is passed', () => {
+  it('doesnt error if a predicate array is passed', () => {
     expect(() => {
       union([string()], []);
     }).not.toThrow();
@@ -88,27 +88,27 @@ describe('UnionPredicate', () => {
     });
 
     it('returns default value if value is undefined', () => {
-      builder.defaultValue = 1;
+      predicate.defaultValue = 1;
 
-      expect(runChecks(builder)).toEqual(1);
+      expect(runChecks(predicate)).toEqual(1);
     });
 
     it('returns default value from factory if value is undefined', () => {
       // @ts-ignore
-      builder.defaultValueFactory = () => 'foo';
+      predicate.defaultValueFactory = () => 'foo';
 
-      expect(runChecks(builder)).toEqual('foo');
+      expect(runChecks(predicate)).toEqual('foo');
     });
 
     it('runs array check', () => {
       expect(() => {
-        runChecks(builder, [123]);
+        runChecks(predicate, [123]);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('runs boolean check', () => {
       expect(() => {
-        runChecks(builder, false);
+        runChecks(predicate, false);
       }).toThrowErrorMatchingSnapshot();
     });
 
@@ -133,19 +133,19 @@ describe('UnionPredicate', () => {
 
     it('runs instance check', () => {
       expect(() => {
-        runChecks(builder, new Bar());
+        runChecks(predicate, new Bar());
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('runs number check', () => {
       expect(() => {
-        runChecks(builder, 10);
+        runChecks(predicate, 10);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('runs object check', () => {
       expect(() => {
-        runChecks(builder, { foo: 'foo' });
+        runChecks(predicate, { foo: 'foo' });
       }).toThrowErrorMatchingSnapshot();
     });
 
@@ -168,50 +168,50 @@ describe('UnionPredicate', () => {
 
     it('runs string check', () => {
       expect(() => {
-        runChecks(builder, 'qux');
+        runChecks(predicate, 'qux');
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('runs correctly for valid values', () => {
-      expect(runChecks(builder, 'foo')).toBe('foo');
-      expect(runChecks(builder, 3)).toBe(3);
-      expect(runChecks(builder, true)).toBe(true);
+      expect(runChecks(predicate, 'foo')).toBe('foo');
+      expect(runChecks(predicate, 3)).toBe(3);
+      expect(runChecks(predicate, true)).toBe(true);
     });
 
-    it('supports multiple array builders', () => {
-      builder = union([array(string()), array(number())], []);
+    it('supports multiple array predicates', () => {
+      predicate = union([array(string()), array(number())], []);
 
       expect(() => {
-        runChecks(builder, [true]);
+        runChecks(predicate, [true]);
       }).toThrowErrorMatchingSnapshot();
 
       expect(() => {
-        runChecks(builder, [123]);
+        runChecks(predicate, [123]);
       }).not.toThrow();
 
       expect(() => {
-        runChecks(builder, ['abc']);
+        runChecks(predicate, ['abc']);
       }).not.toThrow();
     });
 
-    it('supports multiple object builders', () => {
-      builder = union([object(string()), object(number())], {});
+    it('supports multiple object predicates', () => {
+      predicate = union([object(string()), object(number())], {});
 
       expect(() => {
-        runChecks(builder, { foo: true });
+        runChecks(predicate, { foo: true });
       }).toThrowErrorMatchingSnapshot();
 
       expect(() => {
-        runChecks(builder, { foo: 123 });
+        runChecks(predicate, { foo: 123 });
       }).not.toThrow();
 
       expect(() => {
-        runChecks(builder, { foo: 'abc' });
+        runChecks(predicate, { foo: 'abc' });
       }).not.toThrow();
     });
 
-    it('supports object and shape builders in parallel', () => {
-      builder = union(
+    it('supports object and shape predicates in parallel', () => {
+      predicate = union(
         [
           shape({
             foo: string(),
@@ -224,28 +224,28 @@ describe('UnionPredicate', () => {
       );
 
       expect(() => {
-        runChecks(builder, { unknown: true });
+        runChecks(predicate, { unknown: true });
       }).toThrowErrorMatchingSnapshot();
 
       expect(() => {
-        runChecks(builder, { foo: 123 });
+        runChecks(predicate, { foo: 123 });
       }).toThrowErrorMatchingSnapshot();
 
       expect(() => {
-        runChecks(builder, { foo: 'abc', bar: 'abc', baz: 123 });
+        runChecks(predicate, { foo: 'abc', bar: 'abc', baz: 123 });
       }).toThrowErrorMatchingSnapshot();
 
       expect(() => {
-        runChecks(builder, { foo: 'abc', bar: 123 });
+        runChecks(predicate, { foo: 'abc', bar: 123 });
       }).not.toThrow();
 
       expect(() => {
-        runChecks(builder, { key: 'value' });
+        runChecks(predicate, { key: 'value' });
       }).not.toThrow();
     });
 
     it('returns shapes as their full objects', () => {
-      builder = union(
+      predicate = union(
         [
           shape({
             foo: string().required(),
@@ -257,17 +257,17 @@ describe('UnionPredicate', () => {
         {},
       );
 
-      expect(runChecks(builder, {})).toEqual({});
-      expect(runChecks(builder, { foo: 'foo' })).toEqual({
+      expect(runChecks(predicate, {})).toEqual({});
+      expect(runChecks(predicate, { foo: 'foo' })).toEqual({
         foo: 'foo',
         bar: 0,
         baz: false,
       });
-      expect(runChecks(builder, { a: 1, b: 2 })).toEqual({ a: 1, b: 2 });
+      expect(runChecks(predicate, { a: 1, b: 2 })).toEqual({ a: 1, b: 2 });
     });
 
     it('returns an array of shapes as their full objects', () => {
-      builder = union(
+      predicate = union(
         [
           array(
             shape({
@@ -280,8 +280,8 @@ describe('UnionPredicate', () => {
         [],
       );
 
-      expect(runChecks(builder, [])).toEqual([]);
-      expect(runChecks(builder, [{ foo: 'foo' }, { bar: 123 }, { baz: true }])).toEqual([
+      expect(runChecks(predicate, [])).toEqual([]);
+      expect(runChecks(predicate, [{ foo: 'foo' }, { bar: 123 }, { baz: true }])).toEqual([
         {
           foo: 'foo',
           bar: 0,
@@ -304,7 +304,7 @@ describe('UnionPredicate', () => {
       it(
         'returns default value if value is undefined',
         runInProd(() => {
-          expect(runChecks(builder)).toBe('');
+          expect(runChecks(predicate)).toBe('');
         }),
       );
 
@@ -313,7 +313,7 @@ describe('UnionPredicate', () => {
         runInProd(() => {
           expect(
             runChecks(
-              builder,
+              predicate,
               // @ts-ignore Test invalid type
               'qux',
             ),
@@ -329,7 +329,7 @@ describe('UnionPredicate', () => {
     });
 
     it('supports complex structures', () => {
-      expect(builder.typeAlias()).toBe(
+      expect(predicate.typeAlias()).toBe(
         'array<string> | boolean | Foo | number | object<number> | string',
       );
     });

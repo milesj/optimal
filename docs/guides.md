@@ -4,9 +4,8 @@ A few of guides on advanced usage, features, and concepts.
 
 ## Default Values
 
-Most predicates and builders accept a default value when being created, and this default value will
-be used when the field is not explicitly defined. The default value must be of the same type as the
-predicate.
+Most predicates accept a default value when being created, and this default value will be used when
+the field is not explicitly defined. The default value must be of the same type as the predicate.
 
 Furthermore, the default value can also be a factory function, which is passed the current struct,
 and must return the same type. Extremely useful for conditional defaults.

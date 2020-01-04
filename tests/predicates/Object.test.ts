@@ -8,20 +8,20 @@ describe('ObjectPredicate', () => {
     predicate = object(string(), {});
   });
 
-  it('errors if a non-builder is passed', () => {
+  it('errors if a non-predicate is passed', () => {
     expect(() => {
-      // @ts-ignore Allow non-builder
+      // @ts-ignore Allow non-predicate
       predicate = object(123);
     }).toThrowErrorMatchingSnapshot();
   });
 
-  it('doesnt error if a builder is not passed', () => {
+  it('doesnt error if a predicate is not passed', () => {
     expect(() => {
       object();
     }).not.toThrow();
   });
 
-  it('doesnt error if a builder is passed', () => {
+  it('doesnt error if a predicate is passed', () => {
     expect(() => {
       predicate = object(string());
     }).not.toThrow();
@@ -49,7 +49,7 @@ describe('ObjectPredicate', () => {
       }).toThrowErrorMatchingSnapshot();
     });
 
-    it('errors if a non-object is passed, when not using a builder', () => {
+    it('errors if a non-object is passed, when not using a predicate', () => {
       expect(() => {
         runChecks(
           object(),
@@ -225,7 +225,7 @@ describe('ObjectPredicate', () => {
 });
 
 describe('blueprint()', () => {
-  it('returns a builder for Date', () => {
+  it('returns a predicate for Date', () => {
     expect(blueprint()).toBeInstanceOf(ObjectPredicate);
   });
 

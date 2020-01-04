@@ -31,14 +31,14 @@ describe('ShapePredicate', () => {
     }).toThrowErrorMatchingSnapshot();
   });
 
-  it('errors if an object with non-builders is passed', () => {
+  it('errors if an object with non-predicates is passed', () => {
     expect(() => {
       // @ts-ignore
       shape({ foo: 123 });
     }).toThrowErrorMatchingSnapshot();
   });
 
-  it('doesnt error if a builder object is passed', () => {
+  it('doesnt error if a predicate object is passed', () => {
     expect(() => {
       shape({
         foo: string(),

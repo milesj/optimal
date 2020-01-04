@@ -2,7 +2,7 @@
 
 exports[`TuplePredicate errors if a non-array is not passed 1`] = `"union is not defined"`;
 
-exports[`TuplePredicate errors if an array with non-builders is passed 1`] = `"A non-empty array of blueprints are required for a tuple."`;
+exports[`TuplePredicate errors if an array with non-predicates is passed 1`] = `"A non-empty array of blueprints are required for a tuple."`;
 
 exports[`TuplePredicate errors if an empty array is passed 1`] = `"A non-empty array of blueprints are required for a tuple."`;
 
