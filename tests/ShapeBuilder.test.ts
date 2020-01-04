@@ -74,12 +74,10 @@ describe('ShapeBuilder', () => {
 
     it('doesnt error for unknown fields if unknown is true', () => {
       expect(() => {
-        builder.run(
+        runChecks(
+          builder,
           // @ts-ignore Allow invalid fields
           { qux: 123, oof: 'abc' },
-          'key',
-          {},
-          { unknown: true },
         );
       }).not.toThrow();
     });

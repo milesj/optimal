@@ -2,7 +2,7 @@
 
 exports[`Optimal errors if a non-builder is passed within the blueprint 1`] = `"Unknown blueprint for \\"foo\\". Must be a builder."`;
 
-exports[`Optimal errors if a non-object config is passed 1`] = `"Schema options must be a plain object."`;
+exports[`Optimal errors if a non-object config is passed 1`] = `"Optimal options must be a plain object."`;
 
 exports[`Optimal errors if a non-object is passed 1`] = `"Schema requires a plain object, found array."`;
 

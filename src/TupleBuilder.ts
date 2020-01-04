@@ -43,7 +43,7 @@ export default class TupleBuilder<T extends unknown[] = unknown[]> extends Build
     const nextValue = value ? [...value] : [];
 
     this.contents.forEach((content, i) => {
-      nextValue[i] = content.run(nextValue[i], `${path}[${i}]`, this.currentStruct, this.options)!;
+      nextValue[i] = content.run(nextValue[i], `${path}[${i}]`, this.schema!)!;
     });
 
     return nextValue as T;

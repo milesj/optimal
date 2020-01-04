@@ -15,12 +15,7 @@ export default class ArrayBuilder<T> extends CollectionBuilder<ArrayOf<T>> {
         const nextValue = [...value];
 
         value.forEach((item: T, i: number) => {
-          nextValue[i] = contents.run(
-            item,
-            `${path}[${i}]`,
-            this.currentStruct,
-            this.options,
-          )!;
+          nextValue[i] = contents.run(item, `${path}[${i}]`, this.schema!)!;
         });
 
         return nextValue;
