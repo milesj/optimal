@@ -1,17 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ObjectBuilder errors if a non-builder is passed 1`] = `"A blueprint is required for object contents."`;
+exports[`ObjectPredicate errors if a non-builder is passed 1`] = `"A blueprint is required for object contents."`;
 
-exports[`ObjectBuilder notEmpty() errors if value is empty 1`] = `"Invalid field \\"key\\". Object cannot be empty."`;
+exports[`ObjectPredicate notEmpty() errors if value is empty 1`] = `"Invalid field \\"key\\". Object cannot be empty."`;
 
-exports[`ObjectBuilder run() checks each item in the object 1`] = `"Invalid field \\"key.c\\". Must be a string."`;
+exports[`ObjectPredicate run() checks each item in the object 1`] = `"Invalid field \\"key.c\\". Must be a string."`;
 
-exports[`ObjectBuilder run() errors correctly for objects in objects 1`] = `"Invalid field \\"key.a.bar\\". Must be a string."`;
+exports[`ObjectPredicate run() errors correctly for objects in objects 1`] = `"Invalid field \\"key.a.bar\\". Must be a string."`;
 
-exports[`ObjectBuilder run() errors if a non-object is passed 1`] = `"Invalid field \\"key\\". Must be a plain object."`;
+exports[`ObjectPredicate run() errors if a non-object is passed 1`] = `"Invalid field \\"key\\". Must be a plain object."`;
 
-exports[`ObjectBuilder run() errors if a non-object is passed, when not using a builder 1`] = `"Invalid field \\"key\\". Must be a plain object."`;
+exports[`ObjectPredicate run() errors if a non-object is passed, when not using a builder 1`] = `"Invalid field \\"key\\". Must be a plain object."`;
 
-exports[`ObjectBuilder run() errors if an object item is invalid; persists path with index 1`] = `"Invalid field \\"key.foo\\". Must be a string."`;
+exports[`ObjectPredicate run() errors if an object item is invalid; persists path with index 1`] = `"Invalid field \\"key.foo\\". Must be a string."`;
 
-exports[`ObjectBuilder sizeOf() errors if length doesnt match 1`] = `"Invalid field \\"key\\". Object must have 3 properties."`;
+exports[`ObjectPredicate sizeOf() errors if length doesnt match 1`] = `"Invalid field \\"key\\". Object must have 3 properties."`;

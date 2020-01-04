@@ -1,81 +1,81 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`UnionBuilder errors if a non-array is not passed 1`] = `"A non-empty array of blueprints are required for a union."`;
+exports[`UnionPredicate errors if a non-array is not passed 1`] = `"A non-empty array of blueprints are required for a union."`;
 
-exports[`UnionBuilder errors if an array with non-builders is passed 1`] = `"A non-empty array of blueprints are required for a union."`;
+exports[`UnionPredicate errors if an array with non-builders is passed 1`] = `"A non-empty array of blueprints are required for a union."`;
 
-exports[`UnionBuilder errors if an empty array is passed 1`] = `"A non-empty array of blueprints are required for a union."`;
+exports[`UnionPredicate errors if an empty array is passed 1`] = `"A non-empty array of blueprints are required for a union."`;
 
-exports[`UnionBuilder run() errors if a nested union is used 1`] = `"Invalid field \\"key\\". Nested unions are not supported."`;
+exports[`UnionPredicate run() errors if a nested union is used 1`] = `"Invalid field \\"key\\". Nested unions are not supported."`;
 
-exports[`UnionBuilder run() errors if a unsupported type is used 1`] = `"Invalid field \\"key\\". Type must be one of: string, number, boolean."`;
+exports[`UnionPredicate run() errors if a unsupported type is used 1`] = `"Invalid field \\"key\\". Type must be one of: string, number, boolean."`;
 
-exports[`UnionBuilder run() errors with the class name for instance checks 1`] = `"Invalid field \\"key\\". Type must be one of: number, Buffer."`;
+exports[`UnionPredicate run() errors with the class name for instance checks 1`] = `"Invalid field \\"key\\". Type must be one of: number, Buffer."`;
 
-exports[`UnionBuilder run() runs array check 1`] = `
+exports[`UnionPredicate run() runs array check 1`] = `
 "Invalid field \\"key\\". Type must be one of: array<string>, boolean, Foo, number, object<number>, string. Received array with the following invalidations:
  - Invalid field \\"key[0]\\". Must be a string."
 `;
 
-exports[`UnionBuilder run() runs boolean check 1`] = `
+exports[`UnionPredicate run() runs boolean check 1`] = `
 "Invalid field \\"key\\". Type must be one of: array<string>, boolean, Foo, number, object<number>, string. Received boolean with the following invalidations:
  - Value may only be \\"true\\"."
 `;
 
-exports[`UnionBuilder run() runs custom check 1`] = `
+exports[`UnionPredicate run() runs custom check 1`] = `
 "Invalid field \\"key\\". Type must be one of: string, custom. Received number with the following invalidations:
  - Encountered a number!"
 `;
 
-exports[`UnionBuilder run() runs instance check 1`] = `
+exports[`UnionPredicate run() runs instance check 1`] = `
 "Invalid field \\"key\\". Type must be one of: array<string>, boolean, Foo, number, object<number>, string. Received instance with the following invalidations:
  - Must be an instance of \\"Foo\\"."
 `;
 
-exports[`UnionBuilder run() runs number check 1`] = `
+exports[`UnionPredicate run() runs number check 1`] = `
 "Invalid field \\"key\\". Type must be one of: array<string>, boolean, Foo, number, object<number>, string. Received number with the following invalidations:
  - Number must be between 0 and 5."
 `;
 
-exports[`UnionBuilder run() runs object check 1`] = `
+exports[`UnionPredicate run() runs object check 1`] = `
 "Invalid field \\"key\\". Type must be one of: array<string>, boolean, Foo, number, object<number>, string. Received object with the following invalidations:
  - Invalid field \\"key.foo\\". Must be a number."
 `;
 
-exports[`UnionBuilder run() runs shape check 1`] = `
+exports[`UnionPredicate run() runs shape check 1`] = `
 "Invalid field \\"key\\". Type must be one of: shape. Received object with the following invalidations:
  - Invalid field \\"key.foo\\". Must be a string."
 `;
 
-exports[`UnionBuilder run() runs string check 1`] = `
+exports[`UnionPredicate run() runs string check 1`] = `
 "Invalid field \\"key\\". Type must be one of: array<string>, boolean, Foo, number, object<number>, string. Received string with the following invalidations:
  - String must be one of: foo, bar, baz"
 `;
 
-exports[`UnionBuilder run() supports multiple array builders 1`] = `
+exports[`UnionPredicate run() supports multiple array builders 1`] = `
 "Invalid field \\"key\\". Type must be one of: array<string>, array<number>. Received array with the following invalidations:
  - Invalid field \\"key[0]\\". Must be a string.
  - Invalid field \\"key[0]\\". Must be a number."
 `;
 
-exports[`UnionBuilder run() supports multiple object builders 1`] = `
+exports[`UnionPredicate run() supports multiple object builders 1`] = `
 "Invalid field \\"key\\". Type must be one of: object<string>, object<number>. Received object with the following invalidations:
  - Invalid field \\"key.foo\\". Must be a string.
  - Invalid field \\"key.foo\\". Must be a number."
 `;
 
-exports[`UnionBuilder run() supports object and shape builders in parallel 1`] = `
+exports[`UnionPredicate run() supports object and shape builders in parallel 1`] = `
 "Invalid field \\"key\\". Type must be one of: shape, object<string>. Received object with the following invalidations:
  - Unknown \\"key\\" fields: unknown.
  - Invalid field \\"key.unknown\\". Must be a string."
 `;
 
-exports[`UnionBuilder run() supports object and shape builders in parallel 2`] = `
+exports[`UnionPredicate run() supports object and shape builders in parallel 2`] = `
 "Invalid field \\"key\\". Type must be one of: shape, object<string>. Received object with the following invalidations:
  - Invalid field \\"key.foo\\". Must be a string."
 `;
 
-exports[`UnionBuilder run() supports object and shape builders in parallel 3`] = `
+exports[`UnionPredicate run() supports object and shape builders in parallel 3`] = `
 "Invalid field \\"key\\". Type must be one of: shape, object<string>. Received object with the following invalidations:
  - Invalid field \\"key.bar\\". Must be a number.
  - Invalid field \\"key.baz\\". Must be a string."
