@@ -1,6 +1,6 @@
 # Usage
 
-All Optimal functionality is handled through a single function, `optimal()`, which requires a
+Most functionality is handled through a single function, `optimal()`, which requires a
 [struct](#struct), [blueprint](#blueprint), and optional configuration [options](#options). To
 understand its power, lets define a class that accepts an options object in the constructor.
 
