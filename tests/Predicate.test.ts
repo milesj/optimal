@@ -1,42 +1,41 @@
-import { Schema } from '../src';
-import Builder, { custom, func } from '../src/Builder';
+import { custom, func, Schema, Predicate } from '../src';
 import { runChecks } from './helpers';
 
-describe('Builder', () => {
+describe('Predicate', () => {
   let schema: Schema<{}>;
-  let builder: Builder<unknown>;
+  let predicate: Predicate<unknown>;
 
   beforeEach(() => {
     schema = new Schema({});
-    builder = new Builder('string', 'foo');
-    builder.schema = schema;
+    predicate = new Predicate('string', 'foo');
+    predicate.schema = schema;
   });
 
   it('errors if default value is undefined', () => {
     expect(() => {
-      builder = new Builder('string', undefined);
+      predicate = new Predicate('string', undefined);
     }).toThrowErrorMatchingSnapshot();
   });
 
   it('sets the type and default value', () => {
-    expect(builder.type).toBe('string');
-    expect(builder.defaultValue).toBe('foo');
+    expect(predicate.type).toBe('string');
+    expect(predicate.defaultValue).toBe('foo');
   });
 
   describe('and()', () => {
     beforeEach(() => {
-      builder.and('bar', 'baz');
+      predicate.and('bar', 'baz');
     });
 
     it('errors if no keys are defined', () => {
       expect(() => {
-        builder.and();
+        predicate.and();
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if not all options are defined', () => {
       expect(() => {
-        runChecks(builder, 'a', {
+        runChecks(predicate, 'a', {
           key: 'foo',
           struct: {
             foo: 'a',
@@ -48,7 +47,7 @@ describe('Builder', () => {
 
     it('doesnt error if all are defined', () => {
       expect(() => {
-        runChecks(builder, 'a', {
+        runChecks(predicate, 'a', {
           key: 'foo',
           struct: {
             foo: 'a',
@@ -63,124 +62,124 @@ describe('Builder', () => {
   describe('checkType()', () => {
     describe('array', () => {
       it('allows arrays', () => {
-        builder.type = 'array';
+        predicate.type = 'array';
 
         expect(() => {
-          runChecks(builder, []);
+          runChecks(predicate, []);
         }).not.toThrow();
       });
 
       it('errors on non-arrays', () => {
-        builder.type = 'array';
+        predicate.type = 'array';
 
         expect(() => {
-          runChecks(builder, 123);
+          runChecks(predicate, 123);
         }).toThrowErrorMatchingSnapshot();
       });
     });
 
     describe('boolean', () => {
       it('allows booleans', () => {
-        builder.type = 'boolean';
+        predicate.type = 'boolean';
 
         expect(() => {
-          runChecks(builder, true);
+          runChecks(predicate, true);
         }).not.toThrow();
       });
 
       it('errors on non-booleans', () => {
-        builder.type = 'boolean';
+        predicate.type = 'boolean';
 
         expect(() => {
-          runChecks(builder, 123);
+          runChecks(predicate, 123);
         }).toThrowErrorMatchingSnapshot();
       });
     });
 
     describe('function', () => {
       it('allows functions', () => {
-        builder.type = 'function';
+        predicate.type = 'function';
 
         expect(() => {
-          runChecks(builder, () => {});
+          runChecks(predicate, () => {});
         }).not.toThrow();
       });
 
       it('errors on non-functions', () => {
-        builder.type = 'function';
+        predicate.type = 'function';
 
         expect(() => {
-          runChecks(builder, 'foo');
+          runChecks(predicate, 'foo');
         }).toThrowErrorMatchingSnapshot();
       });
     });
 
     describe('number', () => {
       it('allows numbers', () => {
-        builder.type = 'number';
+        predicate.type = 'number';
 
         expect(() => {
-          runChecks(builder, 123);
+          runChecks(predicate, 123);
         }).not.toThrow();
       });
 
       it('errors on non-numbers', () => {
-        builder.type = 'number';
+        predicate.type = 'number';
 
         expect(() => {
-          runChecks(builder, 'foo');
+          runChecks(predicate, 'foo');
         }).toThrowErrorMatchingSnapshot();
       });
     });
 
     describe('object', () => {
       it('allows objects', () => {
-        builder.type = 'object';
+        predicate.type = 'object';
 
         expect(() => {
-          runChecks(builder, {});
+          runChecks(predicate, {});
         }).not.toThrow();
       });
 
       it('errors on non-objects', () => {
-        builder.type = 'object';
+        predicate.type = 'object';
 
         expect(() => {
-          runChecks(builder, 123);
+          runChecks(predicate, 123);
         }).toThrowErrorMatchingSnapshot();
       });
 
       it('errors on arrays', () => {
-        builder.type = 'object';
+        predicate.type = 'object';
 
         expect(() => {
-          runChecks(builder, []);
+          runChecks(predicate, []);
         }).toThrowErrorMatchingSnapshot();
       });
 
       it('errors on nulls', () => {
-        builder.type = 'object';
+        predicate.type = 'object';
 
         expect(() => {
-          runChecks(builder, null);
+          runChecks(predicate, null);
         }).toThrowErrorMatchingSnapshot();
       });
     });
 
     describe('string', () => {
       it('allows strings', () => {
-        builder.type = 'string';
+        predicate.type = 'string';
 
         expect(() => {
-          runChecks(builder, 'foo');
+          runChecks(predicate, 'foo');
         }).not.toThrow();
       });
 
       it('errors on non-strings', () => {
-        builder.type = 'string';
+        predicate.type = 'string';
 
         expect(() => {
-          runChecks(builder, 123);
+          runChecks(predicate, 123);
         }).toThrowErrorMatchingSnapshot();
       });
     });
@@ -190,42 +189,42 @@ describe('Builder', () => {
     it('errors if no callback', () => {
       expect(() =>
         // @ts-ignore
-        builder.custom(),
+        predicate.custom(),
       ).toThrow('Custom blueprints require a validation function.');
     });
 
     it('errors if callback is not a function', () => {
       expect(() =>
         // @ts-ignore
-        builder.custom(123),
+        predicate.custom(123),
       ).toThrow('Custom blueprints require a validation function.');
     });
 
     it('triggers callback function', () => {
-      builder = custom(value => {
+      predicate = custom(value => {
         if (value === 123) {
           throw new Error('This will error!');
         }
       }, 0);
 
       expect(() => {
-        runChecks(builder, 123);
+        runChecks(predicate, 123);
       }).toThrowErrorMatchingSnapshot();
 
       expect(() => {
-        runChecks(builder, 456);
+        runChecks(predicate, 456);
       }).not.toThrow();
     });
 
     it('is passed entire options object', () => {
-      builder = custom<unknown, { foo?: number; bar?: number }>((value, s) => {
+      predicate = custom<unknown, { foo?: number; bar?: number }>((value, s) => {
         if (s.struct.foo && s.struct.bar) {
           throw new Error('This will error!');
         }
       }, 0);
 
       expect(() => {
-        runChecks(builder, 123, {
+        runChecks(predicate, 123, {
           struct: { foo: 123, bar: 456, error: '' },
         });
       }).toThrowErrorMatchingSnapshot();
@@ -235,19 +234,19 @@ describe('Builder', () => {
   describe('invariant()', () => {
     it('does nothing if condition is true', () => {
       expect(() => {
-        builder.invariant(true, '');
+        predicate.invariant(true, '');
       }).not.toThrow();
     });
 
     it('errors if condition is false', () => {
       expect(() => {
-        builder.invariant(false, 'Failure');
+        predicate.invariant(false, 'Failure');
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('includes an option path', () => {
       expect(() => {
-        builder.invariant(false, 'Failure', 'foo.bar');
+        predicate.invariant(false, 'Failure', 'foo.bar');
       }).toThrowErrorMatchingSnapshot();
     });
 
@@ -255,7 +254,7 @@ describe('Builder', () => {
       expect(() => {
         schema.setName('FooBar');
 
-        builder.invariant(false, 'Failure', 'foo.bar');
+        predicate.invariant(false, 'Failure', 'foo.bar');
       }).toThrowErrorMatchingSnapshot();
     });
 
@@ -263,7 +262,7 @@ describe('Builder', () => {
       expect(() => {
         schema.setName('FooBar');
 
-        builder.invariant(false, 'Failure');
+        predicate.invariant(false, 'Failure');
       }).toThrowErrorMatchingSnapshot();
     });
 
@@ -271,7 +270,7 @@ describe('Builder', () => {
       expect(() => {
         schema.setFile('package.json');
 
-        builder.invariant(false, 'Failure', 'foo.bar');
+        predicate.invariant(false, 'Failure', 'foo.bar');
       }).toThrowErrorMatchingSnapshot();
     });
 
@@ -279,7 +278,7 @@ describe('Builder', () => {
       expect(() => {
         schema.setName('FooBar').setFile('package.json');
 
-        builder.invariant(false, 'Failure', 'foo.bar');
+        predicate.invariant(false, 'Failure', 'foo.bar');
       }).toThrowErrorMatchingSnapshot();
     });
   });
@@ -287,73 +286,73 @@ describe('Builder', () => {
   describe('key()', () => {
     it('returns as-is if not deep', () => {
       // @ts-ignore Allow access
-      expect(builder.key('foo')).toBe('foo');
+      expect(predicate.key('foo')).toBe('foo');
     });
 
     it('returns last part of a deep path', () => {
       // @ts-ignore Allow access
-      expect(builder.key('foo.bar.baz')).toBe('baz');
+      expect(predicate.key('foo.bar.baz')).toBe('baz');
     });
   });
 
   describe('message()', () => {
     it('errors for empty value', () => {
       expect(() => {
-        builder.message('');
+        predicate.message('');
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors for non-string value', () => {
       expect(() => {
         // @ts-ignore
-        builder.message(123);
+        predicate.message(123);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('sets message', () => {
-      builder.message('foobar');
+      predicate.message('foobar');
 
       // @ts-ignore Allow access
-      expect(builder.errorMessage).toBe('foobar');
+      expect(predicate.errorMessage).toBe('foobar');
     });
   });
 
   describe('deprecate()', () => {
     it('errors for empty value', () => {
       expect(() => {
-        builder.deprecate('');
+        predicate.deprecate('');
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors for non-string value', () => {
       expect(() => {
         // @ts-ignore
-        builder.deprecate(123);
+        predicate.deprecate(123);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('sets message', () => {
-      builder.deprecate('foobar');
+      predicate.deprecate('foobar');
 
       // @ts-ignore Allow access
-      expect(builder.deprecatedMessage).toBe('foobar');
+      expect(predicate.deprecatedMessage).toBe('foobar');
     });
   });
 
   describe('nullable()', () => {
     it('errors if field is undefined', () => {
       expect(() => {
-        builder.notNullable();
+        predicate.notNullable();
 
-        runChecks(builder, null);
+        runChecks(predicate, null);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('doesnt error if field is defined', () => {
       expect(() => {
-        builder.nullable();
+        predicate.nullable();
 
-        runChecks(builder, null);
+        runChecks(predicate, null);
       }).not.toThrow();
     });
   });
@@ -361,69 +360,69 @@ describe('Builder', () => {
   describe('required()', () => {
     it('errors if field is undefined', () => {
       expect(() => {
-        builder.required();
+        predicate.required();
 
-        runChecks(builder);
+        runChecks(predicate);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('doesnt error if field is defined', () => {
       expect(() => {
-        builder.required(false);
+        predicate.required(false);
 
-        runChecks(builder, 'foo');
+        runChecks(predicate, 'foo');
       }).not.toThrow();
     });
   });
 
   describe('run()', () => {
     it('returns valid value', () => {
-      expect(runChecks(builder, 'bar')).toBe('bar');
+      expect(runChecks(predicate, 'bar')).toBe('bar');
     });
 
     it('returns default value if value passed is undefined', () => {
-      expect(runChecks(builder)).toBe('foo');
+      expect(runChecks(predicate)).toBe('foo');
     });
 
-    it('returns null if value passed is null and builder is nullable', () => {
-      builder.nullable();
+    it('returns null if value passed is null and predicate is nullable', () => {
+      predicate.nullable();
 
-      expect(runChecks(builder, null)).toBeNull();
+      expect(runChecks(predicate, null)).toBeNull();
     });
 
-    it('errors if value passed is undefined and builder is required', () => {
-      builder.required();
+    it('errors if value passed is undefined and predicate is required', () => {
+      predicate.required();
 
       expect(() => {
-        runChecks(builder);
+        runChecks(predicate);
       }).toThrowErrorMatchingSnapshot();
     });
 
-    it('errors if value passed is null and builder is non-nullable', () => {
+    it('errors if value passed is null and predicate is non-nullable', () => {
       expect(() => {
-        runChecks(builder, null);
+        runChecks(predicate, null);
       }).toThrowErrorMatchingSnapshot();
     });
 
-    it('errors if value passed is defined and builder is never', () => {
-      builder.never();
+    it('errors if value passed is defined and predicate is never', () => {
+      predicate.never();
 
       expect(() => {
-        expect(runChecks(builder, 'bar')).toBeUndefined();
+        expect(runChecks(predicate, 'bar')).toBeUndefined();
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('runs default type of check', () => {
       expect(() => {
-        runChecks(builder, 123);
+        runChecks(predicate, 123);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('uses custom message', () => {
-      builder.message('Oops, something is broken.');
+      predicate.message('Oops, something is broken.');
 
       expect(() => {
-        runChecks(builder, 123);
+        runChecks(predicate, 123);
       }).toThrowErrorMatchingSnapshot();
     });
 
@@ -439,15 +438,15 @@ describe('Builder', () => {
       });
 
       it('logs a message', () => {
-        builder.deprecate('Use something else.');
-        runChecks(builder, 'foo');
+        predicate.deprecate('Use something else.');
+        runChecks(predicate, 'foo');
 
         expect(console.info).toHaveBeenCalledWith('Field "key" is deprecated. Use something else.');
       });
 
       it('doesnt log if undefined', () => {
-        builder.deprecate('Use something else.');
-        runChecks(builder);
+        predicate.deprecate('Use something else.');
+        runChecks(predicate);
 
         expect(console.info).not.toHaveBeenCalledWith(
           'Field "key" is deprecated. Use something else.',
@@ -458,80 +457,80 @@ describe('Builder', () => {
 
   describe('only()', () => {
     beforeEach(() => {
-      builder.only();
+      predicate.only();
     });
 
     it('errors if default value is not the same type', () => {
-      builder.defaultValue = 123;
+      predicate.defaultValue = 123;
 
       expect(() => {
-        builder.only();
+        predicate.only();
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if value doesnt match the default value', () => {
       expect(() => {
-        runChecks(builder, 'bar');
+        runChecks(predicate, 'bar');
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('doesnt error if value matches default value', () => {
       expect(() => {
-        runChecks(builder, 'foo');
+        runChecks(predicate, 'foo');
       }).not.toThrow();
     });
   });
 
   describe('or()', () => {
     beforeEach(() => {
-      builder.or('bar', 'baz');
+      predicate.or('bar', 'baz');
     });
 
     it('errors if no keys are defined', () => {
       expect(() => {
-        builder.or();
+        predicate.or();
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if not 1 option is defined', () => {
       expect(() => {
-        runChecks(builder, 'a', { key: 'foo', struct: {} });
+        runChecks(predicate, 'a', { key: 'foo', struct: {} });
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('doesnt error if at least 1 option is defined', () => {
       expect(() => {
-        runChecks(builder, 'a', { key: 'foo', struct: { foo: 'a' } });
+        runChecks(predicate, 'a', { key: 'foo', struct: { foo: 'a' } });
       }).not.toThrow();
     });
 
     it('doesnt error if at least 1 option is defined that isnt the main field', () => {
       expect(() => {
-        runChecks(builder, 'a', { key: 'foo', struct: { bar: 'b' } });
+        runChecks(predicate, 'a', { key: 'foo', struct: { bar: 'b' } });
       }).not.toThrow();
     });
   });
 
   describe('xor()', () => {
     beforeEach(() => {
-      builder.xor('bar', 'baz');
+      predicate.xor('bar', 'baz');
     });
 
     it('errors if no keys are defined', () => {
       expect(() => {
-        builder.xor();
+        predicate.xor();
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if no options are defined', () => {
       expect(() => {
-        runChecks(builder, 'a', { key: 'foo', struct: {} });
+        runChecks(predicate, 'a', { key: 'foo', struct: {} });
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if more than 1 option is defined', () => {
       expect(() => {
-        runChecks(builder, 'a', {
+        runChecks(predicate, 'a', {
           key: 'foo',
           struct: {
             foo: 'a',
@@ -543,7 +542,7 @@ describe('Builder', () => {
 
     it('doesnt error if only 1 option is defined', () => {
       expect(() => {
-        runChecks(builder, 'a', {
+        runChecks(predicate, 'a', {
           key: 'foo',
           struct: {
             foo: 'a',
@@ -554,7 +553,7 @@ describe('Builder', () => {
   });
 
   describe('validate()', () => {
-    it('can run the builder by itself', () => {
+    it('can run the predicate by itself', () => {
       expect(() => {
         func().validate(
           // @ts-ignore Allow invalid type
@@ -566,15 +565,15 @@ describe('Builder', () => {
 });
 
 describe('custom()', () => {
-  it('returns a builder', () => {
-    expect(custom(() => {}, '')).toBeInstanceOf(Builder);
+  it('returns a predicate', () => {
+    expect(custom(() => {}, '')).toBeInstanceOf(Predicate);
   });
 
   it('sets type and default value', () => {
-    const builder = custom(() => {}, 123);
+    const predicate = custom(() => {}, 123);
 
-    expect(builder.type).toBe('custom');
-    expect(builder.defaultValue).toBe(123);
+    expect(predicate.type).toBe('custom');
+    expect(predicate.defaultValue).toBe(123);
   });
 
   it('returns the type alias', () => {
@@ -583,16 +582,16 @@ describe('custom()', () => {
 });
 
 describe('func()', () => {
-  it('returns a builder', () => {
-    expect(func()).toBeInstanceOf(Builder);
+  it('returns a predicate', () => {
+    expect(func()).toBeInstanceOf(Predicate);
   });
 
   it('sets type and default value', () => {
     const noop = () => {};
-    const builder = func(noop);
+    const predicate = func(noop);
 
-    expect(builder.type).toBe('function');
-    expect(builder.defaultValue).toBe(noop);
+    expect(predicate.type).toBe('function');
+    expect(predicate.defaultValue).toBe(noop);
   });
 
   it('errors if a non-function value is used', () => {

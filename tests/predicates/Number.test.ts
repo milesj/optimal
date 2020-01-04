@@ -1,8 +1,8 @@
-import NumberBuilder, { number } from '../src/NumberBuilder';
-import { runChecks, runInProd } from './helpers';
+import { number, NumberPredicate } from '../../src';
+import { runChecks, runInProd } from '../helpers';
 
-describe('NumberBuilder', () => {
-  let builder: NumberBuilder;
+describe('NumberPredicate', () => {
+  let builder: NumberPredicate;
 
   beforeEach(() => {
     builder = number(123);

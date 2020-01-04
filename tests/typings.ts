@@ -3,7 +3,7 @@
 import optimal, {
   array,
   bool,
-  builder,
+  predicate,
   blueprint,
   func,
   number,
@@ -322,7 +322,7 @@ const bp = optimal(
   },
   {
     a: blueprint(),
-    b: builder(),
+    b: predicate(),
   },
 );
 

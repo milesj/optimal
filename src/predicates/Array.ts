@@ -1,16 +1,16 @@
-import Builder from './Builder';
-import CollectionBuilder from './CollectionBuilder';
-import { ArrayOf, DefaultValue } from './types';
+import CollectionPredicate from './Collection';
+import Predicate from '../Predicate';
+import { ArrayOf, DefaultValue } from '../types';
 
-export default class ArrayBuilder<T> extends CollectionBuilder<ArrayOf<T>> {
-  protected contents: Builder<T> | null = null;
+export default class ArrayPredicate<T> extends CollectionPredicate<ArrayOf<T>> {
+  protected contents: Predicate<T> | null = null;
 
-  constructor(contents: Builder<T> | null = null, defaultValue: DefaultValue<ArrayOf<T>> = []) {
+  constructor(contents: Predicate<T> | null = null, defaultValue: DefaultValue<ArrayOf<T>> = []) {
     super('array', defaultValue);
 
     this.contents = contents;
 
-    if (contents instanceof Builder) {
+    if (contents instanceof Predicate) {
       this.addCheck((path, value) => {
         const nextValue = [...value];
 
@@ -51,8 +51,8 @@ export default class ArrayBuilder<T> extends CollectionBuilder<ArrayOf<T>> {
 }
 
 export function array<T = unknown>(
-  contents: Builder<T> | null = null,
+  contents: Predicate<T> | null = null,
   defaultValue?: DefaultValue<ArrayOf<T>>,
 ) /* infer */ {
-  return new ArrayBuilder<T>(contents, defaultValue);
+  return new ArrayPredicate<T>(contents, defaultValue);
 }

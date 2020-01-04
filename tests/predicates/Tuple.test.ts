@@ -1,16 +1,20 @@
-import TupleBuilder, { tuple } from '../src/TupleBuilder';
-import { array } from '../src/ArrayBuilder';
-import { bool } from '../src/BooleanBuilder';
-import { object } from '../src/ObjectBuilder';
-import { number } from '../src/NumberBuilder';
-import { string } from '../src/StringBuilder';
-import { ObjectOf, ArrayOf } from '../src/types';
-import { runChecks, runInProd } from './helpers';
+import {
+  tuple,
+  array,
+  bool,
+  object,
+  number,
+  string,
+  ObjectOf,
+  ArrayOf,
+  TuplePredicate,
+} from '../../src';
+import { runChecks, runInProd } from '../helpers';
 
-describe('TupleBuilder', () => {
+describe('TuplePredicate', () => {
   type TupleStrings = 'foo' | 'bar' | 'baz';
   type Tuple = [ArrayOf<string>, boolean, number, ObjectOf<number>, TupleStrings];
-  let builder: TupleBuilder<Tuple>;
+  let builder: TuplePredicate<Tuple>;
 
   beforeEach(() => {
     builder = tuple([

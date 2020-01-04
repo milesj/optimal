@@ -1,18 +1,18 @@
-import Builder from './Builder';
-import CollectionBuilder from './CollectionBuilder';
-import { ObjectOf, DefaultValue } from './types';
-import { builder } from './InstanceBuilder';
-import isObject from './isObject';
+import CollectionPredicate from './Collection';
+import { predicate } from './Instance';
+import Predicate from '../Predicate';
+import { ObjectOf, DefaultValue } from '../types';
+import isObject from '../isObject';
 
-export default class ObjectBuilder<T> extends CollectionBuilder<ObjectOf<T>> {
-  protected contents: Builder<T> | null = null;
+export default class ObjectPredicate<T> extends CollectionPredicate<ObjectOf<T>> {
+  protected contents: Predicate<T> | null = null;
 
-  constructor(contents: Builder<T> | null = null, defaultValue: DefaultValue<ObjectOf<T>> = {}) {
+  constructor(contents: Predicate<T> | null = null, defaultValue: DefaultValue<ObjectOf<T>> = {}) {
     super('object', defaultValue);
 
     this.contents = contents;
 
-    if (contents instanceof Builder) {
+    if (contents instanceof Predicate) {
       this.addCheck((path, value) => {
         const nextValue = { ...value };
 
@@ -55,14 +55,14 @@ export default class ObjectBuilder<T> extends CollectionBuilder<ObjectOf<T>> {
 }
 
 export function object<T = unknown>(
-  contents: Builder<T> | null = null,
+  contents: Predicate<T> | null = null,
   defaultValue?: DefaultValue<ObjectOf<T>>,
 ) /* infer */ {
-  return new ObjectBuilder<T>(contents, defaultValue);
+  return new ObjectPredicate<T>(contents, defaultValue);
 }
 
 export function blueprint<T = unknown>(
-  defaultValue?: DefaultValue<ObjectOf<Builder<T>>>,
+  defaultValue?: DefaultValue<ObjectOf<Predicate<T>>>,
 ) /* infer */ {
-  return new ObjectBuilder<Builder<T>>(builder<T>().notNullable(), defaultValue);
+  return new ObjectPredicate<Predicate<T>>(predicate<T>().notNullable(), defaultValue);
 }

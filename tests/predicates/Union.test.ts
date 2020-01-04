@@ -1,16 +1,19 @@
-import UnionBuilder, { union } from '../src/UnionBuilder';
-import { custom } from '../src/Builder';
-import { array } from '../src/ArrayBuilder';
-import { bool } from '../src/BooleanBuilder';
-import { object } from '../src/ObjectBuilder';
-import { instance } from '../src/InstanceBuilder';
-import { number } from '../src/NumberBuilder';
-import { shape } from '../src/ShapeBuilder';
-import { string } from '../src/StringBuilder';
-import { runChecks, runInProd } from './helpers';
+import {
+  union,
+  custom,
+  array,
+  bool,
+  object,
+  instance,
+  number,
+  shape,
+  string,
+  UnionPredicate,
+} from '../../src';
+import { runChecks, runInProd } from '../helpers';
 
-describe('UnionBuilder', () => {
-  let builder: UnionBuilder;
+describe('UnionPredicate', () => {
+  let builder: UnionPredicate;
 
   class Foo {}
   class Bar {}

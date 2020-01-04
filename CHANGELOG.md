@@ -7,15 +7,17 @@
   results in production, but is not exactly breaking.
 - Updated `custom()` callbacks to receive a `Schema` as the 2nd argument instead of a struct object.
 - Removed and inlined all `check*` methods as we don't want them publicly chainable.
-- Renamed `Builder#runChecks()` method to `run()` and reworked the arguments.
+- Renamed `Builder` to `Predicate` for all classes.
+- Renamed `Builder#runChecks()` method to `Predicate#run()` and reworked the arguments.
+- Renamed `builder()` to `predicate()`.
 - **[ts]** Added visibility modifiers to many internal properties and methods.
 
 #### 🚀 Updates
 
 - Add new `Schema` class for handling the building and validation of structs.
-- Add new `tuple()` predicate and builder.
+- Add new `tuple()` predicate .
 - Add support for default values via factory functions.
-- Add `Builder#validate()` to run stand-alone validation with a builder.
+- Add `Predicate#validate()` to run stand-alone validation with a predicate.
 - **[array,object,string]** Add `sizeOf()` method.
 - **[number]** Add `float()`, `int()`, `negative()`, and `positive()` methods.
 - **[string]** Add `lowerCase()` and `upperCase()` methods.
@@ -24,7 +26,7 @@
 
 #### 🚀 Updates
 
-- Add `never()` for all builders.
+- Add `never()` for all predicates.
 - **[bool]** Add `onlyFalse()` and `onlyTrue()` methods.
 - **[string]** Add `camelCase()`, `kebabCase()`, `pascalCase()`, and `snakeCase()` methods.
 

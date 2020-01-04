@@ -1,10 +1,10 @@
-import Builder from './Builder';
-import isObject from './isObject';
-import instanceOf from './instanceOf';
+import Predicate from '../Predicate';
+import isObject from '../isObject';
+import instanceOf from '../instanceOf';
 
 export type Constructor<T> = (new (...args: unknown[]) => T) | (Function & { prototype: T });
 
-export default class InstanceBuilder<T> extends Builder<T | null> {
+export default class InstancePredicate<T> extends Predicate<T | null> {
   protected loose: boolean = false;
 
   protected refClass: Constructor<T> | null = null;
@@ -57,11 +57,11 @@ export function instance<T = Function>(
   refClass: Constructor<T> | null = null,
   loose?: boolean,
 ) /* infer */ {
-  return new InstanceBuilder<T>(refClass, loose);
+  return new InstancePredicate<T>(refClass, loose);
 }
 
-export function builder<T = unknown>() /* infer */ {
-  return instance<Builder<T>>(Builder);
+export function predicate<T = unknown>() /* infer */ {
+  return instance<Predicate<T>>(Predicate);
 }
 
 export function regex() /* infer */ {

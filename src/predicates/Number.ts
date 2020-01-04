@@ -1,11 +1,11 @@
-import Builder from './Builder';
-import { DefaultValue } from './types';
+import Predicate from '../Predicate';
+import { DefaultValue } from '../types';
 
 function isNumber(value: unknown): value is number {
   return typeof value === 'number' && !Number.isNaN(value);
 }
 
-export default class NumberBuilder<T extends number = number> extends Builder<T> {
+export default class NumberPredicate<T extends number = number> extends Predicate<T> {
   constructor(defaultValue?: DefaultValue<T>) {
     super('number', defaultValue || (0 as T));
   }
@@ -116,7 +116,7 @@ export default class NumberBuilder<T extends number = number> extends Builder<T>
     return this;
   }
 
-  oneOf<U extends number>(list: U[]): NumberBuilder<U> {
+  oneOf<U extends number>(list: U[]): NumberPredicate<U> {
     if (__DEV__) {
       this.invariant(
         Array.isArray(list) && list.length > 0 && list.every(item => isNumber(item)),
@@ -132,7 +132,7 @@ export default class NumberBuilder<T extends number = number> extends Builder<T>
       });
     }
 
-    return (this as unknown) as NumberBuilder<U>;
+    return (this as unknown) as NumberPredicate<U>;
   }
 
   positive(): this {
@@ -147,5 +147,5 @@ export default class NumberBuilder<T extends number = number> extends Builder<T>
 }
 
 export function number<T extends number = number>(defaultValue?: DefaultValue<number>) /* infer */ {
-  return new NumberBuilder<T>(defaultValue as T);
+  return new NumberPredicate<T>(defaultValue as T);
 }

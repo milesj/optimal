@@ -1,13 +1,13 @@
-import StringBuilder, { string } from '../src/StringBuilder';
-import { runChecks, runInProd } from './helpers';
+import { string, StringPredicate } from '../../src';
+import { runChecks, runInProd } from '../helpers';
 
 const camelCase = 'fooBarBaz1';
 const kebabCase = 'foo-bar-baz2';
 const pascalCase = 'FooBarBaz3';
 const snakeCase = 'foo_bar_baz4';
 
-describe('StringBuilder', () => {
-  let builder: StringBuilder;
+describe('StringPredicate', () => {
+  let builder: StringPredicate;
 
   beforeEach(() => {
     builder = string();

@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`instance() errors if a non-class is passed 1`] = `"A class reference is required."`;
+
+exports[`instance() errors if an object is passed 1`] = `"A class reference is required."`;
+
+exports[`instance() run() errors if a non-instance is passed 1`] = `"Invalid field \\"key\\". Must be a class instance."`;
+
+exports[`instance() run() errors if a non-instance is passed when a class reference is set 1`] = `"Invalid field \\"key\\". Must be an instance of \\"Foo\\"."`;
+
+exports[`instance() run() errors if an object is passed when a class instance is required 1`] = `"Invalid field \\"key\\". Must be an instance of \\"Foo\\"."`;

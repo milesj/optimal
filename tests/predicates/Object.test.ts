@@ -1,19 +1,17 @@
-import ObjectBuilder, { object, blueprint } from '../src/ObjectBuilder';
-import { number } from '../src/NumberBuilder';
-import { string } from '../src/StringBuilder';
-import { runChecks, runInProd } from './helpers';
+import { object, blueprint, string, number, ObjectPredicate } from '../../src';
+import { runChecks, runInProd } from '../helpers';
 
-describe('ObjectBuilder', () => {
-  let builder: ObjectBuilder<string>;
+describe('ObjectPredicate', () => {
+  let predicate: ObjectPredicate<string>;
 
   beforeEach(() => {
-    builder = object(string(), {});
+    predicate = object(string(), {});
   });
 
   it('errors if a non-builder is passed', () => {
     expect(() => {
       // @ts-ignore Allow non-builder
-      builder = object(123);
+      predicate = object(123);
     }).toThrowErrorMatchingSnapshot();
   });
 
@@ -25,26 +23,26 @@ describe('ObjectBuilder', () => {
 
   it('doesnt error if a builder is passed', () => {
     expect(() => {
-      builder = object(string());
+      predicate = object(string());
     }).not.toThrow();
   });
 
   it('sets type and default value', () => {
-    builder = object(string(), { foo: 'bar' });
+    predicate = object(string(), { foo: 'bar' });
 
-    expect(builder.type).toBe('object');
-    expect(builder.defaultValue).toEqual({ foo: 'bar' });
+    expect(predicate.type).toBe('object');
+    expect(predicate.defaultValue).toEqual({ foo: 'bar' });
   });
 
   describe('run()', () => {
     it('returns an empty object for no data', () => {
-      expect(runChecks(builder)).toEqual({});
+      expect(runChecks(predicate)).toEqual({});
     });
 
     it('errors if a non-object is passed', () => {
       expect(() => {
         runChecks(
-          builder,
+          predicate,
           // @ts-ignore Test invalid type
           'foo',
         );
@@ -80,7 +78,7 @@ describe('ObjectBuilder', () => {
     it('checks each item in the object', () => {
       expect(() => {
         runChecks(
-          builder,
+          predicate,
           // @ts-ignore Test invalid type
           {
             a: 'foo',
@@ -94,7 +92,7 @@ describe('ObjectBuilder', () => {
     it('errors if an object item is invalid; persists path with index', () => {
       expect(() => {
         runChecks(
-          builder,
+          predicate,
           // @ts-ignore Test invalid type
           {
             foo: 123,
@@ -104,7 +102,7 @@ describe('ObjectBuilder', () => {
     });
 
     it('supports objects of objects', () => {
-      const nestedBuilder = object(object(string()));
+      const nestedPredicate = object(object(string()));
 
       const data = {
         a: {
@@ -116,15 +114,15 @@ describe('ObjectBuilder', () => {
         },
       };
 
-      expect(runChecks(nestedBuilder, data)).toEqual(data);
+      expect(runChecks(nestedPredicate, data)).toEqual(data);
     });
 
     it('errors correctly for objects in objects', () => {
-      const nestedBuilder = object(object(string()));
+      const nestedPredicate = object(object(string()));
 
       expect(() => {
         runChecks(
-          nestedBuilder,
+          nestedPredicate,
           // @ts-ignore Test invalid type
           {
             a: {
@@ -143,7 +141,7 @@ describe('ObjectBuilder', () => {
       it(
         'returns an empty object if value is object',
         runInProd(() => {
-          expect(runChecks(builder, {})).toEqual({});
+          expect(runChecks(predicate, {})).toEqual({});
         }),
       );
 
@@ -151,9 +149,9 @@ describe('ObjectBuilder', () => {
         'returns default value if value is undefined',
         runInProd(() => {
           const def = { foo: 'foo' };
-          builder.defaultValue = def;
+          predicate.defaultValue = def;
 
-          expect(runChecks(builder)).toEqual(def);
+          expect(runChecks(predicate)).toEqual(def);
         }),
       );
 
@@ -169,7 +167,7 @@ describe('ObjectBuilder', () => {
         runInProd(() => {
           expect(
             runChecks(
-              builder,
+              predicate,
               // @ts-ignore Test invalid type
               { foo: 123 },
             ),
@@ -181,36 +179,36 @@ describe('ObjectBuilder', () => {
 
   describe('notEmpty()', () => {
     beforeEach(() => {
-      builder.notEmpty();
+      predicate.notEmpty();
     });
 
     it('errors if value is empty', () => {
       expect(() => {
-        runChecks(builder, {});
+        runChecks(predicate, {});
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('doesnt error if not empty', () => {
       expect(() => {
-        runChecks(builder, { foo: '123' });
+        runChecks(predicate, { foo: '123' });
       }).not.toThrow();
     });
   });
 
   describe('sizeOf()', () => {
     beforeEach(() => {
-      builder.sizeOf(3);
+      predicate.sizeOf(3);
     });
 
     it('errors if length doesnt match', () => {
       expect(() => {
-        runChecks(builder, {});
+        runChecks(predicate, {});
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('doesnt error if length matches', () => {
       expect(() => {
-        runChecks(builder, { a: '1', b: '2', c: '3' });
+        runChecks(predicate, { a: '1', b: '2', c: '3' });
       }).not.toThrow();
     });
   });
@@ -228,16 +226,16 @@ describe('ObjectBuilder', () => {
 
 describe('blueprint()', () => {
   it('returns a builder for Date', () => {
-    expect(blueprint()).toBeInstanceOf(ObjectBuilder);
+    expect(blueprint()).toBeInstanceOf(ObjectPredicate);
   });
 
-  it('errors if a non-Builder is passed', () => {
+  it('errors if a non-predicate is passed', () => {
     expect(() => {
       runChecks(
         blueprint(),
         // @ts-ignore Allow invalid type
         { value: 123 },
       );
-    }).toThrow('Invalid field "key.value". Must be an instance of "Builder".');
+    }).toThrow('Invalid field "key.value". Must be an instance of "Predicate".');
   });
 });

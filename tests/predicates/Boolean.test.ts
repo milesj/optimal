@@ -1,15 +1,15 @@
-import BooleanBuilder, { bool } from '../src/BooleanBuilder';
-import { runChecks, runInProd } from './helpers';
+import { bool, BooleanPredicate } from '../../src';
+import { runChecks, runInProd } from '../helpers';
 
-describe('BooleanBuilder', () => {
-  let builder: BooleanBuilder<boolean>;
+describe('BooleanPredicate', () => {
+  let builder: BooleanPredicate<boolean>;
 
   beforeEach(() => {
     builder = bool();
   });
 
   it('returns a builder', () => {
-    expect(bool(true)).toBeInstanceOf(BooleanBuilder);
+    expect(bool(true)).toBeInstanceOf(BooleanPredicate);
   });
 
   it('sets type and default value', () => {

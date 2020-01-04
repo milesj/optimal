@@ -1,20 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import ShapeBuilder, { shape } from '../src/ShapeBuilder';
-import { bool } from '../src/BooleanBuilder';
-import { number } from '../src/NumberBuilder';
-import { string } from '../src/StringBuilder';
-import { runChecks, runInProd } from './helpers';
+import { shape, bool, number, string, ShapePredicate } from '../../src';
+import { runChecks, runInProd } from '../helpers';
 
-describe('ShapeBuilder', () => {
-  let builder: ShapeBuilder<{
+describe('ShapePredicate', () => {
+  let predicate: ShapePredicate<{
     foo: string;
     bar: number;
     baz: boolean;
   }>;
 
   beforeEach(() => {
-    builder = shape({
+    predicate = shape({
       foo: string(),
       bar: number(),
       baz: bool(),
@@ -53,7 +50,7 @@ describe('ShapeBuilder', () => {
     it('errors if a non-object is passed', () => {
       expect(() => {
         runChecks(
-          builder,
+          predicate,
           // @ts-ignore Allow invalid type
           'foo',
         );
@@ -62,10 +59,10 @@ describe('ShapeBuilder', () => {
 
     it('errors for unknown fields when using exact', () => {
       expect(() => {
-        builder.exact();
+        predicate.exact();
 
         runChecks(
-          builder,
+          predicate,
           // @ts-ignore Allow invalid fields
           { qux: 123, oof: 'abc' },
         );
@@ -75,7 +72,7 @@ describe('ShapeBuilder', () => {
     it('doesnt error for unknown fields if unknown is true', () => {
       expect(() => {
         runChecks(
-          builder,
+          predicate,
           // @ts-ignore Allow invalid fields
           { qux: 123, oof: 'abc' },
         );
@@ -85,7 +82,7 @@ describe('ShapeBuilder', () => {
     it('checks each item in the object', () => {
       expect(() => {
         runChecks(
-          builder,
+          predicate,
           // @ts-ignore Allow invalid type
           {
             foo: 'foo',
@@ -99,7 +96,7 @@ describe('ShapeBuilder', () => {
     it('errors if an object item is invalid; persists path with index', () => {
       expect(() => {
         runChecks(
-          builder,
+          predicate,
           // @ts-ignore Allow invalid type
           {
             foo: 123,
@@ -109,7 +106,7 @@ describe('ShapeBuilder', () => {
     });
 
     it('supports shapes of shapes', () => {
-      const nestedBuilder = shape({
+      const nestedPredicate = shape({
         foo: shape({
           a: number(),
           b: number(),
@@ -124,7 +121,7 @@ describe('ShapeBuilder', () => {
         },
       };
 
-      expect(runChecks(nestedBuilder, data as any)).toEqual({
+      expect(runChecks(nestedPredicate, data as any)).toEqual({
         foo: {
           ...data.foo,
           c: '',
@@ -133,20 +130,20 @@ describe('ShapeBuilder', () => {
     });
 
     it('supports nested required', () => {
-      const nestedBuilder = shape({
+      const nestedPredicate = shape({
         foo: string(),
         bar: bool().required(),
       });
 
       expect(() => {
-        runChecks(nestedBuilder, {
+        runChecks(nestedPredicate, {
           foo: 'abc',
         } as any);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors correctly for shapes in shapes', () => {
-      const nestedBuilder = shape({
+      const nestedPredicate = shape({
         foo: shape({
           a: number(),
           b: number(),
@@ -156,7 +153,7 @@ describe('ShapeBuilder', () => {
 
       expect(() => {
         runChecks(
-          nestedBuilder,
+          nestedPredicate,
           // @ts-ignore Allow invalid type
           {
             foo: {
@@ -170,7 +167,7 @@ describe('ShapeBuilder', () => {
     });
 
     it('should be the object with defaults', () => {
-      expect(runChecks(builder, {} as any)).toEqual({
+      expect(runChecks(predicate, {} as any)).toEqual({
         bar: 0,
         baz: false,
         foo: '',
@@ -181,7 +178,7 @@ describe('ShapeBuilder', () => {
       it(
         'returns default shape if value is object',
         runInProd(() => {
-          expect(runChecks(builder, {})).toEqual({ foo: '', bar: 0, baz: false });
+          expect(runChecks(predicate, {})).toEqual({ foo: '', bar: 0, baz: false });
         }),
       );
 
@@ -189,9 +186,9 @@ describe('ShapeBuilder', () => {
         'returns default shape if value is undefined',
         runInProd(() => {
           const def = { foo: 'foo', bar: 123, baz: true };
-          builder.defaultValue = def;
+          predicate.defaultValue = def;
 
-          expect(runChecks(builder)).toEqual(def);
+          expect(runChecks(predicate)).toEqual(def);
         }),
       );
 
@@ -200,7 +197,7 @@ describe('ShapeBuilder', () => {
         runInProd(() => {
           expect(
             runChecks(
-              builder,
+              predicate,
               // @ts-ignore Test invalid type
               { foo: 123 },
             ),

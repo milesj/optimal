@@ -1,9 +1,8 @@
-import ArrayBuilder, { array } from '../src/ArrayBuilder';
-import { string } from '../src/StringBuilder';
-import { runChecks, runInProd } from './helpers';
+import { array, string, ArrayPredicate } from '../../src';
+import { runChecks, runInProd } from '../helpers';
 
-describe('ArrayBuilder', () => {
-  let builder: ArrayBuilder<string>;
+describe('ArrayPredicate', () => {
+  let builder: ArrayPredicate<string>;
 
   beforeEach(() => {
     builder = array(string());
@@ -89,21 +88,21 @@ describe('ArrayBuilder', () => {
     });
 
     it('supports arrays of arrays', () => {
-      const nestedBuilder = array(array(string()));
+      const nestedPredicate = array(array(string()));
       const data = [
         ['foo', 'bar'],
         ['baz', 'qux'],
       ];
 
-      expect(runChecks(nestedBuilder, data)).toEqual(data);
+      expect(runChecks(nestedPredicate, data)).toEqual(data);
     });
 
     it('errors correctly for arrays in arrays', () => {
-      const nestedBuilder = array(array(string()));
+      const nestedPredicate = array(array(string()));
 
       expect(() => {
         runChecks(
-          nestedBuilder,
+          nestedPredicate,
           // @ts-ignore Test invalid type
           [
             ['foo', 'bar'],
