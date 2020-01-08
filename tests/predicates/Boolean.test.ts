@@ -49,6 +49,28 @@ describe('BooleanPredicate', () => {
     expect(bool().typeAlias()).toBe('boolean');
   });
 
+  describe('default()', () => {
+    it('returns the default value', () => {
+      expect(bool(true).default()).toBe(true);
+    });
+
+    it('returns false for only false', () => {
+      expect(
+        bool(true)
+          .onlyFalse()
+          .default(),
+      ).toBe(false);
+    });
+
+    it('returns true for only true', () => {
+      expect(
+        bool(false)
+          .onlyTrue()
+          .default(),
+      ).toBe(true);
+    });
+  });
+
   describe('run()', () => {
     describe('production', () => {
       it(

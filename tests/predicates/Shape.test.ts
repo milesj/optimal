@@ -46,6 +46,12 @@ describe('ShapePredicate', () => {
     }).not.toThrow();
   });
 
+  describe('default()', () => {
+    it('returns the default value', () => {
+      expect(predicate.default()).toEqual({ foo: '', bar: 0, baz: false });
+    });
+  });
+
   describe('run()', () => {
     it('errors if a non-object is passed', () => {
       expect(() => {

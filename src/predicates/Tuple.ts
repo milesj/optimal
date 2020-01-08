@@ -30,6 +30,10 @@ export default class TuplePredicate<T extends unknown[] = unknown[]> extends Pre
     this.contents = contents;
   }
 
+  default(): T {
+    return this.contents.map(content => content.default()) as T;
+  }
+
   run(value: T | undefined, path: string): T | null {
     if (__DEV__) {
       if (value) {

@@ -24,6 +24,18 @@ export default class ShapePredicate<T extends object> extends Predicate<T> {
     this.contents = contents;
   }
 
+  default(): T {
+    const struct: Partial<T> = {};
+
+    Object.keys(this.contents).forEach(baseKey => {
+      const key = baseKey as keyof T;
+
+      struct[key] = this.contents[key].default();
+    });
+
+    return struct as T;
+  }
+
   exact(): this {
     this.isExact = true;
 

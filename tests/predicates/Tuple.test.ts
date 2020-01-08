@@ -57,6 +57,12 @@ describe('TuplePredicate', () => {
     }).not.toThrow();
   });
 
+  describe('default()', () => {
+    it('returns the default value', () => {
+      expect(predicate.default()).toEqual([[], true, 1, {}, 'foo']);
+    });
+  });
+
   describe('run()', () => {
     it('returns an array of default values if undefined provided', () => {
       expect(runChecks(predicate)).toEqual([[], true, 1, {}, 'foo']);

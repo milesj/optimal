@@ -7,6 +7,7 @@ following methods:
 - `and(...names: string[])` - Requires all of the additional fields by name to be defined.
 - `custom(cb: (value: any, struct: object) => void)` - Trigger a custom handler which can optionally
   throw an error.
+- `default()` - Returns the default value (not chainable).
 - `deprecate(message: string)` - Mark the field as deprecated. Logs the message to the console in
   development.
 - `message(error: string)` - Set a custom error message that will override all validation error

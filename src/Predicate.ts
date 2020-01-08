@@ -114,6 +114,19 @@ export default class Predicate<T> {
   }
 
   /**
+   * Return the default value for the current instance.
+   */
+  default(): T {
+    const value = this.defaultValueFactory
+      ? this.defaultValueFactory(this.schema?.struct ?? {})
+      : this.defaultValue;
+
+    // Only shape and tuple have undefined default values,
+    // but they have custom overrides in their class.
+    return this.cast(value!);
+  }
+
+  /**
    * Set a message to log when this field is present.
    */
   deprecate(message: string): this {
@@ -213,7 +226,7 @@ export default class Predicate<T> {
    */
   only(): this {
     if (__DEV__) {
-      const defaultValue = this.getDefaultValue();
+      const defaultValue = this.default();
 
       this.invariant(
         // eslint-disable-next-line valid-typeof
@@ -273,7 +286,7 @@ export default class Predicate<T> {
    */
   run(initialValue: T | undefined, path: string, schema: Schema<{}>): T | null {
     this.schema = schema;
-    this.defaultValue = this.getDefaultValue();
+    this.defaultValue = this.default();
 
     let value = initialValue;
 
@@ -400,21 +413,10 @@ export default class Predicate<T> {
   }
 
   /**
-   * Return the possible default value.
-   */
-  protected getDefaultValue() {
-    if (this.defaultValueFactory) {
-      return this.defaultValueFactory(this.schema?.struct ?? {});
-    }
-
-    return this.defaultValue;
-  }
-
-  /**
    * Return true if the value matches the default value and the predicate is optional.
    */
   protected isOptionalDefault(value: unknown): boolean {
-    return !this.isRequired && value === this.getDefaultValue();
+    return !this.isRequired && value === this.default();
   }
 
   /**

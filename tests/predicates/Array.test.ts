@@ -34,6 +34,12 @@ describe('ArrayPredicate', () => {
     expect(predicate.defaultValue).toEqual(['foo']);
   });
 
+  describe('default()', () => {
+    it('returns the default value', () => {
+      expect(array(string(), ['a', 'b', 'c']).default()).toEqual(['a', 'b', 'c']);
+    });
+  });
+
   describe('run()', () => {
     it('returns an empty array for no data', () => {
       expect(runChecks(predicate, [])).toEqual([]);

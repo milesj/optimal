@@ -17,6 +17,12 @@ describe('StringPredicate', () => {
     expect(string('bar').defaultValue).toBe('bar');
   });
 
+  describe('default()', () => {
+    it('returns the default value', () => {
+      expect(string('foo').default()).toBe('foo');
+    });
+  });
+
   describe('run()', () => {
     it('errors if a non-string value is used', () => {
       expect(() => {

@@ -28,7 +28,7 @@ describe('UnionPredicate', () => {
         object(number()),
         string('foo').oneOf(['foo', 'bar', 'baz']),
       ],
-      '',
+      'baz',
     );
   });
 
@@ -60,6 +60,12 @@ describe('UnionPredicate', () => {
 
   it('sets default value', () => {
     expect(union([string()], 'bar').defaultValue).toBe('bar');
+  });
+
+  describe('default()', () => {
+    it('returns the default value', () => {
+      expect(predicate.default()).toBe('baz');
+    });
   });
 
   describe('run()', () => {
@@ -304,7 +310,7 @@ describe('UnionPredicate', () => {
       it(
         'returns default value if value is undefined',
         runInProd(() => {
-          expect(runChecks(predicate)).toBe('');
+          expect(runChecks(predicate)).toBe('baz');
         }),
       );
 

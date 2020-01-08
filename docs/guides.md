@@ -24,6 +24,8 @@ optimal(
 
 > The `func()` predicate does not support the factory approach.
 
+The default value of a predicate can be accessed with the `default()` method.
+
 ## Nullable Fields
 
 Excluding `instance()` and `func()` predicates, all other predicates are _not_ nullable by default.

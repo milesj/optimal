@@ -17,6 +17,7 @@
 - Add new `Schema` class for handling the building and validation of structs.
 - Add new `tuple()` predicate .
 - Add support for default values via factory functions.
+- Add `Predicate#default()` to return the default value.
 - Add `Predicate#validate()` to run stand-alone validation with a predicate.
 - **[array,object,string]** Add `sizeOf()` method.
 - **[number]** Add `float()`, `int()`, `negative()`, and `positive()` methods.

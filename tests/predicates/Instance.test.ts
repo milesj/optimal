@@ -32,6 +32,12 @@ describe('instance()', () => {
     }).not.toThrow();
   });
 
+  describe('default()', () => {
+    it('returns the default value', () => {
+      expect(instance().default()).toBeNull();
+    });
+  });
+
   describe('run()', () => {
     it('returns null for no data', () => {
       expect(runChecks(inst, null)).toBeNull();

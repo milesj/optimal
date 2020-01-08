@@ -34,6 +34,18 @@ describe('ObjectPredicate', () => {
     expect(predicate.defaultValue).toEqual({ foo: 'bar' });
   });
 
+  describe('default()', () => {
+    it('returns the default value', () => {
+      expect(object(string(), { a: 'a' }).default()).toEqual({ a: 'a' });
+    });
+
+    it('returns the default value for mapped types', () => {
+      expect(
+        object<string, 'foo' | 'bar' | 'baz'>(string(), { foo: 'a', bar: 'b', baz: 'c' }).default(),
+      ).toEqual({ foo: 'a', bar: 'b', baz: 'c' });
+    });
+  });
+
   describe('run()', () => {
     it('returns an empty object for no data', () => {
       expect(runChecks(predicate)).toEqual({});

@@ -12,6 +12,12 @@ describe('NumberPredicate', () => {
     expect(number(456).defaultValue).toBe(456);
   });
 
+  describe('default()', () => {
+    it('returns the default value', () => {
+      expect(predicate.default()).toBe(123);
+    });
+  });
+
   describe('run()', () => {
     it('errors if a non-number value is used', () => {
       expect(() => {
