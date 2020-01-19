@@ -3,6 +3,7 @@
 #### 🐞 Fixes
 
 - **[tuple]** Fixed some array type check failures.
+- **[tuple]** Fixed tuples failing to validate when in a `union`.
 
 # 4.0.0 - 2020-01-07
 

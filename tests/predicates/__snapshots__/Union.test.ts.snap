@@ -52,6 +52,8 @@ exports[`UnionPredicate run() runs string check 1`] = `
  - String must be one of: foo, bar, baz"
 `;
 
+exports[`UnionPredicate run() runs tuple check 1`] = `"Invalid field \\"key\\". Type must be one of: [string, string, string]."`;
+
 exports[`UnionPredicate run() supports multiple array predicates 1`] = `
 "Invalid field \\"key\\". Type must be one of: array<string>, array<number>. Received array with the following invalidations:
  - Invalid field \\"key[0]\\". Must be a string.

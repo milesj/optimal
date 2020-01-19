@@ -9,6 +9,7 @@ import {
   shape,
   string,
   UnionPredicate,
+  tuple,
 } from '../../src';
 import { runChecks, runInProd } from '../helpers';
 
@@ -175,6 +176,18 @@ describe('UnionPredicate', () => {
     it('runs string check', () => {
       expect(() => {
         runChecks(predicate, 'qux');
+      }).toThrowErrorMatchingSnapshot();
+    });
+
+    it('runs tuple check', () => {
+      expect(() => {
+        runChecks(
+          union(
+            [tuple<['foo', 'bar', 'baz']>([string(), string(), string()])],
+            '',
+          ),
+          '',
+        );
       }).toThrowErrorMatchingSnapshot();
     });
 

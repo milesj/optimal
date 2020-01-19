@@ -46,6 +46,7 @@ export default class UnionPredicate<T = unknown> extends Predicate<T> {
           if (
             type === content.type ||
             (type === 'object' && content.type === 'shape') ||
+            (type === 'array' && content.type === 'tuple') ||
             content.type === 'custom'
           ) {
             // @ts-ignore
@@ -54,6 +55,8 @@ export default class UnionPredicate<T = unknown> extends Predicate<T> {
 
             return true;
           }
+
+          return false;
         } catch (error) {
           errors.add(` - ${error.message}\n`);
         }
