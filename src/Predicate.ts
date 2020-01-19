@@ -390,6 +390,7 @@ export default class Predicate<T> {
     if (__DEV__) {
       switch (this.type) {
         case 'array':
+        case 'tuple':
           this.invariant(Array.isArray(value), 'Must be an array.', path);
           break;
 

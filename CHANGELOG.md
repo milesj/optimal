@@ -1,4 +1,10 @@
-# 4.0.0
+### 4.0.1 - 2020-01-19
+
+#### 🐞 Fixes
+
+- **[tuple]** Fixed some array type check failures.
+
+# 4.0.0 - 2020-01-07
 
 #### 💥 Breaking
 
