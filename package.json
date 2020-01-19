@@ -1,6 +1,6 @@
 {
   "name": "optimal",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "A system for building and validating defined object structures.",
   "main": "./lib/index.js",
   "module": "./esm/index.js",
