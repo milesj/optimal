@@ -7,7 +7,11 @@ export function runChecks<T>(
   { key = 'key', struct }: { key?: string; struct?: object } = {},
 ): T | null {
   const schema = new Schema({});
-  schema.struct = struct ?? { [key]: value };
+  const currentStruct = struct ?? { [key]: value };
+
+  schema.struct = currentStruct;
+  schema.parentStruct = currentStruct;
+  schema.initialStruct = currentStruct;
 
   predicate.schema = schema;
 

@@ -22,6 +22,8 @@ export type DefaultValueFactory<T> = (struct: any) => T;
 
 export type DefaultValue<T> = T | DefaultValueFactory<T>;
 
+export type NonUndefined<T> = T extends undefined ? never : T;
+
 export interface OptimalOptions {
   file?: string;
   name?: string;

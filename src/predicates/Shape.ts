@@ -1,5 +1,4 @@
 import Predicate from '../Predicate';
-import Schema from '../Schema';
 import isObject from '../isObject';
 import { Blueprint } from '../types';
 import logUnknown from '../logUnknown';
@@ -42,19 +41,22 @@ export default class ShapePredicate<T extends object> extends Predicate<T> {
     return this;
   }
 
-  run(value: T | undefined, path: string, schema: Schema<{}>): T {
+  protected doRun(value: T, path: string): T {
     if (__DEV__ && value) {
       this.invariant(isObject(value), 'Value passed to shape must be an object.', path);
     }
 
     const unknownFields: Partial<T> = { ...value };
-    const struct: Partial<T> = {};
+    const struct: Partial<T> = { ...value };
+
+    this.schema!.parentPath = path;
+    this.schema!.parentStruct = struct;
 
     Object.keys(this.contents).forEach(baseKey => {
       const key = baseKey as keyof T;
       const content = this.contents[key];
 
-      struct[key] = content.run(value?.[key], `${path}.${key}`, schema)!;
+      struct[key] = content.run(value?.[key], `${path}.${key}`, this.schema!)!;
 
       // Delete the prop and mark it as known
       delete unknownFields[key];

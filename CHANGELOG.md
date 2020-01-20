@@ -1,3 +1,15 @@
+## 4.1.0 - 2020-01-20
+
+#### 🚀 Updates
+
+- Added `Schema#currentPath`, `currentValue`, `initialStruct`, `parentPath`, and `parentStruct`
+  properties. Should make custom tree checks much easier.
+- Added `Predicate#doRun`, so that sub-classes can hook into the run process.
+
+#### 🐞 Fixes
+
+- **[shape,tuple]** Fixed an issue where common predicate checks were not always running.
+
 ### 4.0.1 - 2020-01-19
 
 #### 🐞 Fixes

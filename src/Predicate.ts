@@ -7,6 +7,7 @@ import {
   FuncOf,
   DefaultValue,
   DefaultValueFactory,
+  NonUndefined,
 } from './types';
 
 export interface TemporalStruct {
@@ -63,20 +64,20 @@ export default class Predicate<T> {
       this.invariant(keys.length > 0, 'AND requires a list of field names.');
 
       this.addCheck(path => {
-        const checkedKeys = [this.key(path), ...keys];
-        const struct = (this.schema?.struct ?? {}) as TemporalStruct;
-        const undefs = checkedKeys.filter(
+        const andKeys = [this.key(path), ...keys];
+        const struct = (this.schema?.parentStruct ?? {}) as TemporalStruct;
+        const undefs = andKeys.filter(
           key => typeof struct[key] === 'undefined' || struct[key] === null,
         );
 
         // Only error once one of the struct is defined
-        if (undefs.length === checkedKeys.length) {
+        if (undefs.length === andKeys.length) {
           return;
         }
 
         this.invariant(
           undefs.length === 0,
-          `All of these fields must be defined: ${checkedKeys.join(', ')}`,
+          `All of these fields must be defined: ${andKeys.join(', ')}`,
         );
       });
     }
@@ -87,8 +88,8 @@ export default class Predicate<T> {
   /**
    * Cast the value if need be.
    */
-  cast(value: unknown): T {
-    return value as T;
+  cast(value: unknown): NonUndefined<T> {
+    return value as NonUndefined<T>;
   }
 
   /**
@@ -255,7 +256,7 @@ export default class Predicate<T> {
 
       this.addCheck(path => {
         const orKeys = [this.key(path), ...keys];
-        const struct = (this.schema?.struct ?? {}) as TemporalStruct;
+        const struct = (this.schema?.parentStruct ?? {}) as TemporalStruct;
         const defs = orKeys.filter(
           key => typeof struct[key] !== 'undefined' && struct[key] !== null,
         );
@@ -284,7 +285,7 @@ export default class Predicate<T> {
    * If a value is undefined, inherit the default value, else throw if required.
    * If nullable and the value is null, return early.
    */
-  run(initialValue: T | undefined, path: string, schema: Schema<{}>): T | null {
+  run(initialValue: T | undefined, path: string, schema: Schema<{}>): NonUndefined<T> | null {
     this.schema = schema;
     this.defaultValue = this.default();
 
@@ -311,13 +312,19 @@ export default class Predicate<T> {
     // Handle null
     if (value === null) {
       if (this.isNullable) {
-        return value;
+        return null;
       }
 
       if (__DEV__) {
         this.invariant(false, 'Null is not allowed.', path);
       }
     }
+
+    this.schema.currentPath = path;
+    this.schema.currentValue = value;
+
+    // Run sub-class logic
+    value = this.doRun(value!, path);
 
     // Run all checks against the value
     value = this.validate(value!, path);
@@ -359,7 +366,7 @@ export default class Predicate<T> {
 
       this.addCheck(path => {
         const xorKeys = [this.key(path), ...keys];
-        const struct = (this.schema?.struct ?? {}) as TemporalStruct;
+        const struct = (this.schema?.parentStruct ?? {}) as TemporalStruct;
         const defs = xorKeys.filter(
           key => typeof struct[key] !== 'undefined' && struct[key] !== null,
         );
@@ -427,6 +434,13 @@ export default class Predicate<T> {
     const index = path.lastIndexOf('.');
 
     return index > 0 ? path.slice(index + 1) : path;
+  }
+
+  /**
+   * Helper method for sub-classes to provide custom run logic.
+   */
+  protected doRun(value: T, path: string): T {
+    return value;
   }
 }
 

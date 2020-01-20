@@ -1,5 +1,5 @@
 import CollectionPredicate from './Collection';
-import { DefaultValue } from '../types';
+import { DefaultValue, NonUndefined } from '../types';
 
 function isString(value: unknown): value is string {
   return typeof value === 'string' && value !== '';
@@ -14,8 +14,8 @@ export default class StringPredicate<T extends string = string> extends Collecti
     return this.match(/^[a-z][a-zA-Z0-9]+$/u, 'String must be in camel case.');
   }
 
-  cast(value: unknown): T {
-    return String(value) as T;
+  cast(value: unknown): NonUndefined<T> {
+    return String(value) as NonUndefined<T>;
   }
 
   contains(token: string, index: number = 0): this {

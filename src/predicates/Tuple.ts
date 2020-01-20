@@ -34,7 +34,14 @@ export default class TuplePredicate<T extends unknown[] = unknown[]> extends Pre
     return this.contents.map(content => content.default()) as T;
   }
 
-  run(value: T | undefined, path: string): T | null {
+  /**
+   * Return the type name as an array of type items.
+   */
+  typeAlias(): string {
+    return `[${this.contents.map(item => item.typeAlias()).join(', ')}]`;
+  }
+
+  protected doRun(value: T, path: string): T {
     if (__DEV__) {
       if (value) {
         this.invariant(
@@ -51,13 +58,6 @@ export default class TuplePredicate<T extends unknown[] = unknown[]> extends Pre
     });
 
     return nextValue as T;
-  }
-
-  /**
-   * Return the type name as an array of type items.
-   */
-  typeAlias(): string {
-    return `[${this.contents.map(item => item.typeAlias()).join(', ')}]`;
   }
 }
 

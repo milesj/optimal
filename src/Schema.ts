@@ -5,18 +5,34 @@ import logUnknown from './logUnknown';
 import { Blueprint } from './types';
 
 export default class Schema<T extends object> {
+  // Strict blueprint of predicates
   blueprint: Blueprint<T>;
 
-  // Struct being built
-  currentStruct: Partial<T> = {};
+  // Path of the current value being checked
+  currentPath: string = '';
 
+  // Current value being checked
+  currentValue: unknown = null;
+
+  // File path for debug messages
   filePath: string = '';
 
-  // Struct passed in to build
+  // Initial struct value passed to build
+  initialStruct: Partial<T> = {};
+
+  // Path of the parent value
+  parentPath: string = '';
+
+  // Partial parent struct to the current value being built
+  parentStruct: unknown = {};
+
+  // Partial struct currently being built
   struct: Partial<T> = {};
 
+  // Unique name for debug messages
   schemaName: string = '';
 
+  // Allow unknown fields not found in the blueprint
   unknown: boolean = false;
 
   constructor(blueprint: Blueprint<T>) {
@@ -48,7 +64,8 @@ export default class Schema<T extends object> {
       }
     }
 
-    this.struct = struct;
+    this.initialStruct = { ...struct };
+    this.struct = { ...struct };
 
     const unknownFields: Partial<T> = { ...struct };
 
@@ -64,7 +81,9 @@ export default class Schema<T extends object> {
         predicate instanceof Predicate ||
         (isObject(predicate) && (predicate as Function).constructor.name.endsWith('Predicate'))
       ) {
-        this.currentStruct[key] = predicate.run(value, path, this)!;
+        this.parentPath = baseKey;
+        this.parentStruct = this.initialStruct;
+        this.struct[key] = predicate.run(value, path, this)!;
 
         // Oops
       } else if (__DEV__) {
@@ -77,12 +96,12 @@ export default class Schema<T extends object> {
 
     // Handle unknown options
     if (this.unknown) {
-      Object.assign(this.currentStruct, unknownFields);
+      Object.assign(this.struct, unknownFields);
     } else if (__DEV__) {
       logUnknown(unknownFields, pathPrefix);
     }
 
-    return this.currentStruct as Required<T>;
+    return this.struct as Required<T>;
   }
 
   /**
