@@ -1,3 +1,9 @@
+### 4.1.1 - 2020-01-29
+
+#### 🐞 Fixes
+
+- **[func]** Removed the generic constraint as it is too restrictive.
+
 ## 4.1.0 - 2020-01-20
 
 #### 🚀 Updates
