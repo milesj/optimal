@@ -28,8 +28,6 @@ exports[`Predicate deprecate() errors for empty value 1`] = `"A non-empty string
 
 exports[`Predicate deprecate() errors for non-string value 1`] = `"A non-empty string is required for deprecated messages."`;
 
-exports[`Predicate errors if default value is undefined 1`] = `"A default value for type \\"string\\" is required."`;
-
 exports[`Predicate invariant() errors if condition is false 1`] = `"Failure"`;
 
 exports[`Predicate invariant() includes a class name 1`] = `"Invalid FooBar field \\"foo.bar\\". Failure"`;
@@ -75,5 +73,3 @@ exports[`Predicate xor() errors if more than 1 option is defined 1`] = `"Only on
 exports[`Predicate xor() errors if no keys are defined 1`] = `"XOR requires a list of field names."`;
 
 exports[`Predicate xor() errors if no options are defined 1`] = `"Only one of these fields may be defined: foo, bar, baz"`;
-
-exports[`func() errors if a non-function value is used 1`] = `"Invalid field \\"key\\". Must be a function."`;

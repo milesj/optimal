@@ -1,5 +1,5 @@
 import CollectionPredicate from './Collection';
-import { DefaultValue, NonUndefined } from '../types';
+import { DefaultValue } from '../types';
 
 function isString(value: unknown): value is string {
   return typeof value === 'string' && value !== '';
@@ -7,15 +7,15 @@ function isString(value: unknown): value is string {
 
 export default class StringPredicate<T extends string = string> extends CollectionPredicate<T> {
   constructor(defaultValue?: DefaultValue<T>) {
-    super('string', defaultValue || ('' as T));
+    super('string', defaultValue);
   }
 
   camelCase(): this {
     return this.match(/^[a-z][a-zA-Z0-9]+$/u, 'String must be in camel case.');
   }
 
-  cast(value: unknown): NonUndefined<T> {
-    return String(value) as NonUndefined<T>;
+  cast(value: unknown): T {
+    return (value === undefined ? '' : String(value)) as T;
   }
 
   contains(token: string, index: number = 0): this {

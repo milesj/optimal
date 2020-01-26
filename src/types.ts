@@ -20,7 +20,7 @@ export type CustomCallback<T, S extends object = object> = (value: T, schema: Sc
 
 export type DefaultValueFactory<T> = (struct: any) => T;
 
-export type DefaultValue<T> = T | DefaultValueFactory<T>;
+export type DefaultValue<T> = T | DefaultValueFactory<T> | null;
 
 export type NonUndefined<T> = T extends undefined ? never : T;
 

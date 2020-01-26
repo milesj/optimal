@@ -10,7 +10,7 @@ export default class ObjectPredicate<T, K extends string = string> extends Colle
   protected contents: Predicate<T> | null = null;
 
   constructor(contents: Predicate<T> | null = null, defaultValue?: DefaultValue<ObjectOf<T, K>>) {
-    super('object', defaultValue || (({} as unknown) as ObjectOf<T, K>));
+    super('object', defaultValue);
 
     this.contents = contents;
 

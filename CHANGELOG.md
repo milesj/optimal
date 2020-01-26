@@ -1,3 +1,9 @@
+## 4.2.0 - 2020-01-26
+
+#### 🚀 Updates
+
+- Reworked default values to handle undefined and null by default, and in a much better fashion.
+
 ### 4.1.2 - 2020-01-26
 
 #### 🐞 Fixes

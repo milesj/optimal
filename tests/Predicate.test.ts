@@ -1,4 +1,4 @@
-import { custom, func, Schema, Predicate } from '../src';
+import { custom, func, string, Schema, Predicate } from '../src';
 import { runChecks } from './helpers';
 
 describe('Predicate', () => {
@@ -9,12 +9,6 @@ describe('Predicate', () => {
     schema = new Schema({});
     predicate = new Predicate('string', 'foo');
     predicate.schema = schema;
-  });
-
-  it('errors if default value is undefined', () => {
-    expect(() => {
-      predicate = new Predicate('string', undefined);
-    }).toThrowErrorMatchingSnapshot();
   });
 
   it('sets the type and default value', () => {
@@ -228,6 +222,33 @@ describe('Predicate', () => {
           struct: { foo: 123, bar: 456, error: '' },
         });
       }).toThrowErrorMatchingSnapshot();
+    });
+  });
+
+  describe('default()', () => {
+    it('returns default value', () => {
+      predicate = string('foo');
+
+      expect(predicate.default()).toBe('foo');
+    });
+
+    it('returns default value from a factory', () => {
+      predicate = string(() => 'bar');
+
+      expect(predicate.default()).toBe('bar');
+    });
+
+    it('returns null if nullable', () => {
+      predicate = string(null).nullable();
+
+      expect(predicate.default()).toBeNull();
+    });
+
+    it('casts value', () => {
+      // @ts-ignore Allow invalid
+      predicate = string(() => 123);
+
+      expect(predicate.default()).toBe('123');
     });
   });
 
@@ -592,16 +613,6 @@ describe('func()', () => {
 
     expect(predicate.type).toBe('function');
     expect(predicate.defaultValue).toBe(noop);
-  });
-
-  it('errors if a non-function value is used', () => {
-    expect(() => {
-      runChecks(
-        func(),
-        // @ts-ignore Test invalid type
-        123,
-      );
-    }).toThrowErrorMatchingSnapshot();
   });
 
   it('returns the type alias', () => {

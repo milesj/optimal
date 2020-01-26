@@ -1,5 +1,5 @@
 import Predicate from '../Predicate';
-import { DefaultValue, NonUndefined } from '../types';
+import { DefaultValue } from '../types';
 
 function isNumber(value: unknown): value is number {
   return typeof value === 'number' && !Number.isNaN(value);
@@ -7,7 +7,7 @@ function isNumber(value: unknown): value is number {
 
 export default class NumberPredicate<T extends number = number> extends Predicate<T> {
   constructor(defaultValue?: DefaultValue<T>) {
-    super('number', defaultValue || (0 as T));
+    super('number', defaultValue);
   }
 
   between(min: number, max: number, inclusive: boolean = false): this {
@@ -30,8 +30,8 @@ export default class NumberPredicate<T extends number = number> extends Predicat
     return this;
   }
 
-  cast(value: unknown): NonUndefined<T> {
-    return Number(value) as NonUndefined<T>;
+  cast(value: unknown): T {
+    return (value === undefined ? 0 : Number(value)) as T;
   }
 
   float(): this {

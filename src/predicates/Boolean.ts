@@ -1,13 +1,13 @@
 import Predicate from '../Predicate';
-import { DefaultValue, NonUndefined } from '../types';
+import { DefaultValue } from '../types';
 
 export default class BooleanPredicate<T extends boolean = boolean> extends Predicate<T> {
   constructor(defaultValue?: DefaultValue<T>) {
-    super('boolean', defaultValue || (false as T));
+    super('boolean', defaultValue);
   }
 
-  cast(value: unknown): NonUndefined<T> {
-    return Boolean(value) as NonUndefined<T>;
+  cast(value: unknown): T {
+    return Boolean(value) as T;
   }
 
   onlyFalse(): BooleanPredicate<false> {

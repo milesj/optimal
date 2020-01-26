@@ -26,6 +26,10 @@ export default class ArrayPredicate<T> extends CollectionPredicate<ArrayOf<T>> {
   }
 
   cast(value: unknown): ArrayOf<T> {
+    if (value === undefined) {
+      return [];
+    }
+
     return Array.isArray(value) ? value : [value];
   }
 

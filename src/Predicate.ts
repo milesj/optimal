@@ -15,7 +15,7 @@ export interface TemporalStruct {
 }
 
 export default class Predicate<T> {
-  defaultValue?: T;
+  defaultValue?: T | null;
 
   schema?: Schema<{}>;
 
@@ -37,16 +37,7 @@ export default class Predicate<T> {
 
   protected noErrorPrefix: boolean = false;
 
-  constructor(type: SupportedType, defaultValue: DefaultValue<T>, bypassFactory: boolean = false) {
-    if (__DEV__) {
-      this.invariant(
-        typeof defaultValue !== 'undefined',
-        `A default value for type "${type}" is required.`,
-      );
-
-      this.addCheck(this.checkType);
-    }
-
+  constructor(type: SupportedType, defaultValue?: DefaultValue<T>, bypassFactory: boolean = false) {
     if (typeof defaultValue === 'function' && !bypassFactory) {
       this.defaultValueFactory = defaultValue as DefaultValueFactory<T>;
     } else {
@@ -66,9 +57,7 @@ export default class Predicate<T> {
       this.addCheck(path => {
         const andKeys = [this.key(path), ...keys];
         const struct = (this.schema?.parentStruct ?? {}) as TemporalStruct;
-        const undefs = andKeys.filter(
-          key => typeof struct[key] === 'undefined' || struct[key] === null,
-        );
+        const undefs = andKeys.filter(key => struct[key] === undefined || struct[key] === null);
 
         // Only error once one of the struct is defined
         if (undefs.length === andKeys.length) {
@@ -88,8 +77,8 @@ export default class Predicate<T> {
   /**
    * Cast the value if need be.
    */
-  cast(value: unknown): NonUndefined<T> {
-    return value as NonUndefined<T>;
+  cast(value: unknown): T {
+    return value as T;
   }
 
   /**
@@ -117,14 +106,16 @@ export default class Predicate<T> {
   /**
    * Return the default value for the current instance.
    */
-  default(): T {
+  default(): T | null {
     const value = this.defaultValueFactory
       ? this.defaultValueFactory(this.schema?.struct ?? {})
       : this.defaultValue;
 
-    // Only shape and tuple have undefined default values,
-    // but they have custom overrides in their class.
-    return this.cast(value!);
+    if (value === null) {
+      return null;
+    }
+
+    return this.cast(value);
   }
 
   /**
@@ -289,10 +280,10 @@ export default class Predicate<T> {
     this.schema = schema;
     this.defaultValue = this.default();
 
-    let value = initialValue;
+    let value: T | null | undefined = initialValue;
 
     // Handle undefined
-    if (typeof value === 'undefined') {
+    if (value === undefined) {
       if (!this.isRequired) {
         value = this.defaultValue;
       } else if (__DEV__) {
@@ -318,18 +309,22 @@ export default class Predicate<T> {
       if (__DEV__) {
         this.invariant(false, 'Null is not allowed.', path);
       }
+    } else {
+      this.checkType(path, value!);
     }
 
+    let finalValue: T = value!;
+
     this.schema.currentPath = path;
-    this.schema.currentValue = value;
+    this.schema.currentValue = finalValue;
 
     // Run sub-class logic
-    value = this.doRun(value!, path);
+    finalValue = this.doRun(finalValue, path);
 
     // Run all checks against the value
-    value = this.validate(value!, path);
+    finalValue = this.validate(finalValue, path);
 
-    return this.cast(value);
+    return this.cast(finalValue) as NonUndefined<T>;
   }
 
   /**
@@ -345,6 +340,8 @@ export default class Predicate<T> {
    */
   validate(value: T, path: string = ''): T {
     let nextValue = value;
+
+    this.checkType(path, value);
 
     this.checks.forEach(checker => {
       const result = checker.call(this, path, nextValue);

@@ -245,7 +245,7 @@ const shapes: {
         b: instance<Function>(),
         c: string().oneOf<'foo'>(['foo']),
       }).nullable(),
-      h3: func(),
+      h3: func<() => void>(),
     }),
   },
 );

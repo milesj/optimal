@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { shape, bool, number, string, ShapePredicate } from '../../src';
+import { shape, bool, number, string, object, ShapePredicate } from '../../src';
 import { runChecks, runInProd } from '../helpers';
 
 describe('ShapePredicate', () => {
@@ -177,6 +177,26 @@ describe('ShapePredicate', () => {
         bar: 0,
         baz: false,
         foo: '',
+      });
+    });
+
+    it('passes correct value to nested predicates', () => {
+      const customShape = shape({
+        attributes: object(string(), null)
+          .notEmpty()
+          .nullable(),
+        nullable: bool(),
+        optional: bool(),
+        reference: string(),
+        type: string('shape').notEmpty(),
+      });
+
+      expect(runChecks(customShape, {} as any)).toEqual({
+        attributes: null,
+        nullable: false,
+        optional: false,
+        reference: '',
+        type: 'shape',
       });
     });
 
