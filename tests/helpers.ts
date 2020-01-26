@@ -6,12 +6,12 @@ export function runChecks<T>(
   value?: Partial<T> | null,
   { key = 'key', struct }: { key?: string; struct?: object } = {},
 ): T | null {
-  const schema = new Schema({});
+  const schema = predicate.schema || new Schema({});
   const currentStruct = struct ?? { [key]: value };
 
-  schema.struct = currentStruct;
-  schema.parentStruct = currentStruct;
-  schema.initialStruct = currentStruct;
+  schema.struct = { ...currentStruct };
+  schema.parentStruct = { ...currentStruct };
+  schema.initialStruct = { ...currentStruct };
 
   predicate.schema = schema;
 

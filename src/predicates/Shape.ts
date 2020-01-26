@@ -48,6 +48,8 @@ export default class ShapePredicate<T extends object> extends Predicate<T> {
 
     const unknownFields: Partial<T> = { ...value };
     const struct: Partial<T> = { ...value };
+    const oldPath = this.schema?.parentPath;
+    const oldStruct = this.schema?.parentStruct;
 
     this.schema!.parentPath = path;
     this.schema!.parentStruct = struct;
@@ -70,6 +72,10 @@ export default class ShapePredicate<T extends object> extends Predicate<T> {
     } else {
       Object.assign(struct, unknownFields);
     }
+
+    // Reset state for next check
+    this.schema!.parentPath = oldPath!;
+    this.schema!.parentStruct = oldStruct!;
 
     return struct as T;
   }

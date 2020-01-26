@@ -1,4 +1,10 @@
-### 4.1.1 - 2020-01-29
+### 4.1.2 - 2020-01-26
+
+#### 🐞 Fixes
+
+- **[shape]** Reset schema state after validating children.
+
+### 4.1.1 - 2020-01-24
 
 #### 🐞 Fixes
 
