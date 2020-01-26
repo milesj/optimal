@@ -29,7 +29,7 @@ The `array(predicate?: Predicate | null, default?: any[])` predicate verifies a 
 an array of a specific type by accepting a predicate. Defaults to `[]` but can be customized with
 the 2nd argument. Array predicate supports the following additional method:
 
-- `notEmpty()` - Requires the array to not be empty.
+- `notEmpty()` - Requires the array to not be empty. Does not validate `null`.
 - `sizeOf(length: number)` - Requires the array to be an exact length.
 
 ```ts
@@ -190,7 +190,7 @@ value is a plain object or an object with all values of a specific type by accep
 Defaults to `{}` but can be customized with the 2nd argument. Object predicate supports the
 following additional method:
 
-- `notEmpty()` - Requires the object to not be empty.
+- `notEmpty()` - Requires the object to not be empty. Does not validate `null`.
 - `sizeOf(length: number)` - Requires the object to have an exact number of properties.
 
 ```ts
@@ -268,7 +268,7 @@ additional methods:
   dash and contain at minimum 2 characters.
 - `lowerCase()` - Validate the value is lower cased.
 - `match(pattern: RegExp)` - Validate the value against a regex pattern.
-- `notEmpty()` - Requires the value to not be empty.
+- `notEmpty()` - Requires the value to not be empty. Does not validate `null`.
 - `oneOf(list: string[])` - Validate the value is one of the following strings.
 - `pascalCase()` - Validate the value is in pascal case (`FooBarBaz`). Must start with an uppercase
   character and contain at minimum 2 characters.

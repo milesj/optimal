@@ -278,6 +278,14 @@ describe('StringPredicate', () => {
         runChecks(predicate, 'foo');
       }).not.toThrow();
     });
+
+    it('doesnt error if null', () => {
+      expect(() => {
+        predicate.nullable();
+
+        runChecks(predicate, null);
+      }).not.toThrow();
+    });
   });
 
   describe('oneOf()', () => {

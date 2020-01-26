@@ -3,6 +3,7 @@
 #### 🐞 Fixes
 
 - **[shape]** Reset schema state after validating children.
+- **[array,object,string]** Updated empty checks to take nullable into account.
 
 ### 4.1.1 - 2020-01-24
 

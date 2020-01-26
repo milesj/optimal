@@ -32,6 +32,10 @@ export default class ArrayPredicate<T> extends CollectionPredicate<ArrayOf<T>> {
   notEmpty(): this {
     if (__DEV__) {
       this.addCheck((path, value) => {
+        if (this.isNullable && value === null) {
+          return;
+        }
+
         this.invariant(value.length > 0, 'Array cannot be empty.', path);
       });
     }

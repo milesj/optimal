@@ -40,6 +40,10 @@ export default class ObjectPredicate<T, K extends string = string> extends Colle
   notEmpty(): this {
     if (__DEV__) {
       this.addCheck((path, value) => {
+        if (this.isNullable && value === null) {
+          return;
+        }
+
         this.invariant(Object.keys(value).length > 0, 'Object cannot be empty.', path);
       });
     }

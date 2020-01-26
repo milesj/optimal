@@ -205,6 +205,14 @@ describe('ObjectPredicate', () => {
         runChecks(predicate, { foo: '123' });
       }).not.toThrow();
     });
+
+    it('doesnt error if null', () => {
+      expect(() => {
+        predicate.nullable();
+
+        runChecks(predicate, null);
+      }).not.toThrow();
+    });
   });
 
   describe('sizeOf()', () => {
@@ -221,6 +229,14 @@ describe('ObjectPredicate', () => {
     it('doesnt error if length matches', () => {
       expect(() => {
         runChecks(predicate, { a: '1', b: '2', c: '3' });
+      }).not.toThrow();
+    });
+
+    it('doesnt error if null', () => {
+      expect(() => {
+        predicate.nullable();
+
+        runChecks(predicate, null);
       }).not.toThrow();
     });
   });

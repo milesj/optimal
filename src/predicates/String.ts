@@ -74,6 +74,10 @@ export default class StringPredicate<T extends string = string> extends Collecti
   notEmpty(): this {
     if (__DEV__) {
       this.addCheck((path, value) => {
+        if (this.isNullable && value === null) {
+          return;
+        }
+
         this.invariant(isString(value), 'String cannot be empty.', path);
       });
     }

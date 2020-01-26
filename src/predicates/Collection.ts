@@ -9,6 +9,10 @@ export default class CollectionPredicate<T> extends Predicate<T> {
       );
 
       this.addCheck((path, value) => {
+        if (this.isNullable && value === null) {
+          return;
+        }
+
         // Array
         if (Array.isArray(value)) {
           this.invariant(value.length === length, `Array length must be ${length}.`, path);

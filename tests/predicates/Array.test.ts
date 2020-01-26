@@ -171,6 +171,14 @@ describe('ArrayPredicate', () => {
         runChecks(predicate, ['123']);
       }).not.toThrow();
     });
+
+    it('doesnt error if null', () => {
+      expect(() => {
+        predicate.nullable();
+
+        runChecks(predicate, null);
+      }).not.toThrow();
+    });
   });
 
   describe('sizeOf()', () => {
@@ -187,6 +195,14 @@ describe('ArrayPredicate', () => {
     it('doesnt error if length matches', () => {
       expect(() => {
         runChecks(predicate, ['1', '2', '3']);
+      }).not.toThrow();
+    });
+
+    it('doesnt error if null', () => {
+      expect(() => {
+        predicate.nullable();
+
+        runChecks(predicate, null);
       }).not.toThrow();
     });
   });
