@@ -2,6 +2,7 @@ import Predicate from '../Predicate';
 import isObject from '../isObject';
 import instanceOf from '../instanceOf';
 
+// eslint-disable-next-line @typescript-eslint/type-annotation-spacing
 export type Constructor<T> = (new (...args: unknown[]) => T) | (Function & { prototype: T });
 
 export default class InstancePredicate<T> extends Predicate<T | null> {

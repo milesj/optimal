@@ -107,14 +107,11 @@ describe('ArrayPredicate', () => {
       const nestedPredicate = array(array(string()));
 
       expect(() => {
-        runChecks(
-          nestedPredicate,
+        runChecks(nestedPredicate, [
+          ['foo', 'bar'],
           // @ts-ignore Test invalid type
-          [
-            ['foo', 'bar'],
-            ['baz', 123],
-          ],
-        );
+          ['baz', 123],
+        ]);
       }).toThrowErrorMatchingSnapshot();
     });
 

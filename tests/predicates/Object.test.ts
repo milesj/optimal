@@ -89,27 +89,21 @@ describe('ObjectPredicate', () => {
 
     it('checks each item in the object', () => {
       expect(() => {
-        runChecks(
-          predicate,
+        runChecks(predicate, {
+          a: 'foo',
+          b: 'bar',
           // @ts-ignore Test invalid type
-          {
-            a: 'foo',
-            b: 'bar',
-            c: 123,
-          },
-        );
+          c: 123,
+        });
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if an object item is invalid; persists path with index', () => {
       expect(() => {
-        runChecks(
-          predicate,
+        runChecks(predicate, {
           // @ts-ignore Test invalid type
-          {
-            foo: 123,
-          },
-        );
+          foo: 123,
+        });
       }).toThrowErrorMatchingSnapshot();
     });
 
@@ -133,19 +127,16 @@ describe('ObjectPredicate', () => {
       const nestedPredicate = object(object(string()));
 
       expect(() => {
-        runChecks(
-          nestedPredicate,
-          // @ts-ignore Test invalid type
-          {
-            a: {
-              foo: '123',
-              bar: 456,
-            },
-            b: {
-              baz: '789',
-            },
+        runChecks(nestedPredicate, {
+          a: {
+            foo: '123',
+            // @ts-ignore Test invalid type
+            bar: 456,
           },
-        );
+          b: {
+            baz: '789',
+          },
+        });
       }).toThrowErrorMatchingSnapshot();
     });
 
