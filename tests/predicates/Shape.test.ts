@@ -1,4 +1,4 @@
-import { bool, number, object, shape, ShapePredicate,string } from '../../src';
+import { bool, number, object, shape, ShapePredicate, string } from '../../src';
 import { runChecks, runInProd } from '../helpers';
 
 describe('ShapePredicate', () => {

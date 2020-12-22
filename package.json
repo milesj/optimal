@@ -9,14 +9,14 @@
     "prepare": "beemo create-config --silent",
     "build": "beemo create-config babel --esm --silent && rollup --config && beemo typescript --emitDeclarationOnly",
     "coverage": "yarn run jest --coverage",
-    "eslint": "beemo eslint",
+    "lint": "beemo eslint",
     "jest": "beemo jest",
-    "prettier": "beemo prettier",
+    "format": "beemo prettier",
     "prerelease": "yarn test && yarn run build",
     "release": "npx np --yolo --no-yarn",
     "pretest": "yarn run type",
     "test": "yarn run jest",
-    "posttest": "yarn run eslint",
+    "posttest": "yarn run lint",
     "type": "beemo typescript --noEmit"
   },
   "repository": {

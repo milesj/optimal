@@ -1,4 +1,4 @@
-import { date, instance, InstancePredicate,Predicate, predicate, regex } from '../../src';
+import { date, instance, InstancePredicate, Predicate, predicate, regex } from '../../src';
 import { runChecks, runInProd } from '../helpers';
 
 describe('instance()', () => {
@@ -120,12 +120,7 @@ describe('instance()', () => {
       it(
         'bypasses checks and returns value',
         runInProd(() => {
-          expect(
-            runChecks(
-              inst,
-              {},
-            ),
-          ).toEqual({});
+          expect(runChecks(inst, {})).toEqual({});
         }),
       );
     });
@@ -177,10 +172,7 @@ describe('date()', () => {
 
   it('errors if a non-Date is passed', () => {
     expect(() => {
-      runChecks(
-        date(),
-        123,
-      );
+      runChecks(date(), 123);
     }).toThrow('Invalid field "key". Must be an instance of "Date".');
   });
 });
