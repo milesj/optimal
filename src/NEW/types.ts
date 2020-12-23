@@ -51,6 +51,11 @@ export interface CommonCriteria<T, S, NullS, NonNullS> {
   xor: (...keys: string[]) => S;
 }
 
+export interface ArrayCriteria<S> {
+  notEmpty: () => S;
+  sizeOf: (size: number) => S;
+}
+
 export interface NumberCriteria<S> {
   between: (min: number, max: number, inclusive?: boolean) => S;
   float: () => S;
@@ -60,7 +65,7 @@ export interface NumberCriteria<S> {
   lt: (max: number, inclusive?: boolean) => S;
   lte: (max: number) => S;
   negative: () => S;
-  oneOf: (list: number[]) => S;
+  oneOf: <I extends number>(list: I[]) => S;
   positive: () => S;
 }
 
@@ -76,7 +81,7 @@ export interface Schema<T> {
   ) => T;
 }
 
-export type SchemaFactory<T, P> = (defaultValue?: T) => P;
+export type SchemaFactory<T, S> = (defaultValue?: T) => S;
 
 export interface SchemaState<T> {
   defaultValue: T | undefined;

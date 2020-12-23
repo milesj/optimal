@@ -102,11 +102,11 @@ function validate<T>(
   return nextValue!;
 }
 
-export default function createSchema<T, P>(
+export default function createSchema<T, S>(
   type: SupportedType,
   criteria: Record<string, Criteria<T>>,
   { initialValue, cast }: SchemaOptions<T>,
-): SchemaFactory<T, P> {
+): SchemaFactory<T, S> {
   return (defaultValue) => {
     const validators: CriteriaValidator<T>[] = [];
 
@@ -119,7 +119,7 @@ export default function createSchema<T, P>(
       type,
     };
 
-    const predicate: Schema<T> = {
+    const schema: Schema<T> = {
       typeAlias: type,
       validate(value, path, currentObject, rootObject) {
         const result = validate(state, validators, value, path, currentObject, rootObject);
@@ -128,9 +128,9 @@ export default function createSchema<T, P>(
       },
     };
 
-    // Add and wrap all checkers into the predicate object
+    // Add and wrap all checkers into the schema object
     Object.entries(criteria).forEach(([name, crit]) => {
-      Object.defineProperty(predicate, name, {
+      Object.defineProperty(schema, name, {
         enumerable: true,
         value: (...args: unknown[]) => {
           const validator = crit(state, ...args);
@@ -139,11 +139,11 @@ export default function createSchema<T, P>(
             validators.push(validator);
           }
 
-          return predicate;
+          return schema;
         },
       });
     });
 
-    return (predicate as unknown) as P;
+    return (schema as unknown) as S;
   };
 }

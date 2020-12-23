@@ -1,4 +1,4 @@
-import { Constructor } from './types';
+import { Constructor, UnknownObject, Schema } from './types';
 
 /**
  * Native `instanceof` checks are problematic, as cross realm checks fail.
@@ -61,6 +61,14 @@ export function isObject(value: unknown): value is object {
 
 export function isPlainObject(value: unknown): value is object {
   return isObject(value) && value.constructor === Object;
+}
+
+export function isSchema<T>(value: unknown): value is Schema<T> {
+  return (
+    isObject(value) &&
+    'validate' in value &&
+    typeof (value as UnknownObject).validate === 'function'
+  );
 }
 
 export function pathKey(path: string): string {
