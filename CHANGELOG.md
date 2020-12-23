@@ -1,3 +1,18 @@
+# 5.0.0
+
+Ground-up rewrite that migrates to a more composable API. Under the hood, classes were refactored
+into functions to reduce file size and overhead.
+
+#### 💥 Breaking
+
+- Renamed `Predicate#nonNullable()` method to `notNullable()`.
+- Removed `Predicate#message()` method.
+- Removed the state boolean argument from `Predicate#required()`.
+
+#### 🚀 Updates
+
+- Added `Predicate#notRequired()` method.
+
 ### 4.3.0 - 2020-02-20
 
 #### 🚀 Updates

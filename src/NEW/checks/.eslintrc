@@ -1,0 +1,5 @@
+{
+  "rules": {
+    "consistent-return": "off"
+  }
+}
