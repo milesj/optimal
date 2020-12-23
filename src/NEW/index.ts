@@ -9,4 +9,5 @@ import createPredicate from './createPredicate';
 export { checks, createPredicate };
 
 export * from './predicates/bool';
+export * from './predicates/instance';
 export * from './types';

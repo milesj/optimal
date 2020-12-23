@@ -45,6 +45,8 @@ export interface BoolPredicate<T> extends Predicate<T> {
 export const bool = createPredicate<boolean, BoolPredicate<boolean>>(
   'boolean',
   { ...checks, onlyFalse, onlyTrue },
-  false,
-  Boolean,
+  {
+    castValue: Boolean,
+    initialValue: false,
+  },
 );

@@ -52,29 +52,27 @@ describe('BooleanPredicate', () => {
   //   });
   // });
 
-  describe('run()', () => {
-    describe('production', () => {
-      it(
-        'returns default value if value is undefined',
-        runInProd(() => {
-          expect(runChecks(bool(true))).toBe(true);
-        }),
-      );
+  describe('production', () => {
+    it(
+      'returns default value if value is undefined',
+      runInProd(() => {
+        expect(runChecks(bool(true))).toBe(true);
+      }),
+    );
 
-      // it(
-      //   'returns default value from factory if value is undefined',
-      //   runInProd(() => {
-      //     expect(runChecks(bool(() => true))).toBe(true);
-      //   }),
-      // );
+    // it(
+    //   'returns default value from factory if value is undefined',
+    //   runInProd(() => {
+    //     expect(runChecks(bool(() => true))).toBe(true);
+    //   }),
+    // );
 
-      it(
-        'bypasses checks and returns value',
-        runInProd(() => {
-          expect(runChecks(predicate, false)).toBe(false);
-        }),
-      );
-    });
+    it(
+      'bypasses checks and returns value',
+      runInProd(() => {
+        expect(runChecks(predicate, false)).toBe(false);
+      }),
+    );
   });
 
   describe('onlyFalse()', () => {

@@ -2,7 +2,9 @@ import { invariant, isObject } from './helpers';
 import {
   Checker,
   CheckerCallback,
+  Predicate,
   PredicateFactory,
+  PredicateOptions,
   PredicateState,
   SupportedType,
   UnknownObject,
@@ -103,8 +105,7 @@ function validate<T>(
 export default function createPredicate<T, P>(
   type: SupportedType,
   checkers: Record<string, Checker<T>>,
-  initialValue?: T,
-  castValue?: (value: unknown) => T,
+  { initialValue, castValue }: PredicateOptions<T>,
 ): PredicateFactory<T, P> {
   return (defaultValue) => {
     const cases: CheckerCallback<T>[] = [];
@@ -112,42 +113,41 @@ export default function createPredicate<T, P>(
     const state: PredicateState<T> = {
       defaultValue: defaultValue ?? initialValue,
       deprecatedMessage: '',
+      metadata: {},
       never: false,
       nullable: false,
       required: false,
       type,
     };
 
-    const predicate: UnknownObject = {};
+    const predicate: Predicate<T> = {
+      typeAlias: type,
+      validate(value, path, currentObject, rootObject) {
+        const result = validate(state, cases, value, path, currentObject, rootObject);
+
+        if (castValue) {
+          return castValue(result);
+        }
+
+        return result!;
+      },
+    };
 
     // Add and wrap all checkers into the predicate object
     Object.entries(checkers).forEach(([name, checker]) => {
-      predicate[checker.name] = (...args: unknown[]) => {
-        const result = checker(state, ...args);
+      Object.defineProperty(predicate, name, {
+        enumerable: true,
+        value: (...args: unknown[]) => {
+          const result = checker(state, ...args);
 
-        if (result) {
-          cases.push(result);
-        }
+          if (result) {
+            cases.push(result);
+          }
 
-        return predicate;
-      };
+          return predicate;
+        },
+      });
     });
-
-    // Add our custom validation
-    predicate.validate = (
-      value: T,
-      path?: string,
-      currentObject?: UnknownObject,
-      rootObject?: UnknownObject,
-    ) => {
-      const result = validate(state, cases, value, path, currentObject, rootObject);
-
-      if (castValue) {
-        return castValue(result);
-      }
-
-      return result;
-    };
 
     return (predicate as unknown) as P;
   };

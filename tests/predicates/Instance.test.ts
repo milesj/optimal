@@ -1,4 +1,4 @@
-import { date, instance, InstancePredicate, Predicate, predicate, regex } from '../../src';
+import { instance, date, regex, InstancePredicate } from '../../src/NEW';
 import { runChecks, runInProd } from '../helpers';
 
 describe('instance()', () => {
@@ -6,7 +6,7 @@ describe('instance()', () => {
   abstract class Bar {}
   class BarImpl extends Bar {}
 
-  let inst: InstancePredicate<Foo>;
+  let inst: InstancePredicate<Foo | null>;
 
   beforeEach(() => {
     inst = instance(Foo);
@@ -32,142 +32,103 @@ describe('instance()', () => {
     }).not.toThrow();
   });
 
-  describe('default()', () => {
-    it('returns the default value', () => {
-      expect(instance().default()).toBeNull();
-    });
+  it('returns null for no data', () => {
+    expect(runChecks(inst, null)).toBeNull();
   });
 
-  describe('run()', () => {
-    it('returns null for no data', () => {
-      expect(runChecks(inst, null)).toBeNull();
+  it('errors if a non-instance is passed', () => {
+    expect(() => {
+      runChecks(instance(), 'foo');
+    }).toThrowErrorMatchingSnapshot();
+  });
+
+  it('errors if an object is passed when a class instance is required', () => {
+    expect(() => {
+      runChecks(inst, {});
+    }).toThrowErrorMatchingSnapshot();
+  });
+
+  it('doesnt error if a generic class instance is passed', () => {
+    expect(() => {
+      runChecks(instance<Foo>(), new Foo());
+    }).not.toThrow();
+  });
+
+  it('errors if a non-instance is passed when a class reference is set', () => {
+    expect(() => {
+      runChecks(instance(Foo), 'foo');
+    }).toThrowErrorMatchingSnapshot();
+  });
+
+  it('doesnt error if the correct instance is passed', () => {
+    expect(() => {
+      runChecks(instance(Foo), new Foo());
+    }).not.toThrow();
+  });
+
+  it('handles an instance of the same name when passed in loose mode', () => {
+    class Foo2 {}
+
+    Object.defineProperty(Foo2, 'name', {
+      value: 'Foo',
     });
 
-    it('errors if a non-instance is passed', () => {
-      expect(() => {
-        runChecks(
-          instance(),
-          // @ts-expect-error Allow invalid type
-          'foo',
-        );
-      }).toThrowErrorMatchingSnapshot();
-    });
+    expect(() => {
+      runChecks(instance(Foo), new Foo2());
+    }).toThrow('Invalid field "key". Must be an instance of "Foo".');
 
-    it('errors if an object is passed when a class instance is required', () => {
-      expect(() => {
-        runChecks(inst, {});
-      }).toThrowErrorMatchingSnapshot();
-    });
+    expect(() => {
+      runChecks(instance(Foo, true), new Foo2());
+    }).not.toThrow();
+  });
 
-    it('doesnt error if a generic class instance is passed', () => {
-      expect(() => {
-        runChecks(instance<Foo>(), new Foo());
-      }).not.toThrow();
-    });
+  it('supports running checks on abstract classes', () => {
+    expect(() => {
+      runChecks(instance(Bar), new BarImpl());
+    }).not.toThrow();
+  });
 
-    it('errors if a non-instance is passed when a class reference is set', () => {
-      expect(() => {
-        runChecks(instance(Foo), 'foo');
-      }).toThrowErrorMatchingSnapshot();
-    });
+  describe('production', () => {
+    it(
+      'returns null if value is empty',
+      runInProd(() => {
+        expect(runChecks(inst, null)).toBeNull();
+      }),
+    );
 
-    it('doesnt error if the correct instance is passed', () => {
-      expect(() => {
-        runChecks(instance(Foo), new Foo());
-      }).not.toThrow();
-    });
+    // it(
+    //   'returns default value if value is undefined',
+    //   runInProd(() => {
+    //     const foo = new Foo();
 
-    it('handles an instance of the same name when passed in loose mode', () => {
-      class Foo2 {}
+    //     inst = instance(Foo, foo);
 
-      Object.defineProperty(Foo2, 'name', {
-        value: 'Foo',
-      });
+    //     expect(runChecks(inst)).toBe(foo);
+    //   }),
+    // );
 
-      expect(() => {
-        runChecks(instance(Foo), new Foo2());
-      }).toThrow('Invalid field "key". Must be an instance of "Foo".');
-
-      expect(() => {
-        runChecks(instance(Foo, true), new Foo2());
-      }).not.toThrow();
-    });
-
-    it('supports running checks on abstract classes', () => {
-      expect(() => {
-        runChecks(instance(Bar), new BarImpl());
-      }).not.toThrow();
-    });
-
-    describe('production', () => {
-      it(
-        'returns null if value is empty',
-        runInProd(() => {
-          expect(runChecks(inst, null)).toBeNull();
-        }),
-      );
-
-      it(
-        'returns default value if value is undefined',
-        runInProd(() => {
-          const foo = new Foo();
-          inst.defaultValue = foo;
-
-          expect(runChecks(inst)).toBe(foo);
-        }),
-      );
-
-      it(
-        'bypasses checks and returns value',
-        runInProd(() => {
-          expect(runChecks(inst, {})).toEqual({});
-        }),
-      );
-    });
+    it(
+      'bypasses checks and returns value',
+      runInProd(() => {
+        expect(runChecks(inst, {})).toEqual({});
+      }),
+    );
   });
 
   describe('typeAlias()', () => {
     it('returns the word class when no reference class', () => {
-      expect(instance().typeAlias()).toBe('class');
+      expect(instance().typeAlias).toBe('class');
     });
 
     it('returns the class name when a reference class is defined', () => {
-      expect(instance(Buffer).typeAlias()).toBe('Buffer');
+      expect(instance(Buffer).typeAlias).toBe('Buffer');
     });
-  });
-});
-
-describe('predicate()', () => {
-  it('returns a predicate instance', () => {
-    expect(predicate()).toBeInstanceOf(InstancePredicate);
-    // @ts-expect-error Allow access
-    expect(predicate().refClass).toBe(Predicate);
-  });
-
-  it('returns the class name for type alias', () => {
-    expect(predicate().typeAlias()).toBe('Predicate');
-  });
-
-  it('errors if a non-predicate is passed', () => {
-    expect(() => {
-      runChecks(
-        predicate(),
-        // @ts-expect-error Allow invalid type
-        123,
-      );
-    }).toThrow('Invalid field "key". Must be an instance of "Predicate".');
   });
 });
 
 describe('date()', () => {
-  it('returns a predicate for Date', () => {
-    expect(date()).toBeInstanceOf(InstancePredicate);
-    // @ts-expect-error Allow access
-    expect(date().refClass).toBe(Date);
-  });
-
   it('returns the class name for type alias', () => {
-    expect(date().typeAlias()).toBe('Date');
+    expect(date().typeAlias).toBe('Date');
   });
 
   it('errors if a non-Date is passed', () => {
@@ -178,14 +139,8 @@ describe('date()', () => {
 });
 
 describe('regex()', () => {
-  it('returns a predicate for RegExp', () => {
-    expect(regex()).toBeInstanceOf(InstancePredicate);
-    // @ts-expect-error Allow access
-    expect(regex().refClass).toBe(RegExp);
-  });
-
   it('returns the class name for type alias', () => {
-    expect(regex().typeAlias()).toBe('RegExp');
+    expect(regex().typeAlias).toBe('RegExp');
   });
 
   it('errors if a non-RegExp is passed', () => {

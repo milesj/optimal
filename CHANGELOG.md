@@ -6,6 +6,7 @@ into functions to reduce file size and overhead.
 #### 💥 Breaking
 
 - Renamed `Predicate#nonNullable()` method to `notNullable()`.
+- Removed the `predicate()` predicate (since its no longer classes).
 - Removed `Predicate#message()` method.
 - Removed the state boolean argument from `Predicate#required()`.
 
