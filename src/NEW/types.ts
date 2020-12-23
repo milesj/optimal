@@ -37,6 +37,33 @@ export type CustomCallback<T> = (
   rootObject: UnknownObject,
 ) => void;
 
+export interface CommonCriteria<T, S, NullS, NonNullS> {
+  and: (...keys: string[]) => S;
+  custom: (callback: CustomCallback<T>) => S;
+  deprecate: (message: string) => S;
+  never: () => S;
+  notNullable: () => NonNullS;
+  notRequired: () => S;
+  nullable: () => NullS;
+  only: () => S;
+  or: (...keys: string[]) => S;
+  required: () => S;
+  xor: (...keys: string[]) => S;
+}
+
+export interface NumberCriteria<S> {
+  between: (min: number, max: number, inclusive?: boolean) => S;
+  float: () => S;
+  gt: (min: number, inclusive?: boolean) => S;
+  gte: (min: number) => S;
+  int: () => S;
+  lt: (max: number, inclusive?: boolean) => S;
+  lte: (max: number) => S;
+  negative: () => S;
+  oneOf: (list: number[]) => S;
+  positive: () => S;
+}
+
 // SCHEMAS
 
 export interface Schema<T> {
@@ -53,7 +80,6 @@ export type SchemaFactory<T, P> = (defaultValue?: T) => P;
 
 export interface SchemaState<T> {
   defaultValue: T | undefined;
-  deprecatedMessage: string;
   metadata: UnknownObject;
   never: boolean;
   nullable: boolean;

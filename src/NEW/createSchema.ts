@@ -53,7 +53,7 @@ function validate<T>(
   currentObject: UnknownObject = {},
   rootObject?: UnknownObject,
 ): T | null {
-  const { defaultValue } = state;
+  const { defaultValue, metadata } = state;
 
   let value: T | null | undefined = initialValue;
 
@@ -65,9 +65,9 @@ function validate<T>(
       invariant(false, 'Field is required and must be defined.', path);
     }
   } else if (__DEV__) {
-    if (state.deprecatedMessage) {
+    if (metadata.deprecatedMessage) {
       // eslint-disable-next-line no-console
-      console.info(`Field "${path}" is deprecated. ${state.deprecatedMessage}`);
+      console.info(`Field "${path}" is deprecated. ${metadata.deprecatedMessage}`);
     }
 
     if (state.never) {
@@ -112,7 +112,6 @@ export default function createSchema<T, P>(
 
     const state: SchemaState<T> = {
       defaultValue: defaultValue ?? initialValue,
-      deprecatedMessage: '',
       metadata: {},
       never: false,
       nullable: false,

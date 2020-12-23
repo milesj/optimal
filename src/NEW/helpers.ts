@@ -51,8 +51,16 @@ export function invariant(condition: boolean, message: string, path: string = ''
   }
 }
 
+export function isNumber(value: unknown): value is number {
+  return typeof value === 'number' && !Number.isNaN(value);
+}
+
 export function isObject(value: unknown): value is object {
   return !!value && typeof value === 'object' && !Array.isArray(value);
+}
+
+export function isPlainObject(value: unknown): value is object {
+  return isObject(value) && value.constructor === Object;
 }
 
 export function pathKey(path: string): string {

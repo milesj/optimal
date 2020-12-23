@@ -1,7 +1,7 @@
-import * as criteria from '../criteria';
+import { commonCriteria } from '../criteria';
 import createSchema from '../createSchema';
 import { instanceOf, invariant, isObject } from '../helpers';
-import { Constructor, CriteriaValidator, CustomCallback, Schema, SchemaState } from '../types';
+import { Constructor, CriteriaValidator, CommonCriteria, Schema, SchemaState } from '../types';
 
 function refName(ref: Function): string {
   return ref.name || ref.constructor.name;
@@ -36,23 +36,14 @@ function of<T>(
   }
 }
 
-export interface InstanceSchema<T> extends Schema<T> {
-  and: (...keys: string[]) => InstanceSchema<T>;
-  custom: (callback: CustomCallback<T>) => InstanceSchema<T>;
-  deprecate: (message: string) => InstanceSchema<T>;
-  never: () => InstanceSchema<never>;
-  notNullable: () => InstanceSchema<NonNullable<T>>;
-  notRequired: () => InstanceSchema<T>;
-  nullable: () => InstanceSchema<T | null>;
-  only: () => InstanceSchema<T>;
-  or: (...keys: string[]) => InstanceSchema<T>;
-  required: () => InstanceSchema<T>;
-  xor: (...keys: string[]) => InstanceSchema<T>;
+export interface InstanceSchema<T>
+  extends Schema<T>,
+    CommonCriteria<T, InstanceSchema<T>, InstanceSchema<T | null>, InstanceSchema<NonNullable<T>>> {
   // @internal
   of: (ref?: Constructor<T>, loose?: boolean) => InstanceSchema<T>;
 }
 
-const schema = createSchema('instance', { ...criteria, of }, { initialValue: null });
+const schema = createSchema('instance', { ...commonCriteria, of }, { initialValue: null });
 
 export function instance<T = unknown>(
   ref?: Constructor<T>,
