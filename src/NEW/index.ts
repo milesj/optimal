@@ -3,11 +3,11 @@
  * @license     https://opensource.org/licenses/MIT
  */
 
-import * as checks from './checks';
-import createPredicate from './createPredicate';
+import * as criteria from './criteria';
+import createSchema from './createSchema';
 
-export { checks, createPredicate };
+export { criteria, createSchema };
 
-export * from './predicates/bool';
-export * from './predicates/instance';
+export * from './schemas/bool';
+export * from './schemas/instance';
 export * from './types';

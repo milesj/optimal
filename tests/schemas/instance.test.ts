@@ -1,4 +1,4 @@
-import { instance, date, regex, InstancePredicate } from '../../src/NEW';
+import { instance, date, regex, InstanceSchema } from '../../src/NEW';
 import { runChecks, runInProd } from '../helpers';
 
 describe('instance()', () => {
@@ -6,10 +6,10 @@ describe('instance()', () => {
   abstract class Bar {}
   class BarImpl extends Bar {}
 
-  let inst: InstancePredicate<Foo | null>;
+  let schema: InstanceSchema<Foo | null>;
 
   beforeEach(() => {
-    inst = instance(Foo);
+    schema = instance(Foo);
   });
 
   it('errors if a non-class is passed', () => {
@@ -33,7 +33,7 @@ describe('instance()', () => {
   });
 
   it('returns null for no data', () => {
-    expect(runChecks(inst, null)).toBeNull();
+    expect(runChecks(schema, null)).toBeNull();
   });
 
   it('errors if a non-instance is passed', () => {
@@ -44,7 +44,7 @@ describe('instance()', () => {
 
   it('errors if an object is passed when a class instance is required', () => {
     expect(() => {
-      runChecks(inst, {});
+      runChecks(schema, {});
     }).toThrowErrorMatchingSnapshot();
   });
 
@@ -64,6 +64,14 @@ describe('instance()', () => {
     expect(() => {
       runChecks(instance(Foo), new Foo());
     }).not.toThrow();
+  });
+
+  it('returns the word class when no reference class', () => {
+    expect(instance().typeAlias).toBe('class');
+  });
+
+  it('returns the class name when a reference class is defined', () => {
+    expect(instance(Buffer).typeAlias).toBe('Buffer');
   });
 
   it('handles an instance of the same name when passed in loose mode', () => {
@@ -92,7 +100,7 @@ describe('instance()', () => {
     it(
       'returns null if value is empty',
       runInProd(() => {
-        expect(runChecks(inst, null)).toBeNull();
+        expect(runChecks(schema, null)).toBeNull();
       }),
     );
 
@@ -110,19 +118,9 @@ describe('instance()', () => {
     it(
       'bypasses checks and returns value',
       runInProd(() => {
-        expect(runChecks(inst, {})).toEqual({});
+        expect(runChecks(schema, {})).toEqual({});
       }),
     );
-  });
-
-  describe('typeAlias()', () => {
-    it('returns the word class when no reference class', () => {
-      expect(instance().typeAlias).toBe('class');
-    });
-
-    it('returns the class name when a reference class is defined', () => {
-      expect(instance(Buffer).typeAlias).toBe('Buffer');
-    });
   });
 });
 

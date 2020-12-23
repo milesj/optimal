@@ -1,13 +1,13 @@
 import { invariant, pathKey } from '../helpers';
-import { CheckerCallback, PredicateState } from '../types';
+import { CriteriaValidator, SchemaState } from '../types';
 
 /**
  * Map a list of field names that must not be defined alongside this field.
  */
 export default function xor<T>(
-  state: PredicateState<T>,
+  state: SchemaState<T>,
   ...keys: string[]
-): void | CheckerCallback<T> {
+): void | CriteriaValidator<T> {
   if (__DEV__) {
     invariant(keys.length > 0, 'XOR requires a list of field names.');
 

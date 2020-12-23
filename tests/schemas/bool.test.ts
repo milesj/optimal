@@ -1,11 +1,11 @@
-import { bool, BoolPredicate } from '../../src/NEW';
+import { bool, BoolSchema } from '../../src/NEW';
 import { runChecks, runInProd } from '../helpers';
 
-describe('BooleanPredicate', () => {
-  let predicate: BoolPredicate<boolean>;
+describe('bool()', () => {
+  let schema: BoolSchema;
 
   beforeEach(() => {
-    predicate = bool();
+    schema = bool();
   });
 
   it('returns default value if value is undefined', () => {
@@ -34,9 +34,9 @@ describe('BooleanPredicate', () => {
     }).toThrowErrorMatchingSnapshot();
   });
 
-  // it('returns the type alias', () => {
-  //   expect(bool().typeAlias()).toBe('boolean');
-  // });
+  it('returns the type alias', () => {
+    expect(bool().typeAlias).toBe('boolean');
+  });
 
   // describe('default()', () => {
   //   it('returns the default value', () => {
@@ -70,55 +70,55 @@ describe('BooleanPredicate', () => {
     it(
       'bypasses checks and returns value',
       runInProd(() => {
-        expect(runChecks(predicate, false)).toBe(false);
+        expect(runChecks(schema, false)).toBe(false);
       }),
     );
   });
 
   describe('onlyFalse()', () => {
     beforeEach(() => {
-      predicate.onlyFalse();
+      schema.onlyFalse();
     });
 
     it('errors if value is `true`', () => {
       expect(() => {
-        runChecks(predicate, true);
+        runChecks(schema, true);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('passes if value is `false`', () => {
       expect(() => {
-        runChecks(predicate, false);
+        runChecks(schema, false);
       }).not.toThrow();
     });
 
     it('passes if value is undefined', () => {
       expect(() => {
-        runChecks(predicate);
+        runChecks(schema);
       }).not.toThrow();
     });
   });
 
   describe('onlyTrue()', () => {
     beforeEach(() => {
-      predicate.onlyTrue();
+      schema.onlyTrue();
     });
 
     it('errors if value is `false`', () => {
       expect(() => {
-        runChecks(predicate, false);
+        runChecks(schema, false);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('passes if value is `true`', () => {
       expect(() => {
-        runChecks(predicate, true);
+        runChecks(schema, true);
       }).not.toThrow();
     });
 
     it('passes if value is undefined', () => {
       expect(() => {
-        runChecks(predicate);
+        runChecks(schema);
       }).not.toThrow();
     });
   });

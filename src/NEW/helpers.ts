@@ -2,7 +2,7 @@ import { Constructor } from './types';
 
 /**
  * Native `instanceof` checks are problematic, as cross realm checks fail.
- * They will also fail when comparing against source and built files.
+ * They will also fail when comparing against source and compiled files.
  * So emulate an `instanceof` check by comparing constructor names.
  */
 export function instanceOf<T = unknown>(

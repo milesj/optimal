@@ -1,10 +1,10 @@
 import { invariant } from '../helpers';
-import { CheckerCallback, PredicateState } from '../types';
+import { CriteriaValidator, SchemaState } from '../types';
 
 /**
  * Mark that this field can ONLY use a value that matches the default value.
  */
-export default function only<T>(state: PredicateState<T>): void | CheckerCallback<T> {
+export default function only<T>(state: SchemaState<T>): void | CriteriaValidator<T> {
   if (__DEV__) {
     const { defaultValue } = state;
 
@@ -19,7 +19,7 @@ export default function only<T>(state: PredicateState<T>): void | CheckerCallbac
       `Only requires a default value of type ${state.type}.`,
     );
 
-    return (path, value) => {
+    return (value, path) => {
       invariant(value === defaultValue, `Value may only be "${String(defaultValue)}".`, path);
     };
   }

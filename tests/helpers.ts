@@ -1,7 +1,7 @@
-import { Predicate, UnknownObject } from '../src/NEW/types';
+import { Schema, UnknownObject } from '../src/NEW/types';
 
 export function runChecks<T>(
-  predicate: Predicate<T>,
+  predicate: Schema<T>,
   value?: Partial<T> | null,
   { key = 'key', struct }: { key?: string; struct?: UnknownObject } = {},
 ): T | null {

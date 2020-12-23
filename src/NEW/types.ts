@@ -20,16 +20,16 @@ export type UnknownObject = Record<string, unknown>;
 
 export type Constructor<T> = (new (...args: unknown[]) => T) | (Function & { prototype: T });
 
-// CHECKERS
+// CRITERIA
 
-export type CheckerCallback<T> = (
+export type CriteriaValidator<T> = (
   value: T,
   path: string,
   currentObject: UnknownObject,
   rootObject: UnknownObject,
 ) => unknown;
 
-export type Checker<T> = (state: PredicateState<T>, ...args: any[]) => void | CheckerCallback<T>;
+export type Criteria<T> = (state: SchemaState<T>, ...args: any[]) => void | CriteriaValidator<T>;
 
 export type CustomCallback<T> = (
   value: T,
@@ -37,9 +37,9 @@ export type CustomCallback<T> = (
   rootObject: UnknownObject,
 ) => void;
 
-// PREDICATES
+// SCHEMAS
 
-export interface Predicate<T> {
+export interface Schema<T> {
   typeAlias: string;
   validate: (
     value: T,
@@ -49,9 +49,9 @@ export interface Predicate<T> {
   ) => T;
 }
 
-export type PredicateFactory<T, P> = (defaultValue?: T) => P;
+export type SchemaFactory<T, P> = (defaultValue?: T) => P;
 
-export interface PredicateState<T> {
+export interface SchemaState<T> {
   defaultValue: T | undefined;
   deprecatedMessage: string;
   metadata: UnknownObject;
@@ -61,8 +61,8 @@ export interface PredicateState<T> {
   type: SupportedType;
 }
 
-export interface PredicateOptions<T> {
-  castValue?: (value: unknown) => T;
+export interface SchemaOptions<T> {
+  cast?: (value: unknown) => T;
   initialValue: T;
-  onCreate?: Checker<T>;
+  onCreate?: Criteria<T>;
 }

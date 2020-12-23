@@ -14,6 +14,11 @@ into functions to reduce file size and overhead.
 
 - Added `Predicate#notRequired()` method.
 
+#### 🛠 Internals
+
+- Renamed predicates to schemas.
+- Renamed validation checks to criteria.
+
 ### 4.3.0 - 2020-02-20
 
 #### 🚀 Updates

@@ -1,9 +1,9 @@
-import { PredicateState } from '../types';
+import { SchemaState } from '../types';
 
 /**
  * Mark that this field should never be used.
  */
-export default function never<T>(state: PredicateState<T>) {
+export default function never<T>(state: SchemaState<T>) {
   state.defaultValue = undefined;
   state.never = true;
 }

@@ -1,10 +1,10 @@
 import { invariant } from '../helpers';
-import { PredicateState } from '../types';
+import { SchemaState } from '../types';
 
 /**
  * Set a message to log when this field is present.
  */
-export default function deprecate<T>(state: PredicateState<T>, message: string) {
+export default function deprecate<T>(state: SchemaState<T>, message: string) {
   if (__DEV__) {
     invariant(
       typeof message === 'string' && !!message,

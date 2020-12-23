@@ -1,11 +1,11 @@
 import { invariant, isObject } from './helpers';
 import {
-  Checker,
-  CheckerCallback,
-  Predicate,
-  PredicateFactory,
-  PredicateOptions,
-  PredicateState,
+  Criteria,
+  CriteriaValidator,
+  Schema,
+  SchemaFactory,
+  SchemaOptions,
+  SchemaState,
   SupportedType,
   UnknownObject,
 } from './types';
@@ -46,8 +46,8 @@ function checkType(type: string, value: unknown, path: string = '') {
  * If nullable and the value is null, return early.
  */
 function validate<T>(
-  state: PredicateState<T>,
-  checks: CheckerCallback<T>[],
+  state: SchemaState<T>,
+  validators: CriteriaValidator<T>[],
   initialValue: T,
   path: string = '',
   currentObject: UnknownObject = {},
@@ -91,8 +91,8 @@ function validate<T>(
   // Run validations and produce a new value
   let nextValue = value;
 
-  checks.forEach((checker) => {
-    const result = checker(nextValue!, path, currentObject, rootObject || currentObject);
+  validators.forEach((validator) => {
+    const result = validator(nextValue!, path, currentObject, rootObject || currentObject);
 
     if (result !== undefined) {
       nextValue = result as NonNullable<T>;
@@ -102,15 +102,15 @@ function validate<T>(
   return nextValue!;
 }
 
-export default function createPredicate<T, P>(
+export default function createSchema<T, P>(
   type: SupportedType,
-  checkers: Record<string, Checker<T>>,
-  { initialValue, castValue }: PredicateOptions<T>,
-): PredicateFactory<T, P> {
+  criteria: Record<string, Criteria<T>>,
+  { initialValue, cast }: SchemaOptions<T>,
+): SchemaFactory<T, P> {
   return (defaultValue) => {
-    const cases: CheckerCallback<T>[] = [];
+    const validators: CriteriaValidator<T>[] = [];
 
-    const state: PredicateState<T> = {
+    const state: SchemaState<T> = {
       defaultValue: defaultValue ?? initialValue,
       deprecatedMessage: '',
       metadata: {},
@@ -120,28 +120,24 @@ export default function createPredicate<T, P>(
       type,
     };
 
-    const predicate: Predicate<T> = {
+    const predicate: Schema<T> = {
       typeAlias: type,
       validate(value, path, currentObject, rootObject) {
-        const result = validate(state, cases, value, path, currentObject, rootObject);
+        const result = validate(state, validators, value, path, currentObject, rootObject);
 
-        if (castValue) {
-          return castValue(result);
-        }
-
-        return result!;
+        return cast ? cast(result) : result!;
       },
     };
 
     // Add and wrap all checkers into the predicate object
-    Object.entries(checkers).forEach(([name, checker]) => {
+    Object.entries(criteria).forEach(([name, crit]) => {
       Object.defineProperty(predicate, name, {
         enumerable: true,
         value: (...args: unknown[]) => {
-          const result = checker(state, ...args);
+          const validator = crit(state, ...args);
 
-          if (result) {
-            cases.push(result);
+          if (validator) {
+            validators.push(validator);
           }
 
           return predicate;
