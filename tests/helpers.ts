@@ -1,21 +1,21 @@
-import Predicate from '../src/Predicate';
-import Schema from '../src/Schema';
+import { Predicate, UnknownObject } from '../src/NEW/types';
 
 export function runChecks<T>(
   predicate: Predicate<T>,
   value?: Partial<T> | null,
-  { key = 'key', struct }: { key?: string; struct?: object } = {},
+  { key = 'key', struct }: { key?: string; struct?: UnknownObject } = {},
 ): T | null {
-  const schema = predicate.schema || new Schema({});
-  const currentStruct = struct ?? { [key]: value };
+  // const schema = predicate.schema || new Schema({});
+  // const currentStruct = struct ?? { [key]: value };
+  // schema.struct = { ...currentStruct };
+  // schema.parentStruct = { ...currentStruct };
+  // schema.initialStruct = { ...currentStruct };
+  // predicate.schema = schema;
+  // return predicate.run(value as T, key, schema);
 
-  schema.struct = { ...currentStruct };
-  schema.parentStruct = { ...currentStruct };
-  schema.initialStruct = { ...currentStruct };
+  const currentObject = struct ?? { [key]: value };
 
-  predicate.schema = schema;
-
-  return predicate.run(value as T, key, schema);
+  return predicate.validate(value as T, key, currentObject);
 }
 
 export function runInProd(cb: () => unknown) {

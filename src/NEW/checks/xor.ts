@@ -11,7 +11,7 @@ export default function xor<T>(
   if (__DEV__) {
     invariant(keys.length > 0, 'XOR requires a list of field names.');
 
-    return (path, value, currentObject) => {
+    return (value, path, currentObject) => {
       const xorKeys = [pathKey(path), ...keys];
       const defs = xorKeys.filter(
         (key) => currentObject[key] !== undefined && currentObject[key] !== null,

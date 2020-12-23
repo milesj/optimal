@@ -9,11 +9,11 @@ export default function custom<T>(
   callback: CustomCallback<T>,
 ): void | CheckerCallback<T> {
   if (__DEV__) {
-    invariant(typeof callback === 'function', 'Custom blueprints require a validation function.');
+    invariant(typeof callback === 'function', 'Custom requires a validation function.');
 
-    return (path, value) => {
+    return (value, path, currentObject, rootObject) => {
       try {
-        callback(value, {}); // TODO
+        callback(value, currentObject, rootObject);
       } catch (error) {
         invariant(false, error.message, path);
       }

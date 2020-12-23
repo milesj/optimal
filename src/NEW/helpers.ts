@@ -4,11 +4,9 @@ export function invariant(condition: boolean, message: string, path: string = ''
       return;
     }
 
-    const prefix = `Invalid field "${path}"`;
+    const prefix = `Invalid field "${path}".`;
     const noErrorPrefix = false; // TODO
-
-    const error =
-      prefix && !noErrorPrefix ? new Error(`${prefix}. ${message}`) : new Error(message);
+    const error = prefix && !noErrorPrefix ? new Error(`${prefix} ${message}`) : new Error(message);
 
     throw error;
   }

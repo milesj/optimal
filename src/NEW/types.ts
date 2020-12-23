@@ -17,6 +17,17 @@ export type SupportedType =
 
 export type UnknownObject = Record<string, unknown>;
 
+// PREDICATES
+
+export interface Predicate<T> {
+  validate: (
+    value: T,
+    path?: string,
+    currentObject?: UnknownObject,
+    rootObject?: UnknownObject,
+  ) => T;
+}
+
 export type PredicateFactory<T, P> = (defaultValue?: T) => P;
 
 export interface PredicateState<T> {
@@ -28,43 +39,19 @@ export interface PredicateState<T> {
   type: SupportedType;
 }
 
+// CHECKERS
+
 export type CheckerCallback<T> = (
-  path: string,
   value: T,
+  path: string,
   currentObject: UnknownObject,
   rootObject: UnknownObject,
 ) => unknown;
 
-export type Checker<T> = (
-  state: PredicateState<T>,
-  ...args: unknown[]
-) => void | CheckerCallback<T>;
+export type Checker<T> = (state: PredicateState<T>, ...args: any[]) => void | CheckerCallback<T>;
 
-// OLD
-
-type TODO<T = any> = any;
-
-export type ArrayOf<T> = T[];
-
-export type FuncOf = (...args: unknown[]) => unknown;
-
-export type ObjectOf<T, Keys extends string = string> = {
-  [K in Keys]: T;
-};
-
-export type Blueprint<Struct extends object> = { [K in keyof Struct]-?: TODO<Struct[K]> };
-
-export type CustomCallback<T, S extends object = TODO> = (value: T, schema: TODO<S>) => void;
-
-export type DefaultValueFactory<T> = (struct: any) => T;
-
-export type DefaultValue<T> = T | DefaultValueFactory<T> | null;
-
-export type NonUndefined<T> = T extends undefined ? never : T;
-
-export interface OptimalOptions {
-  file?: string;
-  name?: string;
-  prefix?: string;
-  unknown?: boolean;
-}
+export type CustomCallback<T> = (
+  value: T,
+  currentObject: UnknownObject,
+  rootObject: UnknownObject,
+) => void;

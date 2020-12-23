@@ -90,7 +90,7 @@ function validate<T>(
   let nextValue = value;
 
   checks.forEach((checker) => {
-    const result = checker(path, nextValue!, currentObject, rootObject || currentObject);
+    const result = checker(nextValue!, path, currentObject, rootObject || currentObject);
 
     if (result !== undefined) {
       nextValue = result as NonNullable<T>;
@@ -133,22 +133,20 @@ export default function createPredicate<T, P>(
       };
     });
 
-    // Add our validation
+    // Add our custom validation
     predicate.validate = (
       value: T,
       path?: string,
       currentObject?: UnknownObject,
       rootObject?: UnknownObject,
     ) => {
-      checkType(type, value, path);
-
-      const returnValue = validate(state, cases, value, path, currentObject, rootObject);
+      const result = validate(state, cases, value, path, currentObject, rootObject);
 
       if (castValue) {
-        return castValue(returnValue);
+        return castValue(result);
       }
 
-      return returnValue;
+      return result;
     };
 
     return (predicate as unknown) as P;

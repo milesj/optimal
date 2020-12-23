@@ -11,7 +11,7 @@ export default function and<T>(
   if (__DEV__) {
     invariant(keys.length > 0, 'AND requires a list of field names.');
 
-    return (path, value, currentObject) => {
+    return (value, path, currentObject) => {
       const andKeys = [pathKey(path), ...keys];
       const undefs = andKeys.filter(
         (key) => currentObject[key] === undefined || currentObject[key] === null,

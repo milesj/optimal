@@ -11,7 +11,7 @@ export default function or<T>(
   if (__DEV__) {
     invariant(keys.length > 0, 'OR requires a list of field names.');
 
-    return (path, value, currentObject) => {
+    return (value, path, currentObject) => {
       const orKeys = [pathKey(path), ...keys];
       const defs = orKeys.filter(
         (key) => currentObject[key] !== undefined && currentObject[key] !== null,
