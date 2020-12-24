@@ -18,8 +18,8 @@ describe('number()', () => {
     }).toThrowErrorMatchingSnapshot();
   });
 
-  it('returns the type name', () => {
-    expect(number().typeAlias).toBe('number');
+  it('returns the type alias', () => {
+    expect(number().type()).toBe('number');
   });
 
   it('returns default value if value is undefined', () => {
@@ -349,7 +349,7 @@ describe('number()', () => {
 
     it('errors if array contains a non-number', () => {
       expect(() => {
-        // @ts-ignore Testing wrong type
+        // @ts-expect-error Testing wrong type
         schema.oneOf(['foo', 123]);
       }).toThrowErrorMatchingSnapshot();
     });

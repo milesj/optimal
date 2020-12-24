@@ -35,7 +35,7 @@ describe('bool()', () => {
   });
 
   it('returns the type alias', () => {
-    expect(bool().typeAlias).toBe('boolean');
+    expect(bool().type()).toBe('boolean');
   });
 
   // describe('default()', () => {

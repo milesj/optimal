@@ -24,7 +24,7 @@ describe('StringPredicate', () => {
   });
 
   it('returns the type alias', () => {
-    expect(string().typeAlias).toBe('string');
+    expect(string().type()).toBe('string');
   });
 
   it('returns default value if value is undefined', () => {

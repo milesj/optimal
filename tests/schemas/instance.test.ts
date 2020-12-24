@@ -9,7 +9,7 @@ describe('instance()', () => {
   let schema: InstanceSchema<Foo | null>;
 
   beforeEach(() => {
-    schema = instance(Foo);
+    schema = instance().of(Foo);
   });
 
   it('errors if a non-class is passed', () => {
@@ -28,7 +28,7 @@ describe('instance()', () => {
 
   it('doesnt error if a class is passed', () => {
     expect(() => {
-      instance(Foo);
+      instance().of(Foo);
     }).not.toThrow();
   });
 
@@ -38,7 +38,11 @@ describe('instance()', () => {
 
   it('errors if a non-instance is passed', () => {
     expect(() => {
-      runChecks(instance(), 'foo');
+      runChecks(
+        instance(),
+        // @ts-expect-error
+        'foo',
+      );
     }).toThrowErrorMatchingSnapshot();
   });
 
@@ -56,22 +60,22 @@ describe('instance()', () => {
 
   it('errors if a non-instance is passed when a class reference is set', () => {
     expect(() => {
-      runChecks(instance(Foo), 'foo');
+      runChecks(schema, 'foo');
     }).toThrowErrorMatchingSnapshot();
   });
 
   it('doesnt error if the correct instance is passed', () => {
     expect(() => {
-      runChecks(instance(Foo), new Foo());
+      runChecks(schema, new Foo());
     }).not.toThrow();
   });
 
   it('returns the word class when no reference class', () => {
-    expect(instance().typeAlias).toBe('class');
+    expect(instance().type()).toBe('class');
   });
 
   it('returns the class name when a reference class is defined', () => {
-    expect(instance(Buffer).typeAlias).toBe('Buffer');
+    expect(instance().of(Buffer).type()).toBe('Buffer');
   });
 
   it('handles an instance of the same name when passed in loose mode', () => {
@@ -82,17 +86,17 @@ describe('instance()', () => {
     });
 
     expect(() => {
-      runChecks(instance(Foo), new Foo2());
+      runChecks(schema, new Foo2());
     }).toThrow('Invalid field "key". Must be an instance of "Foo".');
 
     expect(() => {
-      runChecks(instance(Foo, true), new Foo2());
+      runChecks(instance().of(Foo, true), new Foo2());
     }).not.toThrow();
   });
 
   it('supports running checks on abstract classes', () => {
     expect(() => {
-      runChecks(instance(Bar), new BarImpl());
+      runChecks(instance().of(Bar), new BarImpl());
     }).not.toThrow();
   });
 
@@ -126,7 +130,7 @@ describe('instance()', () => {
 
 describe('date()', () => {
   it('returns the class name for type alias', () => {
-    expect(date().typeAlias).toBe('Date');
+    expect(date().type()).toBe('Date');
   });
 
   it('errors if a non-Date is passed', () => {
@@ -138,7 +142,7 @@ describe('date()', () => {
 
 describe('regex()', () => {
   it('returns the class name for type alias', () => {
-    expect(regex().typeAlias).toBe('RegExp');
+    expect(regex().type()).toBe('RegExp');
   });
 
   it('errors if a non-RegExp is passed', () => {

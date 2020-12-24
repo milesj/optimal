@@ -1,10 +1,10 @@
 import { invariant, pathKey } from '../helpers';
-import { CriteriaState, CustomCallback, SchemaState } from '../types';
+import { Criteria, CustomCallback, SchemaState } from '../types';
 
 /**
  * Map a list of field names that must be defined alongside this field.
  */
-export function and<T>(state: SchemaState<T>, ...keys: string[]): void | CriteriaState<T> {
+export function and<T>(state: SchemaState<T>, ...keys: string[]): void | Criteria<T> {
   if (__DEV__) {
     invariant(keys.length > 0, 'AND requires a list of field names.');
 
@@ -32,10 +32,7 @@ export function and<T>(state: SchemaState<T>, ...keys: string[]): void | Criteri
 /**
  * Set a callback to run custom validation logic.
  */
-export function custom<T>(
-  state: SchemaState<T>,
-  callback: CustomCallback<T>,
-): void | CriteriaState<T> {
+export function custom<T>(state: SchemaState<T>, callback: CustomCallback<T>): void | Criteria<T> {
   if (__DEV__) {
     invariant(typeof callback === 'function', 'Custom requires a validation function.');
 
@@ -76,14 +73,14 @@ export function never<T>(state: SchemaState<T>) {
 /**
  * Disallow null values.
  */
-export function nonNullable<T>(state: SchemaState<T>) {
+export function notNullable<T>(state: SchemaState<T>) {
   state.nullable = false;
 }
 
 /**
  * Require this field to NOT be explicitly defined.
  */
-export function nonRequired<T>(state: SchemaState<T>) {
+export function notRequired<T>(state: SchemaState<T>) {
   state.required = false;
 }
 
@@ -97,7 +94,7 @@ export function nullable<T>(state: SchemaState<T>) {
 /**
  * Mark that this field can ONLY use a value that matches the default value.
  */
-export function only<T>(state: SchemaState<T>): void | CriteriaState<T> {
+export function only<T>(state: SchemaState<T>): void | Criteria<T> {
   if (__DEV__) {
     const { defaultValue } = state;
 
@@ -123,7 +120,7 @@ export function only<T>(state: SchemaState<T>): void | CriteriaState<T> {
 /**
  * Map a list of field names that must have at least 1 defined.
  */
-export function or<T>(state: SchemaState<T>, ...keys: string[]): void | CriteriaState<T> {
+export function or<T>(state: SchemaState<T>, ...keys: string[]): void | Criteria<T> {
   if (__DEV__) {
     invariant(keys.length > 0, 'OR requires a list of field names.');
 
@@ -153,7 +150,7 @@ export function required<T>(state: SchemaState<T>) {
 /**
  * Map a list of field names that must not be defined alongside this field.
  */
-export function xor<T>(state: SchemaState<T>, ...keys: string[]): void | CriteriaState<T> {
+export function xor<T>(state: SchemaState<T>, ...keys: string[]): void | Criteria<T> {
   if (__DEV__) {
     invariant(keys.length > 0, 'XOR requires a list of field names.');
 

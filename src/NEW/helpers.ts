@@ -51,23 +51,23 @@ export function invariant(condition: boolean, message: string, path: string = ''
   }
 }
 
-export function isNumber(value: unknown): value is number {
-  return typeof value === 'number' && !Number.isNaN(value);
-}
-
 export function isObject(value: unknown): value is object {
   return !!value && typeof value === 'object' && !Array.isArray(value);
 }
 
-export function isPlainObject(value: unknown): value is object {
-  return isObject(value) && value.constructor === Object;
-}
-
 export function isSchema<T>(value: unknown): value is Schema<T> {
-  return isObject(value) && typeof (value as UnknownObject).validate === 'function';
+  return (
+    isObject(value) &&
+    typeof (value as UnknownObject).validate === 'function' &&
+    typeof (value as UnknownObject).type === 'function'
+  );
 }
 
-export function isString(value: unknown): value is string {
+export function isValidNumber(value: unknown): value is number {
+  return typeof value === 'number' && !Number.isNaN(value);
+}
+
+export function isValidString(value: unknown): value is string {
   return typeof value === 'string' && value !== '';
 }
 

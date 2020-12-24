@@ -1,11 +1,11 @@
 import { array, string, ArraySchema } from '../../src/NEW';
 import { runChecks, runInProd } from '../helpers';
 
-describe('ArraySchema', () => {
-  let schema: ArraySchema<string>;
+describe('array()', () => {
+  let schema: ArraySchema<string[]>;
 
   beforeEach(() => {
-    schema = array(string());
+    schema = array().of(string());
   });
 
   it('errors if a non-predicate is passed', () => {
@@ -32,15 +32,15 @@ describe('ArraySchema', () => {
   });
 
   it('returns the type name when no contents', () => {
-    expect(array().typeAlias).toBe('array');
+    expect(array().type()).toBe('array');
   });
 
   it('returns the type name with contents type', () => {
-    expect(array(string()).typeAlias).toBe('array<string>');
+    expect(array().of(string()).type()).toBe('array<string>');
   });
 
   it('returns default value if value is undefined', () => {
-    expect(runChecks(array(string(), ['abc']))).toEqual(['abc']);
+    expect(runChecks(array(['abc']).of(string()))).toEqual(['abc']);
   });
 
   // it('returns default value from factory if value is undefined', () => {
@@ -88,7 +88,7 @@ describe('ArraySchema', () => {
   });
 
   it('supports arrays of arrays', () => {
-    const nestedPredicate = array(array(string()));
+    const nestedPredicate = array().of(array().of(string()));
     const data = [
       ['foo', 'bar'],
       ['baz', 'qux'],
@@ -98,7 +98,7 @@ describe('ArraySchema', () => {
   });
 
   it('errors correctly for arrays in arrays', () => {
-    const nestedPredicate = array(array(string()));
+    const nestedPredicate = array().of(array().of(string()));
 
     expect(() => {
       runChecks(nestedPredicate, [
@@ -120,7 +120,7 @@ describe('ArraySchema', () => {
     it(
       'returns default value if value is undefined',
       runInProd(() => {
-        expect(runChecks(array(string(), ['abc']))).toEqual(['abc']);
+        expect(runChecks(array(['abc']).of(string()))).toEqual(['abc']);
       }),
     );
 

@@ -1,44 +1,5 @@
-import { invariant, isObject } from './helpers';
-import {
-  Criteria,
-  CriteriaState,
-  Schema,
-  SchemaFactory,
-  SchemaOptions,
-  SchemaState,
-  SupportedType,
-  UnknownObject,
-} from './types';
-
-/**
- * Validate the type of value.
- */
-function checkType(type: string, value: unknown, path: string = '') {
-  if (__DEV__) {
-    switch (type) {
-      case 'array':
-      case 'tuple':
-        invariant(Array.isArray(value), 'Must be an array.', path);
-        break;
-
-      case 'custom':
-      case 'instance':
-      case 'union':
-        // Handle in the sub-class
-        break;
-
-      case 'object':
-      case 'shape':
-        invariant(isObject(value), 'Must be a plain object.', path);
-        break;
-
-      default:
-        // eslint-disable-next-line valid-typeof
-        invariant(typeof value === type, `Must be a ${type}.`, path);
-        break;
-    }
-  }
-}
+import { invariant } from './helpers';
+import { Criteria, Schema, SchemaOptions, SchemaState, UnknownObject } from './types';
 
 /**
  * Run all validation checks that have been enqueued and return a type casted value.
@@ -47,7 +8,7 @@ function checkType(type: string, value: unknown, path: string = '') {
  */
 function validate<T>(
   state: SchemaState<T>,
-  validators: CriteriaState<T>[],
+  validators: Criteria<T>[],
   initialValue: T,
   path: string = '',
   currentObject: UnknownObject = {},
@@ -84,8 +45,6 @@ function validate<T>(
     if (__DEV__) {
       invariant(false, 'Null is not allowed.', path);
     }
-  } else {
-    checkType(state.type, value, path);
   }
 
   // Run validations and produce a new value
@@ -109,48 +68,51 @@ function validate<T>(
   return nextValue!;
 }
 
-export default function createSchema<T, S>(
-  type: SupportedType,
-  criteria: Record<string, Criteria<T>>,
-  { initialValue, cast }: SchemaOptions<T>,
-): SchemaFactory<T, S> {
-  return (defaultValue) => {
-    const validators: CriteriaState<T>[] = [];
+export default function createSchema<T>({
+  cast,
+  criteria,
+  defaultValue,
+  type,
+  validateType,
+}: SchemaOptions<T>) {
+  const validators: Criteria<T>[] = [{ validate: validateType }];
 
-    const state: SchemaState<T> = {
-      defaultValue: defaultValue ?? initialValue,
-      metadata: {},
-      never: false,
-      nullable: false,
-      required: false,
-      type,
-    };
-
-    const schema: Schema<T> = {
-      typeAlias: type,
-      validate(value, path, currentObject, rootObject) {
-        const result = validate(state, validators, value, path, currentObject, rootObject);
-
-        return cast && result !== null ? cast(result) : result!;
-      },
-    };
-
-    // Add and wrap all checkers into the schema object
-    Object.entries(criteria).forEach(([name, crit]) => {
-      Object.defineProperty(schema, name, {
-        enumerable: true,
-        value: (...args: unknown[]) => {
-          const validator = crit(state, ...args);
-
-          if (validator) {
-            validators.push(validator);
-          }
-
-          return schema;
-        },
-      });
-    });
-
-    return (schema as unknown) as S;
+  const state: SchemaState<T> = {
+    defaultValue,
+    metadata: {},
+    never: false,
+    nullable: false,
+    required: false,
+    type,
   };
+
+  const schema: Schema<T> = {
+    type() {
+      return state.type;
+    },
+    validate(value, path, currentObject, rootObject) {
+      const result = validate(state, validators, value, path, currentObject, rootObject);
+
+      return cast && result !== null ? cast(result) : result!;
+    },
+  };
+
+  Object.entries(criteria).forEach(([name, crit]) => {
+    Object.defineProperty(schema, name, {
+      enumerable: true,
+      value: (...args: unknown[]) => {
+        const validator = crit(state, ...args);
+
+        if (validator) {
+          validators.push(validator);
+        }
+
+        return schema;
+      },
+    });
+  });
+
+  // We return `any` so that the schema type can be narrowed
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return schema as any;
 }

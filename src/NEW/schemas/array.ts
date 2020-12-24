@@ -1,62 +1,35 @@
 import { commonCriteria, arrayCriteria } from '../criteria';
 import createSchema from '../createSchema';
-import { invariant, isSchema } from '../helpers';
-import { CommonCriteria, Schema, SchemaState, ArrayCriteria, CriteriaState } from '../types';
-
-function of<T>(state: SchemaState<T[]>, itemsSchema: Schema<T>): void | CriteriaState<T[]> {
-  if (__DEV__) {
-    if (!isSchema(itemsSchema)) {
-      invariant(false, 'A schema blueprint is required for array contents.');
-    }
-  }
-
-  return {
-    skipIfNull: true,
-    validate(value, path, currentObject, rootObject) {
-      const nextValue = [...value];
-
-      value.forEach((item, i) => {
-        nextValue[i] = itemsSchema.validate(item, `${path}[${i}]`, currentObject, rootObject);
-      });
-
-      return nextValue;
-    },
-  };
-}
+import { invariant } from '../helpers';
+import { CommonCriterias, Schema, ArrayCriterias, InferNullable } from '../types';
 
 export interface ArraySchema<T>
-  extends Schema<T[]>,
-    ArrayCriteria<ArraySchema<T>>,
-    CommonCriteria<T[], ArraySchema<T>, ArraySchema<T | null>, ArraySchema<NonNullable<T>>> {
-  // @internal
-  of: (schema: Schema<T>) => ArraySchema<T>;
+  extends Schema<T>,
+    ArrayCriterias<ArraySchema<T>>,
+    CommonCriterias<ArraySchema<T>> {
+  notNullable: () => ArraySchema<NonNullable<T>>;
+  nullable: () => ArraySchema<T | null>;
+  of: <V>(schema: Schema<V>) => ArraySchema<InferNullable<T, V[]>>;
 }
 
-const schema = createSchema<unknown[], ArraySchema<unknown>>(
-  'array',
-  { ...commonCriteria, ...arrayCriteria, of },
-  {
-    cast(value) {
-      if (value === undefined) {
-        return [];
-      }
-
-      return Array.isArray(value) ? value : [value];
-    },
-    initialValue: [],
-  },
-);
-
-export function array<T = unknown>(
-  itemsSchema: Schema<T> | null = null,
-  defaultValue?: T[],
-): ArraySchema<T> {
-  const result = schema(defaultValue) as ArraySchema<T>;
-
-  if (itemsSchema) {
-    result.of(itemsSchema);
-    result.typeAlias += `<${itemsSchema.typeAlias}>`;
+function cast(value: unknown): unknown[] {
+  if (value === undefined) {
+    return [];
   }
 
-  return result;
+  return Array.isArray(value) ? value : [value];
+}
+
+function validateType(value: unknown, path: string) {
+  invariant(Array.isArray(value), 'Must be an array.', path);
+}
+
+export function array<T = unknown>(defaultValue: T[] = []): ArraySchema<T[]> {
+  return createSchema({
+    cast,
+    criteria: { ...commonCriteria, ...arrayCriteria },
+    defaultValue,
+    type: 'array',
+    validateType,
+  });
 }
