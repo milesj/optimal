@@ -1,17 +1,16 @@
 import { invariant } from '../helpers';
-import { CriteriaValidator, SchemaState } from '../types';
+import { CriteriaState, SchemaState } from '../types';
 
 /**
  * Require field array to not be empty.
  */
-export function notEmpty<T>(state: SchemaState<T[]>): void | CriteriaValidator<T[]> {
+export function notEmpty<T>(state: SchemaState<T[]>): void | CriteriaState<T[]> {
   if (__DEV__) {
-    return (value, path) => {
-      if (state.nullable && value === null) {
-        return;
-      }
-
-      invariant(value.length > 0, 'Array cannot be empty.', path);
+    return {
+      skipIfNull: true,
+      validate(value, path) {
+        invariant(value.length > 0, 'Array cannot be empty.', path);
+      },
     };
   }
 }
@@ -19,16 +18,15 @@ export function notEmpty<T>(state: SchemaState<T[]>): void | CriteriaValidator<T
 /**
  * Require field array to be of a specific size.
  */
-export function sizeOf<T>(state: SchemaState<T[]>, size: number): void | CriteriaValidator<T[]> {
+export function sizeOf<T>(state: SchemaState<T[]>, size: number): void | CriteriaState<T[]> {
   if (__DEV__) {
     invariant(typeof size === 'number' && size > 0, 'Size requires a non-zero positive number.');
 
-    return (value, path) => {
-      if (state.nullable && value === null) {
-        return;
-      }
-
-      invariant(value.length === size, `Array length must be ${size}.`, path);
+    return {
+      skipIfNull: true,
+      validate(value, path) {
+        invariant(value.length === size, `Array length must be ${size}.`, path);
+      },
     };
   }
 }

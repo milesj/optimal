@@ -1,26 +1,30 @@
 import { commonCriteria } from '../criteria';
 import createSchema from '../createSchema';
 import { invariant } from '../helpers';
-import { CriteriaValidator, CommonCriteria, Schema, SchemaState } from '../types';
+import { CriteriaState, CommonCriteria, Schema, SchemaState } from '../types';
 
-function onlyFalse(state: SchemaState<boolean>): void | CriteriaValidator<boolean> {
+function onlyFalse(state: SchemaState<boolean>): void | CriteriaState<boolean> {
   state.defaultValue = false;
   // this.defaultValueFactory = undefined; TODO
 
   if (__DEV__) {
-    return (value, path) => {
-      invariant(value === false, 'May only be `false`.', path);
+    return {
+      validate(value, path) {
+        invariant(value === false, 'May only be `false`.', path);
+      },
     };
   }
 }
 
-function onlyTrue(state: SchemaState<boolean>): void | CriteriaValidator<boolean> {
+function onlyTrue(state: SchemaState<boolean>): void | CriteriaState<boolean> {
   state.defaultValue = true;
   // this.defaultValueFactory = undefined; TODO
 
   if (__DEV__) {
-    return (value, path) => {
-      invariant(value === true, 'May only be `true`.', path);
+    return {
+      validate(value, path) {
+        invariant(value === true, 'May only be `true`.', path);
+      },
     };
   }
 }

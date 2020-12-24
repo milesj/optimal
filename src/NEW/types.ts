@@ -29,7 +29,13 @@ export type CriteriaValidator<T> = (
   rootObject: UnknownObject,
 ) => unknown;
 
-export type Criteria<T> = (state: SchemaState<T>, ...args: any[]) => void | CriteriaValidator<T>;
+export interface CriteriaState<T> {
+  skipIfNull?: boolean;
+  skipIfOptional?: boolean;
+  validate: CriteriaValidator<T>;
+}
+
+export type Criteria<T> = (state: SchemaState<T>, ...args: any[]) => void | CriteriaState<T>;
 
 export type CustomCallback<T> = (
   value: T,

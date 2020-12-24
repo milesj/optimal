@@ -1,23 +1,26 @@
 import { commonCriteria, arrayCriteria } from '../criteria';
 import createSchema from '../createSchema';
 import { invariant, isSchema } from '../helpers';
-import { CriteriaValidator, CommonCriteria, Schema, SchemaState, ArrayCriteria } from '../types';
+import { CommonCriteria, Schema, SchemaState, ArrayCriteria, CriteriaState } from '../types';
 
-function of<T>(state: SchemaState<T[]>, itemsSchema: Schema<T>): void | CriteriaValidator<T[]> {
+function of<T>(state: SchemaState<T[]>, itemsSchema: Schema<T>): void | CriteriaState<T[]> {
   if (__DEV__) {
     if (!isSchema(itemsSchema)) {
       invariant(false, 'A schema blueprint is required for array contents.');
     }
   }
 
-  return (value, path, currentObject, rootObject) => {
-    const nextValue = [...value];
+  return {
+    skipIfNull: true,
+    validate(value, path, currentObject, rootObject) {
+      const nextValue = [...value];
 
-    value.forEach((item, i) => {
-      nextValue[i] = itemsSchema.validate(item, `${path}[${i}]`, currentObject, rootObject);
-    });
+      value.forEach((item, i) => {
+        nextValue[i] = itemsSchema.validate(item, `${path}[${i}]`, currentObject, rootObject);
+      });
 
-    return nextValue;
+      return nextValue;
+    },
   };
 }
 

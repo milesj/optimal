@@ -1,7 +1,7 @@
 import { commonCriteria } from '../criteria';
 import createSchema from '../createSchema';
 import { instanceOf, invariant, isObject } from '../helpers';
-import { Constructor, CriteriaValidator, CommonCriteria, Schema, SchemaState } from '../types';
+import { Constructor, CriteriaState, CommonCriteria, Schema, SchemaState } from '../types';
 
 function refName(ref: Function): string {
   return ref.name || ref.constructor.name;
@@ -11,27 +11,30 @@ function of<T>(
   state: SchemaState<T>,
   ref?: Constructor<T>,
   loose?: boolean,
-): void | CriteriaValidator<T> {
+): void | CriteriaState<T> {
   if (__DEV__) {
     if (ref) {
       invariant(typeof ref === 'function', 'A class reference is required.');
     }
 
-    return (value, path) => {
-      if (ref) {
-        invariant(
-          typeof ref === 'function' &&
-            (value instanceof ref || (!!loose && isObject(value) && instanceOf(value, ref))),
-          `Must be an instance of "${refName(ref)}".`,
-          path,
-        );
-      } else {
-        invariant(
-          isObject(value) && value.constructor !== Object,
-          'Must be a class instance.',
-          path,
-        );
-      }
+    return {
+      skipIfNull: true,
+      validate(value, path) {
+        if (ref) {
+          invariant(
+            typeof ref === 'function' &&
+              (value instanceof ref || (!!loose && isObject(value) && instanceOf(value, ref))),
+            `Must be an instance of "${refName(ref)}".`,
+            path,
+          );
+        } else {
+          invariant(
+            isObject(value) && value.constructor !== Object,
+            'Must be a class instance.',
+            path,
+          );
+        }
+      },
     };
   }
 }

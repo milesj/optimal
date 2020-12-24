@@ -64,11 +64,11 @@ export function isPlainObject(value: unknown): value is object {
 }
 
 export function isSchema<T>(value: unknown): value is Schema<T> {
-  return (
-    isObject(value) &&
-    'validate' in value &&
-    typeof (value as UnknownObject).validate === 'function'
-  );
+  return isObject(value) && typeof (value as UnknownObject).validate === 'function';
+}
+
+export function isString(value: unknown): value is string {
+  return typeof value === 'string' && value !== '';
 }
 
 export function pathKey(path: string): string {

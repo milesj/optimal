@@ -1,7 +1,7 @@
 import { invariant, isObject } from './helpers';
 import {
   Criteria,
-  CriteriaValidator,
+  CriteriaState,
   Schema,
   SchemaFactory,
   SchemaOptions,
@@ -47,7 +47,7 @@ function checkType(type: string, value: unknown, path: string = '') {
  */
 function validate<T>(
   state: SchemaState<T>,
-  validators: CriteriaValidator<T>[],
+  validators: CriteriaState<T>[],
   initialValue: T,
   path: string = '',
   currentObject: UnknownObject = {},
@@ -91,8 +91,15 @@ function validate<T>(
   // Run validations and produce a new value
   let nextValue = value;
 
-  validators.forEach((validator) => {
-    const result = validator(nextValue!, path, currentObject, rootObject || currentObject);
+  validators.forEach((test) => {
+    if (
+      (test.skipIfNull && state.nullable && nextValue === null) ||
+      (test.skipIfOptional && !state.required && nextValue === state.defaultValue)
+    ) {
+      return;
+    }
+
+    const result = test.validate(nextValue!, path, currentObject, rootObject || currentObject);
 
     if (result !== undefined) {
       nextValue = result as NonNullable<T>;
@@ -108,7 +115,7 @@ export default function createSchema<T, S>(
   { initialValue, cast }: SchemaOptions<T>,
 ): SchemaFactory<T, S> {
   return (defaultValue) => {
-    const validators: CriteriaValidator<T>[] = [];
+    const validators: CriteriaState<T>[] = [];
 
     const state: SchemaState<T> = {
       defaultValue: defaultValue ?? initialValue,
@@ -124,7 +131,7 @@ export default function createSchema<T, S>(
       validate(value, path, currentObject, rootObject) {
         const result = validate(state, validators, value, path, currentObject, rootObject);
 
-        return cast ? cast(result) : result!;
+        return cast && result !== null ? cast(result) : result!;
       },
     };
 
