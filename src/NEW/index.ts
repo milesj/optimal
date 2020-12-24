@@ -12,4 +12,5 @@ export * from './schemas/array';
 export * from './schemas/bool';
 export * from './schemas/instance';
 export * from './schemas/number';
+export * from './schemas/string';
 export * from './types';

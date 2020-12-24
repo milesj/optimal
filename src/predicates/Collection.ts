@@ -13,11 +13,7 @@ export default class CollectionPredicate<T> extends Predicate<T> {
           return;
         }
 
-        if (typeof value === 'string') {
-          this.invariant(value.length === length, `String length must be ${length}.`, path);
-
-          // Object
-        } else if (typeof value === 'object' && value) {
+        if (typeof value === 'object' && value) {
           this.invariant(
             Object.keys(value).length === length,
             `Object must have ${length} properties.`,

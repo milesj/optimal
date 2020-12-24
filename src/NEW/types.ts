@@ -75,6 +75,20 @@ export interface NumberCriteria<S> {
   positive: () => S;
 }
 
+export interface StringCriteria<S> {
+  camelCase: () => S;
+  contains: (token: string, index?: number) => S;
+  kebabCase: () => S;
+  lowerCase: () => S;
+  match: (pattern: RegExp, message?: string) => S;
+  notEmpty: () => S;
+  oneOf: <I extends string>(list: I[]) => S;
+  pascalCase: () => S;
+  sizeOf: (size: number) => S;
+  snakeCase: () => S;
+  upperCase: () => S;
+}
+
 // SCHEMAS
 
 export interface Schema<T> {

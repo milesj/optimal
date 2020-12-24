@@ -1,4 +1,4 @@
-import { string, StringPredicate } from '../../src';
+import { string, StringSchema } from '../../src/NEW';
 import { runChecks, runInProd } from '../helpers';
 
 const camelCase = 'fooBarBaz1';
@@ -7,156 +7,148 @@ const pascalCase = 'FooBarBaz3';
 const snakeCase = 'foo_bar_baz4';
 
 describe('StringPredicate', () => {
-  let predicate: StringPredicate;
+  let schema: StringSchema;
 
   beforeEach(() => {
-    predicate = string();
+    schema = string();
   });
 
-  it('sets default value', () => {
-    expect(string('bar').defaultValue).toBe('bar');
+  it('errors if a non-string value is used', () => {
+    expect(() => {
+      runChecks(
+        schema,
+        // @ts-expect-error Testing wrong type
+        123,
+      );
+    }).toThrowErrorMatchingSnapshot();
   });
 
-  describe('default()', () => {
-    it('returns the default value', () => {
-      expect(string('foo').default()).toBe('foo');
-    });
+  it('returns the type alias', () => {
+    expect(string().typeAlias).toBe('string');
   });
 
-  describe('run()', () => {
-    it('errors if a non-string value is used', () => {
-      expect(() => {
-        runChecks(
-          predicate,
-          // @ts-expect-error Testing wrong type
-          123,
-        );
-      }).toThrowErrorMatchingSnapshot();
-    });
+  it('returns default value if value is undefined', () => {
+    expect(runChecks(string('abc'))).toEqual('abc');
+  });
 
-    it('returns default value if value is undefined', () => {
-      expect(runChecks(string('abc'))).toEqual('abc');
-    });
+  // it('returns default value from factory if value is undefined', () => {
+  //   expect(runChecks(string(() => 'XYZ'))).toEqual('XYZ');
+  // });
 
-    it('returns default value from factory if value is undefined', () => {
-      expect(runChecks(string(() => 'XYZ'))).toEqual('XYZ');
-    });
+  describe('production', () => {
+    it(
+      'returns default value if value is undefined',
+      runInProd(() => {
+        expect(runChecks(string('foo'))).toBe('foo');
+      }),
+    );
 
-    describe('production', () => {
-      it(
-        'returns default value if value is undefined',
-        runInProd(() => {
-          expect(runChecks(string('foo'))).toBe('foo');
-        }),
-      );
+    // it(
+    //   'returns default value from factory if value is undefined',
+    //   runInProd(() => {
+    //     expect(runChecks(string(() => 'bar'))).toBe('bar');
+    //   }),
+    // );
 
-      it(
-        'returns default value from factory if value is undefined',
-        runInProd(() => {
-          expect(runChecks(string(() => 'bar'))).toBe('bar');
-        }),
-      );
-
-      it(
-        'bypasses checks and returns value',
-        runInProd(() => {
-          expect(
-            runChecks(
-              predicate,
-              // @ts-expect-error Test invalid type
-              123,
-            ),
-          ).toBe('123');
-        }),
-      );
-    });
+    it(
+      'bypasses checks and returns value',
+      runInProd(() => {
+        expect(
+          runChecks(
+            schema,
+            // @ts-expect-error Test invalid type
+            123,
+          ),
+        ).toBe('123');
+      }),
+    );
   });
 
   describe('camelCase()', () => {
     it('errors if less than 2 characters', () => {
       expect(() => {
-        predicate.camelCase();
-        runChecks(predicate, 'a');
+        schema.camelCase();
+        runChecks(schema, 'a');
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if starts with a number', () => {
       expect(() => {
-        predicate.camelCase();
-        runChecks(predicate, '1');
+        schema.camelCase();
+        runChecks(schema, '1');
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if in kebab case', () => {
       expect(() => {
-        predicate.camelCase();
-        runChecks(predicate, kebabCase);
+        schema.camelCase();
+        runChecks(schema, kebabCase);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if in pascal case', () => {
       expect(() => {
-        predicate.camelCase();
-        runChecks(predicate, pascalCase);
+        schema.camelCase();
+        runChecks(schema, pascalCase);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if in snake case', () => {
       expect(() => {
-        predicate.camelCase();
-        runChecks(predicate, snakeCase);
+        schema.camelCase();
+        runChecks(schema, snakeCase);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('passes if in camel case', () => {
       expect(() => {
-        predicate.camelCase();
-        runChecks(predicate, camelCase);
+        schema.camelCase();
+        runChecks(schema, camelCase);
       }).not.toThrow();
     });
   });
 
   describe('contains()', () => {
     beforeEach(() => {
-      predicate.contains('oo');
+      schema.contains('oo');
     });
 
     it('errors if token is not string', () => {
       expect(() => {
         // @ts-expect-error Testing wrong type
-        predicate.contains(123);
+        schema.contains(123);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if token is an empty string', () => {
       expect(() => {
-        predicate.contains('');
+        schema.contains('');
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if value does not contain token', () => {
       expect(() => {
-        runChecks(predicate, 'bar');
+        runChecks(schema, 'bar');
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if value matches default value and predicate is required', () => {
       expect(() => {
-        predicate.required();
+        schema.required();
 
-        runChecks(predicate, '');
+        runChecks(schema, '');
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('doesnt error if value matches default value and predicate is optional', () => {
       expect(() => {
-        runChecks(predicate, '');
+        runChecks(schema, '');
       }).not.toThrow();
     });
 
     it('doesnt error if value contains token', () => {
       expect(() => {
-        runChecks(predicate, 'foo');
+        runChecks(schema, 'foo');
       }).not.toThrow();
     });
   });
@@ -164,138 +156,138 @@ describe('StringPredicate', () => {
   describe('kebabCase()', () => {
     it('errors if less than 2 characters', () => {
       expect(() => {
-        predicate.kebabCase();
-        runChecks(predicate, 'a');
+        schema.kebabCase();
+        runChecks(schema, 'a');
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if starts with a number', () => {
       expect(() => {
-        predicate.kebabCase();
-        runChecks(predicate, '1');
+        schema.kebabCase();
+        runChecks(schema, '1');
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if in camel case', () => {
       expect(() => {
-        predicate.kebabCase();
-        runChecks(predicate, camelCase);
+        schema.kebabCase();
+        runChecks(schema, camelCase);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if in pascal case', () => {
       expect(() => {
-        predicate.kebabCase();
-        runChecks(predicate, pascalCase);
+        schema.kebabCase();
+        runChecks(schema, pascalCase);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if in snake case', () => {
       expect(() => {
-        predicate.kebabCase();
-        runChecks(predicate, snakeCase);
+        schema.kebabCase();
+        runChecks(schema, snakeCase);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('passes if in kebab case', () => {
       expect(() => {
-        predicate.kebabCase();
-        runChecks(predicate, kebabCase);
+        schema.kebabCase();
+        runChecks(schema, kebabCase);
       }).not.toThrow();
     });
   });
 
   describe('lowerCase()', () => {
     beforeEach(() => {
-      predicate.lowerCase();
+      schema.lowerCase();
     });
 
     it('errors if value is not lower case', () => {
       expect(() => {
-        runChecks(predicate, 'FooBar');
+        runChecks(schema, 'FooBar');
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('doesnt error if value is lower case', () => {
       expect(() => {
-        runChecks(predicate, 'foobar');
+        runChecks(schema, 'foobar');
       }).not.toThrow();
     });
   });
 
   describe('match()', () => {
     beforeEach(() => {
-      predicate.match(/oo/u);
+      schema.match(/oo/u);
     });
 
     it('errors if pattern is not a regex', () => {
       expect(() => {
         // @ts-expect-error Testing wrong type
-        predicate.match(123);
+        schema.match(123);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if value does not match pattern', () => {
       expect(() => {
-        runChecks(predicate, 'bar');
+        runChecks(schema, 'bar');
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if value matches default value and predicate is required', () => {
       expect(() => {
-        predicate.required();
+        schema.required();
 
-        runChecks(predicate, '');
+        runChecks(schema, '');
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('doesnt error if value matches default value and predicate is optional', () => {
       expect(() => {
-        runChecks(predicate, '');
+        runChecks(schema, '');
       }).not.toThrow();
     });
 
     it('doesnt error if value matches pattern', () => {
       expect(() => {
-        runChecks(predicate, 'foo');
+        runChecks(schema, 'foo');
       }).not.toThrow();
     });
   });
 
   describe('notEmpty()', () => {
     beforeEach(() => {
-      predicate.notEmpty();
+      schema.notEmpty();
     });
 
     it('errors if value is empty', () => {
       expect(() => {
-        runChecks(predicate, '');
+        runChecks(schema, '');
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('deosnt error if value is not empty', () => {
       expect(() => {
-        runChecks(predicate, 'foo');
+        runChecks(schema, 'foo');
       }).not.toThrow();
     });
 
     it('doesnt error if null', () => {
       expect(() => {
-        predicate.nullable();
+        schema.nullable();
 
-        runChecks(predicate, null);
+        runChecks(schema, null);
       }).not.toThrow();
     });
   });
 
   describe('oneOf()', () => {
     beforeEach(() => {
-      predicate.oneOf(['foo', 'bar', 'baz']);
+      schema.oneOf(['foo', 'bar', 'baz']);
     });
 
     it('errors if not an array', () => {
       expect(() => {
-        predicate.oneOf(
+        schema.oneOf(
           // @ts-expect-error Testing wrong type
           123,
         );
@@ -304,13 +296,13 @@ describe('StringPredicate', () => {
 
     it('errors if array is empty', () => {
       expect(() => {
-        predicate.oneOf([]);
+        schema.oneOf([]);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if array contains a non-string', () => {
       expect(() => {
-        predicate.oneOf([
+        schema.oneOf([
           'foo',
           // @ts-expect-error Testing wrong type
           123,
@@ -320,13 +312,13 @@ describe('StringPredicate', () => {
 
     it('errors if value is not in the list', () => {
       expect(() => {
-        runChecks(predicate, 'qux');
+        runChecks(schema, 'qux');
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('doesnt error if value contains token', () => {
       expect(() => {
-        runChecks(predicate, 'foo');
+        runChecks(schema, 'foo');
       }).not.toThrow();
     });
   });
@@ -334,61 +326,61 @@ describe('StringPredicate', () => {
   describe('pascalCase()', () => {
     it('errors if less than 2 characters', () => {
       expect(() => {
-        predicate.pascalCase();
-        runChecks(predicate, 'A');
+        schema.pascalCase();
+        runChecks(schema, 'A');
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if starts with a number', () => {
       expect(() => {
-        predicate.pascalCase();
-        runChecks(predicate, '1');
+        schema.pascalCase();
+        runChecks(schema, '1');
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if in camel case', () => {
       expect(() => {
-        predicate.pascalCase();
-        runChecks(predicate, camelCase);
+        schema.pascalCase();
+        runChecks(schema, camelCase);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if in kebab case', () => {
       expect(() => {
-        predicate.pascalCase();
-        runChecks(predicate, kebabCase);
+        schema.pascalCase();
+        runChecks(schema, kebabCase);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if in snake case', () => {
       expect(() => {
-        predicate.pascalCase();
-        runChecks(predicate, snakeCase);
+        schema.pascalCase();
+        runChecks(schema, snakeCase);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('passes if in pascal case', () => {
       expect(() => {
-        predicate.pascalCase();
-        runChecks(predicate, pascalCase);
+        schema.pascalCase();
+        runChecks(schema, pascalCase);
       }).not.toThrow();
     });
   });
 
   describe('sizeOf()', () => {
     beforeEach(() => {
-      predicate.sizeOf(3);
+      schema.sizeOf(3);
     });
 
     it('errors if length doesnt match', () => {
       expect(() => {
-        runChecks(predicate, '');
+        runChecks(schema, '');
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('doesnt error if length matches', () => {
       expect(() => {
-        runChecks(predicate, 'abc');
+        runChecks(schema, 'abc');
       }).not.toThrow();
     });
   });
@@ -396,68 +388,62 @@ describe('StringPredicate', () => {
   describe('snakeCase()', () => {
     it('errors if less than 2 characters', () => {
       expect(() => {
-        predicate.snakeCase();
-        runChecks(predicate, 'a');
+        schema.snakeCase();
+        runChecks(schema, 'a');
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if starts with a number', () => {
       expect(() => {
-        predicate.snakeCase();
-        runChecks(predicate, '1');
+        schema.snakeCase();
+        runChecks(schema, '1');
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if in camel case', () => {
       expect(() => {
-        predicate.snakeCase();
-        runChecks(predicate, camelCase);
+        schema.snakeCase();
+        runChecks(schema, camelCase);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if in kebab case', () => {
       expect(() => {
-        predicate.snakeCase();
-        runChecks(predicate, kebabCase);
+        schema.snakeCase();
+        runChecks(schema, kebabCase);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if in pascal case', () => {
       expect(() => {
-        predicate.snakeCase();
-        runChecks(predicate, pascalCase);
+        schema.snakeCase();
+        runChecks(schema, pascalCase);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('passes if in snake case', () => {
       expect(() => {
-        predicate.snakeCase();
-        runChecks(predicate, snakeCase);
+        schema.snakeCase();
+        runChecks(schema, snakeCase);
       }).not.toThrow();
     });
   });
 
   describe('upperCase()', () => {
     beforeEach(() => {
-      predicate.upperCase();
+      schema.upperCase();
     });
 
     it('errors if value is not upper case', () => {
       expect(() => {
-        runChecks(predicate, 'FooBar');
+        runChecks(schema, 'FooBar');
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('doesnt error if value is upper case', () => {
       expect(() => {
-        runChecks(predicate, 'FOOBAR');
+        runChecks(schema, 'FOOBAR');
       }).not.toThrow();
-    });
-  });
-
-  describe('typeAlias()', () => {
-    it('returns the type name', () => {
-      expect(string().typeAlias()).toBe('string');
     });
   });
 });
