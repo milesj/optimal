@@ -1,4 +1,4 @@
-import { instance, date, regex, InstanceSchema } from '../../src/NEW';
+import { instance, InstanceSchema } from '../../src/NEW';
 import { runChecks, runInProd } from '../helpers';
 
 describe('instance()', () => {
@@ -125,33 +125,5 @@ describe('instance()', () => {
         expect(runChecks(schema, {})).toEqual({});
       }),
     );
-  });
-});
-
-describe('date()', () => {
-  it('returns the class name for type alias', () => {
-    expect(date().type()).toBe('Date');
-  });
-
-  it('errors if a non-Date is passed', () => {
-    expect(() => {
-      runChecks(date(), 123);
-    }).toThrow('Invalid field "key". Must be an instance of "Date".');
-  });
-});
-
-describe('regex()', () => {
-  it('returns the class name for type alias', () => {
-    expect(regex().type()).toBe('RegExp');
-  });
-
-  it('errors if a non-RegExp is passed', () => {
-    expect(() => {
-      runChecks(
-        regex(),
-        // @ts-expect-error Allow invalid type
-        123,
-      );
-    }).toThrow('Invalid field "key". Must be an instance of "RegExp".');
   });
 });

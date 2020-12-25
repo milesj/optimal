@@ -21,11 +21,3 @@ export function instance<T = object>(): InstanceSchema<T | null> {
     validateType,
   }).nullable();
 }
-
-export function regex() /* infer */ {
-  return instance().of(RegExp);
-}
-
-export function date() /* infer */ {
-  return instance().of(Date);
-}
