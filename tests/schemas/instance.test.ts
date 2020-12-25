@@ -14,14 +14,14 @@ describe('instance()', () => {
 
   it('errors if a non-class is passed', () => {
     expect(() => {
-      // @ts-expect-error Test invalid type
+      // @ts-expect-error
       instance(123);
     }).toThrowErrorMatchingSnapshot();
   });
 
   it('errors if an object is passed', () => {
     expect(() => {
-      // @ts-expect-error Test invalid type
+      // @ts-expect-error
       instance({});
     }).toThrowErrorMatchingSnapshot();
   });

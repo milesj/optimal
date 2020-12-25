@@ -106,6 +106,16 @@ describe('StringPredicate', () => {
         runChecks(schema, camelCase);
       }).not.toThrow();
     });
+
+    it('errors if `null`', () => {
+      expect(() => {
+        runChecks(schema, null);
+      }).toThrowErrorMatchingSnapshot();
+    });
+
+    it('returns `null` if nullable', () => {
+      expect(runChecks(schema.nullable(), null)).toBeNull();
+    });
   });
 
   describe('contains()', () => {
@@ -151,6 +161,16 @@ describe('StringPredicate', () => {
         runChecks(schema, 'foo');
       }).not.toThrow();
     });
+
+    it('errors if `null`', () => {
+      expect(() => {
+        runChecks(schema, null);
+      }).toThrowErrorMatchingSnapshot();
+    });
+
+    it('returns `null` if nullable', () => {
+      expect(runChecks(schema.nullable(), null)).toBeNull();
+    });
   });
 
   describe('kebabCase()', () => {
@@ -195,6 +215,16 @@ describe('StringPredicate', () => {
         runChecks(schema, kebabCase);
       }).not.toThrow();
     });
+
+    it('errors if `null`', () => {
+      expect(() => {
+        runChecks(schema, null);
+      }).toThrowErrorMatchingSnapshot();
+    });
+
+    it('returns `null` if nullable', () => {
+      expect(runChecks(schema.nullable(), null)).toBeNull();
+    });
   });
 
   describe('lowerCase()', () => {
@@ -212,6 +242,16 @@ describe('StringPredicate', () => {
       expect(() => {
         runChecks(schema, 'foobar');
       }).not.toThrow();
+    });
+
+    it('errors if `null`', () => {
+      expect(() => {
+        runChecks(schema, null);
+      }).toThrowErrorMatchingSnapshot();
+    });
+
+    it('returns `null` if nullable', () => {
+      expect(runChecks(schema.nullable(), null)).toBeNull();
     });
   });
 
@@ -251,6 +291,16 @@ describe('StringPredicate', () => {
       expect(() => {
         runChecks(schema, 'foo');
       }).not.toThrow();
+    });
+
+    it('errors if `null`', () => {
+      expect(() => {
+        runChecks(schema, null);
+      }).toThrowErrorMatchingSnapshot();
+    });
+
+    it('returns `null` if nullable', () => {
+      expect(runChecks(schema.nullable(), null)).toBeNull();
     });
   });
 
@@ -321,6 +371,16 @@ describe('StringPredicate', () => {
         runChecks(schema, 'foo');
       }).not.toThrow();
     });
+
+    it('errors if `null`', () => {
+      expect(() => {
+        runChecks(schema, null);
+      }).toThrowErrorMatchingSnapshot();
+    });
+
+    it('returns `null` if nullable', () => {
+      expect(runChecks(schema.nullable(), null)).toBeNull();
+    });
   });
 
   describe('pascalCase()', () => {
@@ -365,6 +425,16 @@ describe('StringPredicate', () => {
         runChecks(schema, pascalCase);
       }).not.toThrow();
     });
+
+    it('errors if `null`', () => {
+      expect(() => {
+        runChecks(schema, null);
+      }).toThrowErrorMatchingSnapshot();
+    });
+
+    it('returns `null` if nullable', () => {
+      expect(runChecks(schema.nullable(), null)).toBeNull();
+    });
   });
 
   describe('sizeOf()', () => {
@@ -382,6 +452,16 @@ describe('StringPredicate', () => {
       expect(() => {
         runChecks(schema, 'abc');
       }).not.toThrow();
+    });
+
+    it('errors if `null`', () => {
+      expect(() => {
+        runChecks(schema, null);
+      }).toThrowErrorMatchingSnapshot();
+    });
+
+    it('returns `null` if nullable', () => {
+      expect(runChecks(schema.nullable(), null)).toBeNull();
     });
   });
 
@@ -427,6 +507,16 @@ describe('StringPredicate', () => {
         runChecks(schema, snakeCase);
       }).not.toThrow();
     });
+
+    it('errors if `null`', () => {
+      expect(() => {
+        runChecks(schema, null);
+      }).toThrowErrorMatchingSnapshot();
+    });
+
+    it('returns `null` if nullable', () => {
+      expect(runChecks(schema.nullable(), null)).toBeNull();
+    });
   });
 
   describe('upperCase()', () => {
@@ -444,6 +534,16 @@ describe('StringPredicate', () => {
       expect(() => {
         runChecks(schema, 'FOOBAR');
       }).not.toThrow();
+    });
+
+    it('errors if `null`', () => {
+      expect(() => {
+        runChecks(schema, null);
+      }).toThrowErrorMatchingSnapshot();
+    });
+
+    it('returns `null` if nullable', () => {
+      expect(runChecks(schema.nullable(), null)).toBeNull();
     });
   });
 });

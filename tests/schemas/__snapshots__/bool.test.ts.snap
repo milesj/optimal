@@ -2,6 +2,10 @@
 
 exports[`bool() errors if a non-boolean value is used 1`] = `"Invalid field \\"key\\". Must be a boolean."`;
 
+exports[`bool() onlyFalse() errors if value is \`null\` 1`] = `"Invalid field \\"key\\". Null is not allowed."`;
+
 exports[`bool() onlyFalse() errors if value is \`true\` 1`] = `"Invalid field \\"key\\". May only be \`false\`."`;
 
 exports[`bool() onlyTrue() errors if value is \`false\` 1`] = `"Invalid field \\"key\\". May only be \`true\`."`;
+
+exports[`bool() onlyTrue() errors if value is \`null\` 1`] = `"Invalid field \\"key\\". Null is not allowed."`;

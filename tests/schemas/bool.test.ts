@@ -8,8 +8,22 @@ describe('bool()', () => {
     schema = bool();
   });
 
+  it('errors if a non-boolean value is used', () => {
+    expect(() => {
+      runChecks(
+        bool(),
+        // @ts-expect-error
+        123,
+      );
+    }).toThrowErrorMatchingSnapshot();
+  });
+
+  it('returns the type alias', () => {
+    expect(bool().type()).toBe('boolean');
+  });
+
   it('returns default value if value is undefined', () => {
-    expect(runChecks(bool(true))).toEqual(true);
+    expect(runChecks(bool(true))).toBe(true);
   });
 
   // it('returns default value from factory if value is undefined', () => {
@@ -22,34 +36,6 @@ describe('bool()', () => {
   //       },
   //     ),
   //   ).toEqual(false);
-  // });
-
-  it('errors if a non-boolean value is used', () => {
-    expect(() => {
-      runChecks(
-        bool(),
-        // @ts-expect-error Test invalid type
-        123,
-      );
-    }).toThrowErrorMatchingSnapshot();
-  });
-
-  it('returns the type alias', () => {
-    expect(bool().type()).toBe('boolean');
-  });
-
-  // describe('default()', () => {
-  //   it('returns the default value', () => {
-  //     expect(bool(true).default()).toBe(true);
-  //   });
-
-  //   it('returns false for only false', () => {
-  //     expect(bool(true).onlyFalse().default()).toBe(false);
-  //   });
-
-  //   it('returns true for only true', () => {
-  //     expect(bool(false).onlyTrue().default()).toBe(true);
-  //   });
   // });
 
   describe('production', () => {
@@ -86,6 +72,12 @@ describe('bool()', () => {
       }).toThrowErrorMatchingSnapshot();
     });
 
+    it('errors if value is `null`', () => {
+      expect(() => {
+        runChecks(schema, null);
+      }).toThrowErrorMatchingSnapshot();
+    });
+
     it('passes if value is `false`', () => {
       expect(() => {
         runChecks(schema, false);
@@ -107,6 +99,12 @@ describe('bool()', () => {
     it('errors if value is `false`', () => {
       expect(() => {
         runChecks(schema, false);
+      }).toThrowErrorMatchingSnapshot();
+    });
+
+    it('errors if value is `null`', () => {
+      expect(() => {
+        runChecks(schema, null);
       }).toThrowErrorMatchingSnapshot();
     });
 

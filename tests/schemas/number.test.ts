@@ -12,7 +12,7 @@ describe('number()', () => {
     expect(() => {
       runChecks(
         number(),
-        // @ts-expect-error Testing wrong type
+        // @ts-expect-error
         'foo',
       );
     }).toThrowErrorMatchingSnapshot();
@@ -59,7 +59,7 @@ describe('number()', () => {
         expect(
           runChecks(
             schema,
-            // @ts-expect-error Test invalid type
+            // @ts-expect-error
             '123',
           ),
         ).toBe(123);
@@ -113,6 +113,16 @@ describe('number()', () => {
         runChecks(schema, 3);
       }).not.toThrow();
     });
+
+    it('errors if `null`', () => {
+      expect(() => {
+        runChecks(schema, null);
+      }).toThrowErrorMatchingSnapshot();
+    });
+
+    it('returns `null` if nullable', () => {
+      expect(runChecks(schema.nullable(), null)).toBeNull();
+    });
   });
 
   describe('between(): inclusive', () => {
@@ -130,6 +140,16 @@ describe('number()', () => {
       expect(() => {
         runChecks(schema, 5);
       }).not.toThrow();
+    });
+
+    it('errors if `null`', () => {
+      expect(() => {
+        runChecks(schema, null);
+      }).toThrowErrorMatchingSnapshot();
+    });
+
+    it('returns `null` if nullable', () => {
+      expect(runChecks(schema.nullable(), null)).toBeNull();
     });
   });
 
@@ -154,6 +174,16 @@ describe('number()', () => {
       expect(() => {
         runChecks(schema, 1.23);
       }).not.toThrow();
+    });
+
+    it('errors if `null`', () => {
+      expect(() => {
+        runChecks(schema, null);
+      }).toThrowErrorMatchingSnapshot();
+    });
+
+    it('returns `null` if nullable', () => {
+      expect(runChecks(schema.nullable(), null)).toBeNull();
     });
   });
 
@@ -186,6 +216,16 @@ describe('number()', () => {
         runChecks(schema, 10);
       }).not.toThrow();
     });
+
+    it('errors if `null`', () => {
+      expect(() => {
+        runChecks(schema, null);
+      }).toThrowErrorMatchingSnapshot();
+    });
+
+    it('returns `null` if nullable', () => {
+      expect(runChecks(schema.nullable(), null)).toBeNull();
+    });
   });
 
   describe('gte()', () => {
@@ -217,6 +257,16 @@ describe('number()', () => {
         runChecks(schema, 10);
       }).not.toThrow();
     });
+
+    it('errors if `null`', () => {
+      expect(() => {
+        runChecks(schema, null);
+      }).toThrowErrorMatchingSnapshot();
+    });
+
+    it('returns `null` if nullable', () => {
+      expect(runChecks(schema.nullable(), null)).toBeNull();
+    });
   });
 
   describe('int()', () => {
@@ -240,6 +290,16 @@ describe('number()', () => {
       expect(() => {
         runChecks(schema, 123);
       }).not.toThrow();
+    });
+
+    it('errors if `null`', () => {
+      expect(() => {
+        runChecks(schema, null);
+      }).toThrowErrorMatchingSnapshot();
+    });
+
+    it('returns `null` if nullable', () => {
+      expect(runChecks(schema.nullable(), null)).toBeNull();
     });
   });
 
@@ -272,6 +332,16 @@ describe('number()', () => {
         runChecks(schema, 3);
       }).not.toThrow();
     });
+
+    it('errors if `null`', () => {
+      expect(() => {
+        runChecks(schema, null);
+      }).toThrowErrorMatchingSnapshot();
+    });
+
+    it('returns `null` if nullable', () => {
+      expect(runChecks(schema.nullable(), null)).toBeNull();
+    });
   });
 
   describe('lte()', () => {
@@ -303,6 +373,16 @@ describe('number()', () => {
         runChecks(schema, 3);
       }).not.toThrow();
     });
+
+    it('errors if `null`', () => {
+      expect(() => {
+        runChecks(schema, null);
+      }).toThrowErrorMatchingSnapshot();
+    });
+
+    it('returns `null` if nullable', () => {
+      expect(runChecks(schema.nullable(), null)).toBeNull();
+    });
   });
 
   describe('negative()', () => {
@@ -326,6 +406,16 @@ describe('number()', () => {
       expect(() => {
         runChecks(schema, -1);
       }).not.toThrow();
+    });
+
+    it('errors if `null`', () => {
+      expect(() => {
+        runChecks(schema, null);
+      }).toThrowErrorMatchingSnapshot();
+    });
+
+    it('returns `null` if nullable', () => {
+      expect(runChecks(schema.nullable(), null)).toBeNull();
     });
   });
 
@@ -365,6 +455,16 @@ describe('number()', () => {
         runChecks(schema, 123);
       }).not.toThrow();
     });
+
+    it('errors if `null`', () => {
+      expect(() => {
+        runChecks(schema, null);
+      }).toThrowErrorMatchingSnapshot();
+    });
+
+    it('returns `null` if nullable', () => {
+      expect(runChecks(schema.nullable(), null)).toBeNull();
+    });
   });
 
   describe('positive()', () => {
@@ -388,6 +488,16 @@ describe('number()', () => {
       expect(() => {
         runChecks(schema, 1);
       }).not.toThrow();
+    });
+
+    it('errors if `null`', () => {
+      expect(() => {
+        runChecks(schema, null);
+      }).toThrowErrorMatchingSnapshot();
+    });
+
+    it('returns `null` if nullable', () => {
+      expect(runChecks(schema.nullable(), null)).toBeNull();
     });
   });
 });
