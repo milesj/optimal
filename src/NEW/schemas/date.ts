@@ -1,22 +1,21 @@
-import { commonCriteria } from '../criteria';
+import { commonCriteria, dateCriteria } from '../criteria';
 import createSchema from '../createSchema';
-import { invariant } from '../helpers';
-import { CommonCriterias, Schema } from '../types';
+import { createDate, invariant, isValidDate } from '../helpers';
+import { CommonCriterias, DateCriterias, Schema } from '../types';
 
-export interface DateSchema<T> extends Schema<T>, CommonCriterias<DateSchema<T>> {
+export interface DateSchema<T = Date>
+  extends Schema<T>,
+    DateCriterias<DateSchema<T>>,
+    CommonCriterias<DateSchema<T>> {
   notNullable: () => DateSchema<NonNullable<T>>;
   nullable: () => DateSchema<T | null>;
 }
 
-function cast(value: unknown): Date {
-  return value instanceof Date ? value : new Date(value as number);
-}
-
 function validateType(value: unknown, path: string) {
-  const time = new Date(value as number);
+  const time = createDate(value);
 
   invariant(
-    !Number.isNaN(time.getTime()) && time.toString() !== 'Invalid Date',
+    isValidDate(time),
     'Must be a string, number, or Date that resolves to a valid Date.',
     path,
   );
@@ -26,8 +25,8 @@ function validateType(value: unknown, path: string) {
 
 export function date(defaultValue?: Date): DateSchema<Date> {
   return createSchema({
-    cast,
-    criteria: { ...commonCriteria },
+    cast: createDate,
+    criteria: { ...commonCriteria, ...dateCriteria },
     defaultValue,
     type: 'date',
     validateType,

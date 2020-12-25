@@ -3,7 +3,7 @@ import createSchema from '../createSchema';
 import { invariant } from '../helpers';
 import { CommonCriterias, Schema, ArrayCriterias, InferNullable } from '../types';
 
-export interface ArraySchema<T>
+export interface ArraySchema<T = unknown[]>
   extends Schema<T>,
     ArrayCriterias<ArraySchema<T>>,
     CommonCriterias<ArraySchema<T>> {

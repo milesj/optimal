@@ -16,14 +16,12 @@ function validate<T>(
 ): T | null {
   const { defaultValue, metadata } = state;
 
-  let value: T | null | undefined = initialValue;
+  let value: T | null | undefined = initialValue ?? defaultValue;
 
   // Handle undefined
   if (value === undefined) {
-    if (!state.required) {
-      value = defaultValue;
-    } else if (__DEV__) {
-      invariant(false, 'Field is required and must be defined.', path);
+    if (__DEV__) {
+      invariant(state.required, 'Field is required and must be defined.', path);
     }
   } else if (__DEV__) {
     if (metadata.deprecatedMessage) {
@@ -48,24 +46,22 @@ function validate<T>(
   }
 
   // Run validations and produce a new value
-  let nextValue = value;
-
   validators.forEach((test) => {
     if (
-      (test.skipIfNull && state.nullable && nextValue === null) ||
-      (test.skipIfOptional && !state.required && nextValue === state.defaultValue)
+      (test.skipIfNull && state.nullable && value === null) ||
+      (test.skipIfOptional && !state.required && value === state.defaultValue)
     ) {
       return;
     }
 
-    const result = test.validate(nextValue!, path, currentObject, rootObject || currentObject);
+    const result = test.validate(value!, path, currentObject, rootObject || currentObject);
 
     if (result !== undefined) {
-      nextValue = result as NonNullable<T>;
+      value = result as NonNullable<T>;
     }
   });
 
-  return nextValue!;
+  return value!;
 }
 
 export default function createSchema<T>({

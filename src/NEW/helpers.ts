@@ -1,5 +1,9 @@
 import { Constructor, UnknownObject, Schema } from './types';
 
+export function createDate(value: unknown): Date {
+  return value instanceof Date ? value : new Date(value as number);
+}
+
 /**
  * Native `instanceof` checks are problematic, as cross realm checks fail.
  * They will also fail when comparing against source and compiled files.
@@ -60,6 +64,14 @@ export function isSchema<T>(value: unknown): value is Schema<T> {
     isObject(value) &&
     typeof (value as UnknownObject).validate === 'function' &&
     typeof (value as UnknownObject).type === 'function'
+  );
+}
+
+export function isValidDate(value: Date): value is Date {
+  return (
+    Object.prototype.toString.call(value) === '[object Date]' &&
+    !Number.isNaN(value.getTime()) &&
+    value.toString() !== 'Invalid Date'
   );
 }
 

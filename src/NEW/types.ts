@@ -2,6 +2,8 @@
 
 export type UnknownObject = Record<string, unknown>;
 
+export type MaybeDate = string | number | Date;
+
 export type Constructor<T> = (new (...args: unknown[]) => T) | (Function & { prototype: T });
 
 export type InferNullable<P, N> = P extends null ? N | null : N;
@@ -54,6 +56,12 @@ export interface ArrayCriterias<S> {
 export interface BooleanCriterias<S> {
   onlyFalse: () => S;
   onlyTrue: () => S;
+}
+
+export interface DateCriterias<S> {
+  after: (date: MaybeDate) => S;
+  before: (date: MaybeDate) => S;
+  between: (start: MaybeDate, end: MaybeDate, inclusive?: boolean) => S;
 }
 
 export interface NumberCriterias<S> {
@@ -116,7 +124,7 @@ export interface SchemaState<T> {
 export interface SchemaOptions<T> {
   cast?: (value: unknown) => T;
   criteria: Record<string, CriteriaFactory<T>>;
-  defaultValue: T;
+  defaultValue?: T;
   type: string;
   validateType: CriteriaValidator<T>;
 }
