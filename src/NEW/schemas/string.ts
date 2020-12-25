@@ -7,6 +7,7 @@ export interface StringSchema<T = string>
   extends Schema<T>,
     StringCriterias<StringSchema<T>>,
     CommonCriterias<StringSchema<T>> {
+  never: () => StringSchema<never>;
   notNullable: () => StringSchema<NonNullable<T>>;
   nullable: () => StringSchema<T | null>;
   oneOf: <I extends string>(list: I[]) => StringSchema<InferNullable<T, I>>;

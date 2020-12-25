@@ -4,6 +4,7 @@ import { invariant, isObject } from '../helpers';
 import { CommonCriterias, Schema, Constructor, InferNullable } from '../types';
 
 export interface InstanceSchema<T> extends Schema<T>, CommonCriterias<InstanceSchema<T>> {
+  never: () => InstanceSchema<never>;
   notNullable: () => InstanceSchema<NonNullable<T>>;
   nullable: () => InstanceSchema<T | null>;
   of: <C>(ref: Constructor<C>, loose?: boolean) => InstanceSchema<InferNullable<T, C>>;

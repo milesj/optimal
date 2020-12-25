@@ -6,7 +6,7 @@ const kebabCase = 'foo-bar-baz2';
 const pascalCase = 'FooBarBaz3';
 const snakeCase = 'foo_bar_baz4';
 
-describe('StringPredicate', () => {
+describe('string()', () => {
   let schema: StringSchema;
 
   beforeEach(() => {

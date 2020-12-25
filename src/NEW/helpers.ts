@@ -1,7 +1,20 @@
 import { Constructor, UnknownObject, Schema } from './types';
 
+export function createArray(value: unknown): unknown[] {
+  if (value === undefined) {
+    return [];
+  }
+
+  return Array.isArray(value) ? value : [value];
+}
+
 export function createDate(value: unknown): Date {
   return value instanceof Date ? value : new Date(value as number);
+}
+
+export function createObject(value: unknown) {
+  // eslint-disable-next-line
+  return (isObject(value) ? value : {}) as UnknownObject;
 }
 
 /**

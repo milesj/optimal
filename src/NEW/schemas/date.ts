@@ -7,6 +7,7 @@ export interface DateSchema<T = Date>
   extends Schema<T>,
     DateCriterias<DateSchema<T>>,
     CommonCriterias<DateSchema<T>> {
+  never: () => DateSchema<never>;
   notNullable: () => DateSchema<NonNullable<T>>;
   nullable: () => DateSchema<T | null>;
 }

@@ -35,13 +35,13 @@ export interface CommonCriterias<S> {
   and: (...keys: string[]) => S;
   custom: (callback: CustomCallback<InferSchemaType<S>>) => S;
   deprecate: (message: string) => S;
-  never: () => S;
   notRequired: () => S;
   only: () => S;
   or: (...keys: string[]) => S;
   required: () => S;
   xor: (...keys: string[]) => S;
   // Define in schemas directly
+  // never: () => S;
   // notNullable: () => S;
   // nullable: () => S;
 }

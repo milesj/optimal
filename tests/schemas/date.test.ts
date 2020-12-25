@@ -1,15 +1,15 @@
-import { date, InstanceSchema } from '../../src/NEW';
+import { date, DateSchema } from '../../src/NEW';
 import { runChecks } from '../helpers';
 
 describe('date()', () => {
-  let schema: InstanceSchema<Date | null>;
+  let schema: DateSchema;
 
   beforeEach(() => {
     schema = date();
   });
 
   it('returns the class name for type alias', () => {
-    expect(schema.type()).toBe('Date');
+    expect(schema.type()).toBe('date');
   });
 
   it('errors if a non-Date value is passed', () => {

@@ -7,6 +7,7 @@ export interface BoolSchema<T = boolean>
   extends Schema<T>,
     BooleanCriterias<BoolSchema<T>>,
     CommonCriterias<BoolSchema<T>> {
+  never: () => BoolSchema<never>;
   notNullable: () => BoolSchema<NonNullable<T>>;
   nullable: () => BoolSchema<T | null>;
 }
