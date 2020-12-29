@@ -17,6 +17,7 @@ into functions to reduce file size and overhead.
 
 #### 🛠 Internals
 
+- Migrated to Packemon for package building.
 - Renamed predicates to schemas.
 - Renamed validation checks to criteria.
 

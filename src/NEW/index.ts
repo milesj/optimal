@@ -3,7 +3,6 @@
  * @license     https://opensource.org/licenses/MIT
  */
 
-import * as criteria from './criteria';
 import createSchema from './createSchema';
 import { array } from './schemas/array';
 import { bool } from './schemas/bool';
@@ -15,9 +14,9 @@ import { regex } from './schemas/regex';
 import { schema, blueprint } from './schemas/schema';
 import { string } from './schemas/string';
 
-export { criteria, createSchema };
+export { createSchema };
 
-export default {
+export const schemas = {
   array,
   blueprint,
   bool,
@@ -35,6 +34,7 @@ export default {
   // union,
 };
 
+export * from './criteria';
 export * from './schemas/array';
 export * from './schemas/bool';
 export * from './schemas/date';

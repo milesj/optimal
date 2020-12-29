@@ -4,15 +4,17 @@
   "description": "A system for building and validating defined object structures.",
   "main": "./lib/index.js",
   "module": "./esm/index.js",
-  "types": "./lib/index.d.ts",
+  "types": "./dts/index.d.ts",
   "scripts": {
     "prepare": "beemo create-config --silent",
-    "build": "beemo create-config babel --esm --silent && rollup --config && beemo typescript --emitDeclarationOnly",
+    "build": "packemon build --addEngines",
+    "pack": "NODE_ENV=production packemon pack --addEngines --generateDeclaration=standard",
+    "clean": "packemon clean",
     "coverage": "yarn run jest --coverage",
     "lint": "beemo eslint",
     "jest": "beemo jest",
     "format": "beemo prettier",
-    "prerelease": "yarn test && yarn run build",
+    "prerelease": "yarn run pack && yarn test",
     "release": "npx np --yolo --no-yarn",
     "pretest": "yarn run type",
     "test": "yarn run jest",
@@ -39,10 +41,6 @@
     "url": "http://milesj.me"
   },
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/milesj/optimal/issues"
-  },
-  "homepage": "https://github.com/milesj/optimal#readme",
   "engines": {
     "node": ">=10.10.0"
   },
@@ -50,18 +48,23 @@
     "@milesj/build-tools": "^2.17.1",
     "@types/node": "^14.14.31",
     "conventional-changelog-beemo": "^2.1.0",
-    "rollup": "^2.39.0",
-    "rollup-plugin-babel": "^4.4.0",
-    "rollup-plugin-node-resolve": "^5.2.0"
+    "packemon": "^0.7.1"
   },
   "beemo": {
     "module": "@milesj/build-tools",
     "drivers": [
-      "babel",
+      {
+        "driver": "babel",
+        "strategy": "none"
+      },
       "eslint",
       "jest",
       "prettier",
-      "typescript"
+      {
+        "driver": "typescript",
+        "buildFolder": "dts",
+        "declarationOnly": true
+      }
     ],
     "eslint": {
       "rules": {
@@ -70,11 +73,21 @@
       }
     }
   },
-  "browserslist": [
-    "ie 11"
-  ],
   "funding": {
     "type": "ko-fi",
     "url": "https://ko-fi.com/milesjohnson"
+  },
+  "packemon": {
+    "format": [
+      "lib",
+      "esm"
+    ],
+    "inputs": {
+      "index": "src/NEW/index.ts"
+    },
+    "platform": [
+      "browser",
+      "node"
+    ]
   }
 }
