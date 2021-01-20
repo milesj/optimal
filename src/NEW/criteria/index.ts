@@ -6,6 +6,7 @@ import * as dateCriteria from './dates';
 import * as numberCriteria from './numbers';
 import * as stringCriteria from './strings';
 import * as objectCriteria from './objects';
+import * as tupleCriteria from './tuples';
 
 export {
   arrayCriteria,
@@ -16,4 +17,5 @@ export {
   numberCriteria,
   stringCriteria,
   objectCriteria,
+  tupleCriteria,
 };

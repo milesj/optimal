@@ -1,5 +1,5 @@
 /**
- * @copyright   2020, Miles Johnson
+ * @copyright   2021, Miles Johnson
  * @license     https://opensource.org/licenses/MIT
  */
 
@@ -16,6 +16,7 @@ import { object } from './schemas/object';
 import { regex } from './schemas/regex';
 import { schema, blueprint } from './schemas/schema';
 import { string } from './schemas/string';
+import { tuple } from './schemas/tuple';
 
 export { createPredicate, createSchema };
 
@@ -33,7 +34,7 @@ export const schemas = {
   schema,
   // shape,
   string,
-  // tuple,
+  tuple,
   // union,
 };
 
@@ -45,8 +46,9 @@ export * from './schemas/date';
 export * from './schemas/func';
 export * from './schemas/instance';
 export * from './schemas/number';
+export * from './schemas/object';
 export * from './schemas/regex';
 export * from './schemas/schema';
 export * from './schemas/string';
-export * from './schemas/object';
+export * from './schemas/tuple';
 export * from './types';
