@@ -10,7 +10,7 @@ export interface NumberSchema<T = number>
   never: () => NumberSchema<never>;
   notNullable: () => NumberSchema<NonNullable<T>>;
   nullable: () => NumberSchema<T | null>;
-  oneOf: <I extends number>(list: I[]) => NumberSchema<InferNullable<T, I>>;
+  oneOf: <I extends number = number>(list: I[]) => NumberSchema<InferNullable<T, I>>;
 }
 
 function cast(value: unknown): number {

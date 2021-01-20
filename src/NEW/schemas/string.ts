@@ -10,7 +10,7 @@ export interface StringSchema<T = string>
   never: () => StringSchema<never>;
   notNullable: () => StringSchema<NonNullable<T>>;
   nullable: () => StringSchema<T | null>;
-  oneOf: <I extends string>(list: I[]) => StringSchema<InferNullable<T, I>>;
+  oneOf: <I extends string = string>(list: I[]) => StringSchema<InferNullable<T, I>>;
 }
 
 function cast(value: unknown): string {

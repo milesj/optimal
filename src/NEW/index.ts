@@ -3,10 +3,12 @@
  * @license     https://opensource.org/licenses/MIT
  */
 
+import createPredicate from './createPredicate';
 import createSchema from './createSchema';
 import { array } from './schemas/array';
 import { bool } from './schemas/bool';
 import { date } from './schemas/date';
+import { func } from './schemas/func';
 import { instance } from './schemas/instance';
 import { number } from './schemas/number';
 import { object } from './schemas/object';
@@ -14,7 +16,7 @@ import { regex } from './schemas/regex';
 import { schema, blueprint } from './schemas/schema';
 import { string } from './schemas/string';
 
-export { createSchema };
+export { createPredicate, createSchema };
 
 export const schemas = {
   array,
@@ -22,7 +24,7 @@ export const schemas = {
   bool,
   // custom,
   date,
-  // func,
+  func,
   instance,
   number,
   object,
@@ -38,6 +40,7 @@ export * from './criteria';
 export * from './schemas/array';
 export * from './schemas/bool';
 export * from './schemas/date';
+export * from './schemas/func';
 export * from './schemas/instance';
 export * from './schemas/number';
 export * from './schemas/regex';

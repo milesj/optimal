@@ -1,5 +1,7 @@
 /* eslint-disable no-use-before-define */
 
+export type UnknownFunction = (...args: unknown[]) => unknown;
+
 export type UnknownObject = Record<string, unknown>;
 
 export type MaybeDate = string | number | Date;
@@ -130,3 +132,5 @@ export interface SchemaOptions<T> {
 }
 
 export type InferSchemaType<T> = T extends Schema<infer U> ? U : never;
+
+export type Predicate<T> = (value: T | null | undefined) => boolean;

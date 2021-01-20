@@ -17,7 +17,7 @@ function validateType(value: unknown, path: string) {
 
   invariant(
     isValidDate(time),
-    'Must be a string, number, or Date that resolves to a valid Date.',
+    'Must be a string, number, or `Date` that resolves to a valid date.',
     path,
   );
 
