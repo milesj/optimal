@@ -1,9 +1,12 @@
 import { commonCriteria, shapeCriteria } from '../criteria';
 import createSchema from '../createSchema';
 import { createObject, invariant, isObject } from '../helpers';
-import { Blueprint, CommonCriterias, Schema, InferNullable } from '../types';
+import { Blueprint, CommonCriterias, Schema, InferNullable, ShapeCriterias } from '../types';
 
-export interface ShapeSchema<T> extends Schema<T>, CommonCriterias<ShapeSchema<T>> {
+export interface ShapeSchema<T>
+  extends Schema<T, Partial<T>>,
+    ShapeCriterias<T>,
+    CommonCriterias<ShapeSchema<T>> {
   never: () => ShapeSchema<never>;
   notNullable: () => ShapeSchema<NonNullable<T>>;
   nullable: () => ShapeSchema<T | null>;

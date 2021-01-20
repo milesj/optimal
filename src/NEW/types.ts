@@ -87,6 +87,10 @@ export interface ObjectCriterias<S> {
   // of: <V>(schema: Schema<V>) => S;
 }
 
+export interface ShapeCriterias<S> {
+  exact: () => S;
+}
+
 export interface StringCriterias<S> {
   camelCase: () => S;
   contains: (token: string, index?: number) => S;
@@ -104,14 +108,14 @@ export interface StringCriterias<S> {
 
 // SCHEMAS
 
-export interface Schema<T> {
+export interface Schema<O, I = O> {
   type: () => string;
   validate: (
-    value: T,
+    value: I,
     path?: string,
     currentObject?: UnknownObject,
     rootObject?: UnknownObject,
-  ) => T;
+  ) => O;
 }
 
 export interface SchemaState<T> {
@@ -133,6 +137,6 @@ export interface SchemaOptions<T> {
 
 export type InferSchemaType<T> = T extends Schema<infer U> ? U : never;
 
-export type Predicate<T> = (value: T | null | undefined) => boolean;
-
 export type Blueprint<T extends object> = { [K in keyof T]-?: Schema<T[K]> };
+
+export type Predicate<T> = (value: T | null | undefined) => boolean;

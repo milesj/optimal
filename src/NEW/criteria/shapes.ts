@@ -1,5 +1,5 @@
 import { invariant, isObject, isSchema, logUnknown } from '../helpers';
-import { Blueprint, Criteria, SchemaState } from '../types';
+import { Blueprint, Criteria, SchemaState, UnknownObject } from '../types';
 
 /**
  * Require a shape to be an exact shape.
@@ -37,10 +37,16 @@ export function of<T extends object>(
       const unknown: Partial<T> = isPlainObject ? { ...value } : {};
       const shape: Partial<T> = {};
 
-      Object.entries(schemas).forEach(([prop, schema]) => {
+      Object.keys(schemas).forEach((prop) => {
         const key = prop as keyof T;
+        const schema = schemas[key];
 
-        shape[key] = schema.validate(value?.[key], `${path}.${key}`, value, rootObject);
+        shape[key] = schema.validate(
+          value[key],
+          `${path}.${key}`,
+          value as UnknownObject,
+          rootObject,
+        );
 
         // Delete the prop and mark it as known
         delete unknown[key];
