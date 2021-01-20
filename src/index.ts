@@ -39,6 +39,7 @@ export const schemas = {
 export * from './createPredicate';
 export * from './createSchema';
 export * from './criteria';
+export * from './optimal';
 export * from './schemas/array';
 export * from './schemas/bool';
 export * from './schemas/custom';
@@ -54,3 +55,4 @@ export * from './schemas/string';
 export * from './schemas/tuple';
 export * from './schemas/union';
 export * from './types';
+export * from './ValidationError';
