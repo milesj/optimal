@@ -1,4 +1,4 @@
-import { Blueprint } from './types';
+import { Blueprint, UnknownObject } from './types';
 import { shape } from './schemas/shape';
 import { isObject } from './helpers';
 import { ValidationError } from './ValidationError';
@@ -21,13 +21,14 @@ export function optimal<
   }
 
   const schema = shape(blueprint);
+  const object = struct as UnknownObject;
 
   if (!options.unknown) {
     schema.exact();
   }
 
   try {
-    return schema.validate(struct, options.prefix || '') as Required<Struct>;
+    return schema.validate(struct, options.prefix || '', object, object) as Required<Struct>;
   } catch (error) {
     const invalid = error instanceof ValidationError ? error : new ValidationError(error.message);
 

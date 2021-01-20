@@ -3,8 +3,6 @@
  * @license     https://opensource.org/licenses/MIT
  */
 
-import createPredicate from './createPredicate';
-import createSchema from './createSchema';
 import { array } from './schemas/array';
 import { bool } from './schemas/bool';
 import { custom } from './schemas/custom';
@@ -19,8 +17,6 @@ import { shape } from './schemas/shape';
 import { string } from './schemas/string';
 import { tuple } from './schemas/tuple';
 import { union } from './schemas/union';
-
-export { createPredicate, createSchema };
 
 export const schemas = {
   array,
@@ -40,6 +36,8 @@ export const schemas = {
   union,
 };
 
+export * from './createPredicate';
+export * from './createSchema';
 export * from './criteria';
 export * from './schemas/array';
 export * from './schemas/bool';

@@ -1,5 +1,5 @@
 import { commonCriteria, unionCriteria } from '../criteria';
-import createSchema from '../createSchema';
+import { createSchema } from '../createSchema';
 import { CommonCriterias, Schema, InferNullable } from '../types';
 
 export interface UnionSchema<T> extends Schema<T>, CommonCriterias<UnionSchema<T>> {

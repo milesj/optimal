@@ -1,5 +1,5 @@
 import { commonCriteria, shapeCriteria } from '../criteria';
-import createSchema from '../createSchema';
+import { createSchema } from '../createSchema';
 import { createObject, invariant, isObject } from '../helpers';
 import { Blueprint, CommonCriterias, Schema, InferNullable, ShapeCriterias } from '../types';
 

@@ -1,5 +1,5 @@
 import { commonCriteria } from '../criteria';
-import createSchema from '../createSchema';
+import { createSchema } from '../createSchema';
 import { CommonCriterias, Schema, UnknownFunction } from '../types';
 import { invariant } from '../helpers';
 

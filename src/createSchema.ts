@@ -64,7 +64,7 @@ function validate<T>(
   return value!;
 }
 
-export default function createSchema<T>({
+export function createSchema<T>({
   cast,
   criteria,
   defaultValue,
