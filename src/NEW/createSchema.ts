@@ -9,7 +9,7 @@ import { Criteria, Schema, SchemaOptions, SchemaState, UnknownObject } from './t
 function validate<T>(
   state: SchemaState<T>,
   validators: Criteria<T>[],
-  initialValue: T,
+  initialValue: T | null | undefined,
   path: string = '',
   currentObject: UnknownObject = {},
   rootObject?: UnknownObject,

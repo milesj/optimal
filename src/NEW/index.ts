@@ -18,6 +18,7 @@ import { schema, blueprint } from './schemas/schema';
 import { shape } from './schemas/shape';
 import { string } from './schemas/string';
 import { tuple } from './schemas/tuple';
+import { union } from './schemas/union';
 
 export { createPredicate, createSchema };
 
@@ -36,7 +37,7 @@ export const schemas = {
   shape,
   string,
   tuple,
-  // union,
+  union,
 };
 
 export * from './criteria';
@@ -53,4 +54,5 @@ export * from './schemas/schema';
 export * from './schemas/shape';
 export * from './schemas/string';
 export * from './schemas/tuple';
+export * from './schemas/union';
 export * from './types';
