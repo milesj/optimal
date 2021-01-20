@@ -7,6 +7,7 @@ import createPredicate from './createPredicate';
 import createSchema from './createSchema';
 import { array } from './schemas/array';
 import { bool } from './schemas/bool';
+import { custom } from './schemas/custom';
 import { date } from './schemas/date';
 import { func } from './schemas/func';
 import { instance } from './schemas/instance';
@@ -22,7 +23,7 @@ export const schemas = {
   array,
   blueprint,
   bool,
-  // custom,
+  custom,
   date,
   func,
   instance,
@@ -39,6 +40,7 @@ export const schemas = {
 export * from './criteria';
 export * from './schemas/array';
 export * from './schemas/bool';
+export * from './schemas/custom';
 export * from './schemas/date';
 export * from './schemas/func';
 export * from './schemas/instance';

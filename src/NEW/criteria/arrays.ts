@@ -26,6 +26,8 @@ export function of<T>(state: SchemaState<T[]>, itemsSchema: Schema<T>): void | C
     }
   }
 
+  state.type += `<${itemsSchema.type()}>`;
+
   return {
     skipIfNull: true,
     validate(value, path, currentObject, rootObject) {

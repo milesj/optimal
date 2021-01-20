@@ -461,10 +461,3 @@ export default class Predicate<T> {
     return value;
   }
 }
-
-export function custom<T, S extends object = {}>(
-  callback: CustomCallback<T, S>,
-  defaultValue: DefaultValue<T>,
-) /* infer */ {
-  return new Predicate<T>('custom', defaultValue).custom(callback);
-}
