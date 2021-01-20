@@ -15,12 +15,15 @@ function validateType(value: unknown, path: string) {
   invariant(Array.isArray(value), 'Must be a tuple.', path);
 }
 
-export function tuple<T extends unknown[] = unknown[]>(defaultValue?: T): TupleSchema<T> {
+export function tuple<T extends unknown[] = unknown[]>(
+  schemas: InferTupleItems<T>,
+  defaultValue?: T,
+): TupleSchema<T> {
   return createSchema({
     cast: createArray,
     criteria: { ...commonCriteria, ...tupleCriteria },
     defaultValue,
     type: 'tuple',
     validateType,
-  });
+  }).of(schemas);
 }

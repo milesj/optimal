@@ -71,7 +71,7 @@ export default function createSchema<T>({
   type,
   validateType,
 }: SchemaOptions<T>) {
-  const validators: Criteria<T>[] = [{ validate: validateType }];
+  const validators: Criteria<T>[] = [{ skipIfNull: true, validate: validateType }];
 
   const state: SchemaState<T> = {
     defaultValue,

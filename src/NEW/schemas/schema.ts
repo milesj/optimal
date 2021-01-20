@@ -1,19 +1,16 @@
-import { isSchema } from '../helpers';
 import { Schema } from '../types';
+import { func } from './func';
 import { object } from './object';
+import { shape } from './shape';
 
 export function schema() {
-  // TODO switch to shape
-  return object().custom((value) => {
-    if (!isSchema(value)) {
-      throw new Error(
-        'Value provided is not an optimal schema. Must contain a `validate()` method and `typeAlias` property.',
-      );
-    }
+  return shape({
+    type: func().notNullable(),
+    validate: func().notNullable(),
   });
 }
 
-export function blueprint<T = unknown, K extends string = string>(
+export function blueprint<T extends object, K extends string = string>(
   defaultValue?: Record<K, Schema<T>>,
 ) /* infer */ {
   return object(defaultValue).of(schema().notNullable());

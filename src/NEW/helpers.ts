@@ -12,9 +12,9 @@ export function createDate(value: unknown): Date {
   return value instanceof Date ? value : new Date(value as number);
 }
 
-export function createObject(value: unknown) {
+export function createObject<T = UnknownObject>(value: unknown) {
   // eslint-disable-next-line
-  return (isObject(value) ? value : {}) as UnknownObject;
+  return ((isObject(value) ? value : {}) as unknown) as T;
 }
 
 /**
@@ -94,6 +94,16 @@ export function isValidNumber(value: unknown): value is number {
 
 export function isValidString(value: unknown): value is string {
   return typeof value === 'string' && value !== '';
+}
+
+export function logUnknown(unknownFields: object, pathPrefix?: string) {
+  const unknownKeys = Object.keys(unknownFields);
+
+  if (unknownKeys.length > 0) {
+    const message = pathPrefix ? `Unknown "${pathPrefix}" fields` : 'Unknown fields';
+
+    throw new Error(`${message}: ${unknownKeys.join(', ')}.`);
+  }
 }
 
 export function pathKey(path: string): string {

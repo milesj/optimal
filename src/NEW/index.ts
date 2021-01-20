@@ -15,6 +15,7 @@ import { number } from './schemas/number';
 import { object } from './schemas/object';
 import { regex } from './schemas/regex';
 import { schema, blueprint } from './schemas/schema';
+import { shape } from './schemas/shape';
 import { string } from './schemas/string';
 import { tuple } from './schemas/tuple';
 
@@ -32,7 +33,7 @@ export const schemas = {
   object,
   regex,
   schema,
-  // shape,
+  shape,
   string,
   tuple,
   // union,
@@ -49,6 +50,7 @@ export * from './schemas/number';
 export * from './schemas/object';
 export * from './schemas/regex';
 export * from './schemas/schema';
+export * from './schemas/shape';
 export * from './schemas/string';
 export * from './schemas/tuple';
 export * from './types';

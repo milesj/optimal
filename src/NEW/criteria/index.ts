@@ -4,6 +4,7 @@ import * as classCriteria from './classes';
 import * as commonCriteria from './common';
 import * as dateCriteria from './dates';
 import * as numberCriteria from './numbers';
+import * as shapeCriteria from './shapes';
 import * as stringCriteria from './strings';
 import * as objectCriteria from './objects';
 import * as tupleCriteria from './tuples';
@@ -15,6 +16,7 @@ export {
   commonCriteria,
   dateCriteria,
   numberCriteria,
+  shapeCriteria,
   stringCriteria,
   objectCriteria,
   tupleCriteria,
