@@ -68,6 +68,7 @@
     ],
     "eslint": {
       "rules": {
+        "consistent-return": "off",
         "default-param-last": "off",
         "no-param-reassign": "off"
       }
