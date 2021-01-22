@@ -6,7 +6,8 @@ into functions to reduce file size and overhead.
 #### 💥 Breaking
 
 - Renamed `Predicate#nonNullable()` method to `notNullable()`.
-- Removed the `predicate()` predicate (use `schema()` instance).
+- Removed the `predicate()` predicate (use `schema()` instead).
+- Removed `Predicate#key()` method.
 - Removed `Predicate#message()` method.
 - Removed the state boolean argument from `Predicate#required()`.
 
@@ -14,10 +15,14 @@ into functions to reduce file size and overhead.
 
 - Added `Predicate#notRequired()` method.
 - Added `schema()` schema.
+- Added `createSchema()` function for creating custom schemas.
+- Added `createPredicate()` function for creating boolean return checkers.
 
 #### 🛠 Internals
 
 - Migrated to Packemon for package building.
+- Improved the handling of `null` and `undefined` values.
+- Increased code coverage, especially around edge cases.
 - Renamed predicates to schemas.
 - Renamed validation checks to criteria.
 

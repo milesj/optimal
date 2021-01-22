@@ -16,12 +16,14 @@ function validate<T>(
 ): T | null {
   const { defaultValue, metadata } = state;
 
-  let value: T | null | undefined = initialValue ?? defaultValue;
+  let value: T | null | undefined = initialValue;
 
   // Handle undefined
   if (value === undefined) {
+    value = defaultValue;
+
     if (__DEV__) {
-      invariant(state.required, 'Field is required and must be defined.', path);
+      invariant(!state.required, 'Field is required and must be defined.', path);
     }
   } else if (__DEV__) {
     if (metadata.deprecatedMessage) {
@@ -29,26 +31,20 @@ function validate<T>(
       console.info(`Field "${path}" is deprecated. ${metadata.deprecatedMessage}`);
     }
 
-    if (state.never) {
-      invariant(false, 'Field should never be used.', path);
-    }
+    invariant(!state.never, 'Field should never be used.', path);
   }
 
   // Handle null
-  if (value === null) {
-    if (state.nullable) {
-      return null;
-    }
-
-    if (__DEV__) {
-      invariant(false, 'Null is not allowed.', path);
+  if (__DEV__) {
+    if (value === null) {
+      invariant(state.nullable, 'Null is not allowed.', path);
     }
   }
 
   // Run validations and produce a new value
   validators.forEach((test) => {
     if (
-      (test.skipIfNull && state.nullable && value === null) ||
+      (test.skipIfNull && value === null) ||
       (test.skipIfOptional && !state.required && value === state.defaultValue)
     ) {
       return;

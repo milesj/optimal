@@ -1,4 +1,4 @@
-import { invariant, pathKey } from '../helpers';
+import { invariant, isValidString, pathKey } from '../helpers';
 import { Criteria, CustomCallback, SchemaState } from '../types';
 
 /**
@@ -10,7 +10,7 @@ export function and<T>(state: SchemaState<T>, ...keys: string[]): void | Criteri
 
     return {
       validate(value, path, currentObject) {
-        const andKeys = [pathKey(path), ...keys];
+        const andKeys = Array.from(new Set([pathKey(path), ...keys]));
         const undefs = andKeys.filter(
           (key) => currentObject[key] === undefined || currentObject[key] === null,
         );
@@ -53,10 +53,7 @@ export function custom<T>(state: SchemaState<T>, callback: CustomCallback<T>): v
  */
 export function deprecate<T>(state: SchemaState<T>, message: string) {
   if (__DEV__) {
-    invariant(
-      typeof message === 'string' && !!message,
-      'A non-empty string is required for deprecated messages.',
-    );
+    invariant(isValidString(message), 'A non-empty string is required for deprecated messages.');
 
     state.metadata.deprecatedMessage = message;
   }
@@ -111,7 +108,7 @@ export function only<T>(state: SchemaState<T>): void | Criteria<T> {
 
     return {
       validate(value, path) {
-        invariant(value === defaultValue, `Value may only be "${String(defaultValue)}".`, path);
+        invariant(value === defaultValue, `Value may only be "${defaultValue}".`, path);
       },
     };
   }
@@ -126,7 +123,7 @@ export function or<T>(state: SchemaState<T>, ...keys: string[]): void | Criteria
 
     return {
       validate(value, path, currentObject) {
-        const orKeys = [pathKey(path), ...keys];
+        const orKeys = Array.from(new Set([pathKey(path), ...keys]));
         const defs = orKeys.filter(
           (key) => currentObject[key] !== undefined && currentObject[key] !== null,
         );
@@ -156,7 +153,7 @@ export function xor<T>(state: SchemaState<T>, ...keys: string[]): void | Criteri
 
     return {
       validate(value, path, currentObject) {
-        const xorKeys = [pathKey(path), ...keys];
+        const xorKeys = Array.from(new Set([pathKey(path), ...keys]));
         const defs = xorKeys.filter(
           (key) => currentObject[key] !== undefined && currentObject[key] !== null,
         );
