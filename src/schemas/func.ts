@@ -15,10 +15,8 @@ function validateType(value: unknown, path: string) {
   invariant(typeof value === 'function', 'Must be a function.', path);
 }
 
-export function func<T extends UnknownFunction = UnknownFunction>(
-  defaultValue: T | null = null,
-): FunctionSchema<T | null> {
-  return createSchema({
+export function func<T extends UnknownFunction = UnknownFunction>(defaultValue: T | null = null) {
+  return createSchema<FunctionSchema<T | null>>({
     criteria: { ...commonCriteria },
     defaultValue,
     type: 'function',

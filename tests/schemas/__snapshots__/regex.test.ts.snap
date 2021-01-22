@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`regex() and() errors if no keys are defined 1`] = `"AND requires a list of field names."`;
+
+exports[`regex() and() errors if not all properties are defined 1`] = `"All of these fields must be defined: a, c"`;
+
+exports[`regex() custom() errors if callback is not a function 1`] = `"Custom requires a validation function."`;
+
+exports[`regex() custom() errors if no callback 1`] = `"Custom requires a validation function."`;
+
+exports[`regex() deprecate() errors if empty message 1`] = `"A non-empty string is required for deprecated messages."`;
+
+exports[`regex() deprecate() errors if invalid message type 1`] = `"A non-empty string is required for deprecated messages."`;
+
+exports[`regex() deprecate() errors if no message 1`] = `"A non-empty string is required for deprecated messages."`;
+
+exports[`regex() never() errors when validating 1`] = `"Field should never be used."`;
+
+exports[`regex() notNullable() errors when null is passed 1`] = `"Null is not allowed."`;
+
+exports[`regex() or() errors if no keys are defined 1`] = `"OR requires a list of field names."`;
+
+exports[`regex() or() errors if not 1 option is defined 1`] = `"At least one of these fields must be defined: a, b"`;
+
+exports[`regex() required() errors when undefined is passed 1`] = `"Field is required and must be defined."`;
+
+exports[`regex() validateType() errors if a non-object is passed 1`] = `"Must be a class instance."`;
+
+exports[`regex() validateType() errors if a plain object is passed 1`] = `"Must be a class instance."`;
+
+exports[`regex() xor() errors if more than 1 option is defined 1`] = `"Only one of these fields may be defined: a, b, c"`;
+
+exports[`regex() xor() errors if no keys are defined 1`] = `"XOR requires a list of field names."`;
+
+exports[`regex() xor() errors if no options are defined 1`] = `"Only one of these fields may be defined: a, b, c"`;

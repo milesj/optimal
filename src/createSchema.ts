@@ -1,5 +1,12 @@
 import { invariant } from './helpers';
-import { Criteria, Schema, SchemaOptions, SchemaState, UnknownObject } from './types';
+import {
+  Criteria,
+  InferSchemaType,
+  Schema,
+  SchemaOptions,
+  SchemaState,
+  UnknownObject,
+} from './types';
 
 /**
  * Run all validation checks that have been enqueued and return a type casted value.
@@ -60,13 +67,14 @@ function validate<T>(
   return value!;
 }
 
-export function createSchema<T>({
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function createSchema<S extends Schema<any>, T = InferSchemaType<S>>({
   cast,
   criteria,
   defaultValue,
   type,
   validateType,
-}: SchemaOptions<T>) {
+}: SchemaOptions<T>): S {
   const validators: Criteria<T>[] = [];
 
   const state: SchemaState<T> = {
@@ -108,7 +116,5 @@ export function createSchema<T>({
     });
   });
 
-  // We return `any` so that the schema type can be narrowed
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return schema as Schema<any>;
+  return schema as S;
 }
