@@ -14,11 +14,11 @@ function validateType(value: unknown, path: string) {
   invariant(isObject(value) && value.constructor !== Object, 'Must be a class instance.', path);
 }
 
-export function instance<T = object>(): InstanceSchema<T | null> {
-  return createSchema({
+export function instance<T = Object>(): InstanceSchema<T | null> {
+  return (createSchema({
     criteria: { ...commonCriteria, ...classCriteria },
     defaultValue: null,
     type: 'class',
     validateType,
-  }).nullable();
+  }) as InstanceSchema<T>).nullable();
 }

@@ -53,7 +53,7 @@ function validate<T>(
     const result = test.validate(value!, path, currentObject, rootObject || currentObject);
 
     if (result !== undefined) {
-      value = result as NonNullable<T>;
+      value = result as T;
     }
   });
 
@@ -67,7 +67,7 @@ export function createSchema<T>({
   type,
   validateType,
 }: SchemaOptions<T>) {
-  const validators: Criteria<T>[] = [{ skipIfNull: true, validate: validateType }];
+  const validators: Criteria<T>[] = [];
 
   const state: SchemaState<T> = {
     defaultValue,
@@ -89,6 +89,10 @@ export function createSchema<T>({
     },
   };
 
+  if (validateType) {
+    validators.push({ skipIfNull: true, validate: validateType });
+  }
+
   Object.entries(criteria).forEach(([name, crit]) => {
     Object.defineProperty(schema, name, {
       enumerable: true,
@@ -106,5 +110,5 @@ export function createSchema<T>({
 
   // We return `any` so that the schema type can be narrowed
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return schema as any;
+  return schema as Schema<any>;
 }

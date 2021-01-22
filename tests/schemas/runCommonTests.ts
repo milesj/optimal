@@ -10,7 +10,7 @@ interface TestCriterias<S> extends CommonCriterias<S> {
 }
 
 export function runCommonTests<T>(
-  factory: (initialValue?: T) => Schema<T> & CommonCriterias<Schema<T>>,
+  factory: (initialValue?: T) => Schema<T | null> & CommonCriterias<Schema<T | null>>,
   value: T | null = null,
   {
     defaultValue = null,
@@ -21,7 +21,7 @@ export function runCommonTests<T>(
 
   beforeEach(() => {
     // eslint-disable-next-line
-    schema = factory(defaultValue) as any;
+    schema = factory(defaultValue!) as any;
   });
 
   describe('and()', () => {
