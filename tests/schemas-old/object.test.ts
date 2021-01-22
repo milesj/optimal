@@ -1,4 +1,4 @@
-import { object, blueprint, string, number, ObjectSchema } from '../../src/NEW';
+import { blueprint, number, object, ObjectSchema, string } from '../../src/NEW';
 import { runChecks, runInProd } from '../helpers';
 
 describe('object()', () => {

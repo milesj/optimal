@@ -1,4 +1,4 @@
-import { custom, func, Predicate,Schema, string } from '../src';
+import { custom, func, Predicate, Schema, string } from '../src';
 import { runChecks } from './helpers';
 
 describe('Predicate', () => {

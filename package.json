@@ -8,17 +8,15 @@
   "scripts": {
     "prepare": "beemo create-config --silent",
     "build": "packemon build --addEngines",
-    "pack": "NODE_ENV=production packemon pack --addEngines --generateDeclaration=standard",
+    "pack": "NODE_ENV=production packemon pack --addEngines --declaration=standard",
+    "ci": "yarn run type && yarn run test && yarn run lint",
     "clean": "packemon clean",
     "coverage": "yarn run jest --coverage",
     "lint": "beemo eslint",
-    "jest": "beemo jest",
     "format": "beemo prettier",
-    "prerelease": "yarn run pack && yarn test",
+    "prerelease": "yarn run pack && yarn run ci",
     "release": "npx np --yolo --no-yarn",
-    "pretest": "yarn run type",
-    "test": "yarn run jest",
-    "posttest": "yarn run lint",
+    "test": "beemo jest",
     "type": "beemo typescript --noEmit"
   },
   "repository": {
@@ -42,13 +40,13 @@
   },
   "license": "MIT",
   "engines": {
-    "node": ">=10.10.0"
+    "node": ">=10.3.0"
   },
   "devDependencies": {
     "@milesj/build-tools": "^2.17.1",
     "@types/node": "^14.14.31",
     "conventional-changelog-beemo": "^2.1.0",
-    "packemon": "^0.7.1"
+    "packemon": "^0.10.1"
   },
   "beemo": {
     "module": "@milesj/build-tools",
@@ -79,12 +77,8 @@
     "url": "https://ko-fi.com/milesjohnson"
   },
   "packemon": {
-    "format": [
-      "lib",
-      "esm"
-    ],
     "inputs": {
-      "index": "src/NEW/index.ts"
+      "index": "src/index.ts"
     },
     "platform": [
       "browser",

@@ -1,8 +1,8 @@
+import { createSchema } from '../createSchema';
 import { commonCriteria, tupleCriteria } from '../criteria';
 import { InferTupleItems } from '../criteria/tuples';
-import { createSchema } from '../createSchema';
 import { createArray, invariant } from '../helpers';
-import { CommonCriterias, Schema, InferNullable } from '../types';
+import { CommonCriterias, InferNullable, Schema } from '../types';
 
 export interface TupleSchema<T> extends Schema<T>, CommonCriterias<TupleSchema<T>> {
   never: () => TupleSchema<never>;

@@ -39,7 +39,7 @@ export function of<T>(
       const nextValue = { ...value };
 
       Object.keys(value).forEach((baseKey) => {
-        const key = baseKey as keyof typeof value;
+        const key = baseKey!;
 
         nextValue[key] = valuesSchema.validate(
           value[key],

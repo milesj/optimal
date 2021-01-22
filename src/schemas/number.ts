@@ -1,7 +1,7 @@
-import { commonCriteria, numberCriteria } from '../criteria';
 import { createSchema } from '../createSchema';
-import { CommonCriterias, InferNullable, NumberCriterias, Schema } from '../types';
+import { commonCriteria, numberCriteria } from '../criteria';
 import { invariant } from '../helpers';
+import { CommonCriterias, InferNullable, NumberCriterias, Schema } from '../types';
 
 export interface NumberSchema<T = number>
   extends Schema<T>,

@@ -1,7 +1,7 @@
-import { commonCriteria } from '../criteria';
 import { createSchema } from '../createSchema';
-import { CommonCriterias, Schema, UnknownFunction } from '../types';
+import { commonCriteria } from '../criteria';
 import { invariant } from '../helpers';
+import { CommonCriterias, Schema, UnknownFunction } from '../types';
 
 export interface FunctionSchema<T = UnknownFunction>
   extends Schema<T>,

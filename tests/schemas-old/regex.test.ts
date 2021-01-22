@@ -1,4 +1,4 @@
-import { regex, InstanceSchema } from '../../src/NEW';
+import { InstanceSchema, regex } from '../../src/NEW';
 import { runChecks } from '../helpers';
 
 describe('regex()', () => {

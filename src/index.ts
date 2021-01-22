@@ -12,7 +12,7 @@ import { instance } from './schemas/instance';
 import { number } from './schemas/number';
 import { object } from './schemas/object';
 import { regex } from './schemas/regex';
-import { schema, blueprint } from './schemas/schema';
+import { blueprint, schema } from './schemas/schema';
 import { shape } from './schemas/shape';
 import { string } from './schemas/string';
 import { tuple } from './schemas/tuple';
@@ -35,6 +35,8 @@ export const schemas = {
   tuple,
   union,
 };
+
+export type Schemas = typeof schemas;
 
 export * from './createPredicate';
 export * from './createSchema';

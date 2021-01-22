@@ -1,4 +1,4 @@
-import { Schema, Predicate } from './types';
+import { Predicate, Schema } from './types';
 
 export function createPredicate<T>(schema: Schema<T>): Predicate<T> {
   return (value) => {

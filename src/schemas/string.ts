@@ -1,7 +1,7 @@
-import { commonCriteria, stringCriteria } from '../criteria';
 import { createSchema } from '../createSchema';
-import { CommonCriterias, StringCriterias, Schema, InferNullable } from '../types';
+import { commonCriteria, stringCriteria } from '../criteria';
 import { invariant } from '../helpers';
+import { CommonCriterias, InferNullable, Schema, StringCriterias } from '../types';
 
 export interface StringSchema<T = string>
   extends Schema<T>,

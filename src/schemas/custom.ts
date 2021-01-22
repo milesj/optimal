@@ -1,5 +1,5 @@
-import { commonCriteria } from '../criteria';
 import { createSchema } from '../createSchema';
+import { commonCriteria } from '../criteria';
 import { CommonCriterias, CustomCallback, Schema } from '../types';
 
 export interface CustomSchema<T> extends Schema<T>, CommonCriterias<CustomSchema<T>> {

@@ -1,7 +1,7 @@
-import { commonCriteria, classCriteria } from '../criteria';
 import { createSchema } from '../createSchema';
+import { classCriteria, commonCriteria } from '../criteria';
 import { invariant, isObject } from '../helpers';
-import { CommonCriterias, Schema, Constructor, InferNullable } from '../types';
+import { CommonCriterias, Constructor, InferNullable, Schema } from '../types';
 
 export interface InstanceSchema<T> extends Schema<T>, CommonCriterias<InstanceSchema<T>> {
   never: () => InstanceSchema<never>;

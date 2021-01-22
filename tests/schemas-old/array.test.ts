@@ -1,4 +1,4 @@
-import { array, string, ArraySchema } from '../../src/NEW';
+import { array, ArraySchema, string } from '../../src/NEW';
 import { runChecks, runInProd } from '../helpers';
 
 describe('array()', () => {

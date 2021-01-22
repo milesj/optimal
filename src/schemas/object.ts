@@ -1,7 +1,7 @@
-import { commonCriteria, objectCriteria } from '../criteria';
 import { createSchema } from '../createSchema';
+import { commonCriteria, objectCriteria } from '../criteria';
 import { createObject, invariant, isObject } from '../helpers';
-import { CommonCriterias, Schema, ObjectCriterias, InferNullable } from '../types';
+import { CommonCriterias, InferNullable, ObjectCriterias, Schema } from '../types';
 
 export interface ObjectSchema<T = object>
   extends Schema<T>,

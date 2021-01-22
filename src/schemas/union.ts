@@ -1,6 +1,6 @@
-import { commonCriteria, unionCriteria } from '../criteria';
 import { createSchema } from '../createSchema';
-import { CommonCriterias, Schema, InferNullable } from '../types';
+import { commonCriteria, unionCriteria } from '../criteria';
+import { CommonCriterias, InferNullable, Schema } from '../types';
 
 export interface UnionSchema<T> extends Schema<T>, CommonCriterias<UnionSchema<T>> {
   never: () => UnionSchema<never>;

@@ -1,6 +1,6 @@
-import { Blueprint, UnknownObject } from './types';
-import { shape } from './schemas/shape';
 import { isObject } from './helpers';
+import { shape } from './schemas/shape';
+import { Blueprint, UnknownObject } from './types';
 import { ValidationError } from './ValidationError';
 
 export interface OptimalOptions {

@@ -1,7 +1,7 @@
-import { commonCriteria, arrayCriteria } from '../criteria';
 import { createSchema } from '../createSchema';
+import { arrayCriteria, commonCriteria } from '../criteria';
 import { createArray, invariant } from '../helpers';
-import { CommonCriterias, Schema, ArrayCriterias, InferNullable } from '../types';
+import { ArrayCriterias, CommonCriterias, InferNullable, Schema } from '../types';
 
 export interface ArraySchema<T = unknown[]>
   extends Schema<T>,

@@ -1,5 +1,5 @@
-import { commonCriteria, booleanCriteria } from '../criteria';
 import { createSchema } from '../createSchema';
+import { booleanCriteria, commonCriteria } from '../criteria';
 import { invariant } from '../helpers';
 import { BooleanCriterias, CommonCriterias, Schema } from '../types';
 

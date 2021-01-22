@@ -1,5 +1,5 @@
-import { commonCriteria, dateCriteria } from '../criteria';
 import { createSchema } from '../createSchema';
+import { commonCriteria, dateCriteria } from '../criteria';
 import { createDate, invariant, isValidDate } from '../helpers';
 import { CommonCriterias, DateCriterias, Schema } from '../types';
 

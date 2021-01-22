@@ -1,4 +1,4 @@
-import { Constructor, UnknownObject, Schema } from './types';
+import { Constructor, Schema, UnknownObject } from './types';
 
 export function createArray(value: unknown): unknown[] {
   if (value === undefined) {

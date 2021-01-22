@@ -1,7 +1,7 @@
-import { commonCriteria, shapeCriteria } from '../criteria';
 import { createSchema } from '../createSchema';
+import { commonCriteria, shapeCriteria } from '../criteria';
 import { createObject, invariant, isObject } from '../helpers';
-import { Blueprint, CommonCriterias, Schema, InferNullable, ShapeCriterias } from '../types';
+import { Blueprint, CommonCriterias, InferNullable, Schema, ShapeCriterias } from '../types';
 
 export interface ShapeSchema<T>
   extends Schema<T, Partial<T>>,
