@@ -14,8 +14,8 @@ export function runCommonTests<T>(
   value: T | null = null,
   {
     defaultValue = null,
-    skipNullValues,
-  }: { defaultValue?: T | null; skipNullValues?: boolean } = {},
+    nullableByDefault = false,
+  }: { defaultValue?: T | null; nullableByDefault?: boolean } = {},
 ) {
   let schema: Schema<T> & TestCriterias<Schema<T>>;
 
@@ -32,7 +32,7 @@ export function runCommonTests<T>(
     it('errors if no keys are defined', () => {
       expect(() => {
         schema.and();
-      }).toThrowErrorMatchingSnapshot();
+      }).toThrow('AND requires a list of field names.');
     });
 
     it('errors if not all properties are defined', () => {
@@ -41,17 +41,17 @@ export function runCommonTests<T>(
           a: 'a',
           b: 'b',
         });
-      }).toThrowErrorMatchingSnapshot();
+      }).toThrow('All of these fields must be defined: a, c');
     });
 
-    if (!skipNullValues) {
+    if (nullableByDefault) {
       it('errors if not all properties are defined and null is passed', () => {
         expect(() => {
           schema.validate(null, 'a', {
             a: 'a',
             b: 'b',
           });
-        }).toThrowErrorMatchingSnapshot();
+        }).toThrow('All of these fields must be defined: a, c');
       });
     }
 
@@ -65,7 +65,7 @@ export function runCommonTests<T>(
       }).not.toThrow();
     });
 
-    if (!skipNullValues) {
+    if (nullableByDefault) {
       it('doesnt error if all are defined and null is passed', () => {
         expect(() => {
           schema.validate(null, 'a', {
@@ -74,6 +74,16 @@ export function runCommonTests<T>(
             c: 'c',
           });
         }).not.toThrow();
+      });
+    } else {
+      it('errors if all are defined and null is passed', () => {
+        expect(() => {
+          schema.validate(null, 'a', {
+            a: 'a',
+            b: 'b',
+            c: 'c',
+          });
+        }).toThrow('Invalid field "a". Null is not allowed.');
       });
     }
 
@@ -106,14 +116,14 @@ export function runCommonTests<T>(
       expect(() =>
         // @ts-expect-error
         schema.custom(),
-      ).toThrowErrorMatchingSnapshot();
+      ).toThrow('Custom requires a validation function.');
     });
 
     it('errors if callback is not a function', () => {
       expect(() =>
         // @ts-expect-error
         schema.custom(123),
-      ).toThrowErrorMatchingSnapshot();
+      ).toThrow('Custom requires a validation function.');
     });
 
     it('triggers callback function', () => {
@@ -175,18 +185,20 @@ export function runCommonTests<T>(
       expect(() =>
         // @ts-expect-error
         schema.deprecate(),
-      ).toThrowErrorMatchingSnapshot();
+      ).toThrow('A non-empty string is required for deprecated messages.');
     });
 
     it('errors if empty message', () => {
-      expect(() => schema.deprecate('')).toThrowErrorMatchingSnapshot();
+      expect(() => schema.deprecate('')).toThrow(
+        'A non-empty string is required for deprecated messages.',
+      );
     });
 
     it('errors if invalid message type', () => {
       expect(() =>
         // @ts-expect-error
         schema.deprecate(123),
-      ).toThrowErrorMatchingSnapshot();
+      ).toThrow('A non-empty string is required for deprecated messages.');
     });
 
     it('logs a message when validating', () => {
@@ -227,7 +239,7 @@ export function runCommonTests<T>(
 
   describe('never()', () => {
     it('errors when validating', () => {
-      expect(() => schema.never().validate(value)).toThrowErrorMatchingSnapshot();
+      expect(() => schema.never().validate(value)).toThrow('Field should never be used.');
     });
 
     describe('production', () => {
@@ -281,7 +293,7 @@ export function runCommonTests<T>(
     });
 
     it('errors when null is passed', () => {
-      expect(() => schema.validate(null)).toThrowErrorMatchingSnapshot();
+      expect(() => schema.validate(null)).toThrow('Null is not allowed.');
     });
 
     it('doesnt error when a valid value is passed', () => {
@@ -319,7 +331,7 @@ export function runCommonTests<T>(
     });
 
     it('errors when undefined is passed', () => {
-      expect(() => schema.validate(undefined)).toThrowErrorMatchingSnapshot();
+      expect(() => schema.validate(undefined)).toThrow('Field is required and must be defined.');
     });
 
     it('doesnt error when a valid value is passed', () => {
@@ -361,16 +373,10 @@ export function runCommonTests<T>(
         schema.only();
       });
 
-      it('errors if default value is not the same type', () => {
+      it('errors if null or undefined default value is provided', () => {
         expect(() => {
-          factory(defaultValue).only();
-        }).toThrowErrorMatchingSnapshot();
-      });
-
-      it('errors if value doesnt match the default value', () => {
-        expect(() => {
-          schema.validate(value);
-        }).toThrowErrorMatchingSnapshot();
+          factory(undefined).only();
+        }).toThrow('Only requires a non-empty default value.');
       });
 
       it('doesnt error if value matches default value', () => {
@@ -388,15 +394,6 @@ export function runCommonTests<T>(
             }).not.toThrow();
           }),
         );
-
-        it(
-          'doesnt error if value doesnt match the default value',
-          runInProd(() => {
-            expect(() => {
-              schema.validate(value);
-            }).not.toThrow();
-          }),
-        );
       });
     });
   }
@@ -409,13 +406,13 @@ export function runCommonTests<T>(
     it('errors if no keys are defined', () => {
       expect(() => {
         schema.or();
-      }).toThrowErrorMatchingSnapshot();
+      }).toThrow('OR requires a list of field names.');
     });
 
     it('errors if not 1 option is defined', () => {
       expect(() => {
         schema.validate(value, 'a', {});
-      }).toThrowErrorMatchingSnapshot();
+      }).toThrow('At least one of these fields must be defined: a, b');
     });
 
     it('doesnt error if at least 1 option is defined', () => {
@@ -459,19 +456,19 @@ export function runCommonTests<T>(
     it('errors if no keys are defined', () => {
       expect(() => {
         schema.xor();
-      }).toThrowErrorMatchingSnapshot();
+      }).toThrow('XOR requires a list of field names.');
     });
 
     it('errors if no options are defined', () => {
       expect(() => {
         schema.validate(value, 'a', {});
-      }).toThrowErrorMatchingSnapshot();
+      }).toThrow('Only one of these fields may be defined: a, b, c');
     });
 
     it('errors if more than 1 option is defined', () => {
       expect(() => {
         schema.validate(value, 'a', { a: 'a', b: 'b' });
-      }).toThrowErrorMatchingSnapshot();
+      }).toThrow('Only one of these fields may be defined: a, b, c');
     });
 
     it('doesnt error if only 1 option is defined', () => {

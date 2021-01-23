@@ -13,21 +13,21 @@ describe('instance()', () => {
     schema = instance();
   });
 
-  runCommonTests(() => instance().of(Foo), new Foo(), { skipNullValues: true });
+  runCommonTests(() => instance().of(Foo), new Foo(), { nullableByDefault: true });
 
   describe('of()', () => {
     it('errors if a non-class declaration is passed', () => {
       expect(() => {
         // @ts-expect-error Invalid type
         schema.of(123);
-      }).toThrowErrorMatchingSnapshot();
+      }).toThrow('A class reference is required.');
     });
 
     it('errors if a class instance is passed', () => {
       expect(() => {
         // @ts-expect-error Invalid type
         schema.of(new Foo());
-      }).toThrowErrorMatchingSnapshot();
+      }).toThrow('A class reference is required.');
     });
 
     it('returns null if null is passed', () => {
@@ -50,7 +50,7 @@ describe('instance()', () => {
       it('errors if the wrong class is passed', () => {
         expect(() => {
           schema.validate(new Bar());
-        }).toThrowErrorMatchingSnapshot();
+        }).toThrow('Must be an instance of "Foo".');
       });
 
       it('errors if the wrong class with same name is passed', () => {
@@ -62,7 +62,7 @@ describe('instance()', () => {
 
         expect(() => {
           schema.validate(new Foo2());
-        }).toThrowErrorMatchingSnapshot();
+        }).toThrow('Must be an instance of "Foo".');
       });
 
       it('doesnt error if the correct class is passed', () => {
@@ -80,7 +80,7 @@ describe('instance()', () => {
       it('errors if the wrong class is passed', () => {
         expect(() => {
           schema.validate(new Bar());
-        }).toThrowErrorMatchingSnapshot();
+        }).toThrow('Must be an instance of "Foo".');
       });
 
       it('doesnt error if the wrong class with same name is passed', () => {
@@ -140,13 +140,13 @@ describe('instance()', () => {
     it('errors if a non-object is passed', () => {
       expect(() => {
         schema.validate(123);
-      }).toThrowErrorMatchingSnapshot();
+      }).toThrow('Must be a class instance.');
     });
 
     it('errors if a plain object is passed', () => {
       expect(() => {
         schema.validate({});
-      }).toThrowErrorMatchingSnapshot();
+      }).toThrow('Must be a class instance.');
     });
 
     it('doesnt error if a class instance is passed', () => {

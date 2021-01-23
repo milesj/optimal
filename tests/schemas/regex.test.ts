@@ -9,7 +9,7 @@ describe('regex()', () => {
     schema = regex();
   });
 
-  runCommonTests(() => regex(), /abc/u, { skipNullValues: true });
+  runCommonTests(() => regex(), /abc/u, { nullableByDefault: true });
 
   describe('type()', () => {
     it('returns "RegExp"', () => {

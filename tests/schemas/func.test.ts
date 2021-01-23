@@ -10,7 +10,7 @@ describe('func()', () => {
     schema = func();
   });
 
-  runCommonTests(() => func(), noop, { skipNullValues: true });
+  runCommonTests(() => func(), noop, { nullableByDefault: true });
 
   describe('type()', () => {
     it('returns "function"', () => {
@@ -23,7 +23,7 @@ describe('func()', () => {
       expect(() => {
         // @ts-expect-error Invalid type
         schema.validate(123);
-      }).toThrowErrorMatchingSnapshot();
+      }).toThrow('Must be a function.');
     });
 
     it('doesnt error if a function is passed', () => {

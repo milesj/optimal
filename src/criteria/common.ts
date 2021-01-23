@@ -100,12 +100,6 @@ export function only<T>(state: SchemaState<T>): void | Criteria<T> {
       'Only requires a non-empty default value.',
     );
 
-    invariant(
-      // eslint-disable-next-line valid-typeof
-      typeof defaultValue === state.type,
-      `Only requires a default value of type ${state.type}.`,
-    );
-
     return {
       validate(value, path) {
         invariant(value === defaultValue, `Value may only be "${defaultValue}".`, path);

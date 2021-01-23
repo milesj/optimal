@@ -8,11 +8,10 @@ export interface CustomSchema<T> extends Schema<T>, CommonCriterias<CustomSchema
   nullable: () => CustomSchema<T | null>;
 }
 
-export function custom<T>(callback: CustomCallback<T>, defaultValue?: T): CustomSchema<T> {
-  return createSchema({
+export function custom<T>(callback: CustomCallback<T>, defaultValue?: T) {
+  return createSchema<CustomSchema<T>>({
     criteria: { ...commonCriteria },
     defaultValue,
     type: 'custom',
-    validateType() {},
   }).custom(callback);
 }
