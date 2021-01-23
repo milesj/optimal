@@ -22,14 +22,14 @@ describe('regex()', () => {
       expect(() => {
         // @ts-expect-error Invalid type
         schema.validate(123);
-      }).toThrowErrorMatchingSnapshot();
+      }).toThrow('Must be an instance of RegExp.');
     });
 
     it('errors if a plain object is passed', () => {
       expect(() => {
         // @ts-expect-error Invalid type
         schema.validate({});
-      }).toThrowErrorMatchingSnapshot();
+      }).toThrow('Must be an instance of RegExp.');
     });
 
     it('doesnt error if a regex pattern is passed', () => {

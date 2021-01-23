@@ -132,7 +132,7 @@ export interface SchemaOptions<T> {
   criteria: Record<string, CriteriaFactory<T>>;
   defaultValue?: T;
   type: string;
-  validateType?: CriteriaValidator<T>;
+  validateType?: CriteriaFactory<T>;
 }
 
 export type InferSchemaType<T> = T extends Schema<infer U> ? U : never;

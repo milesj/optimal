@@ -1,6 +1,7 @@
 import { invariant } from './helpers';
 import {
   Criteria,
+  CriteriaFactory,
   InferSchemaType,
   Schema,
   SchemaOptions,
@@ -97,22 +98,24 @@ export function createSchema<S extends Schema<any>, T = InferSchemaType<S>>({
     },
   };
 
+  const resolveCriteria = (crit: CriteriaFactory<T>, args: unknown[] = []) => {
+    const validator = crit(state, ...args);
+
+    if (validator) {
+      validators.push(validator);
+    }
+
+    return schema;
+  };
+
   if (validateType) {
-    validators.push({ skipIfNull: true, validate: validateType });
+    resolveCriteria(validateType);
   }
 
   Object.entries(criteria).forEach(([name, crit]) => {
     Object.defineProperty(schema, name, {
       enumerable: true,
-      value: (...args: unknown[]) => {
-        const validator = crit(state, ...args);
-
-        if (validator) {
-          validators.push(validator);
-        }
-
-        return schema;
-      },
+      value: (...args: unknown[]) => resolveCriteria(crit, args),
     });
   });
 

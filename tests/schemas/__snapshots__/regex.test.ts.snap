@@ -1,5 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`regex() validateType() errors if a non-object is passed 1`] = `"Must be a class instance."`;
-
-exports[`regex() validateType() errors if a plain object is passed 1`] = `"Must be a class instance."`;
