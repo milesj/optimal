@@ -1,22 +1,27 @@
 import { createSchema } from '../createSchema';
 import { booleanCriteria, commonCriteria } from '../criteria';
 import { invariant } from '../helpers';
-import { BooleanCriterias, CommonCriterias, Schema } from '../types';
+import { BooleanCriterias, CommonCriterias, Criteria, Schema } from '../types';
 
-export interface BoolSchema<T = boolean>
+export interface BooleanSchema<T = boolean>
   extends Schema<T>,
-    BooleanCriterias<BoolSchema<T>>,
-    CommonCriterias<BoolSchema<T>> {
-  never: () => BoolSchema<never>;
-  notNullable: () => BoolSchema<NonNullable<T>>;
-  nullable: () => BoolSchema<T | null>;
+    BooleanCriterias<BooleanSchema<T>>,
+    CommonCriterias<BooleanSchema<T>> {
+  never: () => BooleanSchema<never>;
+  notNullable: () => BooleanSchema<NonNullable<T>>;
+  nullable: () => BooleanSchema<T | null>;
 }
 
-function validateType(value: unknown, path: string) {
-  invariant(typeof value === 'boolean', 'Must be a boolean.', path);
+function validateType(): void | Criteria<boolean> {
+  return {
+    skipIfNull: true,
+    validate(value, path) {
+      invariant(typeof value === 'boolean', 'Must be a boolean.', path);
+    },
+  };
 }
 
-export function bool(defaultValue: boolean = false): BoolSchema {
+export function bool(defaultValue: boolean = false): BooleanSchema {
   return createSchema({
     cast: Boolean,
     criteria: { ...commonCriteria, ...booleanCriteria },

@@ -1,7 +1,7 @@
 import { createSchema } from '../createSchema';
 import { commonCriteria } from '../criteria';
 import { invariant } from '../helpers';
-import { CommonCriterias, Criteria, Schema, SchemaState, UnknownFunction } from '../types';
+import { CommonCriterias, Criteria, Schema, UnknownFunction } from '../types';
 
 export interface FunctionSchema<T = UnknownFunction>
   extends Schema<T>,
@@ -11,7 +11,7 @@ export interface FunctionSchema<T = UnknownFunction>
   nullable: () => FunctionSchema<T | null>;
 }
 
-function validateType<T>(state: SchemaState<T>): void | Criteria<T> {
+function validateType<T>(): void | Criteria<T> {
   return {
     skipIfNull: true,
     validate(value, path) {

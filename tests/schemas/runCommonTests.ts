@@ -373,11 +373,13 @@ export function runCommonTests<T>(
         schema.only();
       });
 
-      it('errors if null or undefined default value is provided', () => {
-        expect(() => {
-          factory(undefined).only();
-        }).toThrow('Only requires a non-empty default value.');
-      });
+      if (defaultValue === null) {
+        it('errors if null or undefined default value is provided', () => {
+          expect(() => {
+            factory(undefined).only();
+          }).toThrow('Only requires a non-empty default value.');
+        });
+      }
 
       it('doesnt error if value matches default value', () => {
         expect(() => {

@@ -111,7 +111,7 @@ export interface StringCriterias<S> {
 export interface Schema<O, I = O> {
   type: () => string;
   validate: (
-    value: I | null | undefined,
+    value: I | null | undefined, // TODO change to unknown?
     path?: string,
     currentObject?: UnknownObject,
     rootObject?: UnknownObject,

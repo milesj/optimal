@@ -92,9 +92,9 @@ export function createSchema<S extends Schema<any>, T = InferSchemaType<S>>({
       return state.type;
     },
     validate(value, path, currentObject, rootObject) {
-      const result = validate(state, validators, value, path, currentObject, rootObject);
+      return validate(state, validators, value, path, currentObject, rootObject)!;
 
-      return cast && result !== null ? cast(result) : result!;
+      // return cast && result !== null ? cast(result) : result!;
     },
   };
 
