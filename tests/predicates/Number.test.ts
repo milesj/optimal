@@ -23,7 +23,7 @@ describe('NumberPredicate', () => {
       expect(() => {
         runChecks(
           number(),
-          // @ts-ignore Testing wrong type
+          // @ts-expect-error Testing wrong type
           'foo',
         );
       }).toThrowErrorMatchingSnapshot();
@@ -36,7 +36,7 @@ describe('NumberPredicate', () => {
     it('returns default value from factory if value is undefined', () => {
       expect(
         runChecks(
-          number(struct => struct.multiplier * 123),
+          number((struct) => struct.multiplier * 123),
           undefined,
           {
             struct: { multiplier: 3 },
@@ -66,7 +66,7 @@ describe('NumberPredicate', () => {
           expect(
             runChecks(
               predicate,
-              // @ts-ignore Test invalid type
+              // @ts-expect-error Test invalid type
               '123',
             ),
           ).toBe(123);
@@ -82,14 +82,14 @@ describe('NumberPredicate', () => {
 
     it('errors if min is a not a number', () => {
       expect(() => {
-        // @ts-ignore Testing wrong type
+        // @ts-expect-error Testing wrong type
         predicate.between('foo', 5);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('errors if max is a not a number', () => {
       expect(() => {
-        // @ts-ignore Testing wrong type
+        // @ts-expect-error Testing wrong type
         predicate.between(0, 'foo');
       }).toThrowErrorMatchingSnapshot();
     });
@@ -98,7 +98,7 @@ describe('NumberPredicate', () => {
       expect(() => {
         runChecks(
           predicate,
-          // @ts-ignore Testing wrong type
+          // @ts-expect-error Testing wrong type
           'foo',
         );
       }).toThrowErrorMatchingSnapshot();
@@ -154,7 +154,7 @@ describe('NumberPredicate', () => {
 
     it('errors if value is NaN', () => {
       expect(() => {
-        runChecks(predicate, NaN);
+        runChecks(predicate, Number.NaN);
       }).toThrowErrorMatchingSnapshot();
     });
 
@@ -172,7 +172,7 @@ describe('NumberPredicate', () => {
 
     it('errors if min is a not a number', () => {
       expect(() => {
-        // @ts-ignore Testing wrong type
+        // @ts-expect-error Testing wrong type
         predicate.gt('foo');
       }).toThrowErrorMatchingSnapshot();
     });
@@ -203,7 +203,7 @@ describe('NumberPredicate', () => {
 
     it('errors if min is a not a number', () => {
       expect(() => {
-        // @ts-ignore Testing wrong type
+        // @ts-expect-error Testing wrong type
         predicate.gte('foo');
       }).toThrowErrorMatchingSnapshot();
     });
@@ -240,7 +240,7 @@ describe('NumberPredicate', () => {
 
     it('errors if value is NaN', () => {
       expect(() => {
-        runChecks(predicate, NaN);
+        runChecks(predicate, Number.NaN);
       }).toThrowErrorMatchingSnapshot();
     });
 
@@ -258,7 +258,7 @@ describe('NumberPredicate', () => {
 
     it('errors if max is a not a number', () => {
       expect(() => {
-        // @ts-ignore Testing wrong type
+        // @ts-expect-error Testing wrong type
         predicate.lt('foo');
       }).toThrowErrorMatchingSnapshot();
     });
@@ -289,7 +289,7 @@ describe('NumberPredicate', () => {
 
     it('errors if max is a not a number', () => {
       expect(() => {
-        // @ts-ignore Testing wrong type
+        // @ts-expect-error Testing wrong type
         predicate.lte('foo');
       }).toThrowErrorMatchingSnapshot();
     });
@@ -344,7 +344,7 @@ describe('NumberPredicate', () => {
 
     it('errors if not an array', () => {
       expect(() => {
-        // @ts-ignore Testing wrong type
+        // @ts-expect-error Testing wrong type
         predicate.oneOf(123);
       }).toThrowErrorMatchingSnapshot();
     });
@@ -357,7 +357,7 @@ describe('NumberPredicate', () => {
 
     it('errors if array contains a non-number', () => {
       expect(() => {
-        // @ts-ignore Testing wrong type
+        // @ts-expect-error Testing wrong type
         predicate.oneOf(['foo', 123]);
       }).toThrowErrorMatchingSnapshot();
     });

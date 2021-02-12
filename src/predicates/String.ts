@@ -1,5 +1,5 @@
-import CollectionPredicate from './Collection';
 import { DefaultValue } from '../types';
+import CollectionPredicate from './Collection';
 
 function isString(value: unknown): value is string {
   return typeof value === 'string' && value !== '';
@@ -88,7 +88,7 @@ export default class StringPredicate<T extends string = string> extends Collecti
   oneOf<U extends string>(list: U[]): StringPredicate<U> {
     if (__DEV__) {
       this.invariant(
-        Array.isArray(list) && list.length > 0 && list.every(item => isString(item)),
+        Array.isArray(list) && list.length > 0 && list.every((item) => isString(item)),
         'One of requires a non-empty array of strings.',
       );
 

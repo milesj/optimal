@@ -28,7 +28,7 @@ describe('StringPredicate', () => {
       expect(() => {
         runChecks(
           predicate,
-          // @ts-ignore Testing wrong type
+          // @ts-expect-error Testing wrong type
           123,
         );
       }).toThrowErrorMatchingSnapshot();
@@ -63,7 +63,7 @@ describe('StringPredicate', () => {
           expect(
             runChecks(
               predicate,
-              // @ts-ignore Test invalid type
+              // @ts-expect-error Test invalid type
               123,
             ),
           ).toBe('123');
@@ -123,7 +123,7 @@ describe('StringPredicate', () => {
 
     it('errors if token is not string', () => {
       expect(() => {
-        // @ts-ignore Testing wrong type
+        // @ts-expect-error Testing wrong type
         predicate.contains(123);
       }).toThrowErrorMatchingSnapshot();
     });
@@ -230,7 +230,7 @@ describe('StringPredicate', () => {
 
     it('errors if pattern is not a regex', () => {
       expect(() => {
-        // @ts-ignore Testing wrong type
+        // @ts-expect-error Testing wrong type
         predicate.match(123);
       }).toThrowErrorMatchingSnapshot();
     });
@@ -296,7 +296,7 @@ describe('StringPredicate', () => {
     it('errors if not an array', () => {
       expect(() => {
         predicate.oneOf(
-          // @ts-ignore Testing wrong type
+          // @ts-expect-error Testing wrong type
           123,
         );
       }).toThrowErrorMatchingSnapshot();
@@ -312,7 +312,7 @@ describe('StringPredicate', () => {
       expect(() => {
         predicate.oneOf([
           'foo',
-          // @ts-ignore Testing wrong type
+          // @ts-expect-error Testing wrong type
           123,
         ]);
       }).toThrowErrorMatchingSnapshot();

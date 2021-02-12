@@ -1,3 +1,5 @@
+/* eslint-disable react/forbid-prop-types */
+
 import optimal, {
   array,
   bool,
@@ -5,19 +7,19 @@ import optimal, {
   instance,
   number,
   object,
+  ObjectOf,
   regex,
   shape,
   string,
   union,
-  ObjectOf,
 } from '../src';
 import { runInProd } from './helpers';
 
 class Plugin {}
 
 describe('Optimal', () => {
-  type PrimitiveType = string | number | boolean;
-  type ConditionType = string | Function | RegExp | RegExp[] | ObjectOf<RegExp>;
+  type PrimitiveType = boolean | number | string;
+  type ConditionType = Function | ObjectOf<RegExp> | RegExp | RegExp[] | string;
 
   // This blueprint is based on Webpack's configuration: https://webpack.js.org/configuration/
   // Webpack provides a pretty robust example of how to use this library.
@@ -29,14 +31,14 @@ describe('Optimal', () => {
   );
 
   const rule = shape({
-    enforce: string('post').oneOf<'pre' | 'post'>(['pre', 'post']),
+    enforce: string('post').oneOf<'post' | 'pre'>(['pre', 'post']),
     exclude: condition,
     include: condition,
     issuer: condition,
     parser: object(bool()),
     resource: condition,
     use: array(
-      union<string | object>(
+      union<object | string>(
         [
           string(),
           shape({
@@ -49,19 +51,13 @@ describe('Optimal', () => {
     ),
   });
 
-  type EntryType = string | string[] | ObjectOf<string | string[]> | Function;
+  type EntryType = Function | ObjectOf<string[] | string> | string[] | string;
   type CrossOriginType = 'anonymous' | 'use-credentials';
   type HashType = 'md5' | 'sha256' | 'sha512';
-  type NoParseType = RegExp | RegExp[] | Function;
+  type NoParseType = Function | RegExp | RegExp[];
   type TargetType =
-    | 'async-node'
-    | 'electron-main'
-    | 'electron-renderer'
-    | 'node'
-    | 'node-webkit'
-    | 'web'
-    | 'webworker';
-  type NodeType = 'mock' | 'empty';
+    'async-node' | 'electron-main' | 'electron-renderer' | 'node-webkit' | 'node' | 'web' | 'webworker';
+  type NodeType = 'empty' | 'mock';
 
   const blueprint = {
     context: string(process.cwd()),
@@ -72,7 +68,7 @@ describe('Optimal', () => {
     output: shape({
       chunkFilename: string('[id].js'),
       chunkLoadTimeout: number(120000),
-      crossOriginLoading: union<false | CrossOriginType>(
+      crossOriginLoading: union<CrossOriginType | false>(
         [
           bool(false).only(),
           string('anonymous').oneOf<CrossOriginType>(['anonymous', 'use-credentials']),
@@ -106,7 +102,7 @@ describe('Optimal', () => {
     ]),
     watch: bool(false),
     node: object(
-      union<boolean | NodeType>(
+      union<NodeType | boolean>(
         [bool(), string('mock').oneOf<NodeType>(['mock', 'empty'])],
         false,
       ),
@@ -119,12 +115,12 @@ describe('Optimal', () => {
     }).toThrowErrorMatchingSnapshot();
 
     expect(() => {
-      // @ts-ignore
+      // @ts-expect-error
       optimal(123, {});
     }).toThrowErrorMatchingSnapshot();
 
     expect(() => {
-      // @ts-ignore
+      // @ts-expect-error
       optimal('foo', {});
     }).toThrowErrorMatchingSnapshot();
 
@@ -135,7 +131,7 @@ describe('Optimal', () => {
 
   it('errors if a non-object is passed as a blueprint', () => {
     expect(() => {
-      // @ts-ignore
+      // @ts-expect-error
       optimal({}, 123);
     }).toThrowErrorMatchingSnapshot();
   });
@@ -145,7 +141,7 @@ describe('Optimal', () => {
       optimal(
         {},
         {
-          // @ts-ignore
+          // @ts-expect-error
           foo: 123,
         },
       );
@@ -154,7 +150,7 @@ describe('Optimal', () => {
 
   it('errors if a non-object config is passed', () => {
     expect(() => {
-      // @ts-ignore
+      // @ts-expect-error
       optimal({}, blueprint, 123);
     }).toThrowErrorMatchingSnapshot();
   });

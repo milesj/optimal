@@ -1,5 +1,5 @@
-import Schema from './Schema';
 import isObject from './isObject';
+import Schema from './Schema';
 import { Blueprint, OptimalOptions } from './types';
 
 export default function optimal<

@@ -1,4 +1,4 @@
-import { custom, func, string, Schema, Predicate } from '../src';
+import { custom, func, Predicate,Schema, string } from '../src';
 import { runChecks } from './helpers';
 
 describe('Predicate', () => {
@@ -182,20 +182,20 @@ describe('Predicate', () => {
   describe('custom()', () => {
     it('errors if no callback', () => {
       expect(() =>
-        // @ts-ignore
+        // @ts-expect-error
         predicate.custom(),
       ).toThrow('Custom blueprints require a validation function.');
     });
 
     it('errors if callback is not a function', () => {
       expect(() =>
-        // @ts-ignore
+        // @ts-expect-error
         predicate.custom(123),
       ).toThrow('Custom blueprints require a validation function.');
     });
 
     it('triggers callback function', () => {
-      predicate = custom(value => {
+      predicate = custom((value) => {
         if (value === 123) {
           throw new Error('This will error!');
         }
@@ -245,7 +245,7 @@ describe('Predicate', () => {
     });
 
     it('casts value', () => {
-      // @ts-ignore Allow invalid
+      // @ts-expect-error Allow invalid
       predicate = string(() => 123);
 
       expect(predicate.default()).toBe('123');
@@ -306,12 +306,12 @@ describe('Predicate', () => {
 
   describe('key()', () => {
     it('returns as-is if not deep', () => {
-      // @ts-ignore Allow access
+      // @ts-expect-error Allow access
       expect(predicate.key('foo')).toBe('foo');
     });
 
     it('returns last part of a deep path', () => {
-      // @ts-ignore Allow access
+      // @ts-expect-error Allow access
       expect(predicate.key('foo.bar.baz')).toBe('baz');
     });
   });
@@ -325,7 +325,7 @@ describe('Predicate', () => {
 
     it('errors for non-string value', () => {
       expect(() => {
-        // @ts-ignore
+        // @ts-expect-error
         predicate.message(123);
       }).toThrowErrorMatchingSnapshot();
     });
@@ -333,7 +333,7 @@ describe('Predicate', () => {
     it('sets message', () => {
       predicate.message('foobar');
 
-      // @ts-ignore Allow access
+      // @ts-expect-error Allow access
       expect(predicate.errorMessage).toBe('foobar');
     });
   });
@@ -347,7 +347,7 @@ describe('Predicate', () => {
 
     it('errors for non-string value', () => {
       expect(() => {
-        // @ts-ignore
+        // @ts-expect-error
         predicate.deprecate(123);
       }).toThrowErrorMatchingSnapshot();
     });
@@ -355,7 +355,7 @@ describe('Predicate', () => {
     it('sets message', () => {
       predicate.deprecate('foobar');
 
-      // @ts-ignore Allow access
+      // @ts-expect-error Allow access
       expect(predicate.deprecatedMessage).toBe('foobar');
     });
   });
@@ -577,7 +577,7 @@ describe('Predicate', () => {
     it('can run the predicate by itself', () => {
       expect(() => {
         func().validate(
-          // @ts-ignore Allow invalid type
+          // @ts-expect-error Allow invalid type
           123,
         );
       }).toThrowErrorMatchingSnapshot();

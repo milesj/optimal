@@ -4,7 +4,7 @@ import { SupportedType } from './types';
 // Not supported: shape, custom, tuple
 export default function typeOf(value: unknown): SupportedType {
   if (Array.isArray(value)) {
-    return value.every(item => typeof item === typeof value[0]) ? 'array' : 'union';
+    return value.every((item) => typeof item === typeof value[0]) ? 'array' : 'union';
   }
 
   if (isObject(value)) {
@@ -16,7 +16,7 @@ export default function typeOf(value: unknown): SupportedType {
     case 'function':
     case 'number':
     case 'string':
-      // @ts-ignore
+      // @ts-expect-error
       return typeof value;
     default:
       return 'unknown';

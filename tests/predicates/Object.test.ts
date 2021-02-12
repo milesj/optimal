@@ -1,4 +1,4 @@
-import { object, blueprint, string, number, ObjectPredicate } from '../../src';
+import { blueprint, number, object, ObjectPredicate,string } from '../../src';
 import { runChecks, runInProd } from '../helpers';
 
 describe('ObjectPredicate', () => {
@@ -10,7 +10,7 @@ describe('ObjectPredicate', () => {
 
   it('errors if a non-predicate is passed', () => {
     expect(() => {
-      // @ts-ignore Allow non-predicate
+      // @ts-expect-error Allow non-predicate
       predicate = object(123);
     }).toThrowErrorMatchingSnapshot();
   });
@@ -41,7 +41,7 @@ describe('ObjectPredicate', () => {
 
     it('returns the default value for mapped types', () => {
       expect(
-        object<string, 'foo' | 'bar' | 'baz'>(string(), { foo: 'a', bar: 'b', baz: 'c' }).default(),
+        object<string, 'bar' | 'baz' | 'foo'>(string(), { foo: 'a', bar: 'b', baz: 'c' }).default(),
       ).toEqual({ foo: 'a', bar: 'b', baz: 'c' });
     });
   });
@@ -55,7 +55,7 @@ describe('ObjectPredicate', () => {
       expect(() => {
         runChecks(
           predicate,
-          // @ts-ignore Test invalid type
+          // @ts-expect-error Test invalid type
           'foo',
         );
       }).toThrowErrorMatchingSnapshot();
@@ -65,7 +65,7 @@ describe('ObjectPredicate', () => {
       expect(() => {
         runChecks(
           object(),
-          // @ts-ignore Test invalid type
+          // @ts-expect-error Test invalid type
           'foo',
         );
       }).toThrowErrorMatchingSnapshot();
@@ -92,7 +92,7 @@ describe('ObjectPredicate', () => {
         runChecks(predicate, {
           a: 'foo',
           b: 'bar',
-          // @ts-ignore Test invalid type
+          // @ts-expect-error Test invalid type
           c: 123,
         });
       }).toThrowErrorMatchingSnapshot();
@@ -101,7 +101,7 @@ describe('ObjectPredicate', () => {
     it('errors if an object item is invalid; persists path with index', () => {
       expect(() => {
         runChecks(predicate, {
-          // @ts-ignore Test invalid type
+          // @ts-expect-error Test invalid type
           foo: 123,
         });
       }).toThrowErrorMatchingSnapshot();
@@ -130,7 +130,7 @@ describe('ObjectPredicate', () => {
         runChecks(nestedPredicate, {
           a: {
             foo: '123',
-            // @ts-ignore Test invalid type
+            // @ts-expect-error Test invalid type
             bar: 456,
           },
           b: {
@@ -171,7 +171,7 @@ describe('ObjectPredicate', () => {
           expect(
             runChecks(
               predicate,
-              // @ts-ignore Test invalid type
+              // @ts-expect-error Test invalid type
               { foo: 123 },
             ),
           ).toEqual({ foo: '123' });
@@ -252,7 +252,7 @@ describe('blueprint()', () => {
     expect(() => {
       runChecks(
         blueprint(),
-        // @ts-ignore Allow invalid type
+        // @ts-expect-error Allow invalid type
         { value: 123 },
       );
     }).toThrow('Invalid field "key.value". Must be an instance of "Predicate".');

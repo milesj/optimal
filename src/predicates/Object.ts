@@ -1,8 +1,8 @@
+import isObject from '../isObject';
+import Predicate from '../Predicate';
+import { DefaultValue, ObjectOf } from '../types';
 import CollectionPredicate from './Collection';
 import { predicate } from './Instance';
-import Predicate from '../Predicate';
-import { ObjectOf, DefaultValue } from '../types';
-import isObject from '../isObject';
 
 export default class ObjectPredicate<T, K extends string = string> extends CollectionPredicate<
   ObjectOf<T, K>
@@ -18,7 +18,7 @@ export default class ObjectPredicate<T, K extends string = string> extends Colle
       this.addCheck((path, value) => {
         const nextValue = { ...value };
 
-        Object.keys(value).forEach(baseKey => {
+        Object.keys(value).forEach((baseKey) => {
           const key = baseKey as keyof typeof value;
 
           nextValue[key] = contents.run(value[key], `${path}.${key}`, this.schema!)!;

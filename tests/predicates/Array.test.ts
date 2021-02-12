@@ -1,4 +1,4 @@
-import { array, string, ArrayPredicate } from '../../src';
+import { array, ArrayPredicate,string } from '../../src';
 import { runChecks, runInProd } from '../helpers';
 
 describe('ArrayPredicate', () => {
@@ -10,7 +10,7 @@ describe('ArrayPredicate', () => {
 
   it('errors if a non-predicate is passed', () => {
     expect(() => {
-      // @ts-ignore Allow non-predicate
+      // @ts-expect-error Allow non-predicate
       array(123);
     }).toThrowErrorMatchingSnapshot();
   });
@@ -57,7 +57,7 @@ describe('ArrayPredicate', () => {
       expect(() => {
         runChecks(
           predicate,
-          // @ts-ignore Test invalid type
+          // @ts-expect-error Test invalid type
           'foo',
         );
       }).toThrowErrorMatchingSnapshot();
@@ -67,7 +67,7 @@ describe('ArrayPredicate', () => {
       expect(() => {
         runChecks(
           array(),
-          // @ts-ignore Test invalid type
+          // @ts-expect-error Test invalid type
           'foo',
         );
       }).toThrowErrorMatchingSnapshot();
@@ -77,7 +77,7 @@ describe('ArrayPredicate', () => {
       expect(() => {
         runChecks(
           predicate,
-          // @ts-ignore Test invalid type
+          // @ts-expect-error Test invalid type
           ['foo', 'bar', 'baz', 123],
         );
       }).toThrowErrorMatchingSnapshot();
@@ -87,7 +87,7 @@ describe('ArrayPredicate', () => {
       expect(() => {
         runChecks(
           predicate,
-          // @ts-ignore Test invalid type
+          // @ts-expect-error Test invalid type
           [123],
         );
       }).toThrowErrorMatchingSnapshot();
@@ -109,7 +109,7 @@ describe('ArrayPredicate', () => {
       expect(() => {
         runChecks(nestedPredicate, [
           ['foo', 'bar'],
-          // @ts-ignore Test invalid type
+          // @ts-expect-error Test invalid type
           ['baz', 123],
         ]);
       }).toThrowErrorMatchingSnapshot();
@@ -143,7 +143,7 @@ describe('ArrayPredicate', () => {
           expect(
             runChecks(
               predicate,
-              // @ts-ignore Test invalid type
+              // @ts-expect-error Test invalid type
               ['foo', 'bar', 'baz', 123],
             ),
           ).toEqual(['foo', 'bar', 'baz', '123']);

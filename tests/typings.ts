@@ -137,9 +137,7 @@ const funcs: {
   {},
   {
     opt: func(),
-    req: func()
-      .required()
-      .notNullable(),
+    req: func().required().notNullable(),
     isNull: func().nullable(),
     notNull: func().notNullable(),
   },
@@ -149,9 +147,7 @@ const funcsInferred = optimal(
   {},
   {
     opt: func(),
-    req: func()
-      .required()
-      .notNullable(),
+    req: func().required().notNullable(),
     isNull: func().nullable(),
     notNull: func().notNullable(),
   },

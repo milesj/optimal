@@ -17,7 +17,7 @@ optimal(
     strict: bool(),
     level: string('low').oneOf(['low', 'high']),
     // Factory function
-    level: string(struct => (struct.strict ? 'high' : 'low')).oneOf(['low', 'high']),
+    level: string((struct) => (struct.strict ? 'high' : 'low')).oneOf(['low', 'high']),
   },
 );
 ```
@@ -121,8 +121,5 @@ This method will run all checks on the provided value, throw an error for any fa
 new value if applicable. It _will not_ inherit a default value if undefined is provided.
 
 ```ts
-number()
-  .positive()
-  .integer()
-  .validate(12.34); // Invalid
+number().positive().integer().validate(12.34); // Invalid
 ```

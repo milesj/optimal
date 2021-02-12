@@ -1,4 +1,4 @@
-import { instance, date, predicate, regex, Predicate, InstancePredicate } from '../../src';
+import { date, instance, InstancePredicate,Predicate, predicate, regex } from '../../src';
 import { runChecks, runInProd } from '../helpers';
 
 describe('instance()', () => {
@@ -14,14 +14,14 @@ describe('instance()', () => {
 
   it('errors if a non-class is passed', () => {
     expect(() => {
-      // @ts-ignore Test invalid type
+      // @ts-expect-error Test invalid type
       instance(123);
     }).toThrowErrorMatchingSnapshot();
   });
 
   it('errors if an object is passed', () => {
     expect(() => {
-      // @ts-ignore Test invalid type
+      // @ts-expect-error Test invalid type
       instance({});
     }).toThrowErrorMatchingSnapshot();
   });
@@ -47,7 +47,7 @@ describe('instance()', () => {
       expect(() => {
         runChecks(
           instance(),
-          // @ts-ignore Allow invalid type
+          // @ts-expect-error Allow invalid type
           'foo',
         );
       }).toThrowErrorMatchingSnapshot();
@@ -123,7 +123,7 @@ describe('instance()', () => {
           expect(
             runChecks(
               inst,
-              // @ts-ignore Test invalid type
+              // @ts-expect-error Test invalid type
               {},
             ),
           ).toEqual({});
@@ -146,7 +146,7 @@ describe('instance()', () => {
 describe('predicate()', () => {
   it('returns a predicate instance', () => {
     expect(predicate()).toBeInstanceOf(InstancePredicate);
-    // @ts-ignore Allow access
+    // @ts-expect-error Allow access
     expect(predicate().refClass).toBe(Predicate);
   });
 
@@ -158,7 +158,7 @@ describe('predicate()', () => {
     expect(() => {
       runChecks(
         predicate(),
-        // @ts-ignore Allow invalid type
+        // @ts-expect-error Allow invalid type
         123,
       );
     }).toThrow('Invalid field "key". Must be an instance of "Predicate".');
@@ -168,7 +168,7 @@ describe('predicate()', () => {
 describe('date()', () => {
   it('returns a predicate for Date', () => {
     expect(date()).toBeInstanceOf(InstancePredicate);
-    // @ts-ignore Allow access
+    // @ts-expect-error Allow access
     expect(date().refClass).toBe(Date);
   });
 
@@ -180,7 +180,7 @@ describe('date()', () => {
     expect(() => {
       runChecks(
         date(),
-        // @ts-ignore Allow invalid type
+        // @ts-expect-error Allow invalid type
         123,
       );
     }).toThrow('Invalid field "key". Must be an instance of "Date".');
@@ -190,7 +190,7 @@ describe('date()', () => {
 describe('regex()', () => {
   it('returns a predicate for RegExp', () => {
     expect(regex()).toBeInstanceOf(InstancePredicate);
-    // @ts-ignore Allow access
+    // @ts-expect-error Allow access
     expect(regex().refClass).toBe(RegExp);
   });
 
@@ -202,7 +202,7 @@ describe('regex()', () => {
     expect(() => {
       runChecks(
         regex(),
-        // @ts-ignore Allow invalid type
+        // @ts-expect-error Allow invalid type
         123,
       );
     }).toThrow('Invalid field "key". Must be an instance of "RegExp".');

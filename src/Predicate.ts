@@ -1,13 +1,13 @@
-import Schema from './Schema';
 import isObject from './isObject';
+import Schema from './Schema';
 import {
-  SupportedType,
   CheckerCallback,
   CustomCallback,
-  FuncOf,
   DefaultValue,
   DefaultValueFactory,
+  FuncOf,
   NonUndefined,
+  SupportedType,
 } from './types';
 
 export interface TemporalStruct {
@@ -54,10 +54,10 @@ export default class Predicate<T> {
     if (__DEV__) {
       this.invariant(keys.length > 0, 'AND requires a list of field names.');
 
-      this.addCheck(path => {
+      this.addCheck((path) => {
         const andKeys = [this.key(path), ...keys];
         const struct = (this.schema?.parentStruct ?? {}) as TemporalStruct;
-        const undefs = andKeys.filter(key => struct[key] === undefined || struct[key] === null);
+        const undefs = andKeys.filter((key) => struct[key] === undefined || struct[key] === null);
 
         // Only error once one of the struct is defined
         if (undefs.length === andKeys.length) {
@@ -148,11 +148,7 @@ export default class Predicate<T> {
       let prefix = '';
 
       if (path) {
-        if (schemaName) {
-          prefix += `Invalid ${schemaName} field "${path}"`;
-        } else {
-          prefix += `Invalid field "${path}"`;
-        }
+        prefix += schemaName ? `Invalid ${schemaName} field "${path}"` : `Invalid field "${path}"`;
       } else if (schemaName) {
         prefix += schemaName;
       }
@@ -161,11 +157,10 @@ export default class Predicate<T> {
         prefix += ` in ${filePath}`;
       }
 
-      if (prefix && !this.noErrorPrefix) {
-        throw new Error(`${prefix}. ${error}`);
-      } else {
-        throw new Error(error);
-      }
+      const nextError =
+        prefix && !this.noErrorPrefix ? new Error(`${prefix}. ${error}`) : new Error(error);
+
+      throw nextError;
     }
   }
 
@@ -245,11 +240,11 @@ export default class Predicate<T> {
     if (__DEV__) {
       this.invariant(keys.length > 0, 'OR requires a list of field names.');
 
-      this.addCheck(path => {
+      this.addCheck((path) => {
         const orKeys = [this.key(path), ...keys];
         const struct = (this.schema?.parentStruct ?? {}) as TemporalStruct;
         const defs = orKeys.filter(
-          key => typeof struct[key] !== 'undefined' && struct[key] !== null,
+          (key) => typeof struct[key] !== 'undefined' && struct[key] !== null,
         );
 
         this.invariant(
@@ -343,7 +338,7 @@ export default class Predicate<T> {
 
     this.checkType(path, value);
 
-    this.checks.forEach(checker => {
+    this.checks.forEach((checker) => {
       const result = checker.call(this, path, nextValue);
 
       if (typeof result !== 'undefined') {
@@ -361,11 +356,11 @@ export default class Predicate<T> {
     if (__DEV__) {
       this.invariant(keys.length > 0, 'XOR requires a list of field names.');
 
-      this.addCheck(path => {
+      this.addCheck((path) => {
         const xorKeys = [this.key(path), ...keys];
         const struct = (this.schema?.parentStruct ?? {}) as TemporalStruct;
         const defs = xorKeys.filter(
-          key => typeof struct[key] !== 'undefined' && struct[key] !== null,
+          (key) => typeof struct[key] !== 'undefined' && struct[key] !== null,
         );
 
         this.invariant(

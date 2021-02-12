@@ -92,7 +92,7 @@ the struct object. The 2nd argument is the default value, which must be explicit
 optimal(
   {},
   {
-    path: custom(value => {
+    path: custom((value) => {
       if (!path.isAbsolute(value)) {
         throw new Error('Path must be absolute.');
       }
@@ -299,12 +299,7 @@ type Record = [number, string]; // ID, name
 optimal(
   {},
   {
-    record: tuple<Record>([
-      number()
-        .gt(0)
-        .required(),
-      string().notEmpty(),
-    ]),
+    record: tuple<Record>([number().gt(0).required(), string().notEmpty()]),
   },
 );
 ```

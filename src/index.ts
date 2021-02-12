@@ -4,17 +4,17 @@
  */
 
 import optimal from './optimal';
-import Schema from './Schema';
 import Predicate, { custom, func } from './Predicate';
 import ArrayPredicate, { array } from './predicates/Array';
 import BooleanPredicate, { bool } from './predicates/Boolean';
-import InstancePredicate, { instance, date, predicate, regex } from './predicates/Instance';
+import InstancePredicate, { date, instance, predicate, regex } from './predicates/Instance';
 import NumberPredicate, { number } from './predicates/Number';
-import ObjectPredicate, { object, blueprint } from './predicates/Object';
+import ObjectPredicate, { blueprint, object } from './predicates/Object';
 import ShapePredicate, { shape } from './predicates/Shape';
 import StringPredicate, { string } from './predicates/String';
 import TuplePredicate, { tuple } from './predicates/Tuple';
 import UnionPredicate, { union } from './predicates/Union';
+import Schema from './Schema';
 
 export const predicates = {
   array,
@@ -53,13 +53,13 @@ export {
 };
 
 export {
-  Schema,
-  Predicate,
   ArrayPredicate,
   BooleanPredicate,
   InstancePredicate,
   NumberPredicate,
   ObjectPredicate,
+  Predicate,
+  Schema,
   ShapePredicate,
   StringPredicate,
   TuplePredicate,

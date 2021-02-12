@@ -1,18 +1,18 @@
 import {
-  tuple,
   array,
-  bool,
-  object,
-  number,
-  string,
-  ObjectOf,
   ArrayOf,
+  bool,
+  number,
+  object,
+  ObjectOf,
+  string,
+  tuple,
   TuplePredicate,
 } from '../../src';
 import { runChecks, runInProd } from '../helpers';
 
 describe('TuplePredicate', () => {
-  type TupleStrings = 'foo' | 'bar' | 'baz';
+  type TupleStrings = 'bar' | 'baz' | 'foo';
   type Tuple = [ArrayOf<string>, boolean, number, ObjectOf<number>, TupleStrings];
   let predicate: TuplePredicate<Tuple>;
 
@@ -28,7 +28,7 @@ describe('TuplePredicate', () => {
 
   it('errors if a non-array is not passed', () => {
     expect(() => {
-      // @ts-ignore
+      // @ts-expect-error
       union('foo', []);
     }).toThrowErrorMatchingSnapshot();
   });
@@ -36,7 +36,7 @@ describe('TuplePredicate', () => {
   it('errors if an empty array is passed', () => {
     expect(() => {
       tuple(
-        // @ts-ignore
+        // @ts-expect-error
         [],
       );
     }).toThrowErrorMatchingSnapshot();
@@ -45,7 +45,7 @@ describe('TuplePredicate', () => {
   it('errors if an array with non-predicates is passed', () => {
     expect(() => {
       tuple([
-        // @ts-ignore
+        // @ts-expect-error
         123,
       ]);
     }).toThrowErrorMatchingSnapshot();
@@ -92,7 +92,7 @@ describe('TuplePredicate', () => {
       expect(() => {
         runChecks(
           predicate,
-          // @ts-ignore Allow extra
+          // @ts-expect-error Allow extra
           [['a', 'b', 'c'], false, 3, { a: 1 }, 'bar', 'unknown'],
         );
       }).toThrowErrorMatchingSnapshot();
@@ -102,7 +102,7 @@ describe('TuplePredicate', () => {
       expect(() => {
         runChecks(
           predicate,
-          // @ts-ignore Allow invalid type
+          // @ts-expect-error Allow invalid type
           [[123]],
         );
       }).toThrowErrorMatchingSnapshot();
@@ -112,7 +112,7 @@ describe('TuplePredicate', () => {
       expect(() => {
         runChecks(
           predicate,
-          // @ts-ignore Allow invalid type
+          // @ts-expect-error Allow invalid type
           [['a'], 123],
         );
       }).toThrowErrorMatchingSnapshot();
@@ -128,7 +128,7 @@ describe('TuplePredicate', () => {
       expect(() => {
         runChecks(
           predicate,
-          // @ts-ignore Allow invalid type
+          // @ts-expect-error Allow invalid type
           [['a'], true, 3, { a: 'a' }],
         );
       }).toThrowErrorMatchingSnapshot();
@@ -138,7 +138,7 @@ describe('TuplePredicate', () => {
       expect(() => {
         runChecks(
           predicate,
-          // @ts-ignore Allow invalid type
+          // @ts-expect-error Allow invalid type
           [['a'], true, 3, {}, 'qux'],
         );
       }).toThrowErrorMatchingSnapshot();
@@ -165,7 +165,7 @@ describe('TuplePredicate', () => {
           expect(
             runChecks(
               predicate,
-              // @ts-ignore Test invalid type
+              // @ts-expect-error Test invalid type
               [[123], true, 500],
             ),
           ).toEqual([['123'], true, 500, {}, 'foo']);

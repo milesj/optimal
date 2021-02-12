@@ -12,7 +12,7 @@ export default class UnionPredicate<T = unknown> extends Predicate<T> {
       this.invariant(
         Array.isArray(contents) &&
           contents.length > 0 &&
-          contents.every(content => content instanceof Predicate),
+          contents.every((content) => content instanceof Predicate),
         'A non-empty array of blueprints are required for a union.',
       );
 
@@ -26,7 +26,7 @@ export default class UnionPredicate<T = unknown> extends Predicate<T> {
    * Return the type name using pipe syntax.
    */
   typeAlias(): string {
-    return this.contents.map(content => content.typeAlias()).join(' | ');
+    return this.contents.map((content) => content.typeAlias()).join(' | ');
   }
 
   protected checkUnions(path: string, value: unknown) {
@@ -34,10 +34,10 @@ export default class UnionPredicate<T = unknown> extends Predicate<T> {
 
     if (__DEV__) {
       const { contents } = this;
-      const keys = contents.map(content => content.typeAlias()).join(', ');
+      const keys = contents.map((content) => content.typeAlias()).join(', ');
       const type = typeOf(value);
       const errors = new Set();
-      const passed = contents.some(content => {
+      const passed = contents.some((content) => {
         if (content.type === 'union') {
           this.invariant(false, 'Nested unions are not supported.', path);
         }
@@ -49,7 +49,7 @@ export default class UnionPredicate<T = unknown> extends Predicate<T> {
             (type === 'array' && content.type === 'tuple') ||
             content.type === 'custom'
           ) {
-            // @ts-ignore
+            // @ts-expect-error
             content.noErrorPrefix = true;
             nextValue = content.run(value, path, this.schema!);
 
@@ -69,7 +69,7 @@ export default class UnionPredicate<T = unknown> extends Predicate<T> {
       if (!passed && errors.size > 0) {
         message += ` Received ${type} with the following invalidations:\n`;
 
-        errors.forEach(error => {
+        errors.forEach((error) => {
           message += error;
         });
       }

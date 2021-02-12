@@ -1,7 +1,7 @@
-import Predicate from '../Predicate';
 import isObject from '../isObject';
-import { Blueprint } from '../types';
 import logUnknown from '../logUnknown';
+import Predicate from '../Predicate';
+import { Blueprint } from '../types';
 
 export default class ShapePredicate<T extends object> extends Predicate<T> {
   protected contents: Blueprint<T>;
@@ -15,7 +15,7 @@ export default class ShapePredicate<T extends object> extends Predicate<T> {
       this.invariant(
         isObject(contents) &&
           Object.keys(contents).length > 0 &&
-          Object.values(contents).every(content => content instanceof Predicate),
+          Object.values(contents).every((content) => content instanceof Predicate),
         'A non-empty object of properties to blueprints are required for a shape.',
       );
     }
@@ -26,7 +26,7 @@ export default class ShapePredicate<T extends object> extends Predicate<T> {
   default(): T {
     const struct: Partial<T> = {};
 
-    Object.keys(this.contents).forEach(baseKey => {
+    Object.keys(this.contents).forEach((baseKey) => {
       const key = baseKey as keyof T;
 
       struct[key] = this.contents[key].default()!;
@@ -54,7 +54,7 @@ export default class ShapePredicate<T extends object> extends Predicate<T> {
     this.schema!.parentPath = path;
     this.schema!.parentStruct = struct;
 
-    Object.keys(this.contents).forEach(baseKey => {
+    Object.keys(this.contents).forEach((baseKey) => {
       const key = baseKey as keyof T;
       const content = this.contents[key];
 

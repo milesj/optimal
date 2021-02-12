@@ -1,7 +1,7 @@
-import Predicate from './Predicate';
 import isObject from './isObject';
-import typeOf from './typeOf';
 import logUnknown from './logUnknown';
+import Predicate from './Predicate';
+import typeOf from './typeOf';
 import { Blueprint } from './types';
 
 export default class Schema<T extends object> {
@@ -70,7 +70,7 @@ export default class Schema<T extends object> {
     const unknownFields: Partial<T> = { ...struct };
 
     // Validate using the blueprint
-    Object.keys(this.blueprint).forEach(baseKey => {
+    Object.keys(this.blueprint).forEach((baseKey) => {
       const key = baseKey as keyof T;
       const value = struct[key];
       const predicate = this.blueprint[key];

@@ -119,7 +119,7 @@ export default class NumberPredicate<T extends number = number> extends Predicat
   oneOf<U extends number>(list: U[]): NumberPredicate<U> {
     if (__DEV__) {
       this.invariant(
-        Array.isArray(list) && list.length > 0 && list.every(item => isNumber(item)),
+        Array.isArray(list) && list.length > 0 && list.every((item) => isNumber(item)),
         'One of requires a non-empty array of numbers.',
       );
 

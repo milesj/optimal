@@ -26,7 +26,7 @@ describe('BooleanPredicate', () => {
   it('returns default value from factory if value is undefined', () => {
     expect(
       runChecks(
-        bool(struct => !struct.boop),
+        bool((struct) => !struct.boop),
         undefined,
         {
           struct: { boop: true },
@@ -39,7 +39,7 @@ describe('BooleanPredicate', () => {
     expect(() => {
       runChecks(
         bool(),
-        // @ts-ignore Test invalid type
+        // @ts-expect-error Test invalid type
         123,
       );
     }).toThrowErrorMatchingSnapshot();
@@ -55,19 +55,11 @@ describe('BooleanPredicate', () => {
     });
 
     it('returns false for only false', () => {
-      expect(
-        bool(true)
-          .onlyFalse()
-          .default(),
-      ).toBe(false);
+      expect(bool(true).onlyFalse().default()).toBe(false);
     });
 
     it('returns true for only true', () => {
-      expect(
-        bool(false)
-          .onlyTrue()
-          .default(),
-      ).toBe(true);
+      expect(bool(false).onlyTrue().default()).toBe(true);
     });
   });
 

@@ -1,15 +1,15 @@
 import {
-  union,
-  custom,
   array,
   bool,
-  object,
+  custom,
   instance,
   number,
+  object,
   shape,
   string,
-  UnionPredicate,
   tuple,
+  union,
+  UnionPredicate,
 } from '../../src';
 import { runChecks, runInProd } from '../helpers';
 
@@ -35,7 +35,7 @@ describe('UnionPredicate', () => {
 
   it('errors if a non-array is not passed', () => {
     expect(() => {
-      // @ts-ignore
+      // @ts-expect-error
       union('foo', []);
     }).toThrowErrorMatchingSnapshot();
   });
@@ -48,7 +48,7 @@ describe('UnionPredicate', () => {
 
   it('errors if an array with non-predicates is passed', () => {
     expect(() => {
-      // @ts-ignore
+      // @ts-expect-error
       union([123], []);
     }).toThrowErrorMatchingSnapshot();
   });
@@ -101,7 +101,7 @@ describe('UnionPredicate', () => {
     });
 
     it('returns default value from factory if value is undefined', () => {
-      // @ts-ignore
+      // @ts-expect-error
       predicate.defaultValueFactory = () => 'foo';
 
       expect(runChecks(predicate)).toEqual('foo');
@@ -125,7 +125,7 @@ describe('UnionPredicate', () => {
           union(
             [
               string(),
-              custom(value => {
+              custom((value) => {
                 if (typeof value === 'number') {
                   throw new TypeError('Encountered a number!');
                 }
@@ -333,7 +333,7 @@ describe('UnionPredicate', () => {
           expect(
             runChecks(
               predicate,
-              // @ts-ignore Test invalid type
+              // @ts-expect-error Test invalid type
               'qux',
             ),
           ).toBe('qux');

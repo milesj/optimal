@@ -1,6 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
-import { shape, bool, number, string, object, ShapePredicate } from '../../src';
+import { bool, number, object, shape, ShapePredicate,string } from '../../src';
 import { runChecks, runInProd } from '../helpers';
 
 describe('ShapePredicate', () => {
@@ -20,7 +18,7 @@ describe('ShapePredicate', () => {
 
   it('errors if a non-object is not passed', () => {
     expect(() => {
-      // @ts-ignore
+      // @ts-expect-error
       shape('foo');
     }).toThrowErrorMatchingSnapshot();
   });
@@ -33,7 +31,7 @@ describe('ShapePredicate', () => {
 
   it('errors if an object with non-predicates is passed', () => {
     expect(() => {
-      // @ts-ignore
+      // @ts-expect-error
       shape({ foo: 123 });
     }).toThrowErrorMatchingSnapshot();
   });
@@ -57,7 +55,7 @@ describe('ShapePredicate', () => {
       expect(() => {
         runChecks(
           predicate,
-          // @ts-ignore Allow invalid type
+          // @ts-expect-error Allow invalid type
           'foo',
         );
       }).toThrowErrorMatchingSnapshot();
@@ -69,7 +67,7 @@ describe('ShapePredicate', () => {
 
         runChecks(
           predicate,
-          // @ts-ignore Allow invalid fields
+          // @ts-expect-error Allow invalid fields
           { qux: 123, oof: 'abc' },
         );
       }).toThrowErrorMatchingSnapshot();
@@ -79,7 +77,7 @@ describe('ShapePredicate', () => {
       expect(() => {
         runChecks(
           predicate,
-          // @ts-ignore Allow invalid fields
+          // @ts-expect-error Allow invalid fields
           { qux: 123, oof: 'abc' },
         );
       }).not.toThrow();
@@ -89,7 +87,7 @@ describe('ShapePredicate', () => {
       expect(() => {
         runChecks(predicate, {
           foo: 'foo',
-          // @ts-ignore Allow invalid type
+          // @ts-expect-error Allow invalid type
           bar: 'bar',
           baz: true,
         });
@@ -99,7 +97,7 @@ describe('ShapePredicate', () => {
     it('errors if an object item is invalid; persists path with index', () => {
       expect(() => {
         runChecks(predicate, {
-          // @ts-ignore Allow invalid type
+          // @ts-expect-error Allow invalid type
           foo: 123,
         });
       }).toThrowErrorMatchingSnapshot();
@@ -156,7 +154,7 @@ describe('ShapePredicate', () => {
           foo: {
             a: 123,
             b: 456,
-            // @ts-ignore Allow invalid type
+            // @ts-expect-error Allow invalid type
             c: 789,
           },
         });
@@ -173,9 +171,7 @@ describe('ShapePredicate', () => {
 
     it('passes correct value to nested predicates', () => {
       const customShape = shape({
-        attributes: object(string(), null)
-          .notEmpty()
-          .nullable(),
+        attributes: object(string(), null).notEmpty().nullable(),
         nullable: bool(),
         optional: bool(),
         reference: string(),
@@ -212,7 +208,7 @@ describe('ShapePredicate', () => {
           expect(
             runChecks(
               predicate,
-              // @ts-ignore Test invalid type
+              // @ts-expect-error Test invalid type
               { foo: 123 },
             ),
           ).toEqual({ foo: '123', bar: 0, baz: false });

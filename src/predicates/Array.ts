@@ -1,6 +1,6 @@
-import CollectionPredicate from './Collection';
 import Predicate from '../Predicate';
 import { ArrayOf, DefaultValue } from '../types';
+import CollectionPredicate from './Collection';
 
 export default class ArrayPredicate<T> extends CollectionPredicate<ArrayOf<T>> {
   protected contents: Predicate<T> | null = null;

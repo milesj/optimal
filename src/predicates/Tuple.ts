@@ -22,7 +22,7 @@ export default class TuplePredicate<T extends unknown[] = unknown[]> extends Pre
       this.invariant(
         Array.isArray(contents) &&
           contents.length > 0 &&
-          contents.every(content => content instanceof Predicate),
+          contents.every((content) => content instanceof Predicate),
         'A non-empty array of blueprints are required for a tuple.',
       );
     }
@@ -31,14 +31,14 @@ export default class TuplePredicate<T extends unknown[] = unknown[]> extends Pre
   }
 
   default(): T {
-    return this.contents.map(content => content.default()) as T;
+    return this.contents.map((content) => content.default()) as T;
   }
 
   /**
    * Return the type name as an array of type items.
    */
   typeAlias(): string {
-    return `[${this.contents.map(item => item.typeAlias()).join(', ')}]`;
+    return `[${this.contents.map((item) => item.typeAlias()).join(', ')}]`;
   }
 
   protected doRun(value: T, path: string): T {
