@@ -1,3 +1,9 @@
+### 4.2.1 - 2020-02-11
+
+#### 🐞 Fixes
+
+- Fixed some object comparison checks that would fail cross-realm.
+
 ## 4.2.0 - 2020-01-26
 
 #### 🚀 Updates

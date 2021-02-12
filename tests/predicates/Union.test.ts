@@ -333,7 +333,6 @@ describe('UnionPredicate', () => {
           expect(
             runChecks(
               predicate,
-              // @ts-expect-error Test invalid type
               'qux',
             ),
           ).toBe('qux');

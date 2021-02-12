@@ -8,7 +8,7 @@ export default function typeOf(value: unknown): SupportedType {
   }
 
   if (isObject(value)) {
-    return value.constructor === Object ? 'object' : 'instance';
+    return value.constructor.name === 'Object' ? 'object' : 'instance';
   }
 
   switch (typeof value) {

@@ -34,7 +34,7 @@ export default class InstancePredicate<T> extends Predicate<T | null> {
           );
         } else {
           this.invariant(
-            isObject(value) && value.constructor !== Object,
+            isObject(value) && value.constructor.name !== 'Object',
             'Must be a class instance.',
             path,
           );

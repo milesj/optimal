@@ -123,7 +123,6 @@ describe('instance()', () => {
           expect(
             runChecks(
               inst,
-              // @ts-expect-error Test invalid type
               {},
             ),
           ).toEqual({});
@@ -180,7 +179,6 @@ describe('date()', () => {
     expect(() => {
       runChecks(
         date(),
-        // @ts-expect-error Allow invalid type
         123,
       );
     }).toThrow('Invalid field "key". Must be an instance of "Date".');
