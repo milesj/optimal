@@ -55,8 +55,6 @@ export default class UnionPredicate<T = unknown> extends Predicate<T> {
 
             return true;
           }
-
-          return false;
         } catch (error) {
           errors.add(` - ${error.message}\n`);
         }

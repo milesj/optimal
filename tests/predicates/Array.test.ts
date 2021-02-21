@@ -1,4 +1,4 @@
-import { array, ArrayPredicate,string } from '../../src';
+import { array, ArrayPredicate, string } from '../../src';
 import { runChecks, runInProd } from '../helpers';
 
 describe('ArrayPredicate', () => {

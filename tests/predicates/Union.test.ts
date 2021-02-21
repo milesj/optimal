@@ -229,6 +229,81 @@ describe('UnionPredicate', () => {
       }).not.toThrow();
     });
 
+    it('supports arrays and tuples correctly', () => {
+      predicate = union(
+        [
+          array(string()),
+          array(
+            tuple<[string, number]>([string(), number()]),
+          ),
+        ],
+        [],
+      );
+
+      expect(runChecks(predicate, ['a', 'b', 'c'])).toEqual(['a', 'b', 'c']);
+
+      expect(
+        runChecks(predicate, [
+          ['a', 1],
+          ['b', 2],
+        ]),
+      ).toEqual([
+        ['a', 1],
+        ['b', 2],
+      ]);
+    });
+
+    it('supports very complex nested unions', () => {
+      const options = union([bool(), object()], {});
+
+      predicate = union(
+        [
+          // 'foo'
+          // ['foo', true]
+          // ['foo', {}]
+          array(
+            union(
+              [
+                string().notEmpty(),
+                tuple<[string, boolean | object]>([string().notEmpty(), options]),
+              ],
+              '',
+            ),
+          ),
+          // foo: true
+          // foo: {}
+          object(options).notNullable(),
+        ],
+        {},
+      );
+
+      // array only
+      expect(() => runChecks(predicate, [])).not.toThrow();
+      expect(() => runChecks(predicate, ['a', 'b', 'c'])).not.toThrow();
+
+      // tuple only
+      expect(() =>
+        runChecks(predicate, [
+          ['a', true],
+          ['b', false],
+          ['c', {}],
+        ]),
+      ).not.toThrow();
+
+      // arrays and tuples
+      expect(() => runChecks(predicate, ['a', ['b', false], ['c', {}], 'd'])).not.toThrow();
+
+      // object only
+      expect(() => runChecks(predicate, {})).not.toThrow();
+      expect(() => runChecks(predicate, { a: true, b: false, c: {} })).not.toThrow();
+
+      // invalid
+      expect(() =>
+        runChecks(predicate, ['a', ['b', null], ['c', {}], 'd', 123]),
+      ).toThrowErrorMatchingSnapshot();
+      expect(() => runChecks(predicate, { a: true, b: 123, c: {} })).toThrowErrorMatchingSnapshot();
+    });
+
     it('supports object and shape predicates in parallel', () => {
       predicate = union(
         [
@@ -330,12 +405,7 @@ describe('UnionPredicate', () => {
       it(
         'bypasses checks and returns value',
         runInProd(() => {
-          expect(
-            runChecks(
-              predicate,
-              'qux',
-            ),
-          ).toBe('qux');
+          expect(runChecks(predicate, 'qux')).toBe('qux');
         }),
       );
     });

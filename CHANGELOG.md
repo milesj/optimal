@@ -1,3 +1,7 @@
+### 4.2.2
+
+- Fixed an issue where arrays and tuples were used at the same time in a union.
+
 ### 4.2.1 - 2020-02-11
 
 #### 🐞 Fixes

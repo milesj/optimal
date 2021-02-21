@@ -82,3 +82,14 @@ exports[`UnionPredicate run() supports object and shape predicates in parallel 3
  - Invalid field \\"key.bar\\". Must be a number.
  - Invalid field \\"key.baz\\". Must be a string."
 `;
+
+exports[`UnionPredicate run() supports very complex nested unions 1`] = `
+"Invalid field \\"key\\". Type must be one of: array<string | [string, boolean | object]>, object<boolean | object>. Received array with the following invalidations:
+ - Invalid field \\"key[1]\\". Type must be one of: string, [string, boolean | object]. Received array with the following invalidations:
+ - Invalid field \\"key[1][1]\\". Null is not allowed."
+`;
+
+exports[`UnionPredicate run() supports very complex nested unions 2`] = `
+"Invalid field \\"key\\". Type must be one of: array<string | [string, boolean | object]>, object<boolean | object>. Received object with the following invalidations:
+ - Invalid field \\"key.b\\". Type must be one of: boolean, object."
+`;
