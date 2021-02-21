@@ -14,7 +14,7 @@ exports[`Optimal errors if a non-object is passed as a blueprint 1`] = `"A schem
 
 exports[`Optimal errors if a non-predicate is passed within the blueprint 1`] = `"Unknown blueprint for \\"foo\\". Must be a predicate."`;
 
-exports[`Optimal includes a custom \`name\` in the error message 1`] = `"Invalid FooBar field \\"entry\\". Received number but type must be one of string, array<string>, object<string | array<string>>, function."`;
+exports[`Optimal includes a custom \`name\` in the error message 1`] = `"Invalid FooBar field \\"entry\\". Received number but type must be one of: string, array<string>, object<string | array<string>>, function."`;
 
 exports[`Optimal logical operators handles AND 1`] = `"All of these fields must be defined: foo, bar, baz"`;
 
@@ -29,10 +29,10 @@ exports[`Optimal logical operators handles XOR 1`] = `"Only one of these fields 
 exports[`Optimal logical operators handles XOR 2`] = `"Only one of these fields may be defined: foo, bar, baz"`;
 
 exports[`Optimal runs checks for nested level values 1`] = `
-"Invalid field \\"output.crossOriginLoading\\". Received string but type must be one of boolean, string. 
+"Invalid field \\"output.crossOriginLoading\\". Received string but type must be one of: boolean, string.
  - String must be one of: anonymous, use-credentials"
 `;
 
-exports[`Optimal runs checks for root level values 1`] = `"Invalid field \\"entry\\". Received number but type must be one of string, array<string>, object<string | array<string>>, function."`;
+exports[`Optimal runs checks for root level values 1`] = `"Invalid field \\"entry\\". Received number but type must be one of: string, array<string>, object<string | array<string>>, function."`;
 
 exports[`Optimal unknown fields errors for unknown fields 1`] = `"Unknown fields: foo, bar."`;

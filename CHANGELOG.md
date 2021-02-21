@@ -7,6 +7,7 @@
 #### 🛠 Internals
 
 - Improved union error messages.
+- Updated tuple type references to include "tuple".
 
 ### 4.2.1 - 2020-02-11
 

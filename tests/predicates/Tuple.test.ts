@@ -177,7 +177,7 @@ describe('TuplePredicate', () => {
   describe('typeAlias()', () => {
     it('returns the type name', () => {
       expect(predicate.typeAlias()).toBe(
-        '[array<string>, boolean, number, object<number>, string]',
+        'tuple<array<string>, boolean, number, object<number>, string>',
       );
     });
   });

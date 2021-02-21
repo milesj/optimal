@@ -56,13 +56,16 @@ export default class UnionPredicate<T = unknown> extends Predicate<T> {
             return true;
           }
         } catch (error) {
-          errors.add(` - ${error.message}\n`);
+          errors.add(`\n - ${error.message}`);
         }
 
         return false;
       });
 
-      let message = `Received ${type} but type must be one of ${keys}. \n`;
+      let message =
+        contents.length === 1
+          ? `Received ${type} but type must be: ${keys}.`
+          : `Received ${type} but type must be one of: ${keys}.`;
 
       if (!passed && errors.size > 0) {
         errors.forEach((error) => {

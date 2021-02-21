@@ -38,7 +38,7 @@ export default class TuplePredicate<T extends unknown[] = unknown[]> extends Pre
    * Return the type name as an array of type items.
    */
   typeAlias(): string {
-    return `[${this.contents.map((item) => item.typeAlias()).join(', ')}]`;
+    return `tuple<${this.contents.map((item) => item.typeAlias()).join(', ')}>`;
   }
 
   protected doRun(value: T, path: string): T {
