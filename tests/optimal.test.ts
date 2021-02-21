@@ -56,7 +56,13 @@ describe('Optimal', () => {
   type HashType = 'md5' | 'sha256' | 'sha512';
   type NoParseType = Function | RegExp | RegExp[];
   type TargetType =
-    'async-node' | 'electron-main' | 'electron-renderer' | 'node-webkit' | 'node' | 'web' | 'webworker';
+    | 'async-node'
+    | 'electron-main'
+    | 'electron-renderer'
+    | 'node-webkit'
+    | 'node'
+    | 'web'
+    | 'webworker';
   type NodeType = 'empty' | 'mock';
 
   const blueprint = {
@@ -222,9 +228,7 @@ describe('Optimal', () => {
         },
         blueprint,
       );
-    }).toThrow(
-      'Invalid field "entry". Type must be one of: string, array<string>, object<string | array<string>>, function',
-    );
+    }).toThrowErrorMatchingSnapshot();
   });
 
   it('runs checks for nested level values', () => {
@@ -251,9 +255,7 @@ describe('Optimal', () => {
           name: 'FooBar',
         },
       );
-    }).toThrow(
-      'Invalid FooBar field "entry". Type must be one of: string, array<string>, object<string | array<string>>, function',
-    );
+    }).toThrowErrorMatchingSnapshot();
   });
 
   describe('production', () => {

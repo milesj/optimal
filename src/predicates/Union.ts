@@ -62,11 +62,9 @@ export default class UnionPredicate<T = unknown> extends Predicate<T> {
         return false;
       });
 
-      let message = `Type must be one of: ${keys}.`;
+      let message = `Received ${type} but type must be one of ${keys}. \n`;
 
       if (!passed && errors.size > 0) {
-        message += ` Received ${type} with the following invalidations:\n`;
-
         errors.forEach((error) => {
           message += error;
         });
