@@ -4,21 +4,21 @@ exports[`Predicate and() errors if no keys are defined 1`] = `"AND requires a li
 
 exports[`Predicate and() errors if not all options are defined 1`] = `"All of these fields must be defined: foo, bar, baz"`;
 
-exports[`Predicate checkType() array errors on non-arrays 1`] = `"Invalid field \\"key\\". Must be an array."`;
+exports[`Predicate checkType() array errors on non-arrays 1`] = `"Invalid field \\"key\\". Must be an array, received 123."`;
 
-exports[`Predicate checkType() boolean errors on non-booleans 1`] = `"Invalid field \\"key\\". Must be a boolean."`;
+exports[`Predicate checkType() boolean errors on non-booleans 1`] = `"Invalid field \\"key\\". Must be a boolean, received 123."`;
 
-exports[`Predicate checkType() function errors on non-functions 1`] = `"Invalid field \\"key\\". Must be a function."`;
+exports[`Predicate checkType() function errors on non-functions 1`] = `"Invalid field \\"key\\". Must be a function, received \\"foo\\"."`;
 
-exports[`Predicate checkType() number errors on non-numbers 1`] = `"Invalid field \\"key\\". Must be a number."`;
+exports[`Predicate checkType() number errors on non-numbers 1`] = `"Invalid field \\"key\\". Must be a number, received \\"foo\\"."`;
 
-exports[`Predicate checkType() object errors on arrays 1`] = `"Invalid field \\"key\\". Must be a plain object."`;
+exports[`Predicate checkType() object errors on arrays 1`] = `"Invalid field \\"key\\". Must be a plain object, received array."`;
 
-exports[`Predicate checkType() object errors on non-objects 1`] = `"Invalid field \\"key\\". Must be a plain object."`;
+exports[`Predicate checkType() object errors on non-objects 1`] = `"Invalid field \\"key\\". Must be a plain object, received 123."`;
 
 exports[`Predicate checkType() object errors on nulls 1`] = `"Invalid field \\"key\\". Null is not allowed."`;
 
-exports[`Predicate checkType() string errors on non-strings 1`] = `"Invalid field \\"key\\". Must be a string."`;
+exports[`Predicate checkType() string errors on non-strings 1`] = `"Invalid field \\"key\\". Must be a string, received 123."`;
 
 exports[`Predicate custom() is passed entire options object 1`] = `"Invalid field \\"key\\". This will error!"`;
 
@@ -62,11 +62,11 @@ exports[`Predicate run() errors if value passed is null and predicate is non-nul
 
 exports[`Predicate run() errors if value passed is undefined and predicate is required 1`] = `"Invalid field \\"key\\". Field is required and must be defined."`;
 
-exports[`Predicate run() runs default type of check 1`] = `"Invalid field \\"key\\". Must be a string."`;
+exports[`Predicate run() runs default type of check 1`] = `"Invalid field \\"key\\". Must be a string, received 123."`;
 
 exports[`Predicate run() uses custom message 1`] = `"Invalid field \\"key\\". Oops, something is broken."`;
 
-exports[`Predicate validate() can run the predicate by itself 1`] = `"Must be a function."`;
+exports[`Predicate validate() can run the predicate by itself 1`] = `"Must be a function, received 123."`;
 
 exports[`Predicate xor() errors if more than 1 option is defined 1`] = `"Only one of these fields may be defined: foo, bar, baz"`;
 

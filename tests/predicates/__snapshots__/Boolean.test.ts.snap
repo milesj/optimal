@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`BooleanPredicate errors if a non-boolean value is used 1`] = `"Invalid field \\"key\\". Must be a boolean."`;
+exports[`BooleanPredicate errors if a non-boolean value is used 1`] = `"Invalid field \\"key\\". Must be a boolean, received 123."`;
 
 exports[`BooleanPredicate onlyFalse() errors if value is \`true\` 1`] = `"Invalid field \\"key\\". May only be \`false\`."`;
 

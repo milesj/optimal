@@ -1,5 +1,6 @@
 import isObject from './isObject';
 import Schema from './Schema';
+import typeOf from './typeOf';
 import {
   CheckerCallback,
   CustomCallback,
@@ -387,10 +388,12 @@ export default class Predicate<T> {
    */
   protected checkType(path: string, value: T) {
     if (__DEV__) {
+      const displayValue = this.extractDisplayValue(value);
+
       switch (this.type) {
         case 'array':
         case 'tuple':
-          this.invariant(Array.isArray(value), 'Must be an array.', path);
+          this.invariant(Array.isArray(value), `Must be an array, received ${displayValue}.`, path);
           break;
 
         case 'custom':
@@ -401,15 +404,38 @@ export default class Predicate<T> {
 
         case 'object':
         case 'shape':
-          this.invariant(isObject(value), 'Must be a plain object.', path);
+          this.invariant(
+            isObject(value),
+            `Must be a plain object, received ${displayValue}.`,
+            path,
+          );
           break;
 
         default:
-          // eslint-disable-next-line valid-typeof
-          this.invariant(typeof value === this.type, `Must be a ${this.type}.`, path);
+          this.invariant(
+            // eslint-disable-next-line valid-typeof
+            typeof value === this.type,
+            `Must be a ${this.type}, received ${displayValue}.`,
+            path,
+          );
           break;
       }
     }
+  }
+
+  protected extractDisplayValue(value: unknown): string {
+    const type = typeOf(value);
+    let displayValue = '';
+
+    if (type === 'string') {
+      displayValue = `"${value}"`;
+    } else if (type === 'number' || type === 'boolean' || value === null || value === undefined) {
+      displayValue = String(value);
+    } else {
+      displayValue = type;
+    }
+
+    return displayValue;
   }
 
   /**

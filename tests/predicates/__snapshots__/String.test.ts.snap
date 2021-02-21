@@ -56,7 +56,7 @@ exports[`StringPredicate pascalCase() errors if less than 2 characters 1`] = `"I
 
 exports[`StringPredicate pascalCase() errors if starts with a number 1`] = `"Invalid field \\"key\\". String must be in pascal case. (pattern \\"^[A-Z][a-zA-Z0-9]+$\\")"`;
 
-exports[`StringPredicate run() errors if a non-string value is used 1`] = `"Invalid field \\"key\\". Must be a string."`;
+exports[`StringPredicate run() errors if a non-string value is used 1`] = `"Invalid field \\"key\\". Must be a string, received 123."`;
 
 exports[`StringPredicate sizeOf() errors if length doesnt match 1`] = `"Invalid field \\"key\\". String length must be 3."`;
 

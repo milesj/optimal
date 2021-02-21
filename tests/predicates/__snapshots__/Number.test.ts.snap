@@ -8,7 +8,7 @@ exports[`NumberPredicate between() errors if min is a not a number 1`] = `"Betwe
 
 exports[`NumberPredicate between() errors if out of range 1`] = `"Invalid field \\"key\\". Number must be between 0 and 5."`;
 
-exports[`NumberPredicate between() errors if value is not a number 1`] = `"Invalid field \\"key\\". Must be a number."`;
+exports[`NumberPredicate between() errors if value is not a number 1`] = `"Invalid field \\"key\\". Must be a number, received \\"foo\\"."`;
 
 exports[`NumberPredicate between(): inclusive errors if out of range 1`] = `"Invalid field \\"key\\". Number must be between 0 and 5 inclusive."`;
 
@@ -56,4 +56,4 @@ exports[`NumberPredicate positive() errors if value is negative 1`] = `"Invalid 
 
 exports[`NumberPredicate positive() errors if value is zero 1`] = `"Invalid field \\"key\\". Number must be positive."`;
 
-exports[`NumberPredicate run() errors if a non-number value is used 1`] = `"Invalid field \\"key\\". Must be a number."`;
+exports[`NumberPredicate run() errors if a non-number value is used 1`] = `"Invalid field \\"key\\". Must be a number, received \\"foo\\"."`;

@@ -62,10 +62,11 @@ export default class UnionPredicate<T = unknown> extends Predicate<T> {
         return false;
       });
 
+      const displayValue = this.extractDisplayValue(value);
       let message =
         contents.length === 1
-          ? `Received ${type} but type must be: ${keys}.`
-          : `Received ${type} but type must be one of: ${keys}.`;
+          ? `Received ${displayValue} but must be: ${keys}`
+          : `Received ${displayValue} but must be a union of: ${keys}`;
 
       if (!passed && errors.size > 0) {
         errors.forEach((error) => {

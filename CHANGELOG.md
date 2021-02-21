@@ -1,4 +1,8 @@
-### 4.2.2
+### 4.3.0 - 2020-02-20
+
+#### 🚀 Updates
+
+- Improved error messages by including the currently invalid value.
 
 #### 🐞 Fixes
 
@@ -6,8 +10,8 @@
 
 #### 🛠 Internals
 
-- Improved union error messages.
-- Updated tuple type references to include "tuple".
+- Updated union error messages to be more readable.
+- Updated tuple type aliases to use "tuple<value>".
 
 ### 4.2.1 - 2020-02-11
 
