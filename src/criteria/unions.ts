@@ -19,7 +19,7 @@ function typeOf(value: unknown): string {
 export function of<T = unknown>(
   state: SchemaState<T>,
   schemas: Schema<unknown>[],
-): void | Criteria<T> {
+): Criteria<T> | void {
   if (__DEV__) {
     invariant(
       Array.isArray(schemas) && schemas.length > 0 && schemas.every(isSchema),

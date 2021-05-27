@@ -12,7 +12,7 @@ export interface BooleanSchema<T = boolean>
   nullable: () => BooleanSchema<T | null>;
 }
 
-function validateType(): void | Criteria<boolean> {
+function validateType(): Criteria<boolean> | void {
   return {
     skipIfNull: true,
     validate(value, path) {

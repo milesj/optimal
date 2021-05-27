@@ -124,8 +124,6 @@ describe('instance()', () => {
     });
   });
 
-  describe('cast()', () => {});
-
   describe('type()', () => {
     it('returns "class" when no class reference', () => {
       expect(instance().type()).toBe('class');

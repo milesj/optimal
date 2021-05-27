@@ -4,7 +4,7 @@ import { Criteria, SchemaState } from '../types';
 /**
  * Require this field to only be false.
  */
-export function onlyFalse(state: SchemaState<boolean>): void | Criteria<boolean> {
+export function onlyFalse(state: SchemaState<boolean>): Criteria<boolean> | void {
   state.defaultValue = false;
 
   if (__DEV__) {
@@ -19,7 +19,7 @@ export function onlyFalse(state: SchemaState<boolean>): void | Criteria<boolean>
 /**
  * Require this field to only be true.
  */
-export function onlyTrue(state: SchemaState<boolean>): void | Criteria<boolean> {
+export function onlyTrue(state: SchemaState<boolean>): Criteria<boolean> | void {
   state.defaultValue = true;
 
   if (__DEV__) {

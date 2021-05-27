@@ -4,7 +4,7 @@ import { Criteria, Schema, SchemaState } from '../types';
 /**
  * Require field array to not be empty.
  */
-export function notEmpty<T>(state: SchemaState<T[]>): void | Criteria<T[]> {
+export function notEmpty<T>(state: SchemaState<T[]>): Criteria<T[]> | void {
   if (__DEV__) {
     return {
       skipIfNull: true,
@@ -19,7 +19,7 @@ export function notEmpty<T>(state: SchemaState<T[]>): void | Criteria<T[]> {
  * Require field array items to be of a specific schema type.
  * Will rebuild the array and type cast values.
  */
-export function of<T>(state: SchemaState<T[]>, itemsSchema: Schema<T>): void | Criteria<T[]> {
+export function of<T>(state: SchemaState<T[]>, itemsSchema: Schema<T>): Criteria<T[]> | void {
   if (__DEV__) {
     if (!isSchema(itemsSchema)) {
       invariant(false, 'A schema blueprint is required for array items.');
@@ -45,7 +45,7 @@ export function of<T>(state: SchemaState<T[]>, itemsSchema: Schema<T>): void | C
 /**
  * Require field array to be of a specific size.
  */
-export function sizeOf<T>(state: SchemaState<T[]>, size: number): void | Criteria<T[]> {
+export function sizeOf<T>(state: SchemaState<T[]>, size: number): Criteria<T[]> | void {
   if (__DEV__) {
     invariant(typeof size === 'number' && size > 0, 'Size requires a non-zero positive number.');
 

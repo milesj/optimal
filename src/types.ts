@@ -4,7 +4,7 @@ export type UnknownFunction = (...args: unknown[]) => unknown;
 
 export type UnknownObject = Record<string, unknown>;
 
-export type MaybeDate = string | number | Date;
+export type MaybeDate = Date | number | string;
 
 export type Constructor<T> = (new (...args: unknown[]) => T) | (Function & { prototype: T });
 
@@ -12,23 +12,26 @@ export type InferNullable<P, N> = P extends null ? N | null : N;
 
 // CRITERIA
 
-export type CriteriaValidator<T> = (
-  value: T,
+export type CriteriaValidator<Input> = (
+  value: Input,
   path: string,
   currentObject: UnknownObject,
   rootObject: UnknownObject,
 ) => unknown;
 
-export interface Criteria<T> {
+export interface Criteria<Input> {
   skipIfNull?: boolean;
   skipIfOptional?: boolean;
-  validate: CriteriaValidator<T>;
+  validate: CriteriaValidator<Input>;
 }
 
-export type CriteriaFactory<T> = (state: SchemaState<T>, ...args: any[]) => void | Criteria<T>;
+export type CriteriaFactory<Input> = (
+  state: SchemaState<Input>,
+  ...args: any[]
+) => Criteria<Input> | void;
 
-export type CustomCallback<T> = (
-  value: T,
+export type CustomCallback<Input> = (
+  value: Input,
   currentObject: UnknownObject,
   rootObject: UnknownObject,
 ) => void;
@@ -108,14 +111,14 @@ export interface StringCriterias<S> {
 
 // SCHEMAS
 
-export interface Schema<O, I = O> {
+export interface Schema<Output, Input = Output> {
   type: () => string;
   validate: (
-    value: I | null | undefined, // TODO change to unknown?
+    value: Input | null | undefined, // TODO change to unknown?
     path?: string,
     currentObject?: UnknownObject,
     rootObject?: UnknownObject,
-  ) => O;
+  ) => Output;
 }
 
 export interface SchemaState<T> {

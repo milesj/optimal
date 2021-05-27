@@ -17,7 +17,7 @@ export interface InstanceSchema<T> extends Schema<T>, CommonCriterias<InstanceSc
   of: <C>(ref: Constructor<C>, loose?: boolean) => InstanceSchema<InferNullable<T, C>>;
 }
 
-function validateType<T>(state: SchemaState<T>): void | Criteria<T> {
+function validateType<T>(state: SchemaState<T>): Criteria<T> | void {
   return {
     skipIfNull: true,
     validate(value, path) {

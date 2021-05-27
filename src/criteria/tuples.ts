@@ -20,7 +20,7 @@ export type InferTupleItems<T> = T extends [infer A, infer B, infer C, infer D, 
 export function of<T extends unknown[]>(
   state: SchemaState<T>,
   itemsSchemas: InferTupleItems<T>,
-): void | Criteria<T> {
+): Criteria<T> | void {
   if (__DEV__) {
     invariant(
       Array.isArray(itemsSchemas) && itemsSchemas.length > 0 && itemsSchemas.every(isSchema),

@@ -8,7 +8,7 @@ export function contains(
   state: SchemaState<string>,
   token: string,
   index: number = 0,
-): void | Criteria<string> {
+): Criteria<string> | void {
   if (__DEV__) {
     invariant(isValidString(token), 'Contains requires a non-empty token.');
 
@@ -29,7 +29,7 @@ export function match(
   state: SchemaState<string>,
   pattern: RegExp,
   message: string = '',
-): void | Criteria<string> {
+): Criteria<string> | void {
   if (__DEV__) {
     invariant(pattern instanceof RegExp, 'Match requires a regular expression to match against.');
 
@@ -50,35 +50,35 @@ export function match(
 /**
  * Require field value to be formatted in camel case (fooBar).
  */
-export function camelCase(state: SchemaState<string>): void | Criteria<string> {
+export function camelCase(state: SchemaState<string>): Criteria<string> | void {
   return match(state, /^[a-z][a-zA-Z0-9]+$/u, 'String must be in camel case.');
 }
 
 /**
  * Require field value to be formatted in kebab case (foo-bar).
  */
-export function kebabCase(state: SchemaState<string>): void | Criteria<string> {
+export function kebabCase(state: SchemaState<string>): Criteria<string> | void {
   return match(state, /^[a-z][a-z0-9-]+$/u, 'String must be in kebab case.');
 }
 
 /**
  * Require field value to be formatted in pascal case (FooBar).
  */
-export function pascalCase(state: SchemaState<string>): void | Criteria<string> {
+export function pascalCase(state: SchemaState<string>): Criteria<string> | void {
   return match(state, /^[A-Z][a-zA-Z0-9]+$/u, 'String must be in pascal case.');
 }
 
 /**
  * Require field value to be formatted in snake case (foo_bar).
  */
-export function snakeCase(state: SchemaState<string>): void | Criteria<string> {
+export function snakeCase(state: SchemaState<string>): Criteria<string> | void {
   return match(state, /^[a-z][a-z0-9_]+$/u, 'String must be in snake case.');
 }
 
 /**
  * Require field value to not be an empty string.
  */
-export function notEmpty(): void | Criteria<string> {
+export function notEmpty(): Criteria<string> | void {
   if (__DEV__) {
     return {
       skipIfNull: true,
@@ -92,7 +92,7 @@ export function notEmpty(): void | Criteria<string> {
 /**
  * Require field value to be one of the provided string.
  */
-export function oneOf(state: SchemaState<string>, list: string[]): void | Criteria<string> {
+export function oneOf(state: SchemaState<string>, list: string[]): Criteria<string> | void {
   if (__DEV__) {
     invariant(
       Array.isArray(list) && list.length > 0 && list.every((item) => isValidString(item)),
@@ -111,7 +111,7 @@ export function oneOf(state: SchemaState<string>, list: string[]): void | Criter
 /**
  * Require field value to be all lower case.
  */
-export function lowerCase(): void | Criteria<string> {
+export function lowerCase(): Criteria<string> | void {
   if (__DEV__) {
     return {
       skipIfNull: true,
@@ -125,7 +125,7 @@ export function lowerCase(): void | Criteria<string> {
 /**
  * Require field value to be all upper case.
  */
-export function upperCase(): void | Criteria<string> {
+export function upperCase(): Criteria<string> | void {
   if (__DEV__) {
     return {
       skipIfNull: true,
@@ -139,7 +139,7 @@ export function upperCase(): void | Criteria<string> {
 /**
  * Require field array to be of a specific size.
  */
-export function sizeOf(state: SchemaState<string>, size: number): void | Criteria<string> {
+export function sizeOf(state: SchemaState<string>, size: number): Criteria<string> | void {
   if (__DEV__) {
     invariant(typeof size === 'number' && size > 0, 'Size requires a non-zero positive number.');
 

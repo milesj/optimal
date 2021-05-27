@@ -9,7 +9,15 @@ export function createArray(value: unknown): unknown[] {
 }
 
 export function createDate(value: unknown): Date {
-  return value instanceof Date ? value : new Date(value as number);
+  if (value instanceof Date) {
+    return value;
+  }
+
+  if (value === undefined || value === null) {
+    return new Date();
+  }
+
+  return new Date(value as number);
 }
 
 export function createObject<T = UnknownObject>(value: unknown) {

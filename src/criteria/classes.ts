@@ -8,7 +8,7 @@ export function of<T>(
   state: SchemaState<T>,
   ref: Constructor<T>,
   loose: boolean = false,
-): void | Criteria<T> {
+): Criteria<T> | void {
   state.type = ref.name || ref.constructor.name;
 
   if (__DEV__) {

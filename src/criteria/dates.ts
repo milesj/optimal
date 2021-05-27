@@ -4,7 +4,7 @@ import { Criteria, MaybeDate, SchemaState } from '../types';
 /**
  * Require field value to be after the provided date.
  */
-export function after(state: SchemaState<Date>, date: MaybeDate): void | Criteria<Date> {
+export function after(state: SchemaState<Date>, date: MaybeDate): Criteria<Date> | void {
   if (__DEV__) {
     const afterDate = createDate(date);
 
@@ -15,7 +15,7 @@ export function after(state: SchemaState<Date>, date: MaybeDate): void | Criteri
       validate(value, path) {
         invariant(
           isValidDate(value) && value > afterDate,
-          `Date must be after ${afterDate.toISOString()}.`,
+          `Date must come after ${afterDate.toLocaleDateString()}.`,
           path,
         );
       },
@@ -26,7 +26,7 @@ export function after(state: SchemaState<Date>, date: MaybeDate): void | Criteri
 /**
  * Require field value to be before the provided date.
  */
-export function before(state: SchemaState<Date>, date: MaybeDate): void | Criteria<Date> {
+export function before(state: SchemaState<Date>, date: MaybeDate): Criteria<Date> | void {
   if (__DEV__) {
     const beforeDate = createDate(date);
 
@@ -37,7 +37,7 @@ export function before(state: SchemaState<Date>, date: MaybeDate): void | Criter
       validate(value, path) {
         invariant(
           isValidDate(value) && value < beforeDate,
-          `Date must be before ${beforeDate.toISOString()}.`,
+          `Date must come before ${beforeDate.toLocaleDateString()}.`,
           path,
         );
       },
@@ -53,7 +53,7 @@ export function between(
   start: MaybeDate,
   end: MaybeDate,
   inclusive: boolean = false,
-): void | Criteria<Date> {
+): Criteria<Date> | void {
   if (__DEV__) {
     const startDate = createDate(start);
     const endDate = createDate(end);
@@ -69,7 +69,7 @@ export function between(
             (inclusive
               ? value >= startDate && value <= endDate
               : value > startDate && value < endDate),
-          `Date must be between ${startDate.toISOString()} and ${endDate.toISOString()}${
+          `Date must be between ${startDate.toLocaleDateString()} and ${endDate.toLocaleDateString()}${
             inclusive ? ' inclusive' : ''
           }.`,
           path,

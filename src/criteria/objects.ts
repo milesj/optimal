@@ -6,7 +6,7 @@ import { Criteria, Schema, SchemaState } from '../types';
  */
 export function notEmpty<T>(
   state: SchemaState<Record<string, T>>,
-): void | Criteria<Record<string, T>> {
+): Criteria<Record<string, T>> | void {
   if (__DEV__) {
     return {
       skipIfNull: true,
@@ -24,7 +24,7 @@ export function notEmpty<T>(
 export function of<T>(
   state: SchemaState<Record<string, T>>,
   valuesSchema: Schema<T>,
-): void | Criteria<Record<string, T>> {
+): Criteria<Record<string, T>> | void {
   if (__DEV__) {
     if (!isSchema(valuesSchema)) {
       invariant(false, 'A schema blueprint is required for object values.');
@@ -60,7 +60,7 @@ export function of<T>(
 export function sizeOf<T>(
   state: SchemaState<Record<string, T>>,
   size: number,
-): void | Criteria<Record<string, T>> {
+): Criteria<Record<string, T>> | void {
   if (__DEV__) {
     invariant(typeof size === 'number' && size > 0, 'Size requires a non-zero positive number.');
 

@@ -11,7 +11,7 @@ export interface FunctionSchema<T = UnknownFunction>
   nullable: () => FunctionSchema<T | null>;
 }
 
-function validateType<T>(): void | Criteria<T> {
+function validateType<T>(): Criteria<T> | void {
   return {
     skipIfNull: true,
     validate(value, path) {
