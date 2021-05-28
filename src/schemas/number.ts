@@ -1,7 +1,7 @@
 import { createSchema } from '../createSchema';
 import { commonCriteria, numberCriteria } from '../criteria';
 import { invariant } from '../helpers';
-import { CommonCriterias, InferNullable, NumberCriterias, Schema } from '../types';
+import { CommonCriterias, InferNullable, NumberCriterias, Options, Schema } from '../types';
 
 export interface NumberSchema<T = number>
   extends Schema<T>,
@@ -10,7 +10,10 @@ export interface NumberSchema<T = number>
   never: () => NumberSchema<never>;
   notNullable: () => NumberSchema<NonNullable<T>>;
   nullable: () => NumberSchema<T | null>;
-  oneOf: <I extends number = number>(list: I[]) => NumberSchema<InferNullable<T, I>>;
+  oneOf: <I extends number = number>(
+    list: I[],
+    options?: Options,
+  ) => NumberSchema<InferNullable<T, I>>;
 }
 
 function cast(value: unknown): number {

@@ -12,6 +12,14 @@ export type InferNullable<P, N> = P extends null ? N | null : N;
 
 // CRITERIA
 
+export interface Options {
+  message?: string;
+}
+
+export interface InclusiveOptions extends Options {
+  inclusive?: boolean;
+}
+
 export type CriteriaValidator<Input> = (
   value: Input,
   path: string,
@@ -52,40 +60,40 @@ export interface CommonCriterias<S> {
 }
 
 export interface ArrayCriterias<S> {
-  notEmpty: () => S;
-  sizeOf: (size: number) => S;
+  notEmpty: (options?: Options) => S;
+  sizeOf: (size: number, options?: Options) => S;
   // Define in schema directly
   // of: <V>(schema: Schema<V>) => S;
 }
 
 export interface BooleanCriterias<S> {
-  onlyFalse: () => S;
-  onlyTrue: () => S;
+  onlyFalse: (options?: Options) => S;
+  onlyTrue: (options?: Options) => S;
 }
 
 export interface DateCriterias<S> {
-  after: (date: MaybeDate) => S;
-  before: (date: MaybeDate) => S;
-  between: (start: MaybeDate, end: MaybeDate, inclusive?: boolean) => S;
+  after: (date: MaybeDate, options?: Options) => S;
+  before: (date: MaybeDate, options?: Options) => S;
+  between: (start: MaybeDate, end: MaybeDate, options?: InclusiveOptions) => S;
 }
 
 export interface NumberCriterias<S> {
-  between: (min: number, max: number, inclusive?: boolean) => S;
-  float: () => S;
-  gt: (min: number, inclusive?: boolean) => S;
-  gte: (min: number) => S;
-  int: () => S;
-  lt: (max: number, inclusive?: boolean) => S;
-  lte: (max: number) => S;
-  negative: () => S;
-  positive: () => S;
+  between: (min: number, max: number, options?: InclusiveOptions) => S;
+  float: (options?: Options) => S;
+  gt: (min: number, options?: InclusiveOptions) => S;
+  gte: (min: number, options?: Options) => S;
+  int: (options?: Options) => S;
+  lt: (max: number, options?: InclusiveOptions) => S;
+  lte: (max: number, options?: Options) => S;
+  negative: (options?: Options) => S;
+  positive: (options?: Options) => S;
   // Define in schema directly
   // oneOf: <I extends number>(list: I[]) => S;
 }
 
 export interface ObjectCriterias<S> {
-  notEmpty: () => S;
-  sizeOf: (size: number) => S;
+  notEmpty: (options?: Options) => S;
+  sizeOf: (size: number, options?: Options) => S;
   // Define in schema directly
   // of: <V>(schema: Schema<V>) => S;
 }
@@ -95,16 +103,16 @@ export interface ShapeCriterias<S> {
 }
 
 export interface StringCriterias<S> {
-  camelCase: () => S;
-  contains: (token: string, index?: number) => S;
-  kebabCase: () => S;
-  lowerCase: () => S;
-  match: (pattern: RegExp, message?: string) => S;
-  notEmpty: () => S;
-  pascalCase: () => S;
-  sizeOf: (size: number) => S;
-  snakeCase: () => S;
-  upperCase: () => S;
+  camelCase: (options?: Options) => S;
+  contains: (token: string, options?: Options & { index?: number }) => S;
+  kebabCase: (options?: Options) => S;
+  lowerCase: (options?: Options) => S;
+  match: (pattern: RegExp, options?: Options) => S;
+  notEmpty: (options?: Options) => S;
+  pascalCase: (options?: Options) => S;
+  sizeOf: (size: number, options?: Options) => S;
+  snakeCase: (options?: Options) => S;
+  upperCase: (options?: Options) => S;
   // Define in schema directly
   // oneOf: <I extends string>(list: I[]) => S;
 }
@@ -114,7 +122,7 @@ export interface StringCriterias<S> {
 export interface Schema<Output, Input = Output> {
   type: () => string;
   validate: (
-    value: Input | null | undefined, // TODO change to unknown?
+    value: Input | null | undefined,
     path?: string,
     currentObject?: UnknownObject,
     rootObject?: UnknownObject,

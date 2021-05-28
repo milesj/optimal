@@ -1,10 +1,14 @@
 import { createDate, invariant, isValidDate } from '../helpers';
-import { Criteria, MaybeDate, SchemaState } from '../types';
+import { Criteria, InclusiveOptions, MaybeDate, Options, SchemaState } from '../types';
 
 /**
  * Require field value to be after the provided date.
  */
-export function after(state: SchemaState<Date>, date: MaybeDate): Criteria<Date> | void {
+export function after(
+  state: SchemaState<Date>,
+  date: MaybeDate,
+  options: Options = {},
+): Criteria<Date> | void {
   if (__DEV__) {
     const afterDate = createDate(date);
 
@@ -15,7 +19,7 @@ export function after(state: SchemaState<Date>, date: MaybeDate): Criteria<Date>
       validate(value, path) {
         invariant(
           isValidDate(value) && value > afterDate,
-          `Date must come after ${afterDate.toLocaleDateString()}.`,
+          options.message || `Date must come after ${afterDate.toLocaleDateString()}.`,
           path,
         );
       },
@@ -26,7 +30,11 @@ export function after(state: SchemaState<Date>, date: MaybeDate): Criteria<Date>
 /**
  * Require field value to be before the provided date.
  */
-export function before(state: SchemaState<Date>, date: MaybeDate): Criteria<Date> | void {
+export function before(
+  state: SchemaState<Date>,
+  date: MaybeDate,
+  options: Options = {},
+): Criteria<Date> | void {
   if (__DEV__) {
     const beforeDate = createDate(date);
 
@@ -37,7 +45,7 @@ export function before(state: SchemaState<Date>, date: MaybeDate): Criteria<Date
       validate(value, path) {
         invariant(
           isValidDate(value) && value < beforeDate,
-          `Date must come before ${beforeDate.toLocaleDateString()}.`,
+          options.message || `Date must come before ${beforeDate.toLocaleDateString()}.`,
           path,
         );
       },
@@ -52,7 +60,7 @@ export function between(
   state: SchemaState<Date>,
   start: MaybeDate,
   end: MaybeDate,
-  inclusive: boolean = false,
+  options: InclusiveOptions = {},
 ): Criteria<Date> | void {
   if (__DEV__) {
     const startDate = createDate(start);
@@ -66,12 +74,13 @@ export function between(
       validate(value, path) {
         invariant(
           isValidDate(value) &&
-            (inclusive
+            (options.inclusive
               ? value >= startDate && value <= endDate
               : value > startDate && value < endDate),
-          `Date must be between ${startDate.toLocaleDateString()} and ${endDate.toLocaleDateString()}${
-            inclusive ? ' inclusive' : ''
-          }.`,
+          options.message ||
+            `Date must be between ${startDate.toLocaleDateString()} and ${endDate.toLocaleDateString()}${
+              options.inclusive ? ' inclusive' : ''
+            }.`,
           path,
         );
       },

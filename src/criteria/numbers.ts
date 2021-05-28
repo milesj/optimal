@@ -1,5 +1,5 @@
 import { invariant, isValidNumber } from '../helpers';
-import { Criteria, SchemaState } from '../types';
+import { Criteria, InclusiveOptions, Options, SchemaState } from '../types';
 
 /**
  * Require field value to be between 2 numbers.
@@ -8,7 +8,7 @@ export function between(
   state: SchemaState<number>,
   min: number,
   max: number,
-  inclusive: boolean = false,
+  options: InclusiveOptions = {},
 ): Criteria<number> | void {
   if (__DEV__) {
     invariant(
@@ -21,8 +21,9 @@ export function between(
       validate(value, path) {
         invariant(
           isValidNumber(value) &&
-            (inclusive ? value >= min && value <= max : value > min && value < max),
-          `Number must be between ${min} and ${max}${inclusive ? ' inclusive' : ''}.`,
+            (options.inclusive ? value >= min && value <= max : value > min && value < max),
+          options.message ||
+            `Number must be between ${min} and ${max}${options.inclusive ? ' inclusive' : ''}.`,
           path,
         );
       },
@@ -33,12 +34,16 @@ export function between(
 /**
  * Require field value to be a float (includes a decimal).
  */
-export function float(): Criteria<number> | void {
+export function float(state: SchemaState<number>, options: Options = {}): Criteria<number> | void {
   if (__DEV__) {
     return {
       skipIfNull: true,
       validate(value, path) {
-        invariant(isValidNumber(value) && value % 1 !== 0, 'Number must be a float.', path);
+        invariant(
+          isValidNumber(value) && value % 1 !== 0,
+          options.message || 'Number must be a float.',
+          path,
+        );
       },
     };
   }
@@ -50,7 +55,7 @@ export function float(): Criteria<number> | void {
 export function gt(
   state: SchemaState<number>,
   min: number,
-  inclusive: boolean = false,
+  options: InclusiveOptions = {},
 ): Criteria<number> | void {
   if (__DEV__) {
     invariant(isValidNumber(min), 'Greater-than requires a minimum number.');
@@ -58,16 +63,16 @@ export function gt(
     return {
       skipIfNull: true,
       validate(value, path) {
-        if (inclusive) {
+        if (options.inclusive) {
           invariant(
             isValidNumber(value) && value >= min,
-            `Number must be greater than or equal to ${min}.`,
+            options.message || `Number must be greater than or equal to ${min}.`,
             path,
           );
         } else {
           invariant(
             isValidNumber(value) && value > min,
-            `Number must be greater than ${min}.`,
+            options.message || `Number must be greater than ${min}.`,
             path,
           );
         }
@@ -79,19 +84,27 @@ export function gt(
 /**
  * Require field value to be greater than or equals to a number.
  */
-export function gte(state: SchemaState<number>, min: number): Criteria<number> | void {
-  return gt(state, min, true);
+export function gte(
+  state: SchemaState<number>,
+  min: number,
+  options: Options = {},
+): Criteria<number> | void {
+  return gt(state, min, { ...options, inclusive: true });
 }
 
 /**
  * Require field value to be an integer.
  */
-export function int(): Criteria<number> | void {
+export function int(state: SchemaState<number>, options: Options = {}): Criteria<number> | void {
   if (__DEV__) {
     return {
       skipIfNull: true,
       validate(value, path) {
-        invariant(Number.isSafeInteger(value), 'Number must be an integer.', path);
+        invariant(
+          Number.isSafeInteger(value),
+          options.message || 'Number must be an integer.',
+          path,
+        );
       },
     };
   }
@@ -103,7 +116,7 @@ export function int(): Criteria<number> | void {
 export function lt(
   state: SchemaState<number>,
   max: number,
-  inclusive: boolean = false,
+  options: InclusiveOptions = {},
 ): Criteria<number> | void {
   if (__DEV__) {
     invariant(isValidNumber(max), 'Less-than requires a maximum number.');
@@ -111,14 +124,18 @@ export function lt(
     return {
       skipIfNull: true,
       validate(value, path) {
-        if (inclusive) {
+        if (options.inclusive) {
           invariant(
             isValidNumber(value) && value <= max,
-            `Number must be less than or equal to ${max}.`,
+            options.message || `Number must be less than or equal to ${max}.`,
             path,
           );
         } else {
-          invariant(isValidNumber(value) && value < max, `Number must be less than ${max}.`, path);
+          invariant(
+            isValidNumber(value) && value < max,
+            options.message || `Number must be less than ${max}.`,
+            path,
+          );
         }
       },
     };
@@ -128,19 +145,30 @@ export function lt(
 /**
  * Require field value to be less than or equals to a number.
  */
-export function lte(state: SchemaState<number>, max: number): Criteria<number> | void {
-  return lt(state, max, true);
+export function lte(
+  state: SchemaState<number>,
+  max: number,
+  options: Options = {},
+): Criteria<number> | void {
+  return lt(state, max, { ...options, inclusive: true });
 }
 
 /**
  * Require field value to be negative and not zero.
  */
-export function negative(): Criteria<number> | void {
+export function negative(
+  state: SchemaState<number>,
+  options: Options = {},
+): Criteria<number> | void {
   if (__DEV__) {
     return {
       skipIfNull: true,
       validate(value, path) {
-        invariant(isValidNumber(value) && value < 0, 'Number must be negative.', path);
+        invariant(
+          isValidNumber(value) && value < 0,
+          options.message || 'Number must be negative.',
+          path,
+        );
       },
     };
   }
@@ -149,7 +177,11 @@ export function negative(): Criteria<number> | void {
 /**
  * Require field value to be one of the provided numbers.
  */
-export function oneOf(state: SchemaState<number>, list: number[]): Criteria<number> | void {
+export function oneOf(
+  state: SchemaState<number>,
+  list: number[],
+  options: Options = {},
+): Criteria<number> | void {
   if (__DEV__) {
     invariant(
       Array.isArray(list) && list.length > 0 && list.every((item) => isValidNumber(item)),
@@ -159,7 +191,11 @@ export function oneOf(state: SchemaState<number>, list: number[]): Criteria<numb
     return {
       skipIfNull: true,
       validate(value, path) {
-        invariant(list.includes(value), `Number must be one of: ${list.join(', ')}`, path);
+        invariant(
+          list.includes(value),
+          options.message || `Number must be one of: ${list.join(', ')}`,
+          path,
+        );
       },
     };
   }
@@ -168,12 +204,19 @@ export function oneOf(state: SchemaState<number>, list: number[]): Criteria<numb
 /**
  * Require field value to be positive and not zero.
  */
-export function positive(): Criteria<number> | void {
+export function positive(
+  state: SchemaState<number>,
+  options: Options = {},
+): Criteria<number> | void {
   if (__DEV__) {
     return {
       skipIfNull: true,
       validate(value, path) {
-        invariant(isValidNumber(value) && value > 0, 'Number must be positive.', path);
+        invariant(
+          isValidNumber(value) && value > 0,
+          options.message || 'Number must be positive.',
+          path,
+        );
       },
     };
   }

@@ -1,7 +1,14 @@
 import { createSchema } from '../createSchema';
 import { commonCriteria, stringCriteria } from '../criteria';
 import { invariant } from '../helpers';
-import { CommonCriterias, Criteria, InferNullable, Schema, StringCriterias } from '../types';
+import {
+  CommonCriterias,
+  Criteria,
+  InferNullable,
+  Options,
+  Schema,
+  StringCriterias,
+} from '../types';
 
 export interface StringSchema<T = string>
   extends Schema<T>,
@@ -10,7 +17,10 @@ export interface StringSchema<T = string>
   never: () => StringSchema<never>;
   notNullable: () => StringSchema<NonNullable<T>>;
   nullable: () => StringSchema<T | null>;
-  oneOf: <I extends string = string>(list: I[]) => StringSchema<InferNullable<T, I>>;
+  oneOf: <I extends string = string>(
+    list: I[],
+    options?: Options,
+  ) => StringSchema<InferNullable<T, I>>;
 }
 
 function cast(value: unknown): string {

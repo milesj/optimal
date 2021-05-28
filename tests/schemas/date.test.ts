@@ -142,31 +142,31 @@ describe('date()', () => {
 
       it('errors if value comes before provided dates', () => {
         expect(() => {
-          schema.between(start, end, true).validate(start - 1000);
+          schema.between(start, end, { inclusive: true }).validate(start - 1000);
         }).toThrow(error);
       });
 
       it('errors if value comes after provided dates', () => {
         expect(() => {
-          schema.between(start, end, true).validate(end + 1000);
+          schema.between(start, end, { inclusive: true }).validate(end + 1000);
         }).toThrow(error);
       });
 
       it('doesnt error if value is on start date', () => {
         expect(() => {
-          schema.between(start, end, true).validate(start);
+          schema.between(start, end, { inclusive: true }).validate(start);
         }).not.toThrow();
       });
 
       it('doesnt error if value is on end date', () => {
         expect(() => {
-          schema.between(start, end, true).validate(start);
+          schema.between(start, end, { inclusive: true }).validate(start);
         }).not.toThrow();
       });
 
       it('doesnt error if value is between provided dates', () => {
         expect(() => {
-          schema.between(start, end).validate(start + 500);
+          schema.between(start, end, { inclusive: true }).validate(start + 500);
         }).not.toThrow();
       });
     });

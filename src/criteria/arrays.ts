@@ -1,15 +1,15 @@
 import { invariant, isSchema } from '../helpers';
-import { Criteria, Schema, SchemaState } from '../types';
+import { Criteria, Options, Schema, SchemaState } from '../types';
 
 /**
  * Require field array to not be empty.
  */
-export function notEmpty<T>(state: SchemaState<T[]>): Criteria<T[]> | void {
+export function notEmpty<T>(state: SchemaState<T[]>, options: Options = {}): Criteria<T[]> | void {
   if (__DEV__) {
     return {
       skipIfNull: true,
       validate(value, path) {
-        invariant(value.length > 0, 'Array cannot be empty.', path);
+        invariant(value.length > 0, options.message || 'Array cannot be empty.', path);
       },
     };
   }
@@ -49,14 +49,18 @@ export function of<T>(state: SchemaState<T[]>, itemsSchema: Schema<T>): Criteria
 /**
  * Require field array to be of a specific size.
  */
-export function sizeOf<T>(state: SchemaState<T[]>, size: number): Criteria<T[]> | void {
+export function sizeOf<T>(
+  state: SchemaState<T[]>,
+  size: number,
+  options: Options = {},
+): Criteria<T[]> | void {
   if (__DEV__) {
     invariant(typeof size === 'number' && size > 0, 'Size requires a non-zero positive number.');
 
     return {
       skipIfNull: true,
       validate(value, path) {
-        invariant(value.length === size, `Array length must be ${size}.`, path);
+        invariant(value.length === size, options.message || `Array length must be ${size}.`, path);
       },
     };
   }
