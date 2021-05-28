@@ -4,19 +4,19 @@
   "description": "A system for building and validating defined object structures.",
   "main": "./lib/index.js",
   "module": "./esm/index.js",
-  "types": "./lib/index.d.ts",
+  "types": "./dts/index.d.ts",
   "scripts": {
     "prepare": "beemo create-config --silent",
-    "build": "beemo create-config babel --esm --silent && rollup --config && beemo typescript --emitDeclarationOnly",
+    "build": "packemon build --addEngines",
+    "pack": "NODE_ENV=production packemon pack --addEngines --declaration=standard",
+    "ci": "yarn run type && yarn run test && yarn run lint",
+    "clean": "packemon clean",
     "coverage": "yarn run jest --coverage",
-    "eslint": "beemo eslint",
-    "jest": "beemo jest",
-    "prettier": "beemo prettier",
-    "prerelease": "yarn test && yarn run build",
+    "lint": "beemo eslint --cache --fix",
+    "format": "beemo prettier",
+    "prerelease": "yarn run pack && yarn run ci",
     "release": "npx np --yolo --no-yarn",
-    "pretest": "yarn run type",
-    "test": "yarn run jest",
-    "posttest": "yarn run eslint",
+    "test": "beemo jest",
     "type": "beemo typescript --noEmit"
   },
   "repository": {
@@ -39,42 +39,47 @@
     "url": "http://milesj.me"
   },
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/milesj/optimal/issues"
-  },
-  "homepage": "https://github.com/milesj/optimal#readme",
   "engines": {
-    "node": ">=10.10.0"
+    "node": ">=10.3.0"
   },
   "devDependencies": {
     "@milesj/build-tools": "^2.17.1",
-    "@types/node": "^14.14.31",
+    "@types/node": "^15.6.1",
     "conventional-changelog-beemo": "^2.1.0",
-    "rollup": "^2.39.0",
-    "rollup-plugin-babel": "^4.4.0",
-    "rollup-plugin-node-resolve": "^5.2.0"
+    "packemon": "^0.16.4"
   },
   "beemo": {
     "module": "@milesj/build-tools",
     "drivers": [
-      "babel",
+      {
+        "driver": "babel",
+        "strategy": "none"
+      },
       "eslint",
       "jest",
       "prettier",
-      "typescript"
+      {
+        "driver": "typescript",
+        "buildFolder": "dts",
+        "declarationOnly": true
+      }
     ],
     "eslint": {
       "rules": {
+        "consistent-return": "off",
         "default-param-last": "off",
         "no-param-reassign": "off"
       }
     }
   },
-  "browserslist": [
-    "ie 11"
-  ],
   "funding": {
     "type": "ko-fi",
     "url": "https://ko-fi.com/milesjohnson"
+  },
+  "packemon": {
+    "platform": [
+      "browser",
+      "node"
+    ]
   }
 }

@@ -1,8 +1,16 @@
-import isObject from './isObject';
-import Schema from './Schema';
-import { Blueprint, OptimalOptions } from './types';
+import { isObject } from './helpers';
+import { shape } from './schemas/shape';
+import { Blueprint, UnknownObject } from './types';
+import { ValidationError } from './ValidationError';
 
-export default function optimal<
+export interface OptimalOptions {
+  file?: string;
+  name?: string;
+  prefix?: string;
+  unknown?: boolean;
+}
+
+export function optimal<
   Struct extends object,
   Construct extends object = { [K in keyof Struct]?: unknown }
 >(struct: Construct, blueprint: Blueprint<Struct>, options: OptimalOptions = {}): Required<Struct> {
@@ -12,19 +20,26 @@ export default function optimal<
     }
   }
 
-  const schema = new Schema(blueprint);
+  const schema = shape(blueprint);
+  const object = struct as UnknownObject;
 
-  if (options.name) {
-    schema.setName(options.name);
+  if (!options.unknown) {
+    schema.exact();
   }
 
-  if (options.file) {
-    schema.setFile(options.file);
-  }
+  try {
+    return schema.validate(struct, options.prefix || '', object, object) as Required<Struct>;
+  } catch (error) {
+    const invalid = error instanceof ValidationError ? error : new ValidationError(error.message);
 
-  if (options.unknown) {
-    schema.allowUnknown();
-  }
+    if (options.name) {
+      invalid.schema = options.name;
+    }
 
-  return schema.build(struct, options.prefix);
+    if (options.file) {
+      invalid.file = options.file;
+    }
+
+    throw invalid;
+  }
 }

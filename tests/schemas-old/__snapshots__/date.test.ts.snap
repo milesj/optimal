@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`date() errors if \`null\` and not nullable 1`] = `"Invalid field \\"key\\". Null is not allowed."`;
+
+exports[`date() errors if a non-Date value is passed 1`] = `"Invalid field \\"key\\". Must be a class instance."`;

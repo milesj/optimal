@@ -1,3 +1,31 @@
+# 5.0.0
+
+Ground-up rewrite that migrates to a more composable API. Under the hood, classes were refactored
+into functions to reduce file size and overhead.
+
+#### 💥 Breaking
+
+- Renamed `Predicate#nonNullable()` method to `notNullable()`.
+- Removed the `predicate()` predicate (use `schema()` instead).
+- Removed `Predicate#key()` method.
+- Removed `Predicate#message()` method.
+- Removed the state boolean argument from `Predicate#required()`.
+
+#### 🚀 Updates
+
+- Added `Predicate#notRequired()` method.
+- Added `date()`, `schema()` schemas.
+- Added `createSchema()` function for creating custom schemas.
+- Added `createPredicate()` function for creating boolean return checkers.
+
+#### 🛠 Internals
+
+- Migrated to Packemon for package building.
+- Improved the handling of `null` and `undefined` values.
+- Increased code coverage, especially around edge cases.
+- Renamed predicates to schemas.
+- Renamed validation checks to criteria.
+
 ### 4.3.0 - 2020-02-20
 
 #### 🚀 Updates

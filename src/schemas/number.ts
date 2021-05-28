@@ -1,0 +1,35 @@
+import { createSchema } from '../createSchema';
+import { commonCriteria, numberCriteria } from '../criteria';
+import { invariant } from '../helpers';
+import { CommonCriterias, InferNullable, NumberCriterias, Options, Schema } from '../types';
+
+export interface NumberSchema<T = number>
+  extends Schema<T>,
+    NumberCriterias<NumberSchema<T>>,
+    CommonCriterias<NumberSchema<T>> {
+  never: () => NumberSchema<never>;
+  notNullable: () => NumberSchema<NonNullable<T>>;
+  nullable: () => NumberSchema<T | null>;
+  oneOf: <I extends number = number>(
+    list: I[],
+    options?: Options,
+  ) => NumberSchema<InferNullable<T, I>>;
+}
+
+function cast(value: unknown): number {
+  return value === undefined ? 0 : Number(value);
+}
+
+function validateType(value: unknown, path: string) {
+  invariant(typeof value === 'number', 'Must be a number.', path);
+}
+
+export function number(defaultValue: number = 0): NumberSchema<number> {
+  return createSchema({
+    cast,
+    criteria: { ...commonCriteria, ...numberCriteria },
+    defaultValue,
+    type: 'number',
+    validateType,
+  });
+}

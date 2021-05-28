@@ -1,22 +1,24 @@
 /**
- * @copyright   2017-2019, Miles Johnson
+ * @copyright   2021, Miles Johnson
  * @license     https://opensource.org/licenses/MIT
  */
 
-import optimal from './optimal';
-import Predicate, { custom, func } from './Predicate';
-import ArrayPredicate, { array } from './predicates/Array';
-import BooleanPredicate, { bool } from './predicates/Boolean';
-import InstancePredicate, { date, instance, predicate, regex } from './predicates/Instance';
-import NumberPredicate, { number } from './predicates/Number';
-import ObjectPredicate, { blueprint, object } from './predicates/Object';
-import ShapePredicate, { shape } from './predicates/Shape';
-import StringPredicate, { string } from './predicates/String';
-import TuplePredicate, { tuple } from './predicates/Tuple';
-import UnionPredicate, { union } from './predicates/Union';
-import Schema from './Schema';
+import { array } from './schemas/array';
+import { bool } from './schemas/bool';
+import { custom } from './schemas/custom';
+import { date } from './schemas/date';
+import { func } from './schemas/func';
+import { instance } from './schemas/instance';
+import { number } from './schemas/number';
+import { object } from './schemas/object';
+import { regex } from './schemas/regex';
+import { blueprint, schema } from './schemas/schema';
+import { shape } from './schemas/shape';
+import { string } from './schemas/string';
+import { tuple } from './schemas/tuple';
+import { union } from './schemas/union';
 
-export const predicates = {
+export const schemas = {
   array,
   blueprint,
   bool,
@@ -26,48 +28,33 @@ export const predicates = {
   instance,
   number,
   object,
-  predicate,
   regex,
+  schema,
   shape,
   string,
   tuple,
   union,
 };
 
-export {
-  array,
-  blueprint,
-  bool,
-  custom,
-  date,
-  func,
-  instance,
-  number,
-  object,
-  predicate,
-  regex,
-  shape,
-  string,
-  tuple,
-  union,
-};
+export type Schemas = typeof schemas;
 
-export {
-  ArrayPredicate,
-  BooleanPredicate,
-  InstancePredicate,
-  NumberPredicate,
-  ObjectPredicate,
-  Predicate,
-  Schema,
-  ShapePredicate,
-  StringPredicate,
-  TuplePredicate,
-  UnionPredicate,
-};
-
-export type Predicates = typeof predicates;
-
+export * from './createPredicate';
+export * from './createSchema';
+export * from './criteria';
+export * from './optimal';
+export * from './schemas/array';
+export * from './schemas/bool';
+export * from './schemas/custom';
+export * from './schemas/date';
+export * from './schemas/func';
+export * from './schemas/instance';
+export * from './schemas/number';
+export * from './schemas/object';
+export * from './schemas/regex';
+export * from './schemas/schema';
+export * from './schemas/shape';
+export * from './schemas/string';
+export * from './schemas/tuple';
+export * from './schemas/union';
 export * from './types';
-
-export default optimal;
+export * from './ValidationError';
