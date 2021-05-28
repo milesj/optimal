@@ -1,7 +1,7 @@
 import { createSchema } from '../createSchema';
 import { commonCriteria, stringCriteria } from '../criteria';
 import { invariant } from '../helpers';
-import { CommonCriterias, InferNullable, Schema, StringCriterias } from '../types';
+import { CommonCriterias, Criteria, InferNullable, Schema, StringCriterias } from '../types';
 
 export interface StringSchema<T = string>
   extends Schema<T>,
@@ -17,8 +17,13 @@ function cast(value: unknown): string {
   return value === undefined ? '' : String(value);
 }
 
-function validateType(value: unknown, path: string) {
-  invariant(typeof value === 'string', 'Must be a string.', path);
+function validateType(): Criteria<string> | void {
+  return {
+    skipIfNull: true,
+    validate(value, path) {
+      invariant(typeof value === 'string', 'Must be a string.', path);
+    },
+  };
 }
 
 export function string(defaultValue: string = ''): StringSchema<string> {

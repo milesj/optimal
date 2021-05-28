@@ -14,7 +14,7 @@ into functions to reduce file size and overhead.
 #### 🚀 Updates
 
 - Added `Predicate#notRequired()` method.
-- Added `schema()` schema.
+- Added `date()`, `schema()` schemas.
 - Added `createSchema()` function for creating custom schemas.
 - Added `createPredicate()` function for creating boolean return checkers.
 

@@ -33,7 +33,7 @@ export function date(defaultValue?: Date): DateSchema<Date> {
   return createSchema({
     cast: createDate,
     criteria: { ...commonCriteria, ...dateCriteria },
-    defaultValue,
+    defaultValue: defaultValue || new Date(),
     type: 'date',
     validateType,
   });

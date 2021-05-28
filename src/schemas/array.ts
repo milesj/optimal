@@ -1,7 +1,7 @@
 import { createSchema } from '../createSchema';
 import { arrayCriteria, commonCriteria } from '../criteria';
 import { createArray, invariant } from '../helpers';
-import { ArrayCriterias, CommonCriterias, InferNullable, Schema } from '../types';
+import { ArrayCriterias, CommonCriterias, Criteria, InferNullable, Schema } from '../types';
 
 export interface ArraySchema<T = unknown[]>
   extends Schema<T>,
@@ -13,8 +13,13 @@ export interface ArraySchema<T = unknown[]>
   of: <V>(schema: Schema<V>) => ArraySchema<InferNullable<T, V[]>>;
 }
 
-function validateType(value: unknown, path: string) {
-  invariant(Array.isArray(value), 'Must be an array.', path);
+function validateType(): Criteria<unknown[]> | void {
+  return {
+    skipIfNull: true,
+    validate(value, path) {
+      invariant(Array.isArray(value), 'Must be an array.', path);
+    },
+  };
 }
 
 export function array<T = unknown>(defaultValue: T[] = []): ArraySchema<T[]> {

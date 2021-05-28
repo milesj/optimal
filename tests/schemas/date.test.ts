@@ -80,7 +80,97 @@ describe('date()', () => {
     });
   });
 
-  describe('between()', () => {});
+  describe('between()', () => {
+    it('errors if a non-date start value is passed', () => {
+      expect(() => {
+        // @ts-expect-error Invalid type
+        schema.between([]);
+      }).toThrow('Between start date must be a valid date.');
+    });
+
+    it('errors if a non-date end value is passed', () => {
+      expect(() => {
+        // @ts-expect-error Invalid type
+        schema.between(Date.now(), []);
+      }).toThrow('Between end date must be a valid date.');
+    });
+
+    describe('non-inclusive', () => {
+      const start = Date.now();
+      const end = Date.now() + 1000;
+      const error = `Date must be between ${new Date(start).toLocaleDateString()} and ${new Date(
+        end,
+      ).toLocaleDateString()}.`;
+
+      it('errors if value comes before provided dates', () => {
+        expect(() => {
+          schema.between(start, end).validate(start - 1000);
+        }).toThrow(error);
+      });
+
+      it('errors if value comes after provided dates', () => {
+        expect(() => {
+          schema.between(start, end).validate(end + 1000);
+        }).toThrow(error);
+      });
+
+      it('errors if value is on start date', () => {
+        expect(() => {
+          schema.between(start, end).validate(start);
+        }).toThrow(error);
+      });
+
+      it('errors if value is on end date', () => {
+        expect(() => {
+          schema.between(start, end).validate(start);
+        }).toThrow(error);
+      });
+
+      it('doesnt error if value is between provided dates', () => {
+        expect(() => {
+          schema.between(start, end).validate(start + 500);
+        }).not.toThrow();
+      });
+    });
+
+    describe('inclusive', () => {
+      const start = Date.now();
+      const end = Date.now() + 1000;
+      const error = `Date must be between ${new Date(start).toLocaleDateString()} and ${new Date(
+        end,
+      ).toLocaleDateString()} inclusive.`;
+
+      it('errors if value comes before provided dates', () => {
+        expect(() => {
+          schema.between(start, end, true).validate(start - 1000);
+        }).toThrow(error);
+      });
+
+      it('errors if value comes after provided dates', () => {
+        expect(() => {
+          schema.between(start, end, true).validate(end + 1000);
+        }).toThrow(error);
+      });
+
+      it('doesnt error if value is on start date', () => {
+        expect(() => {
+          schema.between(start, end, true).validate(start);
+        }).not.toThrow();
+      });
+
+      it('doesnt error if value is on end date', () => {
+        expect(() => {
+          schema.between(start, end, true).validate(start);
+        }).not.toThrow();
+      });
+
+      it('doesnt error if value is between provided dates', () => {
+        expect(() => {
+          schema.between(start, end).validate(start + 500);
+        }).not.toThrow();
+      });
+    });
+  });
 
   describe('type()', () => {
     it('returns "Date"', () => {

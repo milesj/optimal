@@ -31,6 +31,10 @@ export function of<T>(state: SchemaState<T[]>, itemsSchema: Schema<T>): Criteria
   return {
     skipIfNull: true,
     validate(value, path, currentObject, rootObject) {
+      if (!Array.isArray(value)) {
+        return [];
+      }
+
       const nextValue = [...value];
 
       value.forEach((item, i) => {
