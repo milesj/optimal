@@ -55,7 +55,7 @@ export function sizeOf<T>(
   options: Options = {},
 ): Criteria<T[]> | void {
   if (__DEV__) {
-    invariant(typeof size === 'number' && size > 0, 'Size requires a non-zero positive number.');
+    invariant(typeof size === 'number' && size > 0, 'Size of requires a non-zero positive number.');
 
     return {
       skipIfNull: true,

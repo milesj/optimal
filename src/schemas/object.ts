@@ -1,7 +1,7 @@
 import { createSchema } from '../createSchema';
 import { commonCriteria, objectCriteria } from '../criteria';
 import { createObject, invariant, isObject } from '../helpers';
-import { CommonCriterias, InferNullable, ObjectCriterias, Schema } from '../types';
+import { CommonCriterias, Criteria, InferNullable, ObjectCriterias, Schema } from '../types';
 
 export interface ObjectSchema<T = object>
   extends Schema<T>,
@@ -15,13 +15,18 @@ export interface ObjectSchema<T = object>
   ) => ObjectSchema<InferNullable<T, Record<K, V>>>;
 }
 
-function validateType(value: unknown, path: string) {
-  invariant(isObject(value), 'Must be a plain object.', path);
+function validateType(): Criteria<Record<string, unknown>> | void {
+  return {
+    skipIfNull: true,
+    validate(value, path) {
+      invariant(isObject(value), 'Must be a plain object.', path);
+    },
+  };
 }
 
-export function object<T = unknown, K extends string = string>(
-  defaultValue?: Record<K, T>,
-): ObjectSchema<Record<K, T>> {
+export function object<V = unknown, K extends string = string>(
+  defaultValue?: Record<K, V>,
+): ObjectSchema<Record<K, V>> {
   return createSchema({
     cast: createObject,
     criteria: { ...commonCriteria, ...objectCriteria },

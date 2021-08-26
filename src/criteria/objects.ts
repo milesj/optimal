@@ -72,14 +72,17 @@ export function sizeOf<T>(
   options: Options = {},
 ): Criteria<Record<string, T>> | void {
   if (__DEV__) {
-    invariant(typeof size === 'number' && size > 0, 'Size requires a non-zero positive number.');
+    invariant(typeof size === 'number' && size > 0, 'Size of requires a non-zero positive number.');
 
     return {
       skipIfNull: true,
       validate(value, path) {
         invariant(
           Object.keys(value).length === size,
-          options.message || `Object must have ${size} properties.`,
+          options.message ||
+            (size === 1
+              ? `Object must have ${size} property.`
+              : `Object must have ${size} properties.`),
           path,
         );
       },

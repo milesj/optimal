@@ -1,46 +1,51 @@
-import { array, ArraySchema, string } from '../../src';
+import { object, ObjectSchema, string } from '../../src';
 import { runInProd } from '../helpers';
 import { runCommonTests } from './runCommonTests';
 
-describe('array()', () => {
-  let schema: ArraySchema<string[]>;
+describe('object()', () => {
+  let schema: ObjectSchema<Record<string, string>>;
 
   beforeEach(() => {
-    schema = array().of(string());
+    schema = object().of(string());
   });
 
-  runCommonTests((defaultValue) => array<string>(defaultValue), ['a', 'b', 'c'], {
-    defaultValue: [],
-  });
+  runCommonTests<Record<string, string>>(
+    (defaultValue) => object(defaultValue),
+    { a: 'b' },
+    {
+      defaultValue: {},
+    },
+  );
 
   describe('notEmpty()', () => {
     beforeEach(() => {
       schema.notEmpty();
     });
 
-    it('errors if array is empty', () => {
+    it('errors if object is empty', () => {
       expect(() => {
-        schema.validate([]);
-      }).toThrow('Array cannot be empty.');
+        schema.validate({});
+      }).toThrow('Object cannot be empty.');
     });
 
-    it('doesnt error if array is non-empty', () => {
+    it('doesnt error if object is non-empty', () => {
       expect(() => {
-        schema.validate(['foo']);
+        schema.validate({ foo: 'bar' });
       }).not.toThrow();
     });
 
     describe('production', () => {
       it(
-        'errors if array is empty',
+        'errors if object is empty',
         runInProd(() => {
           expect(() => {
-            schema.validate([]);
+            schema.validate({});
           }).not.toThrow();
         }),
       );
     });
   });
+
   describe('sizeOf()', () => {
     beforeEach(() => {
       schema.sizeOf(1);
@@ -53,30 +58,30 @@ describe('array()', () => {
       }).toThrow('Size of requires a non-zero positive number.');
     });
 
-    it('errors if array has less items', () => {
+    it('errors if object has less properties', () => {
       expect(() => {
-        schema.validate([]);
-      }).toThrow('Array length must be 1.');
+        schema.validate({});
+      }).toThrow('Object must have 1 property.');
     });
 
-    it('errors if array has more items', () => {
+    it('errors if object has more properties', () => {
       expect(() => {
-        schema.validate(['foo', 'bar']);
-      }).toThrow('Array length must be 1.');
+        schema.validate({ a: 'a', b: 'b' });
+      }).toThrow('Object must have 1 property.');
     });
 
-    it('doesnt error if array has exact items', () => {
+    it('doesnt error if object has exact properties', () => {
       expect(() => {
-        schema.validate(['foo']);
+        schema.validate({ foo: 'bar' });
       }).not.toThrow();
     });
 
     describe('production', () => {
       it(
-        'errors if array has less items',
+        'errors if object has less properties',
         runInProd(() => {
           expect(() => {
-            schema.validate([]);
+            schema.validate({});
           }).not.toThrow();
         }),
       );
@@ -84,28 +89,28 @@ describe('array()', () => {
   });
 
   describe('type()', () => {
-    it('returns "array"', () => {
-      expect(array().type()).toBe('array');
+    it('returns "object"', () => {
+      expect(object().type()).toBe('object');
     });
 
-    it('returns "array" with subtype', () => {
-      expect(array().of(string()).type()).toBe('array<string>');
+    it('returns "object" with subtype', () => {
+      expect(object().of(string()).type()).toBe('object<string>');
     });
   });
 
   describe('validateType()', () => {
-    it('doesnt error if an array is passed', () => {
+    it('doesnt error if an object is passed', () => {
       expect(() => {
-        schema.validate(['foo']);
+        schema.validate({ foo: 'bar' });
       }).not.toThrow();
     });
 
-    it('returns passed array', () => {
-      expect(schema.validate(['a', 'b'])).toEqual(['a', 'b']);
+    it('returns passed object', () => {
+      expect(schema.validate({ foo: 'bar' })).toEqual({ foo: 'bar' });
     });
 
     it('returns default value if undefined passed', () => {
-      expect(schema.validate(undefined)).toEqual([]);
+      expect(schema.validate(undefined)).toEqual({});
     });
 
     it('errors if null is passed', () => {
@@ -114,18 +119,18 @@ describe('array()', () => {
       }).toThrow('Null is not allowed.');
     });
 
-    it('errors if a non-array is passed', () => {
+    it('errors if a non-object is passed', () => {
       expect(() => {
         // @ts-expect-error Invalid type
         schema.validate(123);
-      }).toThrow('Must be an array.');
+      }).toThrow('Must be a plain object.');
     });
 
-    it('errors if array value type is invalid', () => {
+    it('errors if object value type is invalid', () => {
       expect(() => {
         // @ts-expect-error Invalid type
-        schema.validate([123]);
-      }).toThrow('Invalid field "[0]". Must be a string.');
+        schema.validate({ a: 123 });
+      }).toThrow('Invalid field ".a". Must be a string.');
     });
 
     describe('production', () => {
