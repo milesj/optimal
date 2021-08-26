@@ -1,8 +1,7 @@
 import { ShapeSchema, schema as schemaFunc, UnknownFunction } from '../../src';
 import { runInProd } from '../helpers';
-import { runCommonTests } from './runCommonTests';
 
-describe('regex()', () => {
+describe('schema()', () => {
   let schema: ShapeSchema<{
     type: UnknownFunction;
     validate: UnknownFunction;
@@ -12,11 +11,9 @@ describe('regex()', () => {
     schema = schemaFunc();
   });
 
-  runCommonTests(() => schemaFunc(), { type() {}, validate() {} }, { nullableByDefault: true });
-
   describe('type()', () => {
-    it('returns "RegExp"', () => {
-      expect(schemaFunc().type()).toBe('RegExp');
+    it('returns shape type', () => {
+      expect(schemaFunc().type()).toBe('shape<{ type: function, validate: function }>');
     });
   });
 
@@ -25,35 +22,42 @@ describe('regex()', () => {
       expect(() => {
         // @ts-expect-error Invalid type
         schema.validate(123);
-      }).toThrow('Must be an instance of RegExp.');
+      }).toThrow('Must be a shaped object.');
     });
 
-    it('errors if a plain object is passed', () => {
+    it('errors if no fields provided', () => {
+      expect(() => {
+        schema.validate({});
+      }).toThrow('Invalid field "type". Field is required and must be defined.');
+    });
+
+    it('errors if a type is not a function', () => {
       expect(() => {
         // @ts-expect-error Invalid type
-        schema.validate({});
-      }).toThrow('Must be an instance of RegExp.');
+        schema.validate({ type: 123 });
+      }).toThrow('Invalid field "type". Must be a function.');
     });
 
-    it('doesnt error if a regex pattern is passed', () => {
+    it('errors if a validate is not a function', () => {
       expect(() => {
-        schema.validate(/foo/u);
-      }).not.toThrow();
+        // @ts-expect-error Invalid type
+        schema.validate({ type() {}, validate: 123 });
+      }).toThrow('Invalid field "validate". Must be a function.');
     });
 
-    it('doesnt error if null is passed', () => {
+    it('errors if null is passed', () => {
       expect(() => {
         schema.validate(null);
-      }).not.toThrow();
+      }).toThrow('Null is not allowed.');
     });
 
     describe('production', () => {
       it(
-        'doesnt error if a plain object is passed',
+        'doesnt error if a non-object is passed',
         runInProd(() => {
           expect(() => {
             // @ts-expect-error Invalid type
-            schema.validate({});
+            schema.validate(123);
           }).not.toThrow();
         }),
       );

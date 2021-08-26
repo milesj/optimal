@@ -14,17 +14,18 @@ export interface FunctionSchema<T = UnknownFunction>
 function validateType<T>(): Criteria<T> | void {
   return {
     skipIfNull: true,
+    skipIfOptional: true,
     validate(value, path) {
       invariant(typeof value === 'function', 'Must be a function.', path);
     },
   };
 }
 
-export function func<T extends UnknownFunction = UnknownFunction>(defaultValue: T | null = null) {
-  return createSchema<FunctionSchema<T | null>>({
+export function func<T extends UnknownFunction = UnknownFunction>(defaultValue?: T) {
+  return createSchema<FunctionSchema<T>>({
     criteria: { ...commonCriteria },
     defaultValue,
     type: 'function',
     validateType,
-  }).nullable();
+  });
 }

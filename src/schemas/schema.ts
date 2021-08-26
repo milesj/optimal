@@ -5,8 +5,8 @@ import { shape } from './shape';
 
 export function schema() {
   return shape({
-    type: func().notNullable(),
-    validate: func().notNullable(),
+    type: func().notNullable().required(),
+    validate: func().notNullable().required(),
   });
 }
 

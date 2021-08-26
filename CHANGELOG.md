@@ -5,6 +5,7 @@ into functions to reduce file size and overhead.
 
 #### 💥 Breaking
 
+- Updated `func()` to not be nullable by default. Instead uses undefined.
 - Renamed `Predicate#nonNullable()` method to `notNullable()`.
 - Removed the `predicate()` predicate (use `schema()` instead).
 - Removed `Predicate#key()` method.

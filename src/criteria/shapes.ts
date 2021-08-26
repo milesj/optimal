@@ -49,7 +49,7 @@ export function of<T extends object>(
 
         shape[key] = schema.validate(
           value[key],
-          `${path}.${key}`,
+          path ? `${path}.${key}` : String(key),
           value as UnknownObject,
           rootObject,
         );

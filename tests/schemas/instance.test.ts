@@ -13,7 +13,9 @@ describe('instance()', () => {
     schema = instance();
   });
 
-  runCommonTests(() => instance().of(Foo), new Foo(), { nullableByDefault: true });
+  runCommonTests(() => instance().of(Foo), new Foo(), {
+    defaultValue: null,
+  });
 
   describe('of()', () => {
     it('errors if a non-class declaration is passed', () => {

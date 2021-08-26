@@ -13,11 +13,14 @@ export function runCommonTests<T>(
   factory: (initialValue?: T) => Schema<T | null> & CommonCriterias<Schema<T | null>>,
   value: T | null = null,
   {
-    defaultValue = null,
-    nullableByDefault = false,
+    defaultValue,
     skipDefaultAsserts = false,
-  }: { defaultValue?: T | null; nullableByDefault?: boolean; skipDefaultAsserts?: boolean } = {},
+  }: {
+    defaultValue: T | null | undefined;
+    skipDefaultAsserts?: boolean;
+  },
 ) {
+  const nullableByDefault = defaultValue === null;
   let schema: Schema<T> & TestCriterias<Schema<T>>;
 
   beforeEach(() => {
@@ -376,19 +379,11 @@ export function runCommonTests<T>(
     });
   });
 
-  if (defaultValue !== null && !skipDefaultAsserts) {
+  if (defaultValue !== null && defaultValue !== undefined && !skipDefaultAsserts) {
     describe('only()', () => {
       beforeEach(() => {
         schema.only();
       });
-
-      if (defaultValue === null) {
-        it('errors if null or undefined default value is provided', () => {
-          expect(() => {
-            factory(undefined).only();
-          }).toThrow('Only requires a non-empty default value.');
-        });
-      }
 
       it('doesnt error if value matches default value', () => {
         expect(() => {

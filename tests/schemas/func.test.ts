@@ -10,7 +10,7 @@ describe('func()', () => {
     schema = func();
   });
 
-  runCommonTests(() => func(), noop, { nullableByDefault: true });
+  runCommonTests(() => func(), noop, { defaultValue: undefined });
 
   describe('type()', () => {
     it('returns "function"', () => {
@@ -32,10 +32,10 @@ describe('func()', () => {
       }).not.toThrow();
     });
 
-    it('doesnt error if null is passed', () => {
+    it('errors if null is passed', () => {
       expect(() => {
         schema.validate(null);
-      }).not.toThrow();
+      }).toThrow('Null is not allowed.');
     });
 
     describe('production', () => {
