@@ -1,11 +1,8 @@
-import { ShapeSchema, schema as schemaFunc, UnknownFunction } from '../../src';
+import { ShapeSchema, schema as schemaFunc, AnySchema } from '../../src';
 import { runInProd } from '../helpers';
 
 describe('schema()', () => {
-  let schema: ShapeSchema<{
-    type: UnknownFunction;
-    validate: UnknownFunction;
-  }>;
+  let schema: ShapeSchema<AnySchema>;
 
   beforeEach(() => {
     schema = schemaFunc();
@@ -22,7 +19,7 @@ describe('schema()', () => {
       expect(() => {
         // @ts-expect-error Invalid type
         schema.validate(123);
-      }).toThrow('Must be a shaped object.');
+      }).toThrow('Must be a schema.');
     });
 
     it('errors if no fields provided', () => {

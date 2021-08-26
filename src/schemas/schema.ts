@@ -1,17 +1,32 @@
-import { Schema } from '../types';
+import { createSchema } from '../createSchema';
+import { commonCriteria, shapeCriteria } from '../criteria';
+import { createObject, invariant, isObject } from '../helpers';
+import { Criteria, Schema } from '../types';
 import { func } from './func';
-import { object } from './object';
-import { shape } from './shape';
+import { ShapeSchema } from './shape';
 
-export function schema() {
-  return shape({
-    type: func().notNullable().required(),
-    validate: func().notNullable().required(),
-  });
+// Any is needed for consumers to type easily
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type AnySchema = Schema<any>;
+
+function validateType(): Criteria<unknown> | void {
+  return {
+    skipIfNull: true,
+    validate(value, path) {
+      invariant(isObject(value), 'Must be a schema.', path);
+    },
+  };
 }
 
-export function blueprint<T extends object, K extends string = string>(
-  defaultValue?: Record<K, Schema<T>>,
-) /* infer */ {
-  return object(defaultValue).of(schema().notNullable());
+// This is similar to shape, but we want to control the validation
+export function schema(): ShapeSchema<AnySchema> {
+  return createSchema<ShapeSchema<AnySchema>>({
+    cast: createObject,
+    criteria: { ...commonCriteria, ...shapeCriteria },
+    type: 'shape',
+    validateType,
+  }).of({
+    type: func<AnySchema['type']>().notNullable().required(),
+    validate: func<AnySchema['validate']>().notNullable().required(),
+  });
 }

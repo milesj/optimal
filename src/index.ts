@@ -4,6 +4,7 @@
  */
 
 import { array } from './schemas/array';
+import { blueprint } from './schemas/blueprint';
 import { bool } from './schemas/bool';
 import { custom } from './schemas/custom';
 import { date } from './schemas/date';
@@ -12,7 +13,7 @@ import { instance } from './schemas/instance';
 import { number } from './schemas/number';
 import { object } from './schemas/object';
 import { regex } from './schemas/regex';
-import { blueprint, schema } from './schemas/schema';
+import { schema } from './schemas/schema';
 import { shape } from './schemas/shape';
 import { string } from './schemas/string';
 import { tuple } from './schemas/tuple';
@@ -43,6 +44,7 @@ export * from './createSchema';
 export * from './criteria';
 export * from './optimal';
 export * from './schemas/array';
+export * from './schemas/blueprint';
 export * from './schemas/bool';
 export * from './schemas/custom';
 export * from './schemas/date';

@@ -21,7 +21,8 @@ function validateType<T>(): Criteria<T> | void {
   };
 }
 
-export function func<T extends UnknownFunction = UnknownFunction>(defaultValue?: T) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function func<T extends (...args: any[]) => any = UnknownFunction>(defaultValue?: T) {
   return createSchema<FunctionSchema<T>>({
     criteria: { ...commonCriteria },
     defaultValue,

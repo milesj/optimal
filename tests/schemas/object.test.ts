@@ -130,7 +130,7 @@ describe('object()', () => {
       expect(() => {
         // @ts-expect-error Invalid type
         schema.validate({ a: 123 });
-      }).toThrow('Invalid field ".a". Must be a string.');
+      }).toThrow('Invalid field "a". Must be a string.');
     });
 
     describe('production', () => {

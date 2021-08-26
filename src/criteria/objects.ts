@@ -52,7 +52,7 @@ export function of<T>(
 
         nextValue[key] = valuesSchema.validate(
           value[key],
-          `${path}.${key}`,
+          path ? `${path}.${key}` : String(key),
           currentObject,
           rootObject,
         );
