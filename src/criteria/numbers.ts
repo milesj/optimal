@@ -185,7 +185,7 @@ export function oneOf(
   if (__DEV__) {
     invariant(
       Array.isArray(list) && list.length > 0 && list.every((item) => isValidNumber(item)),
-      'One of requires a non-empty array of numbers.',
+      'One of requires an array of numbers.',
     );
 
     return {

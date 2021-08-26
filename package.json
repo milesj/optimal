@@ -9,7 +9,7 @@
     "prepare": "beemo create-config --silent",
     "build": "packemon build --addEngines",
     "pack": "NODE_ENV=production packemon pack --addEngines --declaration=standard",
-    "ci": "yarn run type && yarn run test && yarn run lint",
+    "check": "yarn run type && yarn run test && yarn run lint",
     "clean": "packemon clean",
     "coverage": "yarn run jest --coverage",
     "lint": "beemo eslint --cache --fix",

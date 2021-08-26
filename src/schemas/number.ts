@@ -1,7 +1,14 @@
 import { createSchema } from '../createSchema';
 import { commonCriteria, numberCriteria } from '../criteria';
 import { invariant } from '../helpers';
-import { CommonCriterias, InferNullable, NumberCriterias, Options, Schema } from '../types';
+import {
+  CommonCriterias,
+  Criteria,
+  InferNullable,
+  NumberCriterias,
+  Options,
+  Schema,
+} from '../types';
 
 export interface NumberSchema<T = number>
   extends Schema<T>,
@@ -20,8 +27,13 @@ function cast(value: unknown): number {
   return value === undefined ? 0 : Number(value);
 }
 
-function validateType(value: unknown, path: string) {
-  invariant(typeof value === 'number', 'Must be a number.', path);
+function validateType(): Criteria<number> | void {
+  return {
+    skipIfNull: true,
+    validate(value, path) {
+      invariant(typeof value === 'number', 'Must be a number.', path);
+    },
+  };
 }
 
 export function number(defaultValue: number = 0): NumberSchema<number> {
