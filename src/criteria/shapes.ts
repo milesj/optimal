@@ -1,5 +1,5 @@
 import { invariant, isObject, isSchema, logUnknown } from '../helpers';
-import { Blueprint, Criteria, SchemaState, UnknownObject } from '../types';
+import { Blueprint, Criteria, Schema, SchemaState, UnknownObject } from '../types';
 
 /**
  * Require a shape to be an exact shape.
@@ -25,6 +25,12 @@ export function of<T extends object>(
       'A non-empty object of schemas are required for a shape.',
     );
   }
+
+  const types = Object.entries(schemas).map(
+    ([key, value]) => `${key}: ${(value as Schema<unknown>).type()}`,
+  );
+
+  state.type += `<{ ${types.join(', ')} }>`;
 
   return {
     skipIfNull: true,

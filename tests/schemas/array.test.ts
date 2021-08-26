@@ -41,6 +41,7 @@ describe('array()', () => {
       );
     });
   });
+
   describe('sizeOf()', () => {
     beforeEach(() => {
       schema.sizeOf(1);

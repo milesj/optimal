@@ -15,7 +15,8 @@ export function runCommonTests<T>(
   {
     defaultValue = null,
     nullableByDefault = false,
-  }: { defaultValue?: T | null; nullableByDefault?: boolean } = {},
+    skipDefaultAsserts = false,
+  }: { defaultValue?: T | null; nullableByDefault?: boolean; skipDefaultAsserts?: boolean } = {},
 ) {
   let schema: Schema<T> & TestCriterias<Schema<T>>;
 
@@ -247,7 +248,7 @@ export function runCommonTests<T>(
         'doesnt error when validating',
         runInProd(() => {
           expect(() => schema.never().validate(value)).not.toThrow();
-          expect(schema.never().validate(value)).toBe(value);
+          expect(schema.never().validate(value)).toEqual(value);
         }),
       );
     });
@@ -259,15 +260,17 @@ export function runCommonTests<T>(
     });
 
     it('returns null when null is passed', () => {
-      expect(schema.validate(null)).toBe(null);
+      expect(schema.validate(null)).toBeNull();
     });
 
-    it('returns default value when undefined is passed', () => {
-      expect(schema.validate(undefined)).toBe(defaultValue);
-    });
+    if (!skipDefaultAsserts) {
+      it('returns default value when undefined is passed', () => {
+        expect(schema.validate(undefined)).toEqual(defaultValue);
+      });
+    }
 
     it('returns value when a valid value is passed', () => {
-      expect(schema.validate(value)).toBe(value);
+      expect(schema.validate(value)).toEqual(value);
     });
 
     it('doesnt error when null is passed', () => {
@@ -289,7 +292,7 @@ export function runCommonTests<T>(
     });
 
     it('returns value when a valid value is passed', () => {
-      expect(schema.validate(value)).toBe(value);
+      expect(schema.validate(value)).toEqual(value);
     });
 
     it('errors when null is passed', () => {
@@ -301,9 +304,11 @@ export function runCommonTests<T>(
     });
 
     if (defaultValue !== null) {
-      it('returns default value when undefined is passed', () => {
-        expect(schema.validate(undefined)).toBe(defaultValue);
-      });
+      if (!skipDefaultAsserts) {
+        it('returns default value when undefined is passed', () => {
+          expect(schema.validate(undefined)).toEqual(defaultValue);
+        });
+      }
 
       it('doesnt error when undefined is passed', () => {
         expect(() => schema.validate(undefined)).not.toThrow();
@@ -327,7 +332,7 @@ export function runCommonTests<T>(
     });
 
     it('returns value when a valid value is passed', () => {
-      expect(schema.validate(value)).toBe(value);
+      expect(schema.validate(value)).toEqual(value);
     });
 
     it('errors when undefined is passed', () => {
@@ -338,15 +343,17 @@ export function runCommonTests<T>(
       expect(() => schema.validate(value)).not.toThrow();
     });
 
-    describe('production', () => {
-      it(
-        'doesnt error when undefined is passed',
-        runInProd(() => {
-          expect(() => schema.validate(undefined)).not.toThrow();
-          expect(schema.validate(undefined)).toBe(defaultValue);
-        }),
-      );
-    });
+    if (!skipDefaultAsserts) {
+      describe('production', () => {
+        it(
+          'doesnt error when undefined is passed',
+          runInProd(() => {
+            expect(() => schema.validate(undefined)).not.toThrow();
+            expect(schema.validate(undefined)).toEqual(defaultValue);
+          }),
+        );
+      });
+    }
   });
 
   describe('notRequired()', () => {
@@ -354,9 +361,11 @@ export function runCommonTests<T>(
       schema.notRequired();
     });
 
-    it('returns default value when undefind is passed', () => {
-      expect(schema.validate(undefined)).toBe(defaultValue);
-    });
+    if (!skipDefaultAsserts) {
+      it('returns default value when undefind is passed', () => {
+        expect(schema.validate(undefined)).toEqual(defaultValue);
+      });
+    }
 
     it('doesnt error when undefined is passed', () => {
       expect(() => schema.validate(undefined)).not.toThrow();
@@ -367,7 +376,7 @@ export function runCommonTests<T>(
     });
   });
 
-  if (defaultValue !== null) {
+  if (defaultValue !== null && !skipDefaultAsserts) {
     describe('only()', () => {
       beforeEach(() => {
         schema.only();
