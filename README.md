@@ -40,8 +40,8 @@ optimal(
 
 ## Requirements
 
-- Node 10 (server)
-- IE 11+ (browser)
+- Node 12.17+
+- Edge / Modern browsers
 
 ## Installation
 
