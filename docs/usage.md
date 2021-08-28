@@ -8,19 +8,19 @@ understand its power, lets define a class that accepts an options object in the 
 import optimal, { bool, string } from 'optimal';
 
 interface PluginOptions {
-  debug?: boolean;
-  priority?: 'low' | 'normal' | 'high';
+	debug?: boolean;
+	priority?: 'low' | 'normal' | 'high';
 }
 
 class Plugin {
-  options: Required<PluginOptions>;
+	options: Required<PluginOptions>;
 
-  constructor(options: PluginOptions = {}) {
-    this.options = optimal(options, {
-      debug: bool(),
-      priority: string('low').oneOf(['low', 'normal', 'high']),
-    });
-  }
+	constructor(options: PluginOptions = {}) {
+		this.options = optimal(options, {
+			debug: bool(),
+			priority: string('low').oneOf(['low', 'normal', 'high']),
+		});
+	}
 }
 ```
 
@@ -73,12 +73,12 @@ The following options can be passed to the 3rd argument.
 
 ```ts
 optimal(
-  {},
-  {},
-  {
-    file: 'package.json',
-    name: 'PackageLoader',
-    unknown: true,
-  },
+	{},
+	{},
+	{
+		file: 'package.json',
+		name: 'PackageLoader',
+		unknown: true,
+	},
 );
 ```

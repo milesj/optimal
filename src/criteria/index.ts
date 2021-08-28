@@ -11,15 +11,15 @@ import * as tupleCriteria from './tuples';
 import * as unionCriteria from './unions';
 
 export {
-  arrayCriteria,
-  booleanCriteria,
-  classCriteria,
-  commonCriteria,
-  dateCriteria,
-  numberCriteria,
-  objectCriteria,
-  shapeCriteria,
-  stringCriteria,
-  tupleCriteria,
-  unionCriteria,
+	arrayCriteria,
+	booleanCriteria,
+	classCriteria,
+	commonCriteria,
+	dateCriteria,
+	numberCriteria,
+	objectCriteria,
+	shapeCriteria,
+	stringCriteria,
+	tupleCriteria,
+	unionCriteria,
 };

@@ -12,13 +12,13 @@ and must return the same type. Extremely useful for conditional defaults.
 
 ```ts
 optimal(
-  {},
-  {
-    strict: bool(),
-    level: string('low').oneOf(['low', 'high']),
-    // Factory function
-    level: string((struct) => (struct.strict ? 'high' : 'low')).oneOf(['low', 'high']),
-  },
+	{},
+	{
+		strict: bool(),
+		level: string('low').oneOf(['low', 'high']),
+		// Factory function
+		level: string((struct) => (struct.strict ? 'high' : 'low')).oneOf(['low', 'high']),
+	},
 );
 ```
 
@@ -35,11 +35,11 @@ use `notNullable()`.
 
 ```ts
 optimal(
-  {},
-  {
-    callback: func(handler).notNullable(),
-    settings: object().nullable(),
-  },
+	{},
+	{
+		callback: func(handler).notNullable(),
+		settings: object().nullable(),
+	},
 );
 ```
 
@@ -50,13 +50,13 @@ in the struct. Otherwise it throws an error.
 
 ```ts
 optimal(
-  {
-    // Must be defined
-    name: 'Optimal',
-  },
-  {
-    name: string().required(),
-  },
+	{
+		// Must be defined
+		name: 'Optimal',
+	},
+	{
+		name: string().required(),
+	},
 );
 ```
 
@@ -67,15 +67,15 @@ requires all related fields to be defined.
 
 ```ts
 optimal(
-  {
-    // Both must be defined
-    foo: 'abc',
-    bar: 123,
-  },
-  {
-    foo: string().and('bar'),
-    bar: number().and('foo'),
-  },
+	{
+		// Both must be defined
+		foo: 'abc',
+		bar: 123,
+	},
+	{
+		foo: string().and('bar'),
+		bar: number().and('foo'),
+	},
 );
 ```
 
@@ -83,15 +83,15 @@ When `or()` is used, it requires at minimum 1 of any of the fields to be defined
 
 ```ts
 optimal(
-  {
-    // At minimum 1 defined
-    baz: true,
-  },
-  {
-    foo: string().or('bar', 'baz'),
-    bar: number().or('foo', 'baz'),
-    baz: bool().or('foo', 'bar'),
-  },
+	{
+		// At minimum 1 defined
+		baz: true,
+	},
+	{
+		foo: string().or('bar', 'baz'),
+		bar: number().or('foo', 'baz'),
+		baz: bool().or('foo', 'bar'),
+	},
 );
 ```
 
@@ -99,15 +99,15 @@ When `xor()` is used, it requires only 1 of any of the fields to be defined.
 
 ```ts
 optimal(
-  {
-    // Only 1 defined
-    bar: 123,
-  },
-  {
-    foo: string().xor('bar', 'baz'),
-    bar: number().xor('foo', 'baz'),
-    baz: bool().xor('foo', 'bar'),
-  },
+	{
+		// Only 1 defined
+		bar: 123,
+	},
+	{
+		foo: string().xor('bar', 'baz'),
+		bar: number().xor('foo', 'baz'),
+		baz: bool().xor('foo', 'bar'),
+	},
 );
 ```
 
