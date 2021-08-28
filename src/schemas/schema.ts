@@ -1,13 +1,9 @@
 import { createSchema } from '../createSchema';
 import { commonCriteria, shapeCriteria } from '../criteria';
 import { createObject, invariant, isObject } from '../helpers';
-import { Criteria, Schema } from '../types';
+import { AnySchema, Criteria } from '../types';
 import { func } from './func';
 import { ShapeSchema } from './shape';
-
-// Any is needed for consumers to type easily
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type AnySchema = Schema<any>;
 
 function validateType(): Criteria<unknown> | void {
   return {

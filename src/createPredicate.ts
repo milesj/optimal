@@ -1,6 +1,6 @@
-import { Predicate, Schema } from './types';
+import { AnySchema, InferSchemaType, Predicate } from './types';
 
-export function createPredicate<T>(schema: Schema<T>): Predicate<T> {
+export function createPredicate<T extends AnySchema>(schema: T): Predicate<InferSchemaType<T>> {
   return (value) => {
     try {
       schema.validate(value);

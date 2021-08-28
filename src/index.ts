@@ -3,42 +3,11 @@
  * @license     https://opensource.org/licenses/MIT
  */
 
-import { array } from './schemas/array';
-import { blueprint } from './schemas/blueprint';
-import { bool } from './schemas/bool';
-import { custom } from './schemas/custom';
-import { date } from './schemas/date';
-import { func } from './schemas/func';
-import { instance } from './schemas/instance';
-import { number } from './schemas/number';
-import { object } from './schemas/object';
-import { regex } from './schemas/regex';
-import { schema } from './schemas/schema';
-import { shape } from './schemas/shape';
-import { string } from './schemas/string';
-import { tuple } from './schemas/tuple';
-import { union } from './schemas/union';
-
-export const schemas = {
-  array,
-  blueprint,
-  bool,
-  custom,
-  date,
-  func,
-  instance,
-  number,
-  object,
-  regex,
-  schema,
-  shape,
-  string,
-  tuple,
-  union,
-};
+import * as schemas from './schemas';
 
 export type Schemas = typeof schemas;
 
+export { schemas };
 export * from './createPredicate';
 export * from './createSchema';
 export * from './criteria';

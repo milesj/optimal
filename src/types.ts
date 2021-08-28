@@ -151,3 +151,7 @@ export type InferSchemaType<T> = T extends Schema<infer U> ? U : never;
 export type Blueprint<T extends object> = { [K in keyof T]-?: Schema<T[K]> };
 
 export type Predicate<T> = (value: T | null | undefined) => boolean;
+
+// Any is required for generics to be typed correctly for consumers
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type AnySchema = Schema<any, any>;
