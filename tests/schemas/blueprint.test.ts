@@ -1,4 +1,4 @@
-import { blueprint, ObjectSchema, string, number, AnySchema } from '../../src';
+import { AnySchema, blueprint, number, ObjectSchema, string } from '../../src';
 import { runInProd } from '../helpers';
 
 describe('blueprint()', () => {
@@ -13,7 +13,9 @@ describe('blueprint()', () => {
 
   describe('type()', () => {
     it('returns shape type', () => {
-      expect(blueprint().type()).toBe('object<shape<{ type: function, validate: function }>>');
+      expect(blueprint().type()).toBe(
+        'object<shape<{ schema: function, type: function, validate: function }>>',
+      );
     });
   });
 

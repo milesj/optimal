@@ -1,4 +1,4 @@
-import { ShapeSchema, schema as schemaFunc, AnySchema } from '../../src';
+import { AnySchema, schema as schemaFunc, ShapeSchema } from '../../src';
 import { runInProd } from '../helpers';
 
 describe('schema()', () => {
@@ -10,7 +10,9 @@ describe('schema()', () => {
 
   describe('type()', () => {
     it('returns shape type', () => {
-      expect(schemaFunc().type()).toBe('shape<{ type: function, validate: function }>');
+      expect(schemaFunc().type()).toBe(
+        'shape<{ schema: function, type: function, validate: function }>',
+      );
     });
   });
 
@@ -25,20 +27,27 @@ describe('schema()', () => {
     it('errors if no fields provided', () => {
       expect(() => {
         schema.validate({});
-      }).toThrow('Invalid field "type". Field is required and must be defined.');
+      }).toThrow('Invalid field "schema". Field is required and must be defined.');
+    });
+
+    it('errors if a schema is not a function', () => {
+      expect(() => {
+        // @ts-expect-error Invalid type
+        schema.validate({ schema: 123 });
+      }).toThrow('Invalid field "schema". Must be a function.');
     });
 
     it('errors if a type is not a function', () => {
       expect(() => {
         // @ts-expect-error Invalid type
-        schema.validate({ type: 123 });
+        schema.validate({ schema() {}, type: 123 });
       }).toThrow('Invalid field "type". Must be a function.');
     });
 
     it('errors if a validate is not a function', () => {
       expect(() => {
         // @ts-expect-error Invalid type
-        schema.validate({ type() {}, validate: 123 });
+        schema.validate({ schema() {}, type() {}, validate: 123 });
       }).toThrow('Invalid field "validate". Must be a function.');
     });
 

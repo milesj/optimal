@@ -88,6 +88,9 @@ export function createSchema<S extends Schema<any>, T = InferSchemaType<S>>({
   };
 
   const schema: Schema<T> = {
+    schema() {
+      return type;
+    },
     type() {
       return state.type;
     },

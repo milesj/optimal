@@ -22,6 +22,7 @@ export function schema(): ShapeSchema<AnySchema> {
     type: 'shape',
     validateType,
   }).of({
+    schema: func<AnySchema['schema']>().notNullable().required(),
     type: func<AnySchema['type']>().notNullable().required(),
     validate: func<AnySchema['validate']>().notNullable().required(),
   });

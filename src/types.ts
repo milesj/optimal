@@ -120,6 +120,7 @@ export interface StringCriterias<S> {
 // SCHEMAS
 
 export interface Schema<Output, Input = Output> {
+  schema: () => string;
   type: () => string;
   validate: (
     value: Input | null | undefined,

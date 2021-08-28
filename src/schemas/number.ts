@@ -36,11 +36,11 @@ function validateType(): Criteria<number> | void {
   };
 }
 
-export function number(defaultValue: number = 0): NumberSchema<number> {
+export function number<T extends number>(defaultValue?: T): NumberSchema<T> {
   return createSchema({
     cast,
     criteria: { ...commonCriteria, ...numberCriteria },
-    defaultValue,
+    defaultValue: defaultValue || 0,
     type: 'number',
     validateType,
   });

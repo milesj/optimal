@@ -12,7 +12,7 @@ export type InferUnionItems<T> =
     ? Schema<number>
     : // We also shouldnt allow "null" schemas, so filter out
     T extends null
-    ? never
+    ? Schema<T | null>
     : // Otherwise everything else should be a schema
     T extends unknown
     ? Schema<T>
@@ -20,11 +20,11 @@ export type InferUnionItems<T> =
 
 function typeOf(value: unknown): string {
   if (Array.isArray(value)) {
-    return value.every((item) => typeof item === typeof value[0]) ? 'array' : 'union';
+    return 'array/tuple';
   }
 
   if (isObject(value)) {
-    return value.constructor === Object ? 'object' : 'instance';
+    return value.constructor === Object ? 'object/shape' : 'class';
   }
 
   return typeof value;
@@ -52,11 +52,13 @@ export function of<T = unknown>(
       let nextValue: unknown = value;
 
       if (__DEV__) {
-        const keys = schemas.map((schema) => schema.type()).join(', ');
+        const allowedValues = schemas.map((schema) => schema.type()).join(', ');
         const valueType = typeOf(value);
         const errors = new Set();
+
+        // eslint-disable-next-line complexity
         const passed = schemas.some((schema) => {
-          const schemaType = schema.type();
+          const schemaType = schema.schema();
 
           if (schemaType === 'union') {
             invariant(false, 'Nested unions are not supported.', path);
@@ -65,8 +67,10 @@ export function of<T = unknown>(
           try {
             if (
               valueType === schemaType ||
-              (valueType === 'object' && schemaType === 'shape') ||
-              (valueType === 'array' && schemaType === 'tuple') ||
+              (valueType === 'object/shape' && schemaType === 'object') ||
+              (valueType === 'object/shape' && schemaType === 'shape') ||
+              (valueType === 'array/tuple' && schemaType === 'array') ||
+              (valueType === 'array/tuple' && schemaType === 'tuple') ||
               schemaType === 'custom'
             ) {
               nextValue = schema.validate(value, path, currentObject, rootObject);
@@ -82,12 +86,16 @@ export function of<T = unknown>(
           return false;
         });
 
-        if (!passed && errors.size > 0) {
-          let message = `Value must be one of: ${keys}. Received ${valueType} with the following invalidations:\n`;
+        if (!passed) {
+          let message = `Value must be one of: ${allowedValues}.`;
 
-          errors.forEach((error) => {
-            message += error;
-          });
+          if (errors.size > 0) {
+            message += ` Received ${valueType} with the following invalidations:\n`;
+
+            errors.forEach((error) => {
+              message += error;
+            });
+          }
 
           invariant(false, message.trim(), path);
         }

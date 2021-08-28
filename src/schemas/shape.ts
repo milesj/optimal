@@ -12,7 +12,7 @@ import {
 
 export interface ShapeSchema<T>
   extends Schema<T, Partial<T>>,
-    ShapeCriterias<T>,
+    ShapeCriterias<ShapeSchema<T>>,
     CommonCriterias<ShapeSchema<T>> {
   never: () => ShapeSchema<never>;
   notNullable: () => ShapeSchema<NonNullable<T>>;
