@@ -17,6 +17,7 @@ import {
   date,
   regex,
   Blueprint,
+  UnknownFunction,
 } from '../src/index';
 
 type BasicBlueprint = Blueprint<{
@@ -267,22 +268,28 @@ const shapesInferred = optimal(
   },
 );
 
+type UnionType = string | boolean | number;
+type ComplexUnionType =
+  | Record<string, string>[]
+  | Record<string, UnknownFunction>
+  | { a: boolean; b: Foo | null };
+
 const unions: {
-  a: string | boolean | number;
-  an: string | boolean | number | null;
-  ac: Record<string, string>[] | Record<string, Function> | { a: boolean; b: Foo | null } | null;
+  a: UnionType;
+  an: UnionType | null;
+  ac: ComplexUnionType | null;
 } = optimal(
   {},
   {
-    a: union([string(), bool(), number()], ''),
-    an: union([string(), bool(), number()], '').nullable(),
-    ac: union(
+    a: union<UnionType>([string(), bool(), number()], ''),
+    an: union<UnionType | null>([string(), bool(), number()], '').nullable(),
+    ac: union<ComplexUnionType | null>(
       [
-        array(object(string())),
-        object(func()),
+        array().of(object().of(string())),
+        object().of(func()),
         shape({
           a: bool(),
-          b: instance(Foo),
+          b: instance().of(Foo),
         }),
       ],
       null,
@@ -293,17 +300,15 @@ const unions: {
 const unionsInferred = optimal(
   {},
   {
-    a: union<string | boolean | number>([string(), bool(), number()], ''),
-    an: union<string | boolean | number>([string(), bool(), number()], '').nullable(),
-    ac: union<
-      Record<string, string>[] | Record<string, Function> | { a: boolean; b: Foo | null } | null
-    >(
+    a: union<UnionType>([string(), bool(), number()], ''),
+    an: union<UnionType>([string(), bool(), number()], '').nullable(),
+    ac: union<ComplexUnionType | null>(
       [
-        array(object(string())),
-        object(func()),
+        array().of(object().of(string())),
+        object().of(func()),
         shape({
           a: bool(),
-          b: instance(Foo),
+          b: instance().of(Foo),
         }),
       ],
       null,

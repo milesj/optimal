@@ -3,7 +3,7 @@ import { runInProd } from '../helpers';
 import { runCommonTests } from './runCommonTests';
 
 describe('func()', () => {
-  let schema: FunctionSchema<UnknownFunction | null>;
+  let schema: FunctionSchema<UnknownFunction>;
   const noop = () => {};
 
   beforeEach(() => {

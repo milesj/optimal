@@ -1,6 +1,18 @@
 import { invariant, isObject, isSchema } from '../helpers';
 import { Criteria, Schema, SchemaState } from '../types';
 
+export type InferUnionItems<T> =
+  // We need to handle boolean explicitly, otherwise it distributes as "false" and "true" separately
+  T extends boolean
+    ? Schema<boolean>
+    : // We also shouldnt allow "null" schemas, so filter out
+    T extends null
+    ? never
+    : // Otherwise everything else should be a schema
+    T extends unknown
+    ? Schema<T>
+    : never;
+
 function typeOf(value: unknown): string {
   if (Array.isArray(value)) {
     return value.every((item) => typeof item === typeof value[0]) ? 'array' : 'union';
