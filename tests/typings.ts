@@ -1,9 +1,10 @@
 /* eslint-disable  */
 
-import optimal, {
+import {
+  optimal,
   array,
   bool,
-  predicate,
+  schema,
   blueprint,
   func,
   number,
@@ -15,8 +16,8 @@ import optimal, {
   union,
   date,
   regex,
-  ObjectOf,
   Blueprint,
+  UnknownFunction,
 } from '../src/index';
 
 type BasicBlueprint = Blueprint<{
@@ -106,9 +107,9 @@ const other: {
     c: custom(() => {}, ''),
     f: func(),
     i: instance(),
-    ic: instance(Foo),
-    ir: instance(Foo).required(),
-    in: instance(Foo).notNullable(),
+    ic: instance().of(Foo),
+    ir: instance().of(Foo).required(),
+    in: instance().of(Foo).notNullable(),
     d: date(),
     r: regex(),
   },
@@ -120,9 +121,9 @@ const otherInferred = optimal(
     c: custom(() => {}, ''),
     f: func(),
     i: instance(),
-    ic: instance(Foo),
-    ir: instance(Foo).required(),
-    in: instance(Foo).notNullable(),
+    ic: instance().of(Foo),
+    ir: instance().of(Foo).required(),
+    in: instance().of(Foo).notNullable(),
     d: date(),
     r: regex(),
   },
@@ -163,10 +164,10 @@ const arrays: {
   {},
   {
     a: array(),
-    aa: array(array(string())),
-    ac: array(string()),
-    an: array(number().nullable()).nullable(),
-    ad: array(number(), [1, 2, 3]),
+    aa: array().of(array().of(string())),
+    ac: array().of(string()),
+    an: array().nullable().of(number().nullable()),
+    ad: array([1, 2, 3]).of(number()),
   },
 );
 
@@ -174,10 +175,10 @@ const arraysInferred = optimal(
   {},
   {
     a: array(),
-    aa: array(array(string())),
-    ac: array(string()),
-    an: array(number().nullable()).nullable(),
-    ad: array(number(), [1, 2, 3]),
+    aa: array().of(array().of(string())),
+    ac: array().of(string()),
+    an: array().of(number().nullable()).nullable(),
+    ad: array([1, 2, 3]).of(number()),
   },
 );
 
@@ -191,10 +192,10 @@ const objects: {
   {},
   {
     o: object(),
-    oo: object(object(number())),
-    oc: object(number()),
-    on: object(number().nullable()).nullable(),
-    od: object(string(), { foo: 'bar' }),
+    oo: object().of(object().of(number())),
+    oc: object().of(number()),
+    on: object().of(number().nullable()).nullable(),
+    od: object({ foo: 'bar' }).of(string()),
   },
 );
 
@@ -202,10 +203,10 @@ const objectsInferred = optimal(
   {},
   {
     o: object(),
-    oo: object(object(number())),
-    oc: object(number()),
-    on: object(number().nullable()).nullable(),
-    od: object(string(), { foo: 'bar' }),
+    oo: object().of(object(number())),
+    oc: object().of(number()),
+    on: object().of(number().nullable()).nullable(),
+    od: object({ foo: 'bar' }).of(string()),
   },
 );
 
@@ -267,22 +268,28 @@ const shapesInferred = optimal(
   },
 );
 
+type UnionType = string | boolean | number;
+type ComplexUnionType =
+  | Record<string, string>[]
+  | Record<string, UnknownFunction>
+  | { a: boolean; b: Foo | null };
+
 const unions: {
-  a: string | boolean | number;
-  an: string | boolean | number | null;
-  ac: ObjectOf<string>[] | ObjectOf<Function> | { a: boolean; b: Foo | null } | null;
+  a: UnionType;
+  an: UnionType | null;
+  ac: ComplexUnionType | null;
 } = optimal(
   {},
   {
-    a: union([string(), bool(), number()], ''),
-    an: union([string(), bool(), number()], '').nullable(),
-    ac: union(
+    a: union<UnionType>([string(), bool(), number()], ''),
+    an: union<UnionType | null>([string(), bool(), number()], '').nullable(),
+    ac: union<ComplexUnionType | null>(
       [
-        array(object(string())),
-        object(func()),
+        array().of(object().of(string())),
+        object().of(func()),
         shape({
           a: bool(),
-          b: instance(Foo),
+          b: instance().of(Foo),
         }),
       ],
       null,
@@ -293,15 +300,15 @@ const unions: {
 const unionsInferred = optimal(
   {},
   {
-    a: union<string | boolean | number>([string(), bool(), number()], ''),
-    an: union<string | boolean | number>([string(), bool(), number()], '').nullable(),
-    ac: union<ObjectOf<string>[] | ObjectOf<Function> | { a: boolean; b: Foo | null } | null>(
+    a: union<UnionType>([string(), bool(), number()], ''),
+    an: union<UnionType>([string(), bool(), number()], '').nullable(),
+    ac: union<ComplexUnionType | null>(
       [
-        array(object(string())),
-        object(func()),
+        array().of(object().of(string())),
+        object().of(func()),
         shape({
           a: bool(),
-          b: instance(Foo),
+          b: instance().of(Foo),
         }),
       ],
       null,
@@ -318,7 +325,7 @@ const bp = optimal(
   },
   {
     a: blueprint(),
-    b: predicate(),
+    b: schema(),
   },
 );
 
@@ -378,13 +385,13 @@ interface Mapped {
 const mapped: Mapped = optimal(
   {},
   {
-    object: object(string()),
+    object: object().of(string()),
   },
 );
 
 const mappedInferred = optimal(
   {},
   {
-    object: object<string, Keys>(string()),
+    object: object<string, Keys>().of(string()),
   },
 );

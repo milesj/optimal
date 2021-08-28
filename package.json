@@ -2,21 +2,22 @@
   "name": "optimal",
   "version": "4.3.0",
   "description": "A system for building and validating defined object structures.",
-  "main": "./lib/index.js",
+  "main": "./lib/node/index.js",
+  "browser": "./lib/browser/index.js",
   "module": "./esm/index.js",
-  "types": "./lib/index.d.ts",
+  "types": "./dts/index.d.ts",
   "scripts": {
     "prepare": "beemo create-config --silent",
-    "build": "beemo create-config babel --esm --silent && rollup --config && beemo typescript --emitDeclarationOnly",
+    "build": "packemon build --addEngines",
+    "pack": "NODE_ENV=production packemon pack --addEngines --declaration=standard",
+    "check": "yarn run type && yarn run test && yarn run lint",
+    "clean": "packemon clean",
     "coverage": "yarn run jest --coverage",
-    "eslint": "beemo eslint",
-    "jest": "beemo jest",
-    "prettier": "beemo prettier",
-    "prerelease": "yarn test && yarn run build",
+    "lint": "beemo eslint --cache --fix",
+    "format": "beemo prettier",
+    "prerelease": "yarn run pack && yarn run ci",
     "release": "npx np --yolo --no-yarn",
-    "pretest": "yarn run type",
-    "test": "yarn run jest",
-    "posttest": "yarn run eslint",
+    "test": "beemo jest",
     "type": "beemo typescript --noEmit"
   },
   "repository": {
@@ -39,42 +40,61 @@
     "url": "http://milesj.me"
   },
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/milesj/optimal/issues"
-  },
-  "homepage": "https://github.com/milesj/optimal#readme",
+  "files": [
+    "esm/**/*.{js,map}",
+    "lib/**/*.{js,map}",
+    "src/**/*.{ts,tsx,json}"
+  ],
   "engines": {
-    "node": ">=10.10.0"
+    "node": ">=12.17.0",
+    "npm": ">=6.13.0"
+  },
+  "resolutions": {
+    "typescript": "~4.3.0"
   },
   "devDependencies": {
     "@milesj/build-tools": "^2.17.1",
-    "@types/node": "^14.14.31",
+    "@types/node": "^15.6.1",
     "conventional-changelog-beemo": "^2.1.0",
-    "rollup": "^2.39.0",
-    "rollup-plugin-babel": "^4.4.0",
-    "rollup-plugin-node-resolve": "^5.2.0"
+    "packemon": "^1.4.1"
   },
   "beemo": {
     "module": "@milesj/build-tools",
     "drivers": [
-      "babel",
+      {
+        "driver": "babel",
+        "strategy": "none"
+      },
       "eslint",
       "jest",
       "prettier",
-      "typescript"
+      {
+        "driver": "typescript",
+        "buildFolder": "dts",
+        "declarationOnly": true
+      }
     ],
     "eslint": {
       "rules": {
+        "consistent-return": "off",
         "default-param-last": "off",
         "no-param-reassign": "off"
       }
     }
   },
-  "browserslist": [
-    "ie 11"
-  ],
   "funding": {
     "type": "ko-fi",
     "url": "https://ko-fi.com/milesjohnson"
+  },
+  "packemon": {
+    "bundle": true,
+    "format": [
+      "lib",
+      "esm"
+    ],
+    "platform": [
+      "browser",
+      "node"
+    ]
   }
 }
