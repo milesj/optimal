@@ -7723,7 +7723,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"optimal@^4.3.0, optimal@workspace:.":
+"optimal@npm:^4.3.0":
+  version: 4.3.0
+  resolution: "optimal@npm:4.3.0"
+  checksum: 7cc1445f368a53cdc51c7b1ef5cb25084887d62f9ecf9e9dcc8b82d12f2eade55a484b73aaa93daf2fd47a6db6f854b6cf0ec06f6905091facc0fcfccdcc2eeb
+  languageName: node
+  linkType: hard
+
+"optimal@workspace:.":
   version: 0.0.0-use.local
   resolution: "optimal@workspace:."
   dependencies:
