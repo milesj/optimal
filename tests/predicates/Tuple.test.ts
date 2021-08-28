@@ -26,43 +26,6 @@ describe('TuplePredicate', () => {
     ]);
   });
 
-  it('errors if a non-array is not passed', () => {
-    expect(() => {
-      // @ts-expect-error
-      union('foo', []);
-    }).toThrowErrorMatchingSnapshot();
-  });
-
-  it('errors if an empty array is passed', () => {
-    expect(() => {
-      tuple(
-        // @ts-expect-error
-        [],
-      );
-    }).toThrowErrorMatchingSnapshot();
-  });
-
-  it('errors if an array with non-predicates is passed', () => {
-    expect(() => {
-      tuple([
-        // @ts-expect-error
-        123,
-      ]);
-    }).toThrowErrorMatchingSnapshot();
-  });
-
-  it('doesnt error if a predicate array is passed', () => {
-    expect(() => {
-      tuple<[string]>([string()]);
-    }).not.toThrow();
-  });
-
-  describe('default()', () => {
-    it('returns the default value', () => {
-      expect(predicate.default()).toEqual([[], true, 1, {}, 'foo']);
-    });
-  });
-
   describe('run()', () => {
     it('returns an array of default values if undefined provided', () => {
       expect(runChecks(predicate)).toEqual([[], true, 1, {}, 'foo']);

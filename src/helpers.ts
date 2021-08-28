@@ -69,10 +69,7 @@ export function invariant(condition: boolean, message: string, path: string = ''
       return;
     }
 
-    // TODO no errorPrefix
-    const prefix = path ? `Invalid field "${path}".` : '';
-
-    throw new Error(`${prefix} ${message}`.trim());
+    throw new Error(`${path ? `Invalid field "${path}".` : ''} ${message}`.trim());
   }
 }
 

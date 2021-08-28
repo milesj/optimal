@@ -28,7 +28,7 @@ export function of<T extends unknown[]>(
     );
   }
 
-  state.type = `[${itemsSchemas.map((item) => item.type()).join(', ')}]`;
+  state.type = `tuple<${itemsSchemas.map((item) => item.type()).join(', ')}>`;
 
   return {
     skipIfNull: true,

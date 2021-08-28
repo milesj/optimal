@@ -2,7 +2,7 @@ import { createSchema } from '../createSchema';
 import { commonCriteria, tupleCriteria } from '../criteria';
 import { InferTupleItems } from '../criteria/tuples';
 import { createArray, invariant } from '../helpers';
-import { CommonCriterias, InferNullable, Schema } from '../types';
+import { CommonCriterias, Criteria, InferNullable, Schema } from '../types';
 
 export interface TupleSchema<T> extends Schema<T>, CommonCriterias<TupleSchema<T>> {
   never: () => TupleSchema<never>;
@@ -11,15 +11,21 @@ export interface TupleSchema<T> extends Schema<T>, CommonCriterias<TupleSchema<T
   of: <I extends unknown[]>(schemas: InferTupleItems<I>) => TupleSchema<InferNullable<T, I>>;
 }
 
-function validateType(value: unknown, path: string) {
-  invariant(Array.isArray(value), 'Must be a tuple.', path);
+function validateType(): Criteria<unknown[]> | void {
+  return {
+    skipIfNull: true,
+    validate(value, path) {
+      invariant(Array.isArray(value), 'Must be a tuple.', path);
+    },
+  };
 }
 
 export function tuple<T extends unknown[] = unknown[]>(
   schemas: InferTupleItems<T>,
   defaultValue?: T,
 ): TupleSchema<T> {
-  return createSchema({
+  return createSchema<TupleSchema<T>>({
+    // @ts-expect-error Ignore this, it's safe
     cast: createArray,
     criteria: { ...commonCriteria, ...tupleCriteria },
     defaultValue,
