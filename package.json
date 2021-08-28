@@ -41,6 +41,7 @@
   },
   "license": "MIT",
   "files": [
+    "dts/**/*.d.ts",
     "esm/**/*.{js,map}",
     "lib/**/*.{js,map}",
     "src/**/*.{ts,tsx,json}"
