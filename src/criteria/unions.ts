@@ -5,6 +5,11 @@ export type InferUnionItems<T> =
   // We need to handle boolean explicitly, otherwise it distributes as "false" and "true" separately
   T extends boolean
     ? Schema<boolean>
+    : // We need to remove any number and string literals
+    T extends string
+    ? Schema<string>
+    : T extends number
+    ? Schema<number>
     : // We also shouldnt allow "null" schemas, so filter out
     T extends null
     ? never
@@ -35,7 +40,7 @@ export function of<T = unknown>(
   if (__DEV__) {
     invariant(
       Array.isArray(schemas) && schemas.length > 0 && schemas.every(isSchema),
-      'A non-empty array of blueprints are required for a union.',
+      'A non-empty array of schemas are required for a union.',
     );
   }
 
