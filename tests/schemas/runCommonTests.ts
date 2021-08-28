@@ -10,7 +10,7 @@ interface TestCriterias<S> extends CommonCriterias<S> {
 }
 
 export function runCommonTests<T>(
-  factory: (initialValue?: T) => Schema<T | null> & CommonCriterias<Schema<T | null>>,
+  factory: (initialValue?: T) => CommonCriterias<Schema<T | null>> & Schema<T | null>,
   value: T | null = null,
   {
     defaultValue,

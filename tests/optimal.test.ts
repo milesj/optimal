@@ -1,13 +1,13 @@
 /* eslint-disable react/forbid-prop-types */
 
-import optimal, {
+import {
   array,
   bool,
   func,
   instance,
   number,
   object,
-  ObjectOf,
+  optimal,
   regex,
   shape,
   string,
@@ -19,14 +19,14 @@ class Plugin {}
 
 describe('Optimal', () => {
   type PrimitiveType = boolean | number | string;
-  type ConditionType = Function | ObjectOf<RegExp> | RegExp | RegExp[] | string;
+  type ConditionType = Function | Record<string, RegExp> | RegExp | RegExp[] | string;
 
   // This blueprint is based on Webpack's configuration: https://webpack.js.org/configuration/
   // Webpack provides a pretty robust example of how to use this library.
   const primitive = union<PrimitiveType>([string(), number(), bool()], false);
 
   const condition = union<ConditionType>(
-    [string(), func(), regex(), array(regex()), object(regex())],
+    [string(), func(), regex(), array().of(regex()), object().of(regex())],
     '',
   );
 
@@ -35,9 +35,9 @@ describe('Optimal', () => {
     exclude: condition,
     include: condition,
     issuer: condition,
-    parser: object(bool()),
+    parser: object().of(bool()),
     resource: condition,
-    use: array(
+    use: array().of(
       union<object | string>(
         [
           string(),
@@ -51,7 +51,7 @@ describe('Optimal', () => {
     ),
   });
 
-  type EntryType = Function | ObjectOf<string[] | string> | string[] | string;
+  type EntryType = Function | Record<string, string[] | string> | string[] | string;
   type CrossOriginType = 'anonymous' | 'use-credentials';
   type HashType = 'md5' | 'sha256' | 'sha512';
   type NoParseType = Function | RegExp | RegExp[];
@@ -68,7 +68,12 @@ describe('Optimal', () => {
   const blueprint = {
     context: string(process.cwd()),
     entry: union<EntryType>(
-      [string(), array(string()), object(union([string(), array(string())], '')), func()],
+      [
+        string(),
+        array().of(string()),
+        object().of(union([string(), array().of(string())], '')),
+        func(),
+      ],
       [],
     ).nullable(),
     output: shape({
@@ -87,16 +92,16 @@ describe('Optimal', () => {
       publicPath: string(),
     }),
     module: shape({
-      noParse: union<NoParseType | null>([regex(), array(regex()), func()], null).nullable(),
-      rules: array(rule),
+      noParse: union<NoParseType | null>([regex(), array().of(regex()), func()], null).nullable(),
+      rules: array().of(rule),
     }),
     resolve: shape({
-      alias: object(string()),
-      extensions: array(string()),
-      plugins: array(instance(Plugin)),
-      resolveLoader: object(array(string())),
+      alias: object().of(string()),
+      extensions: array().of(string()),
+      plugins: array().of(instance().of(Plugin)),
+      resolveLoader: object().of(array().of(string())),
     }),
-    plugins: array(instance(Plugin)),
+    plugins: array().of(instance().of(Plugin)),
     target: string('web').oneOf<TargetType>([
       'async-node',
       'electron-main',
@@ -107,7 +112,7 @@ describe('Optimal', () => {
       'webworker',
     ]),
     watch: bool(false),
-    node: object(
+    node: object().of(
       union<NodeType | boolean>(
         [bool(), string('mock').oneOf<NodeType>(['mock', 'empty'])],
         false,
@@ -118,31 +123,41 @@ describe('Optimal', () => {
   it('errors if a non-object is passed', () => {
     expect(() => {
       optimal([], {});
-    }).toThrowErrorMatchingSnapshot();
+    }).toThrowErrorMatchingInlineSnapshot(
+      `"A non-empty object of schemas are required for a shape."`,
+    );
 
     expect(() => {
       // @ts-expect-error
       optimal(123, {});
-    }).toThrowErrorMatchingSnapshot();
+    }).toThrowErrorMatchingInlineSnapshot(
+      `"A non-empty object of schemas are required for a shape."`,
+    );
 
     expect(() => {
       // @ts-expect-error
       optimal('foo', {});
-    }).toThrowErrorMatchingSnapshot();
+    }).toThrowErrorMatchingInlineSnapshot(
+      `"A non-empty object of schemas are required for a shape."`,
+    );
 
     expect(() => {
       optimal(() => {}, {});
-    }).toThrowErrorMatchingSnapshot();
+    }).toThrowErrorMatchingInlineSnapshot(
+      `"A non-empty object of schemas are required for a shape."`,
+    );
   });
 
   it('errors if a non-object is passed as a blueprint', () => {
     expect(() => {
       // @ts-expect-error
       optimal({}, 123);
-    }).toThrowErrorMatchingSnapshot();
+    }).toThrowErrorMatchingInlineSnapshot(
+      `"A non-empty object of schemas are required for a shape."`,
+    );
   });
 
-  it('errors if a non-predicate is passed within the blueprint', () => {
+  it('errors if a non-schema is passed within the blueprint', () => {
     expect(() => {
       optimal(
         {},
@@ -151,14 +166,16 @@ describe('Optimal', () => {
           foo: 123,
         },
       );
-    }).toThrowErrorMatchingSnapshot();
+    }).toThrowErrorMatchingInlineSnapshot(
+      `"A non-empty object of schemas are required for a shape."`,
+    );
   });
 
   it('errors if a non-object config is passed', () => {
     expect(() => {
       // @ts-expect-error
       optimal({}, blueprint, 123);
-    }).toThrowErrorMatchingSnapshot();
+    }).toThrowErrorMatchingInlineSnapshot(`"Optimal options must be a plain object."`);
   });
 
   it('sets object keys as class properties', () => {
@@ -228,7 +245,9 @@ describe('Optimal', () => {
         },
         blueprint,
       );
-    }).toThrowErrorMatchingSnapshot();
+    }).toThrowErrorMatchingInlineSnapshot(
+      `"Invalid field \\"entry\\". Value must be one of: string, array<string>, object<string | array<string>>, function."`,
+    );
   });
 
   it('runs checks for nested level values', () => {
@@ -241,7 +260,10 @@ describe('Optimal', () => {
         },
         blueprint,
       );
-    }).toThrowErrorMatchingSnapshot();
+    }).toThrowErrorMatchingInlineSnapshot(`
+      "Invalid field \\"output.crossOriginLoading\\". Value must be one of: boolean, string. Received string with the following invalidations:
+       - Invalid field \\"output.crossOriginLoading\\". String must be one of: anonymous, use-credentials"
+    `);
   });
 
   it('includes a custom `name` in the error message', () => {
@@ -255,12 +277,14 @@ describe('Optimal', () => {
           name: 'FooBar',
         },
       );
-    }).toThrowErrorMatchingSnapshot();
+    }).toThrowErrorMatchingInlineSnapshot(
+      `"Invalid field \\"entry\\". Value must be one of: string, array<string>, object<string | array<string>>, function."`,
+    );
   });
 
   describe('production', () => {
     it(
-      'sets and returns correct propertes',
+      'sets and returns correct properties',
       runInProd(() => {
         const options = optimal(
           {
@@ -318,7 +342,7 @@ describe('Optimal', () => {
           },
           blueprint,
         );
-      }).toThrowErrorMatchingSnapshot();
+      }).toThrowErrorMatchingInlineSnapshot(`"Unknown fields: foo, bar."`);
     });
 
     it('doesnt error for unknown fields if `unknown` is true', () => {
@@ -384,7 +408,7 @@ describe('Optimal', () => {
           },
           and,
         );
-      }).toThrowErrorMatchingSnapshot();
+      }).toThrowErrorMatchingInlineSnapshot(`"All of these fields must be defined: foo, bar, baz"`);
 
       expect(() => {
         optimal(
@@ -394,7 +418,7 @@ describe('Optimal', () => {
           },
           and,
         );
-      }).toThrowErrorMatchingSnapshot();
+      }).toThrowErrorMatchingInlineSnapshot(`"All of these fields must be defined: foo, bar, baz"`);
 
       expect(() => {
         optimal(
@@ -404,7 +428,7 @@ describe('Optimal', () => {
           },
           and,
         );
-      }).toThrowErrorMatchingSnapshot();
+      }).toThrowErrorMatchingInlineSnapshot(`"All of these fields must be defined: foo, bar, baz"`);
 
       expect(() => {
         optimal(
@@ -427,7 +451,9 @@ describe('Optimal', () => {
 
       expect(() => {
         optimal({}, or);
-      }).toThrowErrorMatchingSnapshot();
+      }).toThrowErrorMatchingInlineSnapshot(
+        `"At least one of these fields must be defined: foo, bar, baz"`,
+      );
 
       expect(() => {
         optimal(
@@ -477,7 +503,9 @@ describe('Optimal', () => {
 
       expect(() => {
         optimal({}, xor);
-      }).toThrowErrorMatchingSnapshot();
+      }).toThrowErrorMatchingInlineSnapshot(
+        `"Only one of these fields may be defined: foo, bar, baz"`,
+      );
 
       expect(() => {
         optimal(
@@ -515,7 +543,9 @@ describe('Optimal', () => {
           },
           xor,
         );
-      }).toThrowErrorMatchingSnapshot();
+      }).toThrowErrorMatchingInlineSnapshot(
+        `"Only one of these fields may be defined: foo, bar, baz"`,
+      );
     });
   });
 });

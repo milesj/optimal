@@ -1,4 +1,4 @@
-import { DateSchema, date } from '../../src';
+import { date,DateSchema } from '../../src';
 import { runInProd } from '../helpers';
 import { runCommonTests } from './runCommonTests';
 

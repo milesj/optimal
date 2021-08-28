@@ -1,4 +1,4 @@
-import { NumberSchema, number } from '../../src';
+import { number,NumberSchema } from '../../src';
 import { runInProd } from '../helpers';
 import { runCommonTests } from './runCommonTests';
 

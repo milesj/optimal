@@ -36,7 +36,7 @@ function validateType(): Criteria<string> | void {
   };
 }
 
-export function string<T extends string = string>(defaultValue?: T): StringSchema<T> {
+export function string<T extends string = string>(defaultValue?: string): StringSchema<T> {
   return createSchema({
     cast,
     criteria: { ...commonCriteria, ...stringCriteria },
