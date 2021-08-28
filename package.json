@@ -1,7 +1,7 @@
 {
   "name": "optimal",
   "version": "5.0.0-alpha.0",
-  "description": "A system for building and validating defined object structures.",
+  "description": "A system for building and validating defined object structures with schemas.",
   "main": "./lib/node/index.js",
   "browser": "./lib/browser/index.js",
   "module": "./esm/index.js",
@@ -12,11 +12,10 @@
     "pack": "NODE_ENV=production packemon pack --addEngines --declaration=standard",
     "check": "yarn run type && yarn run test && yarn run lint",
     "clean": "packemon clean",
-    "coverage": "yarn run jest --coverage",
+    "coverage": "yarn run test --coverage",
     "lint": "beemo eslint",
     "format": "beemo prettier",
-    "prerelease": "yarn run pack && yarn run ci",
-    "release": "npx np --yolo --no-yarn",
+    "release": "yarn run pack && yarn run ci && npx np --yolo --no-yarn",
     "test": "beemo jest",
     "type": "beemo typescript --noEmit"
   },
@@ -51,6 +50,8 @@
     "npm": ">=6.13.0"
   },
   "devDependencies": {
+    "@beemo/cli": "^2.0.1",
+    "@beemo/core": "^2.0.2",
     "@beemo/dev": "^1.5.0",
     "@types/node": "^15.6.1",
     "packemon": "^1.4.1"

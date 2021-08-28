@@ -23,8 +23,8 @@ optimal(
   { name: 'Optimal' },
   {
     name: string().notEmpty(),
-    include: array(string()),
-    exclude: array(string()),
+    include: array().of(string()),
+    exclude: array().of(string()),
     maxSize: number(10000).gte(0),
   },
 );
