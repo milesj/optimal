@@ -34,11 +34,11 @@ the 2nd argument. Array predicate supports the following additional method:
 
 ```ts
 optimal(
-  {},
-  {
-    items: array(),
-    extensions: array(string(), ['js']).notEmpty(),
-  },
+	{},
+	{
+		items: array(),
+		extensions: array(string(), ['js']).notEmpty(),
+	},
 );
 ```
 
@@ -49,15 +49,15 @@ maps properties to predicate instances.
 
 ```ts
 optimal(
-  {
-    settings: {
-      name: string(),
-      type: number(),
-    },
-  },
-  {
-    settings: blueprint(),
-  },
+	{
+		settings: {
+			name: string(),
+			type: number(),
+		},
+	},
+	{
+		settings: blueprint(),
+	},
 );
 ```
 
@@ -74,11 +74,11 @@ be customized with the 1st argument. Boolean predicate supports the following ad
 
 ```ts
 optimal(
-  {},
-  {
-    watch: bool(), // false
-    debug: bool(true),
-  },
+	{},
+	{
+		watch: bool(), // false
+		debug: bool(true),
+	},
 );
 ```
 
@@ -90,14 +90,14 @@ the struct object. The 2nd argument is the default value, which must be explicit
 
 ```ts
 optimal(
-  {},
-  {
-    path: custom((value) => {
-      if (!path.isAbsolute(value)) {
-        throw new Error('Path must be absolute.');
-      }
-    }, process.cwd()),
-  },
+	{},
+	{
+		path: custom((value) => {
+			if (!path.isAbsolute(value)) {
+				throw new Error('Path must be absolute.');
+			}
+		}, process.cwd()),
+	},
 );
 ```
 
@@ -110,10 +110,10 @@ The `date()` predicate verifies a value is an instance of `Date`.
 
 ```ts
 optimal(
-  {},
-  {
-    timestamp: date(),
-  },
+	{},
+	{
+		timestamp: date(),
+	},
 );
 ```
 
@@ -124,11 +124,11 @@ but can be customized with the 1st argument.
 
 ```ts
 optimal(
-  {},
-  {
-    callback: func(),
-    click: func(onClick),
-  },
+	{},
+	{
+		callback: func(),
+		click: func(onClick),
+	},
 );
 ```
 
@@ -142,11 +142,11 @@ class (passed as the 1st argument), or simply an instance of any class (no argum
 
 ```ts
 optimal(
-  {},
-  {
-    plugin: instance(Plugin),
-    instance: instance(),
-  },
+	{},
+	{
+		plugin: instance(Plugin),
+		instance: instance(),
+	},
 );
 ```
 
@@ -175,11 +175,11 @@ customized with the 1st argument. Number predicate supports the following additi
 
 ```ts
 optimal(
-  {},
-  {
-    maxSize: number(10000).lte(10000),
-    minSize: number().gte(0), // 0
-  },
+	{},
+	{
+		maxSize: number(10000).lte(10000),
+		minSize: number().gte(0), // 0
+	},
 );
 ```
 
@@ -195,11 +195,11 @@ following additional method:
 
 ```ts
 optimal(
-  {},
-  {
-    settings: object().notEmpty(),
-    flags: object(bool()),
-  },
+	{},
+	{
+		settings: object().notEmpty(),
+		flags: object(bool()),
+	},
 );
 ```
 
@@ -210,12 +210,12 @@ blueprints.
 
 ```ts
 optimal(
-  {
-    value: string(),
-  },
-  {
-    value: predicate(),
-  },
+	{
+		value: string(),
+	},
+	{
+		value: predicate(),
+	},
 );
 ```
 
@@ -225,10 +225,10 @@ The `date()` predicate verifies a value is an instance of `RegExp`.
 
 ```ts
 optimal(
-  {},
-  {
-    pattern: regex(),
-  },
+	{},
+	{
+		pattern: regex(),
+	},
 );
 ```
 
@@ -242,15 +242,15 @@ shape and _cannot_ be customized. Shape predicate supports the following additio
 
 ```ts
 optimal(
-  {},
-  {
-    image: shape({
-      name: string().notEmpty(),
-      path: string(),
-      type: string('png'),
-      relative: bool(),
-    }),
-  },
+	{},
+	{
+		image: shape({
+			name: string().notEmpty(),
+			path: string(),
+			type: string('png'),
+			relative: bool(),
+		}),
+	},
 );
 ```
 
@@ -279,11 +279,11 @@ additional methods:
 
 ```ts
 optimal(
-  {},
-  {
-    filename: string('[id].js').notEmpty(),
-    target: string('dev').oneOf(['dev', 'prod', 'staging', 'qa']),
-  },
+	{},
+	{
+		filename: string('[id].js').notEmpty(),
+		target: string('dev').oneOf(['dev', 'prod', 'staging', 'qa']),
+	},
 );
 ```
 
@@ -297,10 +297,10 @@ length and types. Defaults to the structure of the tuple and _cannot_ be customi
 type Record = [number, string]; // ID, name
 
 optimal(
-  {},
-  {
-    record: tuple<Record>([number().gt(0).required(), string().notEmpty()]),
-  },
+	{},
+	{
+		record: tuple<Record>([number().gt(0).required(), string().notEmpty()]),
+	},
 );
 ```
 
@@ -315,19 +315,19 @@ the default value, which must be explicitly defined.
 
 ```ts
 optimal(
-  {},
-  {
-    source: union(
-      [
-        string(),
-        array(string()),
-        shape({
-          path: string(),
-        }),
-      ],
-      './src',
-    ),
-  },
+	{},
+	{
+		source: union(
+			[
+				string(),
+				array(string()),
+				shape({
+					path: string(),
+				}),
+			],
+			'./src',
+		),
+	},
 );
 ```
 
@@ -336,10 +336,10 @@ validation will be used.
 
 ```ts
 optimal(
-  {},
-  {
-    source: union([object(number()), object(string())], {}),
-  },
+	{},
+	{
+		source: union([object(number()), object(string())], {}),
+	},
 );
 ```
 
@@ -348,18 +348,18 @@ shapes are listed first so that they validate their shape early and exit the val
 
 ```ts
 optimal(
-  {},
-  {
-    source: union(
-      [
-        shape({
-          path: string(),
-        }),
-        object(number()),
-      ],
-      {},
-    ),
-  },
+	{},
+	{
+		source: union(
+			[
+				shape({
+					path: string(),
+				}),
+				object(number()),
+			],
+			{},
+		),
+	},
 );
 ```
 

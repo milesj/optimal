@@ -12,7 +12,7 @@ export interface OptimalOptions {
 
 export function optimal<
 	Struct extends object,
-	Construct extends object = { [K in keyof Struct]?: unknown }
+	Construct extends object = { [K in keyof Struct]?: unknown },
 >(struct: Construct, blueprint: Blueprint<Struct>, options: OptimalOptions = {}): Required<Struct> {
 	if (__DEV__ && !isObject(options)) {
 		throw new TypeError('Optimal options must be a plain object.');

@@ -16,7 +16,7 @@ import {
 	string,
 	union,
 	UnknownFunction,
-} from "../src";
+} from '../src';
 
 type BasicBlueprint = Blueprint<{
 	foo: string;

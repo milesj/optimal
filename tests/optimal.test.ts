@@ -111,10 +111,7 @@ describe('Optimal', () => {
 		]),
 		watch: bool(false),
 		node: object().of(
-			union<NodeType | boolean>(
-				[bool(), string('mock').oneOf<NodeType>(['mock', 'empty'])],
-				false,
-			),
+			union<NodeType | boolean>([bool(), string('mock').oneOf<NodeType>(['mock', 'empty'])], false),
 		),
 	};
 
