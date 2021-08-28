@@ -5,22 +5,30 @@ into functions to reduce file size and overhead.
 
 #### 💥 Breaking
 
-- Updated `func()` to not be nullable by default. Instead uses undefined.
-- Renamed `Predicate#nonNullable()` method to `notNullable()`.
+The biggest change is that predicates are now known as schemas. For the purpose of this release, the
+changelog will use the new verbiage, but may affect previous APIs.
+
+- Updated `array()` to no longer accept a schema as an argument, use `array().of()` instead.
+- Updated `func()` to not be nullable by default. Instead uses `undefined`.
+- Updated `instance()` to no longer accept a schema as an argument, use `instance().of()` instead.
+- Updated `object()` to no longer accept a schema as an argument, use `object().of()` instead.
+- Renamed `Schema#nonNullable()` method to `notNullable()`.
+- Removed `Schema#key()` method.
+- Removed `Schema#message()` method.
 - Removed the `predicate()` predicate (use `schema()` instead).
-- Removed `Predicate#key()` method.
-- Removed `Predicate#message()` method.
 - Removed the state boolean argument from `Predicate#required()`.
+- Dropped Node.js v10 support. Minimum requirement v12.17.
 
 #### 🚀 Updates
 
-- Added `Predicate#notRequired()` method.
+- Added `Schema#notRequired()` method.
 - Added `date()`, `schema()` schemas.
 - Added `createSchema()` function for creating custom schemas.
 - Added `createPredicate()` function for creating boolean return checkers.
 
 #### 🛠 Internals
 
+- A `ValidationError` is now thrown instead of an `Error`.
 - Migrated to Packemon for package building.
 - Improved the handling of `null` and `undefined` values.
 - Increased code coverage, especially around edge cases.

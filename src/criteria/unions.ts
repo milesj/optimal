@@ -1,23 +1,6 @@
 import { invariant, isObject, isSchema } from '../helpers';
 import { Criteria, Schema, SchemaState } from '../types';
 
-export type InferUnionItems<T> =
-  // We need to handle boolean explicitly, otherwise it distributes as "false" and "true" separately
-  T extends boolean
-    ? Schema<boolean>
-    : // We need to remove any number and string literals
-    T extends string
-    ? Schema<string>
-    : T extends number
-    ? Schema<number>
-    : // We also shouldnt allow "null" schemas, so filter out
-    T extends null
-    ? Schema<T | null>
-    : // Otherwise everything else should be a schema
-    T extends unknown
-    ? Schema<T>
-    : never;
-
 function typeOf(value: unknown): string {
   if (Array.isArray(value)) {
     return 'array/tuple';

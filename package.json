@@ -2,7 +2,8 @@
   "name": "optimal",
   "version": "4.3.0",
   "description": "A system for building and validating defined object structures.",
-  "main": "./lib/index.js",
+  "main": "./lib/node/index.js",
+  "browser": "./lib/browser/index.js",
   "module": "./esm/index.js",
   "types": "./dts/index.d.ts",
   "scripts": {
@@ -39,8 +40,14 @@
     "url": "http://milesj.me"
   },
   "license": "MIT",
+  "files": [
+    "esm/**/*.{js,map}",
+    "lib/**/*.{js,map}",
+    "src/**/*.{ts,tsx,json}"
+  ],
   "engines": {
-    "node": ">=10.3.0"
+    "node": ">=12.17.0",
+    "npm": ">=6.13.0"
   },
   "resolutions": {
     "typescript": "~4.3.0"
@@ -49,7 +56,7 @@
     "@milesj/build-tools": "^2.17.1",
     "@types/node": "^15.6.1",
     "conventional-changelog-beemo": "^2.1.0",
-    "packemon": "^0.16.4"
+    "packemon": "^1.4.1"
   },
   "beemo": {
     "module": "@milesj/build-tools",
@@ -80,6 +87,11 @@
     "url": "https://ko-fi.com/milesjohnson"
   },
   "packemon": {
+    "bundle": true,
+    "format": [
+      "lib",
+      "esm"
+    ],
     "platform": [
       "browser",
       "node"

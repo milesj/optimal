@@ -27,7 +27,7 @@ describe('string()', () => {
       expect(() => {
         schema.validate('a');
       }).toThrowErrorMatchingInlineSnapshot(
-        `"String must be in camel case. (pattern \\"^[a-z][0-9A-Za-z]+$\\")"`,
+        `"String must be in camel case. (pattern \\"^[a-z][a-zA-Z0-9]+$\\")"`,
       );
     });
 
@@ -35,7 +35,7 @@ describe('string()', () => {
       expect(() => {
         schema.validate('1');
       }).toThrowErrorMatchingInlineSnapshot(
-        `"String must be in camel case. (pattern \\"^[a-z][0-9A-Za-z]+$\\")"`,
+        `"String must be in camel case. (pattern \\"^[a-z][a-zA-Z0-9]+$\\")"`,
       );
     });
 
@@ -43,7 +43,7 @@ describe('string()', () => {
       expect(() => {
         schema.validate(kebabCase);
       }).toThrowErrorMatchingInlineSnapshot(
-        `"String must be in camel case. (pattern \\"^[a-z][0-9A-Za-z]+$\\")"`,
+        `"String must be in camel case. (pattern \\"^[a-z][a-zA-Z0-9]+$\\")"`,
       );
     });
 
@@ -51,7 +51,7 @@ describe('string()', () => {
       expect(() => {
         schema.validate(pascalCase);
       }).toThrowErrorMatchingInlineSnapshot(
-        `"String must be in camel case. (pattern \\"^[a-z][0-9A-Za-z]+$\\")"`,
+        `"String must be in camel case. (pattern \\"^[a-z][a-zA-Z0-9]+$\\")"`,
       );
     });
 
@@ -59,7 +59,7 @@ describe('string()', () => {
       expect(() => {
         schema.validate(snakeCase);
       }).toThrowErrorMatchingInlineSnapshot(
-        `"String must be in camel case. (pattern \\"^[a-z][0-9A-Za-z]+$\\")"`,
+        `"String must be in camel case. (pattern \\"^[a-z][a-zA-Z0-9]+$\\")"`,
       );
     });
 
@@ -143,7 +143,7 @@ describe('string()', () => {
       expect(() => {
         schema.validate('a');
       }).toThrowErrorMatchingInlineSnapshot(
-        `"String must be in kebab case. (pattern \\"^[a-z][\\\\x2D0-9a-z]+$\\")"`,
+        `"String must be in kebab case. (pattern \\"^[a-z][a-z0-9-]+$\\")"`,
       );
     });
 
@@ -151,7 +151,7 @@ describe('string()', () => {
       expect(() => {
         schema.validate('1');
       }).toThrowErrorMatchingInlineSnapshot(
-        `"String must be in kebab case. (pattern \\"^[a-z][\\\\x2D0-9a-z]+$\\")"`,
+        `"String must be in kebab case. (pattern \\"^[a-z][a-z0-9-]+$\\")"`,
       );
     });
 
@@ -159,7 +159,7 @@ describe('string()', () => {
       expect(() => {
         schema.validate(camelCase);
       }).toThrowErrorMatchingInlineSnapshot(
-        `"String must be in kebab case. (pattern \\"^[a-z][\\\\x2D0-9a-z]+$\\")"`,
+        `"String must be in kebab case. (pattern \\"^[a-z][a-z0-9-]+$\\")"`,
       );
     });
 
@@ -167,7 +167,7 @@ describe('string()', () => {
       expect(() => {
         schema.validate(pascalCase);
       }).toThrowErrorMatchingInlineSnapshot(
-        `"String must be in kebab case. (pattern \\"^[a-z][\\\\x2D0-9a-z]+$\\")"`,
+        `"String must be in kebab case. (pattern \\"^[a-z][a-z0-9-]+$\\")"`,
       );
     });
 
@@ -175,7 +175,7 @@ describe('string()', () => {
       expect(() => {
         schema.validate(snakeCase);
       }).toThrowErrorMatchingInlineSnapshot(
-        `"String must be in kebab case. (pattern \\"^[a-z][\\\\x2D0-9a-z]+$\\")"`,
+        `"String must be in kebab case. (pattern \\"^[a-z][a-z0-9-]+$\\")"`,
       );
     });
 
@@ -361,7 +361,7 @@ describe('string()', () => {
       expect(() => {
         schema.validate('A');
       }).toThrowErrorMatchingInlineSnapshot(
-        `"String must be in pascal case. (pattern \\"^[A-Z][0-9A-Za-z]+$\\")"`,
+        `"String must be in pascal case. (pattern \\"^[A-Z][a-zA-Z0-9]+$\\")"`,
       );
     });
 
@@ -369,7 +369,7 @@ describe('string()', () => {
       expect(() => {
         schema.validate('1');
       }).toThrowErrorMatchingInlineSnapshot(
-        `"String must be in pascal case. (pattern \\"^[A-Z][0-9A-Za-z]+$\\")"`,
+        `"String must be in pascal case. (pattern \\"^[A-Z][a-zA-Z0-9]+$\\")"`,
       );
     });
 
@@ -377,7 +377,7 @@ describe('string()', () => {
       expect(() => {
         schema.validate(camelCase);
       }).toThrowErrorMatchingInlineSnapshot(
-        `"String must be in pascal case. (pattern \\"^[A-Z][0-9A-Za-z]+$\\")"`,
+        `"String must be in pascal case. (pattern \\"^[A-Z][a-zA-Z0-9]+$\\")"`,
       );
     });
 
@@ -385,7 +385,7 @@ describe('string()', () => {
       expect(() => {
         schema.validate(kebabCase);
       }).toThrowErrorMatchingInlineSnapshot(
-        `"String must be in pascal case. (pattern \\"^[A-Z][0-9A-Za-z]+$\\")"`,
+        `"String must be in pascal case. (pattern \\"^[A-Z][a-zA-Z0-9]+$\\")"`,
       );
     });
 
@@ -393,7 +393,7 @@ describe('string()', () => {
       expect(() => {
         schema.validate(snakeCase);
       }).toThrowErrorMatchingInlineSnapshot(
-        `"String must be in pascal case. (pattern \\"^[A-Z][0-9A-Za-z]+$\\")"`,
+        `"String must be in pascal case. (pattern \\"^[A-Z][a-zA-Z0-9]+$\\")"`,
       );
     });
 
@@ -451,7 +451,7 @@ describe('string()', () => {
       expect(() => {
         schema.validate('a');
       }).toThrowErrorMatchingInlineSnapshot(
-        `"String must be in snake case. (pattern \\"^[a-z][0-9_a-z]+$\\")"`,
+        `"String must be in snake case. (pattern \\"^[a-z][a-z0-9_]+$\\")"`,
       );
     });
 
@@ -459,7 +459,7 @@ describe('string()', () => {
       expect(() => {
         schema.validate('1');
       }).toThrowErrorMatchingInlineSnapshot(
-        `"String must be in snake case. (pattern \\"^[a-z][0-9_a-z]+$\\")"`,
+        `"String must be in snake case. (pattern \\"^[a-z][a-z0-9_]+$\\")"`,
       );
     });
 
@@ -467,7 +467,7 @@ describe('string()', () => {
       expect(() => {
         schema.validate(camelCase);
       }).toThrowErrorMatchingInlineSnapshot(
-        `"String must be in snake case. (pattern \\"^[a-z][0-9_a-z]+$\\")"`,
+        `"String must be in snake case. (pattern \\"^[a-z][a-z0-9_]+$\\")"`,
       );
     });
 
@@ -475,7 +475,7 @@ describe('string()', () => {
       expect(() => {
         schema.validate(kebabCase);
       }).toThrowErrorMatchingInlineSnapshot(
-        `"String must be in snake case. (pattern \\"^[a-z][0-9_a-z]+$\\")"`,
+        `"String must be in snake case. (pattern \\"^[a-z][a-z0-9_]+$\\")"`,
       );
     });
 
@@ -483,7 +483,7 @@ describe('string()', () => {
       expect(() => {
         schema.validate(pascalCase);
       }).toThrowErrorMatchingInlineSnapshot(
-        `"String must be in snake case. (pattern \\"^[a-z][0-9_a-z]+$\\")"`,
+        `"String must be in snake case. (pattern \\"^[a-z][a-z0-9_]+$\\")"`,
       );
     });
 
