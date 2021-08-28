@@ -1,7 +1,15 @@
 import { createSchema } from '../createSchema';
 import { commonCriteria, objectCriteria } from '../criteria';
 import { createObject, invariant, isObject } from '../helpers';
-import { CommonCriterias, Criteria, InferNullable, ObjectCriterias, Schema } from '../types';
+import {
+  AnySchema,
+  CommonCriterias,
+  Criteria,
+  InferNullable,
+  InferSchemaType,
+  ObjectCriterias,
+  Schema,
+} from '../types';
 
 export interface ObjectSchema<T = object>
   extends Schema<T>,
@@ -10,9 +18,9 @@ export interface ObjectSchema<T = object>
   never: () => ObjectSchema<never>;
   notNullable: () => ObjectSchema<NonNullable<T>>;
   nullable: () => ObjectSchema<T | null>;
-  of: <V, K extends string = string>(
-    schema: Schema<V>,
-  ) => ObjectSchema<InferNullable<T, Record<K, V>>>;
+  of: <V extends AnySchema, K extends string = string>(
+    schema: V,
+  ) => ObjectSchema<InferNullable<T, Record<K, InferSchemaType<V>>>>;
 }
 
 function validateType(): Criteria<Record<string, unknown>> | void {

@@ -8,6 +8,7 @@ export interface TupleSchema<T> extends Schema<T>, CommonCriterias<TupleSchema<T
   never: () => TupleSchema<never>;
   notNullable: () => TupleSchema<NonNullable<T>>;
   nullable: () => TupleSchema<T | null>;
+  /** @internal */
   of: <I extends unknown[]>(schemas: InferTupleItems<I>) => TupleSchema<InferNullable<T, I>>;
 }
 

@@ -17,6 +17,7 @@ export interface ShapeSchema<T>
   never: () => ShapeSchema<never>;
   notNullable: () => ShapeSchema<NonNullable<T>>;
   nullable: () => ShapeSchema<T | null>;
+  /** @internal */
   of: <S extends object>(schema: Blueprint<S>) => ShapeSchema<InferNullable<T, S>>;
 }
 
