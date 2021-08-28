@@ -19,7 +19,7 @@ export function of<T>(
 			validate(value, path) {
 				invariant(
 					typeof ref === 'function' &&
-						(value instanceof ref ?? (loose && isObject(value) && instanceOf(value, ref))),
+						(value instanceof ref || (loose && isObject(value) && instanceOf(value, ref))),
 					`Must be an instance of "${state.type}".`,
 					path,
 				);

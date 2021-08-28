@@ -49,7 +49,7 @@ export function createDate(value: unknown): Date {
 }
 
 export function createObject<T = UnknownObject>(value: unknown) {
-	return (isObject(value) ? value : {}) as unknown as T;
+	return ((isObject(value) ? value : {}) as unknown) as T;
 }
 
 /**
@@ -57,10 +57,7 @@ export function createObject<T = UnknownObject>(value: unknown) {
  * They will also fail when comparing against source and compiled files.
  * So emulate an `instanceof` check by comparing constructor names.
  */
-export function instanceOf<T = unknown>(
-	object: unknown,
-	contract: Constructor<T> | Function,
-): object is T {
+export function instanceOf<T = unknown>(object: unknown, contract: Constructor<T>): object is T {
 	if (!object || typeof object !== 'object') {
 		return false;
 	}
