@@ -16,20 +16,25 @@ function validateType(): Criteria<unknown[]> | void {
 	return {
 		skipIfNull: true,
 		validate(value, path) {
+			if (value === undefined) {
+				// Will be built from its items
+				return [];
+			}
+
 			invariant(Array.isArray(value), 'Must be a tuple.', path);
+
+			return value;
 		},
 	};
 }
 
 export function tuple<T extends unknown[] = unknown[]>(
 	schemas: InferTupleItems<T>,
-	defaultValue?: T,
 ): TupleSchema<T> {
 	return createSchema<TupleSchema<T>>({
 		// @ts-expect-error Ignore this, it's safe
 		cast: createArray,
 		criteria: { ...commonCriteria, ...tupleCriteria },
-		defaultValue,
 		type: 'tuple',
 		validateType,
 	}).of(schemas);

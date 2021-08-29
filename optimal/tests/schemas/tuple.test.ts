@@ -18,17 +18,14 @@ describe('tuple()', () => {
 	});
 
 	runCommonTests<Tuple>(
-		(defaultValue) =>
-			tuple(
-				[
-					array().of(string()),
-					bool(true),
-					number(1).between(0, 5),
-					object().of(number()),
-					string('foo').oneOf(['foo', 'bar', 'baz']),
-				],
-				defaultValue,
-			),
+		() =>
+			tuple([
+				array().of(string()),
+				bool(true),
+				number(1).between(0, 5),
+				object().of(number()),
+				string('foo').oneOf(['foo', 'bar', 'baz']),
+			]),
 		[['a', 'b', 'c'], true, 3, { a: 1 }, 'baz'],
 		{
 			defaultValue: [[], false, 1, {}, 'foo'],
@@ -95,6 +92,25 @@ describe('tuple()', () => {
 			expect(() => {
 				schema.validate(null);
 			}).toThrow('Null is not allowed.');
+		});
+
+		it('returns the default value from its items when undefined is passed', () => {
+			expect(schema.validate(undefined)).toEqual([[], true, 1, {}, 'foo']);
+
+			const testSchema = tuple<Tuple>([
+				array(['abc']).of(string()),
+				bool(true),
+				number(3).between(0, 5),
+				object({ foo: 123 }).of(number()),
+				string('baz').oneOf(['foo', 'bar', 'baz']),
+			]);
+
+			expect(testSchema.validate(undefined)).toEqual([['abc'], true, 3, { foo: 123 }, 'baz']);
+		});
+
+		it('returns the default value from its items when an empty array is passed', () => {
+			// @ts-expect-error Invalid type
+			expect(schema.validate([])).toEqual([[], true, 1, {}, 'foo']);
 		});
 
 		describe('production', () => {

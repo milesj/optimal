@@ -26,6 +26,7 @@ function validateType(): Criteria<unknown> | void {
 		skipIfNull: true,
 		validate(value, path) {
 			if (value === undefined) {
+				// Will be built from its items
 				return {};
 			}
 
