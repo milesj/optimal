@@ -1,4 +1,4 @@
-import { InstanceSchema, regex } from '../../src';
+import { Infer, InstanceSchema, regex } from '../../src';
 import { runInProd } from '../helpers';
 import { runCommonTests } from './runCommonTests';
 
@@ -8,6 +8,11 @@ describe('regex()', () => {
 	beforeEach(() => {
 		schema = regex();
 	});
+
+	const notNullRegex = regex().notNullable();
+
+	type AnyRegex = Infer<typeof schema>;
+	type NotNullRegex = Infer<typeof notNullRegex>;
 
 	runCommonTests(() => regex(), /abc/u, { defaultValue: null });
 

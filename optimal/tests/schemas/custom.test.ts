@@ -1,4 +1,4 @@
-import { custom, CustomCallback, CustomSchema } from '../../src';
+import { custom, CustomCallback, CustomSchema, Infer } from '../../src';
 import { runInProd } from '../helpers';
 import { runCommonTests } from './runCommonTests';
 
@@ -14,6 +14,14 @@ describe('custom()', () => {
 	beforeEach(() => {
 		schema = custom<string>(cb, 'xyz');
 	});
+
+	const stringCustom = custom(() => 'abc', '');
+	const arrayCustom = custom(() => [1, 2, 3], [0]);
+	const tupleCustom = custom<[string, number]>(() => ['a', 1], ['z', 0]);
+
+	type StringCustom = Infer<typeof stringCustom>;
+	type ArrayCustom = Infer<typeof arrayCustom>;
+	type TupleCustom = Infer<typeof tupleCustom>;
 
 	runCommonTests((defaultValue) => custom<string>(cb, defaultValue), 'abc', {
 		defaultValue: 'xyz',

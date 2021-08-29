@@ -2,6 +2,7 @@ import {
 	array,
 	bool,
 	custom,
+	Infer,
 	instance,
 	number,
 	object,
@@ -38,6 +39,8 @@ describe('union()', () => {
 			string('foo').oneOf(['foo', 'bar', 'baz']),
 		]);
 	});
+
+	type AllUnion = Infer<typeof schema>;
 
 	runCommonTests<Union>(
 		(defaultValue) =>

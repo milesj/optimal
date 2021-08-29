@@ -1,4 +1,4 @@
-import { date, DateSchema } from '../../src';
+import { date, DateSchema, Infer } from '../../src';
 import { runInProd } from '../helpers';
 import { runCommonTests } from './runCommonTests';
 
@@ -9,6 +9,11 @@ describe('date()', () => {
 	beforeEach(() => {
 		schema = date();
 	});
+
+	const nullDate = date().nullable();
+
+	type AnyDate = Infer<typeof schema>;
+	type NullDate = Infer<typeof nullDate>;
 
 	runCommonTests((defaultValue) => date(defaultValue), now, {
 		defaultValue: now,

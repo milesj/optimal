@@ -1,4 +1,4 @@
-import { bool, BooleanSchema } from '../../src';
+import { bool, BooleanSchema, Infer } from '../../src';
 import { runInProd } from '../helpers';
 import { runCommonTests } from './runCommonTests';
 
@@ -8,6 +8,14 @@ describe('bool()', () => {
 	beforeEach(() => {
 		schema = bool();
 	});
+
+	const anyBool = bool();
+	const trueBool = bool().onlyTrue();
+	const falseBool = bool().onlyFalse();
+
+	type AnyBool = Infer<typeof anyBool>;
+	type TrueBool = Infer<typeof trueBool>;
+	type FalseBool = Infer<typeof falseBool>;
 
 	runCommonTests((defaultValue) => bool(defaultValue), true, {
 		defaultValue: false,

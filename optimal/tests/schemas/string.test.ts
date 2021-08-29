@@ -1,4 +1,4 @@
-import { string, StringSchema } from '../../src';
+import { Infer, string, StringSchema } from '../../src';
 import { runInProd } from '../helpers';
 import { runCommonTests } from './runCommonTests';
 
@@ -13,6 +13,11 @@ describe('string()', () => {
 	beforeEach(() => {
 		schema = string();
 	});
+
+	const litString = string().oneOf(['a', 'b', 'c']);
+
+	type AnyString = Infer<typeof schema>;
+	type LiteralString = Infer<typeof litString>;
 
 	runCommonTests((defaultValue) => string(defaultValue), 'abc', {
 		defaultValue: '',

@@ -1,4 +1,4 @@
-import { bool, number, shape, ShapeSchema, string } from '../../src';
+import { bool, Infer, number, shape, ShapeSchema, string } from '../../src';
 import { runInProd } from '../helpers';
 import { runCommonTests } from './runCommonTests';
 
@@ -16,6 +16,19 @@ describe('shape()', () => {
 			baz: bool(),
 		});
 	});
+
+	const shapeShape = shape({
+		foo: string(),
+		bar: shape({
+			baz: number(),
+			qux: shape({
+				wow: bool(),
+			}),
+		}),
+	});
+
+	type BaseShape = Infer<typeof schema>;
+	type ShapeShape = Infer<typeof shapeShape>;
 
 	runCommonTests(
 		() =>

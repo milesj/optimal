@@ -1,4 +1,4 @@
-import { AnySchema, schema as schemaFunc, ShapeSchema } from '../../src';
+import { AnySchema, Infer, schema as schemaFunc, ShapeSchema, StringSchema } from '../../src';
 import { runInProd } from '../helpers';
 
 describe('schema()', () => {
@@ -7,6 +7,11 @@ describe('schema()', () => {
 	beforeEach(() => {
 		schema = schemaFunc();
 	});
+
+	const stringSchema = schemaFunc<StringSchema>();
+
+	type AllSchema = Infer<typeof schema>;
+	type StringsSchema = Infer<typeof stringSchema>;
 
 	describe('type()', () => {
 		it('returns shape type', () => {

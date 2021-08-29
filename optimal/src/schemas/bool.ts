@@ -1,15 +1,14 @@
 import { createSchema } from '../createSchema';
 import { booleanCriteria, commonCriteria } from '../criteria';
 import { invariant } from '../helpers';
-import { BooleanCriterias, CommonCriterias, Criteria, DefaultValue, Schema } from '../types';
+import { CommonCriterias, Criteria, DefaultValue, Options, Schema } from '../types';
 
-export interface BooleanSchema<T = boolean>
-	extends Schema<T>,
-		BooleanCriterias<BooleanSchema<T>>,
-		CommonCriterias<BooleanSchema<T>> {
+export interface BooleanSchema<T = boolean> extends Schema<T>, CommonCriterias<BooleanSchema<T>> {
 	never: () => BooleanSchema<never>;
 	notNullable: () => BooleanSchema<NonNullable<T>>;
 	nullable: () => BooleanSchema<T | null>;
+	onlyFalse: (options?: Options) => BooleanSchema<false>;
+	onlyTrue: (options?: Options) => BooleanSchema<true>;
 }
 
 function validateType(): Criteria<boolean> | void {

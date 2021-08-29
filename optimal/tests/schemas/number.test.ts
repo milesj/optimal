@@ -1,4 +1,4 @@
-import { number, NumberSchema } from '../../src';
+import { Infer, number, NumberSchema } from '../../src';
 import { runInProd } from '../helpers';
 import { runCommonTests } from './runCommonTests';
 
@@ -8,6 +8,11 @@ describe('number()', () => {
 	beforeEach(() => {
 		schema = number();
 	});
+
+	const litNumber = number().oneOf([1, 2, 3]);
+
+	type AnyNumber = Infer<typeof schema>;
+	type LiteralNumber = Infer<typeof litNumber>;
 
 	runCommonTests((defaultValue) => number(defaultValue), 123, { defaultValue: 0 });
 

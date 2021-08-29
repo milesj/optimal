@@ -1,4 +1,4 @@
-import { number, object, ObjectSchema, string } from '../../src';
+import { array, Infer, number, object, ObjectSchema, string, tuple } from '../../src';
 import { runInProd } from '../helpers';
 import { runCommonTests } from './runCommonTests';
 
@@ -8,6 +8,13 @@ describe('object()', () => {
 	beforeEach(() => {
 		schema = object().of(string());
 	});
+
+	const arrayObject = object().of(array().of(string()));
+	const objectTupleObject = object().of(object().of(tuple<[string, number]>([string(), number()])));
+
+	type StringObject = Infer<typeof schema>;
+	type ArrayObject = Infer<typeof arrayObject>;
+	type ObjectTupleObject = Infer<typeof objectTupleObject>;
 
 	runCommonTests<Record<string, string>>(
 		(defaultValue) => object(defaultValue),

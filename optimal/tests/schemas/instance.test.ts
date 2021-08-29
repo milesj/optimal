@@ -1,4 +1,4 @@
-import { instance, InstanceSchema } from '../../src';
+import { Infer, instance, InstanceSchema } from '../../src';
 import { runInProd } from '../helpers';
 import { runCommonTests } from './runCommonTests';
 
@@ -12,6 +12,13 @@ describe('instance()', () => {
 	beforeEach(() => {
 		schema = instance();
 	});
+
+	const nullClass = instance().nullable();
+	const typedClass = instance().of(Bar).notNullable();
+
+	type AnyClass = Infer<typeof schema>;
+	type NullClass = Infer<typeof nullClass>;
+	type TypedClass = Infer<typeof typedClass>;
 
 	runCommonTests(() => instance().of(Foo), new Foo(), {
 		defaultValue: null,

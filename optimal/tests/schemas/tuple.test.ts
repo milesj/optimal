@@ -1,4 +1,4 @@
-import { array, bool, number, object, string, tuple, TupleSchema } from '../../src';
+import { array, bool, Infer, number, object, string, tuple, TupleSchema } from '../../src';
 import { runInProd } from '../helpers';
 import { runCommonTests } from './runCommonTests';
 
@@ -16,6 +16,8 @@ describe('tuple()', () => {
 			string('foo').oneOf(['foo', 'bar', 'baz']),
 		]);
 	});
+
+	type AllTuple = Infer<typeof schema>;
 
 	runCommonTests<Tuple>(
 		() =>

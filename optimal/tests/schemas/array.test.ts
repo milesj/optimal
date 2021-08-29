@@ -1,4 +1,4 @@
-import { array, ArraySchema, string } from '../../src';
+import { array, ArraySchema, bool, Infer, number, object, string } from '../../src';
 import { runInProd } from '../helpers';
 import { runCommonTests } from './runCommonTests';
 
@@ -8,6 +8,14 @@ describe('array()', () => {
 	beforeEach(() => {
 		schema = array().of(string());
 	});
+
+	const arrayArray = array().of(array().of(string().nullable()));
+	const numberArray = array().of(number());
+	const objectArray = array().of(object().of(array().of(bool())));
+
+	type ArrayArray = Infer<typeof arrayArray>;
+	type NumberArray = Infer<typeof numberArray>;
+	type ObjectArray = Infer<typeof objectArray>;
 
 	runCommonTests((defaultValue) => array<string>(defaultValue), ['a', 'b', 'c'], {
 		defaultValue: [],

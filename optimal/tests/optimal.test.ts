@@ -2,6 +2,7 @@ import {
 	array,
 	bool,
 	func,
+	Infer,
 	instance,
 	number,
 	object,
@@ -22,6 +23,7 @@ describe('Optimal', () => {
 	// This blueprint is based on Webpack's configuration: https://webpack.js.org/configuration/
 	// Webpack provides a pretty robust example of how to use this library.
 	const primitive = union<PrimitiveType>(false).of([string(), number(), bool()]);
+	type PrimitiveTest = Infer<typeof primitive>;
 
 	const condition = union<ConditionType>('').of([
 		string(),
@@ -30,6 +32,7 @@ describe('Optimal', () => {
 		array().of(regex()),
 		object().of(regex()),
 	]);
+	type ConditionTest = Infer<typeof condition>;
 
 	const rule = shape({
 		enforce: string('post').oneOf<'post' | 'pre'>(['pre', 'post']),
@@ -48,6 +51,7 @@ describe('Optimal', () => {
 			]),
 		),
 	});
+	type RuleTest = Infer<typeof rule>;
 
 	type EntryType = Function | Record<string, string[] | string> | string[] | string;
 	type CrossOriginType = 'anonymous' | 'use-credentials';
@@ -115,6 +119,10 @@ describe('Optimal', () => {
 			]),
 		),
 	};
+	type BlueprintTest = Infer<typeof blueprint>;
+
+	const blueprintList = [primitive, condition, rule];
+	type BlueprintListTest = Infer<typeof blueprintList>;
 
 	it('errors if a non-object is passed', () => {
 		expect(() => {

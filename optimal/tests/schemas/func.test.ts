@@ -1,4 +1,4 @@
-import { func, FunctionSchema, UnknownFunction } from '../../src';
+import { func, FunctionSchema, Infer, UnknownFunction } from '../../src';
 import { runInProd } from '../helpers';
 import { runCommonTests } from './runCommonTests';
 
@@ -9,6 +9,13 @@ describe('func()', () => {
 	beforeEach(() => {
 		schema = func();
 	});
+
+	const nullFunc = func().nullable();
+	const typedFunc = func<(a: number) => string>();
+
+	type AnyFunc = Infer<typeof schema>;
+	type NullFunc = Infer<typeof nullFunc>;
+	type TypedFunc = Infer<typeof typedFunc>;
 
 	runCommonTests(() => func(), noop, { defaultValue: undefined });
 

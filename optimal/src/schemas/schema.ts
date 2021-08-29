@@ -15,15 +15,17 @@ function validateType(): Criteria<unknown> | void {
 }
 
 // This is similar to shape, but we want to control the validation
-export function schema(): ShapeSchema<AnySchema> {
-	return createSchema<ShapeSchema<AnySchema>>({
+export function schema<T extends AnySchema>(): ShapeSchema<T> {
+	const shape = createSchema<ShapeSchema<T>>({
 		cast: createObject,
 		criteria: { ...commonCriteria, ...shapeCriteria },
 		type: 'shape',
 		validateType,
-	}).of({
-		schema: func<AnySchema['schema']>().notNullable().required(),
-		type: func<AnySchema['type']>().notNullable().required(),
-		validate: func<AnySchema['validate']>().notNullable().required(),
 	});
+
+	return shape.of({
+		schema: func<T['schema']>().notNullable().required(),
+		type: func<T['type']>().notNullable().required(),
+		validate: func<T['validate']>().notNullable().required(),
+	}) as unknown as ShapeSchema<T>;
 }

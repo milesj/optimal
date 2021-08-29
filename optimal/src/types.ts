@@ -73,11 +73,6 @@ export interface ArrayCriterias<S> {
 	// of: <V>(schema: Schema<V>) => S;
 }
 
-export interface BooleanCriterias<S> {
-	onlyFalse: (options?: Options) => S;
-	onlyTrue: (options?: Options) => S;
-}
-
 export interface DateCriterias<S> {
 	after: (date: MaybeDate, options?: Options) => S;
 	before: (date: MaybeDate, options?: Options) => S;
@@ -163,3 +158,15 @@ export type Predicate<T> = (value: T | null | undefined) => boolean;
 // Any is required for generics to be typed correctly for consumers
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type AnySchema = Schema<any, any>;
+
+// INFERR
+
+export type InferFromObject<T> = { [K in keyof T]: Infer<T[K]> };
+
+export type Infer<T> = T extends Schema<infer U>
+	? U
+	: T extends Record<string, AnySchema>
+	? InferFromObject<T>
+	: T extends AnySchema[]
+	? InferFromObject<T>
+	: never;
