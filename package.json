@@ -1,11 +1,6 @@
 {
-  "name": "optimal",
-  "version": "5.0.0-alpha.0",
-  "description": "A system for building and validating defined object structures with schemas.",
-  "main": "./lib/node/index.js",
-  "browser": "./lib/browser/index.js",
-  "module": "./esm/index.js",
-  "types": "./dts/index.d.ts",
+  "private": true,
+  "name": "optimal-root",
   "scripts": {
     "prepare": "beemo create-config",
     "build": "packemon build --addEngines",
@@ -17,34 +12,8 @@
     "format": "beemo prettier",
     "release": "yarn run pack && yarn run ci && npx np --yolo --no-yarn",
     "test": "beemo jest",
-    "type": "beemo typescript --noEmit"
+    "type": "beemo typescript --build"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/milesj/optimal.git"
-  },
-  "keywords": [
-    "opts",
-    "options",
-    "predicate",
-    "validator",
-    "config",
-    "defaults",
-    "object",
-    "params",
-    "struct"
-  ],
-  "author": {
-    "name": "Miles Johnson",
-    "url": "http://milesj.me"
-  },
-  "license": "MIT",
-  "files": [
-    "dts/**/*.d.ts",
-    "esm/**/*.{js,map}",
-    "lib/**/*.{js,map}",
-    "src/**/*.{ts,tsx,json}"
-  ],
   "engines": {
     "node": ">=12.17.0",
     "npm": ">=6.13.0"
@@ -56,19 +25,7 @@
     "@types/node": "^15.6.1",
     "packemon": "^1.4.1"
   },
-  "funding": {
-    "type": "ko-fi",
-    "url": "https://ko-fi.com/milesjohnson"
-  },
-  "packemon": {
-    "bundle": true,
-    "format": [
-      "lib",
-      "esm"
-    ],
-    "platform": [
-      "browser",
-      "node"
-    ]
-  }
+  "workspaces": [
+    "optimal/"
+  ]
 }

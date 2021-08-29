@@ -6,23 +6,6 @@
   "browser": "./lib/browser/index.js",
   "module": "./esm/index.js",
   "types": "./dts/index.d.ts",
-  "scripts": {
-    "prepare": "beemo create-config",
-    "build": "packemon build --addEngines",
-    "pack": "NODE_ENV=production packemon pack --addEngines --declaration=standard",
-    "check": "yarn run type && yarn run test && yarn run lint",
-    "clean": "packemon clean",
-    "coverage": "yarn run test --coverage",
-    "lint": "beemo eslint",
-    "format": "beemo prettier",
-    "release": "yarn run pack && yarn run ci && npx np --yolo --no-yarn",
-    "test": "beemo jest",
-    "type": "beemo typescript --noEmit"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/milesj/optimal.git"
-  },
   "keywords": [
     "opts",
     "options",
@@ -34,6 +17,11 @@
     "params",
     "struct"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:milesj/optimal.git",
+    "directory": "optimal"
+  },
   "author": {
     "name": "Miles Johnson",
     "url": "http://milesj.me"
@@ -48,13 +36,6 @@
   "engines": {
     "node": ">=12.17.0",
     "npm": ">=6.13.0"
-  },
-  "devDependencies": {
-    "@beemo/cli": "^2.0.1",
-    "@beemo/core": "^2.0.2",
-    "@beemo/dev": "^1.5.0",
-    "@types/node": "^15.6.1",
-    "packemon": "^1.4.1"
   },
   "funding": {
     "type": "ko-fi",
