@@ -7,8 +7,9 @@ export function isObject(value: unknown): value is object {
 export function isSchema<T>(value: unknown): value is Schema<T> {
 	return (
 		isObject(value) &&
-		typeof (value as UnknownObject).validate === 'function' &&
-		typeof (value as UnknownObject).type === 'function'
+		typeof (value as UnknownObject).schema === 'function' &&
+		typeof (value as UnknownObject).type === 'function' &&
+		typeof (value as UnknownObject).validate === 'function'
 	);
 }
 
@@ -49,7 +50,7 @@ export function createDate(value: unknown): Date {
 }
 
 export function createObject<T = UnknownObject>(value: unknown) {
-	return ((isObject(value) ? value : {}) as unknown) as T;
+	return (isObject(value) ? value : {}) as unknown as T;
 }
 
 /**
@@ -101,9 +102,11 @@ export function logUnknown(unknownFields: object, pathPrefix?: string) {
 	const unknownKeys = Object.keys(unknownFields);
 
 	if (unknownKeys.length > 0) {
-		const message = pathPrefix ? `Unknown "${pathPrefix}" fields` : 'Unknown fields';
-
-		throw new Error(`${message}: ${unknownKeys.join(', ')}.`);
+		throw new Error(
+			`${pathPrefix ? `Unknown "${pathPrefix}" fields` : 'Unknown fields'}: ${unknownKeys.join(
+				', ',
+			)}.`,
+		);
 	}
 }
 

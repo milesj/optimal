@@ -10,7 +10,7 @@
     "coverage": "yarn run test --coverage",
     "lint": "beemo eslint",
     "format": "beemo prettier",
-    "release": "yarn run pack && yarn run ci && npx np --yolo --no-yarn",
+    "release": "yarn run pack && yarn run check && npx np --yolo --no-yarn",
     "test": "beemo jest",
     "type": "beemo typescript --build"
   },
