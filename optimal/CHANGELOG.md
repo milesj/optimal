@@ -8,22 +8,23 @@ into functions to reduce file size and overhead.
 The biggest change is that predicates are now known as schemas. For the purpose of this release, the
 changelog will use the new verbiage, but may affect previous APIs.
 
+- Dropped Node.js v10 support. Minimum requirement v12.17.
 - Updated `array()` to no longer accept a schema as an argument, use `array().of()` instead.
 - Updated `func()` to not be nullable by default. Instead uses `undefined`.
 - Updated `instance()` to no longer accept a schema as an argument, use `instance().of()` instead.
 - Updated `object()` to no longer accept a schema as an argument, use `object().of()` instead.
 - Updated `union()` to no longer accept a list of schemas as an argument, use `union().of()` instead.
-- Renamed `Schema#nonNullable()` method to `notNullable()`.
-- Removed `Schema#key()` method.
-- Removed `Schema#message()` method.
-- Removed the `predicate()` predicate (use `schema()` instead).
-- Removed the state boolean argument from `Predicate#required()`.
-- Dropped Node.js v10 support. Minimum requirement v12.17.
+- Renamed `.nonNullable()` method to `.notNullable()`.
+- Removed `.key()` method.
+- Removed `.message()` method.
+- Removed the `predicate()` schema (use `schema()` instead).
+- Removed the state boolean argument from `.required()` (use `.notRequired()`).
 
 #### 🚀 Updates
 
-- Added `Schema#notRequired()` method.
-- Added `date()`, `schema()` schemas.
+- Added `.notRequired()` method.
+- Added `date()` and `schema()` schemas.
+- Added `object().keysOf()` criteria method.
 - Added `createSchema()` function for creating custom schemas.
 - Added `createPredicate()` function for creating boolean return checkers.
 - Added custom messages to all schema methods through a `message` option.

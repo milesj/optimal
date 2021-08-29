@@ -9,13 +9,16 @@ import {
 	InferNullable,
 	InferSchemaType,
 	ObjectCriterias,
+	Options,
 	Schema,
 } from '../types';
+import { StringSchema } from './string';
 
 export interface ObjectSchema<T = object>
 	extends Schema<T>,
 		ObjectCriterias<ObjectSchema<T>>,
 		CommonCriterias<ObjectSchema<T>> {
+	keysOf: (schema: StringSchema, options?: Options) => ObjectSchema<T>;
 	never: () => ObjectSchema<never>;
 	notNullable: () => ObjectSchema<NonNullable<T>>;
 	nullable: () => ObjectSchema<T | null>;

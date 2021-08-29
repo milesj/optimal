@@ -1,4 +1,4 @@
-import { object, ObjectSchema, string } from '../../src';
+import { number, object, ObjectSchema, string } from '../../src';
 import { runInProd } from '../helpers';
 import { runCommonTests } from './runCommonTests';
 
@@ -16,6 +16,37 @@ describe('object()', () => {
 			defaultValue: {},
 		},
 	);
+
+	describe('keysOf()', () => {
+		beforeEach(() => {
+			schema.keysOf(string().camelCase());
+		});
+
+		it('errors if a non-schema is passed', () => {
+			expect(() => {
+				// @ts-expect-error Invalid type
+				schema.keysOf('abc');
+			}).toThrow('A string schema is required for object keys.');
+		});
+
+		it('errors if a non-string schema is passed', () => {
+			expect(() => {
+				// @ts-expect-error Invalid type
+				schema.keysOf(number());
+			}).toThrow('A string schema is required for object keys.');
+		});
+
+		it('errors if key doesnt match schema', () => {
+			expect(() => {
+				schema.validate({
+					fooBar: '',
+					baz_qux: '',
+				});
+			}).toThrow(
+				'Invalid key "baz_qux". String must be in camel case. (pattern "^[a-z][a-zA-Z0-9]+$")',
+			);
+		});
+	});
 
 	describe('notEmpty()', () => {
 		beforeEach(() => {

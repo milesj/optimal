@@ -1,5 +1,39 @@
 import { invariant, isObject, isSchema } from '../helpers';
+import { StringSchema } from '../schemas/string';
 import { Criteria, Options, Schema, SchemaState } from '../types';
+
+/**
+ * Require field object keys to be of a string schema type.
+ */
+export function keysOf<T>(
+	state: SchemaState<Record<string, T>>,
+	keysSchema: StringSchema,
+	options: Options = {},
+): Criteria<Record<string, T>> | void {
+	if (__DEV__) {
+		if (!isSchema(keysSchema) || keysSchema.schema() !== 'string') {
+			invariant(false, 'A string schema is required for object keys.');
+		}
+
+		return {
+			skipIfNull: true,
+			validate(value, path, currentObject, rootObject) {
+				if (isObject(value)) {
+					Object.keys(value).forEach((key) => {
+						try {
+							// Dont pass a path so we can change error message
+							keysSchema.validate(key, '', currentObject, rootObject);
+						} catch (error: unknown) {
+							if (error instanceof Error) {
+								throw new TypeError(`Invalid key "${key}". ${error.message}`);
+							}
+						}
+					});
+				}
+			},
+		};
+	}
+}
 
 /**
  * Require field object to not be empty.
@@ -31,7 +65,7 @@ export function of<T>(
 	valuesSchema: Schema<T>,
 ): Criteria<Record<string, T>> | void {
 	if (__DEV__ && !isSchema(valuesSchema)) {
-		invariant(false, 'A schema blueprint is required for object values.');
+		invariant(false, 'A schema is required for object values.');
 	}
 
 	state.type += `<${valuesSchema.type()}>`;

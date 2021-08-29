@@ -21,7 +21,7 @@ export function notEmpty<T>(state: SchemaState<T[]>, options: Options = {}): Cri
  */
 export function of<T>(state: SchemaState<T[]>, itemsSchema: Schema<T>): Criteria<T[]> | void {
 	if (__DEV__ && !isSchema(itemsSchema)) {
-		invariant(false, 'A schema blueprint is required for array items.');
+		invariant(false, 'A schema is required for array items.');
 	}
 
 	state.type += `<${itemsSchema.type()}>`;
