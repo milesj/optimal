@@ -22,11 +22,11 @@ jobs:
       - run: yarn run type
       - run: yarn run coverage
       - run: yarn run lint
-  # pack:
-  #   name: Pack
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - uses: actions/setup-node@v2
-  #     - run: yarn install --immutable
-  #     - run: yarn run pack
+  pack:
+    name: Pack
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+      - run: yarn install --immutable
+      - run: yarn run pack
