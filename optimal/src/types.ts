@@ -142,11 +142,10 @@ export interface SchemaState<T> {
 }
 
 export interface SchemaOptions<T> {
+	api: Record<string, CriteriaFactory<T>>;
 	cast?: (value: unknown) => T;
-	criteria: Record<string, CriteriaFactory<T>>;
 	defaultValue?: DefaultValue<T>;
 	type: string;
-	validateType?: CriteriaFactory<T>;
 }
 
 export type InferSchemaType<T> = T extends Schema<infer U> ? U : never;

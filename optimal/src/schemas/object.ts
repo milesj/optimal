@@ -4,7 +4,6 @@ import { createObject, invariant, isObject } from '../helpers';
 import {
 	AnySchema,
 	CommonCriterias,
-	Criteria,
 	DefaultValue,
 	InferNullable,
 	InferSchemaType,
@@ -27,23 +26,23 @@ export interface ObjectSchema<T = object>
 	) => ObjectSchema<InferNullable<T, Record<K, InferSchemaType<V>>>>;
 }
 
-function validateType(): Criteria<Record<string, unknown>> | void {
-	return {
-		skipIfNull: true,
-		validate(value, path) {
-			invariant(isObject(value), 'Must be a plain object.', path);
-		},
-	};
-}
-
 export function object<V = unknown, K extends PropertyKey = string>(
 	defaultValue?: DefaultValue<Record<K, V>>,
 ): ObjectSchema<Record<K, V>> {
-	return createSchema({
-		cast: createObject,
-		criteria: { ...commonCriteria, ...objectCriteria },
-		defaultValue: defaultValue ?? {},
-		type: 'object',
-		validateType,
-	});
+	return createSchema(
+		{
+			api: { ...commonCriteria, ...objectCriteria },
+			cast: createObject,
+			defaultValue: defaultValue ?? {},
+			type: 'object',
+		},
+		[
+			{
+				skipIfNull: true,
+				validate(value, path) {
+					invariant(isObject(value), 'Must be a plain object.', path);
+				},
+			},
+		],
+	);
 }

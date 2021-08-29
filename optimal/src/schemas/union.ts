@@ -12,11 +12,8 @@ export interface UnionSchema<T> extends Schema<T>, CommonCriterias<UnionSchema<T
 
 export function union<T = unknown>(defaultValue: DefaultValue<T>): UnionSchema<T> {
 	return createSchema<UnionSchema<T>>({
-		criteria: { ...commonCriteria, ...unionCriteria },
+		api: { ...commonCriteria, ...unionCriteria },
 		defaultValue,
 		type: 'union',
-		validateType() {
-			// What to do here?
-		},
 	});
 }

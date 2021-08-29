@@ -10,7 +10,7 @@ export interface CustomSchema<T> extends Schema<T>, CommonCriterias<CustomSchema
 
 export function custom<T>(callback: CustomCallback<T>, defaultValue?: DefaultValue<T>) {
 	return createSchema<CustomSchema<T>>({
-		criteria: { ...commonCriteria },
+		api: { ...commonCriteria },
 		defaultValue,
 		type: 'custom',
 	}).custom(callback);

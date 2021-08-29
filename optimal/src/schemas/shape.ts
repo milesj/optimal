@@ -1,14 +1,7 @@
 import { createSchema } from '../createSchema';
 import { commonCriteria, shapeCriteria } from '../criteria';
 import { createObject, invariant, isObject } from '../helpers';
-import {
-	Blueprint,
-	CommonCriterias,
-	Criteria,
-	InferNullable,
-	Schema,
-	ShapeCriterias,
-} from '../types';
+import { Blueprint, CommonCriterias, InferNullable, Schema, ShapeCriterias } from '../types';
 
 export interface ShapeSchema<T>
 	extends Schema<T, Partial<T>>,
@@ -21,27 +14,27 @@ export interface ShapeSchema<T>
 	of: <S extends object>(schema: Blueprint<S>) => ShapeSchema<InferNullable<T, S>>;
 }
 
-function validateType(): Criteria<unknown> | void {
-	return {
-		skipIfNull: true,
-		validate(value, path) {
-			if (value === undefined) {
-				// Will be built from its items
-				return {};
-			}
-
-			invariant(isObject(value), 'Must be a shaped object.', path);
-
-			return value;
-		},
-	};
-}
-
 export function shape<T extends object>(blueprint: Blueprint<T>): ShapeSchema<T> {
-	return createSchema<ShapeSchema<T>>({
-		cast: createObject,
-		criteria: { ...commonCriteria, ...shapeCriteria },
-		type: 'shape',
-		validateType,
-	}).of(blueprint);
+	return createSchema<ShapeSchema<T>>(
+		{
+			api: { ...commonCriteria, ...shapeCriteria },
+			cast: createObject,
+			type: 'shape',
+		},
+		[
+			{
+				skipIfNull: true,
+				validate(value, path) {
+					if (value === undefined) {
+						// Will be built from its items
+						return {};
+					}
+
+					invariant(isObject(value), 'Must be a shaped object.', path);
+
+					return value;
+				},
+			},
+		],
+	).of(blueprint);
 }
