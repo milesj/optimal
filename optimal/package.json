@@ -1,0 +1,55 @@
+{
+  "name": "optimal",
+  "version": "5.0.0-alpha.0",
+  "description": "A system for building and validating defined object structures with schemas.",
+  "main": "./lib/node/index.js",
+  "browser": "./lib/browser/index.js",
+  "module": "./esm/index.js",
+  "types": "./dts/index.d.ts",
+  "keywords": [
+    "opts",
+    "options",
+    "predicate",
+    "validator",
+    "config",
+    "defaults",
+    "object",
+    "params",
+    "struct"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:milesj/optimal.git",
+    "directory": "optimal"
+  },
+  "author": {
+    "name": "Miles Johnson",
+    "url": "http://milesj.me"
+  },
+  "license": "MIT",
+  "files": [
+    "dts/**/*.d.ts",
+    "esm/**/*.{js,map}",
+    "lib/**/*.{js,map}",
+    "src/**/*.{ts,tsx,json}"
+  ],
+  "engines": {
+    "node": ">=12.17.0",
+    "npm": ">=6.13.0"
+  },
+  "funding": {
+    "type": "ko-fi",
+    "url": "https://ko-fi.com/milesjohnson"
+  },
+  "packemon": {
+    "bundle": true,
+    "format": [
+      "lib",
+      "esm"
+    ],
+    "platform": [
+      "browser",
+      "node"
+    ]
+  }
+}

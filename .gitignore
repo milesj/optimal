@@ -30,6 +30,7 @@ node_modules/
 jest.config.js
 prettier.config.js
 webpack.config.js
+*.tsbuildinfo
 
 # Yarn
 .yarn/*

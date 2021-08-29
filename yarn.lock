@@ -7723,6 +7723,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"optimal-root@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "optimal-root@workspace:."
+  dependencies:
+    "@beemo/cli": ^2.0.1
+    "@beemo/core": ^2.0.2
+    "@beemo/dev": ^1.5.0
+    "@types/node": ^15.6.1
+    packemon: ^1.4.1
+  languageName: unknown
+  linkType: soft
+
 "optimal@npm:^4.3.0":
   version: 4.3.0
   resolution: "optimal@npm:4.3.0"
@@ -7730,15 +7742,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"optimal@workspace:.":
+"optimal@workspace:optimal":
   version: 0.0.0-use.local
-  resolution: "optimal@workspace:."
-  dependencies:
-    "@beemo/cli": ^2.0.1
-    "@beemo/core": ^2.0.2
-    "@beemo/dev": ^1.5.0
-    "@types/node": ^15.6.1
-    packemon: ^1.4.1
+  resolution: "optimal@workspace:optimal"
   languageName: unknown
   linkType: soft
 
