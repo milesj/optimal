@@ -17,26 +17,29 @@ describe('number()', () => {
 	runCommonTests((defaultValue) => number(defaultValue), 123, { defaultValue: 0 });
 
 	describe('oneOf()', () => {
+		let oneOfSchema: NumberSchema<1 | 2 | 3>;
+
 		beforeEach(() => {
-			schema.oneOf([1, 2, 3]);
+			oneOfSchema = schema.oneOf([1, 2, 3]);
 		});
 
 		it('errors if a non-number is passed', () => {
 			expect(() => {
 				// @ts-expect-error Invalid type
-				schema.oneOf(['a']);
+				oneOfSchema.oneOf(['a']);
 			}).toThrow('One of requires an array of numbers.');
 		});
 
 		it('errors if number is not in list', () => {
 			expect(() => {
-				schema.validate(5);
+				// @ts-expect-error Invalid type
+				oneOfSchema.validate(5);
 			}).toThrow('Number must be one of: 1, 2, 3');
 		});
 
 		it('doesnt error if number is in list', () => {
 			expect(() => {
-				schema.validate(1);
+				oneOfSchema.validate(1);
 			}).not.toThrow();
 		});
 
@@ -45,7 +48,8 @@ describe('number()', () => {
 				'doesnt error if number is not in list',
 				runInProd(() => {
 					expect(() => {
-						schema.validate(5);
+						// @ts-expect-error Invalid type
+						oneOfSchema.validate(5);
 					}).not.toThrow();
 				}),
 			);
@@ -53,6 +57,8 @@ describe('number()', () => {
 	});
 
 	describe('between()', () => {
+		let betweenSchema: NumberSchema;
+
 		it('errors if a non-number is passed', () => {
 			expect(() => {
 				// @ts-expect-error Invalid type
@@ -62,24 +68,24 @@ describe('number()', () => {
 
 		describe('non-inclusive', () => {
 			beforeEach(() => {
-				schema.between(1, 5);
+				betweenSchema = schema.between(1, 5);
 			});
 
 			it('errors if number is out of range', () => {
 				expect(() => {
-					schema.validate(10);
+					betweenSchema.validate(10);
 				}).toThrow('Number must be between 1 and 5.');
 			});
 
 			it('errors if number is edge of range', () => {
 				expect(() => {
-					schema.validate(5);
+					betweenSchema.validate(5);
 				}).toThrow('Number must be between 1 and 5.');
 			});
 
 			it('doesnt error if number is in range', () => {
 				expect(() => {
-					schema.validate(3);
+					betweenSchema.validate(3);
 				}).not.toThrow();
 			});
 
@@ -88,7 +94,7 @@ describe('number()', () => {
 					'doesnt error if number is out of range',
 					runInProd(() => {
 						expect(() => {
-							schema.validate(10);
+							betweenSchema.validate(10);
 						}).not.toThrow();
 					}),
 				);
@@ -97,24 +103,24 @@ describe('number()', () => {
 
 		describe('inclusive', () => {
 			beforeEach(() => {
-				schema.between(1, 5, { inclusive: true });
+				betweenSchema = schema.between(1, 5, { inclusive: true });
 			});
 
 			it('errors if number is out of range', () => {
 				expect(() => {
-					schema.validate(10);
+					betweenSchema.validate(10);
 				}).toThrow('Number must be between 1 and 5 inclusive.');
 			});
 
 			it('doesnt error if number is edge of range', () => {
 				expect(() => {
-					schema.validate(5);
+					betweenSchema.validate(5);
 				}).not.toThrow();
 			});
 
 			it('doesnt error if number is in range', () => {
 				expect(() => {
-					schema.validate(3);
+					betweenSchema.validate(3);
 				}).not.toThrow();
 			});
 
@@ -123,7 +129,7 @@ describe('number()', () => {
 					'doesnt error if number is out of range',
 					runInProd(() => {
 						expect(() => {
-							schema.validate(10);
+							betweenSchema.validate(10);
 						}).not.toThrow();
 					}),
 				);
@@ -132,19 +138,21 @@ describe('number()', () => {
 	});
 
 	describe('float()', () => {
+		let floatSchema: NumberSchema;
+
 		beforeEach(() => {
-			schema.float();
+			floatSchema = schema.float();
 		});
 
 		it('errors if number is a non-float', () => {
 			expect(() => {
-				schema.validate(1);
+				floatSchema.validate(1);
 			}).toThrow('Number must be a float.');
 		});
 
 		it('doesnt error if number is a float', () => {
 			expect(() => {
-				schema.validate(1.2);
+				floatSchema.validate(1.2);
 			}).not.toThrow();
 		});
 
@@ -153,7 +161,7 @@ describe('number()', () => {
 				'doesnt error if number is a non-float',
 				runInProd(() => {
 					expect(() => {
-						schema.validate(1);
+						floatSchema.validate(1);
 					}).not.toThrow();
 				}),
 			);
@@ -161,8 +169,10 @@ describe('number()', () => {
 	});
 
 	describe('gt()', () => {
+		let gtSchema: NumberSchema;
+
 		beforeEach(() => {
-			schema.gt(10);
+			gtSchema = schema.gt(10);
 		});
 
 		it('errors if a non-number is passed', () => {
@@ -174,19 +184,19 @@ describe('number()', () => {
 
 		it('errors if number is too low', () => {
 			expect(() => {
-				schema.validate(5);
+				gtSchema.validate(5);
 			}).toThrow('Number must be greater than 10.');
 		});
 
 		it('errors if number is equal', () => {
 			expect(() => {
-				schema.validate(10);
+				gtSchema.validate(10);
 			}).toThrow('Number must be greater than 10.');
 		});
 
 		it('doesnt error if number is high enough', () => {
 			expect(() => {
-				schema.validate(15);
+				gtSchema.validate(15);
 			}).not.toThrow();
 		});
 
@@ -195,7 +205,7 @@ describe('number()', () => {
 				'doesnt error if number is too low',
 				runInProd(() => {
 					expect(() => {
-						schema.validate(5);
+						gtSchema.validate(5);
 					}).not.toThrow();
 				}),
 			);
@@ -203,25 +213,27 @@ describe('number()', () => {
 	});
 
 	describe('gte()', () => {
+		let gteSchema: NumberSchema;
+
 		beforeEach(() => {
-			schema.gte(10);
+			gteSchema = schema.gte(10);
 		});
 
 		it('errors if number is too low', () => {
 			expect(() => {
-				schema.validate(5);
+				gteSchema.validate(5);
 			}).toThrow('Number must be greater than or equal to 10.');
 		});
 
 		it('doesnt error if number is equal', () => {
 			expect(() => {
-				schema.validate(10);
+				gteSchema.validate(10);
 			}).not.toThrow();
 		});
 
 		it('doesnt error if number is high enough', () => {
 			expect(() => {
-				schema.validate(15);
+				gteSchema.validate(15);
 			}).not.toThrow();
 		});
 
@@ -230,7 +242,7 @@ describe('number()', () => {
 				'doesnt error if number is too low',
 				runInProd(() => {
 					expect(() => {
-						schema.validate(5);
+						gteSchema.validate(5);
 					}).not.toThrow();
 				}),
 			);
@@ -238,19 +250,21 @@ describe('number()', () => {
 	});
 
 	describe('int()', () => {
+		let intSchema: NumberSchema;
+
 		beforeEach(() => {
-			schema.int();
+			intSchema = schema.int();
 		});
 
 		it('errors if number is a non-integer', () => {
 			expect(() => {
-				schema.validate(1.2);
+				intSchema.validate(1.2);
 			}).toThrow('Number must be an integer.');
 		});
 
 		it('doesnt error if number is an integer', () => {
 			expect(() => {
-				schema.validate(1);
+				intSchema.validate(1);
 			}).not.toThrow();
 		});
 
@@ -259,7 +273,7 @@ describe('number()', () => {
 				'doesnt error if number is a non-integer',
 				runInProd(() => {
 					expect(() => {
-						schema.validate(1.2);
+						intSchema.validate(1.2);
 					}).not.toThrow();
 				}),
 			);
@@ -267,8 +281,10 @@ describe('number()', () => {
 	});
 
 	describe('lt()', () => {
+		let ltSchema: NumberSchema;
+
 		beforeEach(() => {
-			schema.lt(10);
+			ltSchema = schema.lt(10);
 		});
 
 		it('errors if a non-number is passed', () => {
@@ -280,19 +296,19 @@ describe('number()', () => {
 
 		it('errors if number is too high', () => {
 			expect(() => {
-				schema.validate(15);
+				ltSchema.validate(15);
 			}).toThrow('Number must be less than 10.');
 		});
 
 		it('errors if number is equal', () => {
 			expect(() => {
-				schema.validate(10);
+				ltSchema.validate(10);
 			}).toThrow('Number must be less than 10.');
 		});
 
 		it('doesnt error if number is high enough', () => {
 			expect(() => {
-				schema.validate(5);
+				ltSchema.validate(5);
 			}).not.toThrow();
 		});
 
@@ -301,7 +317,7 @@ describe('number()', () => {
 				'doesnt error if number is too high',
 				runInProd(() => {
 					expect(() => {
-						schema.validate(15);
+						ltSchema.validate(15);
 					}).not.toThrow();
 				}),
 			);
@@ -309,25 +325,27 @@ describe('number()', () => {
 	});
 
 	describe('lte()', () => {
+		let lteSchema: NumberSchema;
+
 		beforeEach(() => {
-			schema.lte(10);
+			lteSchema = schema.lte(10);
 		});
 
 		it('errors if number is too high', () => {
 			expect(() => {
-				schema.validate(15);
+				lteSchema.validate(15);
 			}).toThrow('Number must be less than or equal to 10.');
 		});
 
 		it('doesnt error if number is equal', () => {
 			expect(() => {
-				schema.validate(10);
+				lteSchema.validate(10);
 			}).not.toThrow();
 		});
 
 		it('doesnt error if number is high enough', () => {
 			expect(() => {
-				schema.validate(5);
+				lteSchema.validate(5);
 			}).not.toThrow();
 		});
 
@@ -336,7 +354,7 @@ describe('number()', () => {
 				'doesnt error if number is too high',
 				runInProd(() => {
 					expect(() => {
-						schema.validate(15);
+						lteSchema.validate(15);
 					}).not.toThrow();
 				}),
 			);
@@ -344,25 +362,27 @@ describe('number()', () => {
 	});
 
 	describe('negative()', () => {
+		let negaSchema: NumberSchema;
+
 		beforeEach(() => {
-			schema.negative();
+			negaSchema = schema.negative();
 		});
 
 		it('errors if number is positive', () => {
 			expect(() => {
-				schema.validate(10);
+				negaSchema.validate(10);
 			}).toThrow('Number must be negative.');
 		});
 
 		it('errors if number is 0', () => {
 			expect(() => {
-				schema.validate(0);
+				negaSchema.validate(0);
 			}).toThrow('Number must be negative.');
 		});
 
 		it('doesnt error if number is negative', () => {
 			expect(() => {
-				schema.validate(-10);
+				negaSchema.validate(-10);
 			}).not.toThrow();
 		});
 
@@ -371,7 +391,7 @@ describe('number()', () => {
 				'doesnt error if number is positive',
 				runInProd(() => {
 					expect(() => {
-						schema.validate(10);
+						negaSchema.validate(10);
 					}).not.toThrow();
 				}),
 			);
@@ -379,25 +399,27 @@ describe('number()', () => {
 	});
 
 	describe('positive()', () => {
+		let posiSchema: NumberSchema;
+
 		beforeEach(() => {
-			schema.positive();
+			posiSchema = schema.positive();
 		});
 
 		it('errors if number is negative', () => {
 			expect(() => {
-				schema.validate(-10);
+				posiSchema.validate(-10);
 			}).toThrow('Number must be positive.');
 		});
 
 		it('errors if number is 0', () => {
 			expect(() => {
-				schema.validate(0);
+				posiSchema.validate(0);
 			}).toThrow('Number must be positive.');
 		});
 
 		it('doesnt error if number is positive', () => {
 			expect(() => {
-				schema.validate(10);
+				posiSchema.validate(10);
 			}).not.toThrow();
 		});
 
@@ -406,7 +428,7 @@ describe('number()', () => {
 				'doesnt error if number is negative',
 				runInProd(() => {
 					expect(() => {
-						schema.validate(-10);
+						posiSchema.validate(-10);
 					}).not.toThrow();
 				}),
 			);

@@ -1,7 +1,7 @@
 import { createSchema } from '../createSchema';
 import { booleanCriteria, commonCriteria } from '../criteria';
 import { invariant } from '../helpers';
-import { CommonCriterias, Criteria, DefaultValue, Options, Schema } from '../types';
+import { CommonCriterias, DefaultValue, Options, Schema } from '../types';
 
 export interface BooleanSchema<T = boolean> extends Schema<T>, CommonCriterias<BooleanSchema<T>> {
 	never: () => BooleanSchema<never>;
@@ -11,21 +11,21 @@ export interface BooleanSchema<T = boolean> extends Schema<T>, CommonCriterias<B
 	onlyTrue: (options?: Options) => BooleanSchema<true>;
 }
 
-function validateType(): Criteria<boolean> | void {
-	return {
-		skipIfNull: true,
-		validate(value, path) {
-			invariant(typeof value === 'boolean', 'Must be a boolean.', path);
-		},
-	};
-}
-
 export function bool(defaultValue: DefaultValue<boolean> = false): BooleanSchema {
-	return createSchema({
-		cast: Boolean,
-		criteria: { ...commonCriteria, ...booleanCriteria },
-		defaultValue,
-		type: 'boolean',
-		validateType,
-	});
+	return createSchema(
+		{
+			api: { ...commonCriteria, ...booleanCriteria },
+			cast: Boolean,
+			defaultValue,
+			type: 'boolean',
+		},
+		[
+			{
+				skipIfNull: true,
+				validate(value, path) {
+					invariant(typeof value === 'boolean', 'Must be a boolean.', path);
+				},
+			},
+		],
+	);
 }

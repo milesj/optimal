@@ -25,8 +25,10 @@ describe('object()', () => {
 	);
 
 	describe('keysOf()', () => {
+		let keysOfSchema: typeof schema;
+
 		beforeEach(() => {
-			schema.keysOf(string().camelCase());
+			keysOfSchema = schema.keysOf(string().camelCase());
 		});
 
 		it('errors if a non-schema is passed', () => {
@@ -45,7 +47,7 @@ describe('object()', () => {
 
 		it('errors if key doesnt match schema', () => {
 			expect(() => {
-				schema.validate({
+				keysOfSchema.validate({
 					fooBar: '',
 					baz_qux: '',
 				});
@@ -56,19 +58,21 @@ describe('object()', () => {
 	});
 
 	describe('notEmpty()', () => {
+		let notEmptySchema: typeof schema;
+
 		beforeEach(() => {
-			schema.notEmpty();
+			notEmptySchema = schema.notEmpty();
 		});
 
 		it('errors if object is empty', () => {
 			expect(() => {
-				schema.validate({});
+				notEmptySchema.validate({});
 			}).toThrow('Object cannot be empty.');
 		});
 
 		it('doesnt error if object is non-empty', () => {
 			expect(() => {
-				schema.validate({ foo: 'bar' });
+				notEmptySchema.validate({ foo: 'bar' });
 			}).not.toThrow();
 		});
 
@@ -77,7 +81,7 @@ describe('object()', () => {
 				'errors if object is empty',
 				runInProd(() => {
 					expect(() => {
-						schema.validate({});
+						notEmptySchema.validate({});
 					}).not.toThrow();
 				}),
 			);
@@ -85,8 +89,10 @@ describe('object()', () => {
 	});
 
 	describe('sizeOf()', () => {
+		let sizeOfSchema: typeof schema;
+
 		beforeEach(() => {
-			schema.sizeOf(1);
+			sizeOfSchema = schema.sizeOf(1);
 		});
 
 		it('errors if a non-number is passed', () => {
@@ -98,19 +104,19 @@ describe('object()', () => {
 
 		it('errors if object has less properties', () => {
 			expect(() => {
-				schema.validate({});
+				sizeOfSchema.validate({});
 			}).toThrow('Object must have 1 property.');
 		});
 
 		it('errors if object has more properties', () => {
 			expect(() => {
-				schema.validate({ a: 'a', b: 'b' });
+				sizeOfSchema.validate({ a: 'a', b: 'b' });
 			}).toThrow('Object must have 1 property.');
 		});
 
 		it('doesnt error if object has exact properties', () => {
 			expect(() => {
-				schema.validate({ foo: 'bar' });
+				sizeOfSchema.validate({ foo: 'bar' });
 			}).not.toThrow();
 		});
 
@@ -119,7 +125,7 @@ describe('object()', () => {
 				'errors if object has less properties',
 				runInProd(() => {
 					expect(() => {
-						schema.validate({});
+						sizeOfSchema.validate({});
 					}).not.toThrow();
 				}),
 			);

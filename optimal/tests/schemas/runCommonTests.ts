@@ -29,6 +29,20 @@ export function runCommonTests<T>(
 		schema = factory(defaultValue!) as any;
 	});
 
+	describe('immutability', () => {
+		it('returns a different instance for each chained method', () => {
+			const otherSchema = schema.nullable();
+			const anotherSchema = schema.never();
+
+			expect(schema).not.toBe(otherSchema);
+			expect(anotherSchema).not.toBe(otherSchema);
+
+			const againSchema = (otherSchema as typeof schema).required();
+
+			expect(againSchema).not.toBe(otherSchema);
+		});
+	});
+
 	describe('default value', () => {
 		it('returns default value when undefined is passed', () => {
 			expect(schema.validate(undefined)).toEqual(defaultValue);
@@ -74,8 +88,10 @@ export function runCommonTests<T>(
 	});
 
 	describe('and()', () => {
+		let andSchema: Schema<T>;
+
 		beforeEach(() => {
-			schema.and('a', 'c');
+			andSchema = schema.and('a', 'c');
 		});
 
 		it('errors if no keys are defined', () => {
@@ -86,7 +102,7 @@ export function runCommonTests<T>(
 
 		it('errors if not all properties are defined', () => {
 			expect(() => {
-				schema.validate(value, 'a', {
+				andSchema.validate(value, 'a', {
 					a: 'a',
 					b: 'b',
 				});
@@ -96,7 +112,7 @@ export function runCommonTests<T>(
 		if (nullableByDefault) {
 			it('errors if not all properties are defined and null is passed', () => {
 				expect(() => {
-					schema.validate(null, 'a', {
+					andSchema.validate(null, 'a', {
 						a: 'a',
 						b: 'b',
 					});
@@ -106,7 +122,7 @@ export function runCommonTests<T>(
 
 		it('doesnt error if all are defined', () => {
 			expect(() => {
-				schema.validate(value, 'a', {
+				andSchema.validate(value, 'a', {
 					a: 'a',
 					b: 'b',
 					c: 'c',
@@ -117,7 +133,7 @@ export function runCommonTests<T>(
 		if (nullableByDefault) {
 			it('doesnt error if all are defined and null is passed', () => {
 				expect(() => {
-					schema.validate(null, 'a', {
+					andSchema.validate(null, 'a', {
 						a: 'a',
 						b: 'b',
 						c: 'c',
@@ -127,7 +143,7 @@ export function runCommonTests<T>(
 		} else {
 			it('errors if all are defined and null is passed', () => {
 				expect(() => {
-					schema.validate(null, 'a', {
+					andSchema.validate(null, 'a', {
 						a: 'a',
 						b: 'b',
 						c: 'c',
@@ -303,63 +319,67 @@ export function runCommonTests<T>(
 	});
 
 	describe('nullable()', () => {
+		let nullSchema: Schema<T>;
+
 		beforeEach(() => {
-			schema.nullable();
+			nullSchema = schema.nullable();
 		});
 
 		it('returns null when null is passed', () => {
-			expect(schema.validate(null)).toBeNull();
+			expect(nullSchema.validate(null)).toBeNull();
 		});
 
 		if (!skipDefaultAsserts) {
 			it('returns default value when undefined is passed', () => {
-				expect(schema.validate(undefined)).toEqual(defaultValue);
+				expect(nullSchema.validate(undefined)).toEqual(defaultValue);
 			});
 		}
 
 		it('returns value when a valid value is passed', () => {
-			expect(schema.validate(value)).toEqual(value);
+			expect(nullSchema.validate(value)).toEqual(value);
 		});
 
 		it('doesnt error when null is passed', () => {
-			expect(() => schema.validate(null)).not.toThrow();
+			expect(() => nullSchema.validate(null)).not.toThrow();
 		});
 
 		it('doesnt error when undefined is passed', () => {
-			expect(() => schema.validate(undefined)).not.toThrow();
+			expect(() => nullSchema.validate(undefined)).not.toThrow();
 		});
 
 		it('doesnt error when a valid value is passed', () => {
-			expect(() => schema.validate(value)).not.toThrow();
+			expect(() => nullSchema.validate(value)).not.toThrow();
 		});
 	});
 
 	describe('notNullable()', () => {
+		let notNullSchema: Schema<T>;
+
 		beforeEach(() => {
-			schema.notNullable();
+			notNullSchema = (schema.nullable() as typeof schema).notNullable();
 		});
 
 		it('returns value when a valid value is passed', () => {
-			expect(schema.validate(value)).toEqual(value);
+			expect(notNullSchema.validate(value)).toEqual(value);
 		});
 
 		it('errors when null is passed', () => {
-			expect(() => schema.validate(null)).toThrow('Null is not allowed.');
+			expect(() => notNullSchema.validate(null)).toThrow('Null is not allowed.');
 		});
 
 		it('doesnt error when a valid value is passed', () => {
-			expect(() => schema.validate(value)).not.toThrow();
+			expect(() => notNullSchema.validate(value)).not.toThrow();
 		});
 
 		if (!nullableByDefault) {
 			if (!skipDefaultAsserts) {
 				it('returns default value when undefined is passed', () => {
-					expect(schema.validate(undefined)).toEqual(defaultValue);
+					expect(notNullSchema.validate(undefined)).toEqual(defaultValue);
 				});
 			}
 
 			it('doesnt error when undefined is passed', () => {
-				expect(() => schema.validate(undefined)).not.toThrow();
+				expect(() => notNullSchema.validate(undefined)).not.toThrow();
 			});
 		}
 
@@ -367,28 +387,30 @@ export function runCommonTests<T>(
 			it(
 				'doesnt error when null is passed',
 				runInProd(() => {
-					expect(() => schema.validate(null)).not.toThrow();
-					expect(schema.validate(null)).toBeNull(); // How to handle?
+					expect(() => notNullSchema.validate(null)).not.toThrow();
+					expect(notNullSchema.validate(null)).toBeNull(); // How to handle?
 				}),
 			);
 		});
 	});
 
 	describe('required()', () => {
+		let reqSchema: Schema<T>;
+
 		beforeEach(() => {
-			schema.required();
+			reqSchema = schema.required();
 		});
 
 		it('returns value when a valid value is passed', () => {
-			expect(schema.validate(value)).toEqual(value);
+			expect(reqSchema.validate(value)).toEqual(value);
 		});
 
 		it('errors when undefined is passed', () => {
-			expect(() => schema.validate(undefined)).toThrow('Field is required and must be defined.');
+			expect(() => reqSchema.validate(undefined)).toThrow('Field is required and must be defined.');
 		});
 
 		it('doesnt error when a valid value is passed', () => {
-			expect(() => schema.validate(value)).not.toThrow();
+			expect(() => reqSchema.validate(value)).not.toThrow();
 		});
 
 		if (!skipDefaultAsserts) {
@@ -396,8 +418,8 @@ export function runCommonTests<T>(
 				it(
 					'doesnt error when undefined is passed',
 					runInProd(() => {
-						expect(() => schema.validate(undefined)).not.toThrow();
-						expect(schema.validate(undefined)).toEqual(defaultValue);
+						expect(() => reqSchema.validate(undefined)).not.toThrow();
+						expect(reqSchema.validate(undefined)).toEqual(defaultValue);
 					}),
 				);
 			});
@@ -405,34 +427,38 @@ export function runCommonTests<T>(
 	});
 
 	describe('notRequired()', () => {
+		let optSchema: Schema<T>;
+
 		beforeEach(() => {
-			schema.notRequired();
+			optSchema = schema.notRequired();
 		});
 
 		if (!skipDefaultAsserts) {
 			it('returns default value when undefind is passed', () => {
-				expect(schema.validate(undefined)).toEqual(defaultValue);
+				expect(optSchema.validate(undefined)).toEqual(defaultValue);
 			});
 		}
 
 		it('doesnt error when undefined is passed', () => {
-			expect(() => schema.validate(undefined)).not.toThrow();
+			expect(() => optSchema.validate(undefined)).not.toThrow();
 		});
 
 		it('doesnt error when a valid value is passed', () => {
-			expect(() => schema.validate(value)).not.toThrow();
+			expect(() => optSchema.validate(value)).not.toThrow();
 		});
 	});
 
 	if (!emptyByDefault && !skipDefaultAsserts) {
 		describe('only()', () => {
+			let onlySchema: Schema<T>;
+
 			beforeEach(() => {
-				schema.only();
+				onlySchema = schema.only();
 			});
 
 			it('doesnt error if value matches default value', () => {
 				expect(() => {
-					schema.validate(defaultValue);
+					onlySchema.validate(defaultValue);
 				}).not.toThrow();
 			});
 
@@ -450,8 +476,10 @@ export function runCommonTests<T>(
 	}
 
 	describe('or()', () => {
+		let orSchema: Schema<T>;
+
 		beforeEach(() => {
-			schema.or('a', 'b');
+			orSchema = schema.or('a', 'b');
 		});
 
 		it('errors if no keys are defined', () => {
@@ -462,19 +490,19 @@ export function runCommonTests<T>(
 
 		it('errors if not 1 option is defined', () => {
 			expect(() => {
-				schema.validate(value, 'a', {});
+				orSchema.validate(value, 'a', {});
 			}).toThrow('At least one of these fields must be defined: a, b');
 		});
 
 		it('doesnt error if at least 1 option is defined', () => {
 			expect(() => {
-				schema.validate(value, 'a', { a: 'a' });
+				orSchema.validate(value, 'a', { a: 'a' });
 			}).not.toThrow();
 		});
 
 		it('doesnt error if at least 1 option is defined that isnt the main field', () => {
 			expect(() => {
-				schema.validate(value, 'a', { b: 'b' });
+				orSchema.validate(value, 'a', { b: 'b' });
 			}).not.toThrow();
 		});
 
@@ -492,7 +520,7 @@ export function runCommonTests<T>(
 				'errors if not 1 option is defined',
 				runInProd(() => {
 					expect(() => {
-						schema.validate(value, 'a', {});
+						orSchema.validate(value, 'a', {});
 					}).not.toThrow();
 				}),
 			);
@@ -500,8 +528,10 @@ export function runCommonTests<T>(
 	});
 
 	describe('xor()', () => {
+		let xorSchema: Schema<T>;
+
 		beforeEach(() => {
-			schema.xor('b', 'c');
+			xorSchema = schema.xor('b', 'c');
 		});
 
 		it('errors if no keys are defined', () => {
@@ -512,19 +542,19 @@ export function runCommonTests<T>(
 
 		it('errors if no options are defined', () => {
 			expect(() => {
-				schema.validate(value, 'a', {});
+				xorSchema.validate(value, 'a', {});
 			}).toThrow('Only one of these fields may be defined: a, b, c');
 		});
 
 		it('errors if more than 1 option is defined', () => {
 			expect(() => {
-				schema.validate(value, 'a', { a: 'a', b: 'b' });
+				xorSchema.validate(value, 'a', { a: 'a', b: 'b' });
 			}).toThrow('Only one of these fields may be defined: a, b, c');
 		});
 
 		it('doesnt error if only 1 option is defined', () => {
 			expect(() => {
-				schema.validate(value, 'a', { a: 'a' });
+				xorSchema.validate(value, 'a', { a: 'a' });
 			}).not.toThrow();
 		});
 
@@ -542,7 +572,7 @@ export function runCommonTests<T>(
 				'doesnt error if no options are defined',
 				runInProd(() => {
 					expect(() => {
-						schema.validate(value, 'a', {});
+						xorSchema.validate(value, 'a', {});
 					}).not.toThrow();
 				}),
 			);
@@ -551,7 +581,7 @@ export function runCommonTests<T>(
 				'doesnt error if more than 1 option is defined',
 				runInProd(() => {
 					expect(() => {
-						schema.validate(value, 'a', { a: 'a', b: 'b' });
+						xorSchema.validate(value, 'a', { a: 'a', b: 'b' });
 					}).not.toThrow();
 				}),
 			);

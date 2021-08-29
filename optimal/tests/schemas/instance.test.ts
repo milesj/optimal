@@ -53,7 +53,7 @@ describe('instance()', () => {
 
 		describe('strict', () => {
 			beforeEach(() => {
-				schema.of(Foo);
+				schema = schema.of(Foo);
 			});
 
 			it('errors if the wrong class is passed', () => {
@@ -83,7 +83,7 @@ describe('instance()', () => {
 
 		describe('loose', () => {
 			beforeEach(() => {
-				schema.of(Foo, true);
+				schema = schema.of(Foo, true);
 			});
 
 			it('errors if the wrong class is passed', () => {

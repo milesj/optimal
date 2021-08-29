@@ -3,7 +3,6 @@ import { commonCriteria, numberCriteria } from '../criteria';
 import { invariant } from '../helpers';
 import {
 	CommonCriterias,
-	Criteria,
 	DefaultValue,
 	InferNullable,
 	NumberCriterias,
@@ -28,21 +27,21 @@ function cast(value: unknown): number {
 	return value === undefined ? 0 : Number(value);
 }
 
-function validateType(): Criteria<number> | void {
-	return {
-		skipIfNull: true,
-		validate(value, path) {
-			invariant(typeof value === 'number', 'Must be a number.', path);
-		},
-	};
-}
-
 export function number<T extends number>(defaultValue: DefaultValue<number> = 0): NumberSchema<T> {
-	return createSchema({
-		cast,
-		criteria: { ...commonCriteria, ...numberCriteria },
-		defaultValue,
-		type: 'number',
-		validateType,
-	});
+	return createSchema(
+		{
+			api: { ...commonCriteria, ...numberCriteria },
+			cast,
+			defaultValue,
+			type: 'number',
+		},
+		[
+			{
+				skipIfNull: true,
+				validate(value, path) {
+					invariant(typeof value === 'number', 'Must be a number.', path);
+				},
+			},
+		],
+	);
 }

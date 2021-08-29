@@ -1,5 +1,6 @@
 import { invariant } from './helpers';
 import {
+	AnySchema,
 	Criteria,
 	CriteriaFactory,
 	DefaultValueInitializer,
@@ -9,7 +10,6 @@ import {
 	SchemaState,
 	UnknownObject,
 } from './types';
-import { AnySchema } from '.';
 
 /**
  * Run all validation checks that have been enqueued and return a type casted value.
@@ -75,15 +75,10 @@ function validate<T>(
 	return value!;
 }
 
-export function createSchema<S extends AnySchema, T = InferSchemaType<S>>({
-	cast,
-	criteria,
-	defaultValue,
-	type,
-	validateType,
-}: SchemaOptions<T>): S {
-	const validators: Criteria<T>[] = [];
-
+export function createSchema<S extends AnySchema, T = InferSchemaType<S>>(
+	{ api, cast, defaultValue, type }: SchemaOptions<T>,
+	criteria: (Criteria<T> | CriteriaFactory<T>)[] = [],
+): S {
 	const state: SchemaState<T> = {
 		defaultValue,
 		metadata: {},
@@ -92,6 +87,20 @@ export function createSchema<S extends AnySchema, T = InferSchemaType<S>>({
 		required: false,
 		type,
 	};
+
+	const validators: Criteria<T>[] = [];
+
+	criteria.forEach((crit) => {
+		if (typeof crit === 'function') {
+			const validator = crit(state);
+
+			if (validator) {
+				validators.push(validator);
+			}
+		} else {
+			validators.push(crit);
+		}
+	});
 
 	const schema: Schema<T> = {
 		schema() {
@@ -107,24 +116,15 @@ export function createSchema<S extends AnySchema, T = InferSchemaType<S>>({
 		},
 	};
 
-	const resolveCriteria = (crit: CriteriaFactory<T>, args: unknown[] = []) => {
-		const validator = crit(state, ...args);
-
-		if (validator) {
-			validators.push(validator);
-		}
-
-		return schema;
-	};
-
-	if (validateType) {
-		resolveCriteria(validateType);
-	}
-
-	Object.entries(criteria).forEach(([name, crit]) => {
+	Object.entries(api).forEach(([name, method]) => {
 		Object.defineProperty(schema, name, {
 			enumerable: true,
-			value: (...args: unknown[]) => resolveCriteria(crit, args),
+			// Create a new schema so that our chainable API is immutable
+			value: (...args: unknown[]) =>
+				createSchema({ api, cast, defaultValue, type }, [
+					...criteria,
+					(nextState) => method(nextState, ...args),
+				]),
 		});
 	});
 

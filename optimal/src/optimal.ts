@@ -20,7 +20,7 @@ export function optimal<Schemas extends object>(
 	baseOpts: OptimalOptions = {},
 ): Optimal<Schemas> {
 	const options: OptimalOptions = {};
-	const schema = shape(blueprint);
+	let schema = shape(blueprint);
 
 	function configure(nextOpts: OptimalOptions) {
 		if (__DEV__ && !isObject(nextOpts)) {
@@ -28,7 +28,7 @@ export function optimal<Schemas extends object>(
 		}
 
 		Object.assign(options, nextOpts);
-		schema.exact(!options.unknown);
+		schema = schema.exact(!options.unknown);
 	}
 
 	configure(baseOpts);

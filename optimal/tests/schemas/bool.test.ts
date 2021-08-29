@@ -22,31 +22,34 @@ describe('bool()', () => {
 	});
 
 	describe('onlyFalse()', () => {
+		let falseSchema: BooleanSchema<false>;
+
 		beforeEach(() => {
-			schema.onlyFalse();
+			falseSchema = schema.onlyFalse();
 		});
 
 		it('errors if value is `true`', () => {
 			expect(() => {
-				schema.validate(true);
+				// @ts-expect-error Invalid type
+				falseSchema.validate(true);
 			}).toThrow('May only be `false`.');
 		});
 
 		it('errors if value is `null`', () => {
 			expect(() => {
-				schema.validate(null);
+				falseSchema.validate(null);
 			}).toThrow('Null is not allowed.');
 		});
 
 		it('passes if value is `false`', () => {
 			expect(() => {
-				schema.validate(false);
+				falseSchema.validate(false);
 			}).not.toThrow();
 		});
 
 		it('passes if value is undefined', () => {
 			expect(() => {
-				schema.validate(undefined);
+				falseSchema.validate(undefined);
 			}).not.toThrow();
 		});
 
@@ -55,7 +58,8 @@ describe('bool()', () => {
 				'doesnt error if value is `true`',
 				runInProd(() => {
 					expect(() => {
-						schema.validate(true);
+						// @ts-expect-error Invalid type
+						falseSchema.validate(true);
 					}).not.toThrow();
 				}),
 			);
@@ -63,31 +67,34 @@ describe('bool()', () => {
 	});
 
 	describe('onlyTrue()', () => {
+		let trueSchema: BooleanSchema<true>;
+
 		beforeEach(() => {
-			schema.onlyTrue();
+			trueSchema = schema.onlyTrue();
 		});
 
 		it('errors if value is `false`', () => {
 			expect(() => {
-				schema.validate(false);
+				// @ts-expect-error Invalid type
+				trueSchema.validate(false);
 			}).toThrow('May only be `true`.');
 		});
 
 		it('errors if value is `null`', () => {
 			expect(() => {
-				schema.validate(null);
+				trueSchema.validate(null);
 			}).toThrow('Null is not allowed.');
 		});
 
 		it('passes if value is `true`', () => {
 			expect(() => {
-				schema.validate(true);
+				trueSchema.validate(true);
 			}).not.toThrow();
 		});
 
 		it('passes if value is undefined', () => {
 			expect(() => {
-				schema.validate(undefined);
+				trueSchema.validate(undefined);
 			}).not.toThrow();
 		});
 
@@ -96,7 +103,8 @@ describe('bool()', () => {
 				'doesnt error if value is `false`',
 				runInProd(() => {
 					expect(() => {
-						schema.validate(false);
+						// @ts-expect-error Invalid type
+						trueSchema.validate(false);
 					}).not.toThrow();
 				}),
 			);

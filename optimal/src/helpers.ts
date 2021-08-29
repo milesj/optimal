@@ -34,7 +34,7 @@ export function createArray(value: unknown): unknown[] {
 		return [];
 	}
 
-	return Array.isArray(value) ? value : [value];
+	return Array.isArray(value) ? [...(value as unknown[])] : [value];
 }
 
 export function createDate(value: unknown): Date {
@@ -50,7 +50,7 @@ export function createDate(value: unknown): Date {
 }
 
 export function createObject<T = UnknownObject>(value: unknown) {
-	return (isObject(value) ? value : {}) as unknown as T;
+	return (isObject(value) ? { ...value } : {}) as unknown as T;
 }
 
 /**

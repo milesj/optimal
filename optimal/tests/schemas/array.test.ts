@@ -23,7 +23,7 @@ describe('array()', () => {
 
 	describe('notEmpty()', () => {
 		beforeEach(() => {
-			schema.notEmpty();
+			schema = schema.notEmpty();
 		});
 
 		it('errors if array is empty', () => {
@@ -52,7 +52,7 @@ describe('array()', () => {
 
 	describe('sizeOf()', () => {
 		beforeEach(() => {
-			schema.sizeOf(1);
+			schema = schema.sizeOf(1);
 		});
 
 		it('errors if a non-number is passed', () => {

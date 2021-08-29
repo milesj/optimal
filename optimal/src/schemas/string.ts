@@ -3,7 +3,6 @@ import { commonCriteria, stringCriteria } from '../criteria';
 import { invariant } from '../helpers';
 import {
 	CommonCriterias,
-	Criteria,
 	DefaultValue,
 	InferNullable,
 	Options,
@@ -28,23 +27,23 @@ function cast(value: unknown): string {
 	return value === undefined ? '' : String(value);
 }
 
-function validateType(): Criteria<string> | void {
-	return {
-		skipIfNull: true,
-		validate(value, path) {
-			invariant(typeof value === 'string', 'Must be a string.', path);
-		},
-	};
-}
-
 export function string<T extends string = string>(
 	defaultValue: DefaultValue<string> = '',
 ): StringSchema<T> {
-	return createSchema({
-		cast,
-		criteria: { ...commonCriteria, ...stringCriteria },
-		defaultValue,
-		type: 'string',
-		validateType,
-	});
+	return createSchema(
+		{
+			api: { ...commonCriteria, ...stringCriteria },
+			cast,
+			defaultValue,
+			type: 'string',
+		},
+		[
+			{
+				skipIfNull: true,
+				validate(value, path) {
+					invariant(typeof value === 'string', 'Must be a string.', path);
+				},
+			},
+		],
+	);
 }

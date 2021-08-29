@@ -5,7 +5,6 @@ import {
 	AnySchema,
 	ArrayCriterias,
 	CommonCriterias,
-	Criteria,
 	DefaultValue,
 	InferNullable,
 	InferSchemaType,
@@ -22,21 +21,21 @@ export interface ArraySchema<T = unknown[]>
 	of: <V extends AnySchema>(schema: V) => ArraySchema<InferNullable<T, InferSchemaType<V>[]>>;
 }
 
-function validateType(): Criteria<unknown[]> | void {
-	return {
-		skipIfNull: true,
-		validate(value, path) {
-			invariant(Array.isArray(value), 'Must be an array.', path);
-		},
-	};
-}
-
 export function array<T = unknown>(defaultValue: DefaultValue<T[]> = []): ArraySchema<T[]> {
-	return createSchema({
-		cast: createArray,
-		criteria: { ...commonCriteria, ...arrayCriteria },
-		defaultValue,
-		type: 'array',
-		validateType,
-	});
+	return createSchema(
+		{
+			api: { ...commonCriteria, ...arrayCriteria },
+			cast: createArray,
+			defaultValue,
+			type: 'array',
+		},
+		[
+			{
+				skipIfNull: true,
+				validate(value, path) {
+					invariant(Array.isArray(value), 'Must be an array.', path);
+				},
+			},
+		],
+	);
 }
