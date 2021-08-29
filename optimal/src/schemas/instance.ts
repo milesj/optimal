@@ -32,8 +32,8 @@ function validateType<T>(state: SchemaState<T>): Criteria<T> | void {
 	};
 }
 
-export function instance<T = Object>() {
-	return createSchema<InstanceSchema<T | null>>({
+export function instance() {
+	return createSchema<InstanceSchema<Object | null>>({
 		criteria: { ...commonCriteria, ...classCriteria },
 		defaultValue: null,
 		type: 'class',

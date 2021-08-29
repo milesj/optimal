@@ -56,39 +56,33 @@ const primitives: {
 	sn: string | null;
 	sl: 'bar' | 'baz' | 'foo';
 	sd: string;
-} = optimal(
-	{},
-	{
-		b: bool(),
-		bn: bool().nullable(),
-		bd: bool(true),
-		n: number(),
-		nn: number().nullable(),
-		nl: number().oneOf([1, 2, 3]),
-		nd: number(123),
-		s: string(),
-		sn: string().nullable(),
-		sl: string().oneOf(['foo', 'bar', 'baz']),
-		sd: string('foo'),
-	},
-);
+} = optimal({
+	b: bool(),
+	bn: bool().nullable(),
+	bd: bool(true),
+	n: number(),
+	nn: number().nullable(),
+	nl: number().oneOf<1 | 2 | 3>([1, 2, 3]),
+	nd: number(123),
+	s: string(),
+	sn: string().nullable(),
+	sl: string().oneOf<'bar' | 'baz' | 'foo'>(['foo', 'bar', 'baz']),
+	sd: string('foo'),
+}).validate({});
 
-const primitivesInferred = optimal(
-	{},
-	{
-		b: bool(),
-		bn: bool().nullable(),
-		bd: bool(true),
-		n: number(),
-		nn: number().nullable(),
-		nl: number().oneOf<1 | 2 | 3>([1, 2, 3]),
-		nd: number(123),
-		s: string(),
-		sn: string().nullable(),
-		sl: string().oneOf<'bar' | 'baz' | 'foo'>(['foo', 'bar', 'baz']),
-		sd: string('foo'),
-	},
-);
+const primitivesInferred = optimal({
+	b: bool(),
+	bn: bool().nullable(),
+	bd: bool(true),
+	n: number(),
+	nn: number().nullable(),
+	nl: number().oneOf<1 | 2 | 3>([1, 2, 3]),
+	nd: number(123),
+	s: string(),
+	sn: string().nullable(),
+	sl: string().oneOf<'bar' | 'baz' | 'foo'>(['foo', 'bar', 'baz']),
+	sd: string('foo'),
+}).validate({});
 
 const other: {
 	c: string;
@@ -99,58 +93,46 @@ const other: {
 	in: Foo;
 	d: Date | null;
 	r: RegExp | null;
-} = optimal(
-	{},
-	{
-		c: custom(() => {}, ''),
-		f: func(),
-		i: instance(),
-		ic: instance().of(Foo),
-		ir: instance().of(Foo).required(),
-		in: instance().of(Foo).notNullable(),
-		d: date(),
-		r: regex(),
-	},
-);
+} = optimal({
+	c: custom(() => {}, ''),
+	f: func(),
+	i: instance(),
+	ic: instance().of(Foo),
+	ir: instance().of(Foo).required(),
+	in: instance().of(Foo).notNullable(),
+	d: date(),
+	r: regex(),
+}).validate({});
 
-const otherInferred = optimal(
-	{},
-	{
-		c: custom(() => {}, ''),
-		f: func(),
-		i: instance(),
-		ic: instance().of(Foo),
-		ir: instance().of(Foo).required(),
-		in: instance().of(Foo).notNullable(),
-		d: date(),
-		r: regex(),
-	},
-);
+const otherInferred = optimal({
+	c: custom(() => {}, ''),
+	f: func(),
+	i: instance(),
+	ic: instance().of(Foo),
+	ir: instance().of(Foo).required(),
+	in: instance().of(Foo).notNullable(),
+	d: date(),
+	r: regex(),
+}).validate({});
 
 const funcs: {
 	opt?: (() => void) | null;
 	req: () => void;
 	isNull: (() => void) | null;
 	notNull: () => void;
-} = optimal(
-	{},
-	{
-		opt: func(),
-		req: func().required().notNullable(),
-		isNull: func().nullable(),
-		notNull: func().notNullable(),
-	},
-);
+} = optimal({
+	opt: func(),
+	req: func().required().notNullable(),
+	isNull: func().nullable(),
+	notNull: func().notNullable(),
+}).validate({});
 
-const funcsInferred = optimal(
-	{},
-	{
-		opt: func(),
-		req: func().required().notNullable(),
-		isNull: func().nullable(),
-		notNull: func().notNullable(),
-	},
-);
+const funcsInferred = optimal({
+	opt: func(),
+	req: func().required().notNullable(),
+	isNull: func().nullable(),
+	notNull: func().notNullable(),
+}).validate({});
 
 const arrays: {
 	a: unknown[];
@@ -158,27 +140,21 @@ const arrays: {
 	ac: string[];
 	an: (number | null)[] | null;
 	ad: number[];
-} = optimal(
-	{},
-	{
-		a: array(),
-		aa: array().of(array().of(string())),
-		ac: array().of(string()),
-		an: array().nullable().of(number().nullable()),
-		ad: array([1, 2, 3]).of(number()),
-	},
-);
+} = optimal({
+	a: array(),
+	aa: array().of(array().of(string())),
+	ac: array().of(string()),
+	an: array().nullable().of(number().nullable()),
+	ad: array([1, 2, 3]).of(number()),
+}).validate({});
 
-const arraysInferred = optimal(
-	{},
-	{
-		a: array(),
-		aa: array().of(array().of(string())),
-		ac: array().of(string()),
-		an: array().of(number().nullable()).nullable(),
-		ad: array([1, 2, 3]).of(number()),
-	},
-);
+const arraysInferred = optimal({
+	a: array(),
+	aa: array().of(array().of(string())),
+	ac: array().of(string()),
+	an: array().of(number().nullable()).nullable(),
+	ad: array([1, 2, 3]).of(number()),
+}).validate({});
 
 const objects: {
 	o: object;
@@ -186,27 +162,21 @@ const objects: {
 	oc: Record<string, number>;
 	on: Record<string, number | null> | null;
 	od: Record<string, string>;
-} = optimal(
-	{},
-	{
-		o: object(),
-		oo: object().of(object().of(number())),
-		oc: object().of(number()),
-		on: object().of(number().nullable()).nullable(),
-		od: object({ foo: 'bar' }).of(string()),
-	},
-);
+} = optimal({
+	o: object(),
+	oo: object().of(object().of(number())),
+	oc: object().of(number()),
+	on: object().of(number().nullable()).nullable(),
+	od: object({ foo: 'bar' }).of(string()),
+}).validate({});
 
-const objectsInferred = optimal(
-	{},
-	{
-		o: object(),
-		oo: object().of(object(number())),
-		oc: object().of(number()),
-		on: object().of(number().nullable()).nullable(),
-		od: object({ foo: 'bar' }).of(string()),
-	},
-);
+const objectsInferred = optimal({
+	o: object(),
+	oo: object().of(object(number())),
+	oc: object().of(number()),
+	on: object().of(number().nullable()).nullable(),
+	od: object({ foo: 'bar' }).of(string()),
+}).validate({});
 
 const shapes: {
 	h: {
@@ -219,52 +189,46 @@ const shapes: {
 		h1: string;
 		h2: {
 			a: number;
-			b: Function | null;
+			b: Object | null;
 			c: 'foo';
 		} | null;
 		h3: (() => void) | null;
 	};
-} = optimal(
-	{},
-	{
-		h: shape({
-			h1: string(),
-			h2: bool(),
-			h3: func(),
-			h4: string('foo'),
+} = optimal({
+	h: shape({
+		h1: string(),
+		h2: bool(),
+		h3: func(),
+		h4: string('foo'),
+	}).nullable(),
+	hn: shape({
+		h1: string(),
+		h2: shape({
+			a: number(123),
+			b: instance(),
+			c: string().oneOf<'foo'>(['foo']),
 		}).nullable(),
-		hn: shape({
-			h1: string(),
-			h2: shape({
-				a: number(123),
-				b: instance<Function>(),
-				c: string().oneOf<'foo'>(['foo']),
-			}).nullable(),
-			h3: func<() => void>(),
-		}),
-	},
-);
+		h3: func<() => void>(),
+	}),
+}).validate({});
 
-const shapesInferred = optimal(
-	{},
-	{
-		h: shape({
-			h1: string(),
-			h2: bool(),
-			h3: func(),
-			h4: string('foo'),
+const shapesInferred = optimal({
+	h: shape({
+		h1: string(),
+		h2: bool(),
+		h3: func(),
+		h4: string('foo'),
+	}).nullable(),
+	hn: shape({
+		h1: string(),
+		h2: shape({
+			a: number(123),
+			b: instance(),
+			c: string().oneOf<'foo'>(['foo']),
 		}).nullable(),
-		hn: shape({
-			h1: string(),
-			h2: shape({
-				a: number(123),
-				b: instance(),
-				c: string().oneOf<'foo'>(['foo']),
-			}).nullable(),
-			h3: func(),
-		}),
-	},
-);
+		h3: func(),
+	}),
+}).validate({});
 
 type UnionType = boolean | number | string;
 type ComplexUnionType =
@@ -276,54 +240,45 @@ const unions: {
 	a: UnionType;
 	an: UnionType | null;
 	ac: ComplexUnionType | null;
-} = optimal(
-	{},
-	{
-		a: union<UnionType>('').of([string(), bool(), number()]),
-		an: union<UnionType | null>('').of([string(), bool(), number()]).nullable(),
-		ac: union<ComplexUnionType | null>(null)
-			.of([
-				array().of(object().of(string())),
-				object().of(func()),
-				shape({
-					a: bool(),
-					b: instance().of(Foo),
-				}),
-			])
-			.nullable(),
-	},
-);
+} = optimal({
+	a: union<UnionType>('').of([string(), bool(), number()]),
+	an: union<UnionType | null>('').of([string(), bool(), number()]).nullable(),
+	ac: union<ComplexUnionType | null>(null)
+		.of([
+			array().of(object().of(string())),
+			object().of(func()),
+			shape({
+				a: bool(),
+				b: instance().of(Foo),
+			}),
+		])
+		.nullable(),
+}).validate({});
 
-const unionsInferred = optimal(
-	{},
-	{
-		a: union<UnionType>('').of([string(), bool(), number()]),
-		an: union<UnionType>('').of([string(), bool(), number()]).nullable(),
-		ac: union<ComplexUnionType | null>(null)
-			.of([
-				array().of(object().of(string())),
-				object().of(func()),
-				shape({
-					a: bool(),
-					b: instance().of(Foo),
-				}),
-			])
-			.nullable(),
-	},
-);
+const unionsInferred = optimal({
+	a: union<UnionType>('').of([string(), bool(), number()]),
+	an: union<UnionType>('').of([string(), bool(), number()]).nullable(),
+	ac: union<ComplexUnionType | null>(null)
+		.of([
+			array().of(object().of(string())),
+			object().of(func()),
+			shape({
+				a: bool(),
+				b: instance().of(Foo),
+			}),
+		])
+		.nullable(),
+}).validate({});
 
-const bp = optimal(
-	{
-		a: {
-			str: string(),
-		},
-		b: number(),
+const bp = optimal({
+	a: blueprint(),
+	b: schema(),
+}).validate({
+	a: {
+		str: string(),
 	},
-	{
-		a: blueprint(),
-		b: schema(),
-	},
-);
+	b: number(),
+});
 
 interface MaybeNeverProperty<T> {
 	foo: string;
@@ -334,41 +289,29 @@ interface MaybeNeverProperty<T> {
 type NonNeverBlueprint = Blueprint<MaybeNeverProperty<number>>;
 type NeverBlueprint = Blueprint<MaybeNeverProperty<string>>;
 
-const nonNever: MaybeNeverProperty<number> = optimal(
-	{},
-	{
-		foo: string(),
-		bar: number(),
-		baz: bool(),
-	},
-);
+const nonNever: MaybeNeverProperty<number> = optimal({
+	foo: string(),
+	bar: number(),
+	baz: bool(),
+}).validate({});
 
-const nonNeverInferred = optimal(
-	{},
-	{
-		foo: string(),
-		bar: number(),
-		baz: bool(),
-	},
-);
+const nonNeverInferred = optimal({
+	foo: string(),
+	bar: number(),
+	baz: bool(),
+}).validate({});
 
-const never: MaybeNeverProperty<string> = optimal(
-	{},
-	{
-		foo: string(),
-		bar: number().never(),
-		baz: bool(),
-	},
-);
+const never: MaybeNeverProperty<string> = optimal({
+	foo: string(),
+	bar: number().never(),
+	baz: bool(),
+}).validate({});
 
-const neverInferred = optimal(
-	{},
-	{
-		foo: string(),
-		bar: number().never(),
-		baz: bool(),
-	},
-);
+const neverInferred = optimal({
+	foo: string(),
+	bar: number().never(),
+	baz: bool(),
+}).validate({});
 
 type Keys = 'bar' | 'baz' | 'foo';
 type MappedObj<T extends string = Keys> = { [K in T]: string };
@@ -378,16 +321,6 @@ interface Mapped {
 	object: MappedObj;
 }
 
-const mapped: Mapped = optimal(
-	{},
-	{
-		object: object().of(string()),
-	},
-);
-
-const mappedInferred = optimal(
-	{},
-	{
-		object: object<string, Keys>().of(string()),
-	},
-);
+const mappedInferred = optimal({
+	object: object<string, Keys>().of(string()),
+}).validate({});

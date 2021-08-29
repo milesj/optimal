@@ -1,6 +1,6 @@
 import { isObject } from './helpers';
 import { shape } from './schemas/shape';
-import { Blueprint, UnknownObject } from './types';
+import { Blueprint, DeepPartial, UnknownObject } from './types';
 import { ValidationError } from './ValidationError';
 
 export interface OptimalOptions {
@@ -10,35 +10,51 @@ export interface OptimalOptions {
 	unknown?: boolean;
 }
 
-export function optimal<
-	Struct extends object,
-	Construct extends object = { [K in keyof Struct]?: unknown },
->(struct: Construct, blueprint: Blueprint<Struct>, options: OptimalOptions = {}): Required<Struct> {
-	if (__DEV__ && !isObject(options)) {
-		throw new TypeError('Optimal options must be a plain object.');
-	}
+export interface Optimal<T extends object> {
+	configure: (options: OptimalOptions) => void;
+	validate: (struct: DeepPartial<T>) => T;
+}
 
+export function optimal<Schemas extends object>(
+	blueprint: Blueprint<Schemas>,
+	baseOpts: OptimalOptions = {},
+): Optimal<Schemas> {
+	const options: OptimalOptions = {};
 	const schema = shape(blueprint);
-	const object = struct as UnknownObject;
 
-	if (!options.unknown) {
-		schema.exact();
-	}
-
-	try {
-		return schema.validate(struct, options.prefix ?? '', object, object) as Required<Struct>;
-	} catch (error: unknown) {
-		const invalid =
-			error instanceof ValidationError ? error : new ValidationError((error as Error).message);
-
-		if (options.name) {
-			invalid.schema = options.name;
+	function configure(nextOpts: OptimalOptions) {
+		if (__DEV__ && !isObject(nextOpts)) {
+			throw new TypeError('Optimal options must be a plain object.');
 		}
 
-		if (options.file) {
-			invalid.file = options.file;
-		}
-
-		throw invalid;
+		Object.assign(options, nextOpts);
+		schema.exact(!options.unknown);
 	}
+
+	configure(baseOpts);
+
+	return {
+		configure,
+		validate(struct) {
+			const object = struct as UnknownObject;
+
+			try {
+				return schema.validate(struct, options.prefix ?? '', object, object);
+			} catch (error: unknown) {
+				const invalid =
+					error instanceof ValidationError ? error : new ValidationError((error as Error).message);
+
+				if (options.name) {
+					invalid.schema = options.name;
+					invalid.message = `${options.name}: ${invalid.message}`;
+				}
+
+				if (options.file) {
+					invalid.file = options.file;
+				}
+
+				throw invalid;
+			}
+		},
+	};
 }

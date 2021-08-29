@@ -178,26 +178,26 @@ describe('Optimal', () => {
 	it('errors if a non-object config is passed', () => {
 		expect(() => {
 			// @ts-expect-error Invalid type
-			optimal({}, blueprint, 123);
+			optimal(blueprint, 123);
+		}).toThrowErrorMatchingInlineSnapshot(`"Optimal options must be a plain object."`);
+	});
+
+	it('errors if a non-object config is passed to configure', () => {
+		expect(() => {
+			// @ts-expect-error Invalid type
+			optimal(blueprint).configure(123);
 		}).toThrowErrorMatchingInlineSnapshot(`"Optimal options must be a plain object."`);
 	});
 
 	it('sets object keys as class properties', () => {
-		const options = optimal<{
-			foo: number;
-			bar: boolean;
-			baz: string;
-		}>(
-			{
-				foo: 123,
-				bar: true,
-			},
-			{
-				foo: number(0),
-				bar: bool(true),
-				baz: string(),
-			},
-		);
+		const options = optimal({
+			foo: number(0),
+			bar: bool(true),
+			baz: string(),
+		}).validate({
+			foo: 123,
+			bar: true,
+		});
 
 		expect(options.foo).toBe(123);
 		expect(options.bar).toBe(true);
@@ -210,7 +210,7 @@ describe('Optimal', () => {
 	});
 
 	it('sets default values', () => {
-		const options = optimal({}, blueprint);
+		const options = optimal(blueprint).validate({});
 
 		expect(options).toEqual({
 			context: process.cwd(),
@@ -243,12 +243,10 @@ describe('Optimal', () => {
 
 	it('runs checks for root level values', () => {
 		expect(() => {
-			optimal(
-				{
-					entry: 123,
-				},
-				blueprint,
-			);
+			optimal(blueprint).validate({
+				// @ts-expect-error Invalid type
+				entry: 123,
+			});
 		}).toThrowErrorMatchingInlineSnapshot(
 			`"Invalid field \\"entry\\". Value must be one of: string, array<string>, object<string | array<string>>, function."`,
 		);
@@ -256,33 +254,28 @@ describe('Optimal', () => {
 
 	it('runs checks for nested level values', () => {
 		expect(() => {
-			optimal(
-				{
-					output: {
-						crossOriginLoading: 'not-anonymous',
-					},
+			optimal(blueprint).validate({
+				output: {
+					// @ts-expect-error Invalid type
+					crossOriginLoading: 'not-anonymous',
 				},
-				blueprint,
-			);
+			});
 		}).toThrowErrorMatchingInlineSnapshot(`
-      "Invalid field \\"output.crossOriginLoading\\". Value must be one of: boolean, string. Received string with the following invalidations:
-       - Invalid field \\"output.crossOriginLoading\\". String must be one of: anonymous, use-credentials"
-    `);
+		      "Invalid field \\"output.crossOriginLoading\\". Value must be one of: boolean, string. Received string with the following invalidations:
+		       - Invalid field \\"output.crossOriginLoading\\". String must be one of: anonymous, use-credentials"
+	    `);
 	});
 
 	it('includes a custom `name` in the error message', () => {
 		expect(() => {
-			optimal(
-				{
-					entry: 123,
-				},
-				blueprint,
-				{
-					name: 'FooBar',
-				},
-			);
+			optimal(blueprint, {
+				name: 'FooBar',
+			}).validate({
+				// @ts-expect-error Invalid type
+				entry: 123,
+			});
 		}).toThrowErrorMatchingInlineSnapshot(
-			`"Invalid field \\"entry\\". Value must be one of: string, array<string>, object<string | array<string>>, function."`,
+			`"FooBar: Invalid field \\"entry\\". Value must be one of: string, array<string>, object<string | array<string>>, function."`,
 		);
 	});
 
@@ -290,20 +283,17 @@ describe('Optimal', () => {
 		it(
 			'sets and returns correct properties',
 			runInProd(() => {
-				const options = optimal(
-					{
-						entry: ['foo.js'],
-						output: {
-							hashFunction: 'sha256',
-						},
-						module: {
-							noParse: /foo/u,
-						},
-						// Invalid, should not error
-						target: 'unknown',
+				const options = optimal(blueprint).validate({
+					entry: ['foo.js'],
+					output: {
+						hashFunction: 'sha256',
 					},
-					blueprint,
-				);
+					module: {
+						noParse: /foo/u,
+					},
+					// @ts-expect-error Invalid type
+					target: 'unknown',
+				});
 
 				expect(options).toEqual({
 					context: process.cwd(),
@@ -339,43 +329,35 @@ describe('Optimal', () => {
 	describe('unknown fields', () => {
 		it('errors for unknown fields', () => {
 			expect(() => {
-				optimal(
-					{
-						foo: 123,
-						bar: 456,
-					},
-					blueprint,
-				);
+				optimal(blueprint).validate({
+					// @ts-expect-error Unknown
+					foo: 123,
+					bar: 456,
+				});
 			}).toThrowErrorMatchingInlineSnapshot(`"Unknown fields: foo, bar."`);
 		});
 
 		it('doesnt error for unknown fields if `unknown` is true', () => {
 			expect(() => {
-				optimal(
-					{
-						foo: 123,
-						bar: 456,
-					},
-					blueprint,
-					{
-						unknown: true,
-					},
-				);
+				optimal(blueprint, {
+					unknown: true,
+				}).validate({
+					// @ts-expect-error Unknown
+					foo: 123,
+					bar: 456,
+				});
 			}).not.toThrow();
 		});
 
 		it('sets unknown fields', () => {
 			expect(
-				optimal(
-					{
-						foo: 123,
-						bar: 456,
-					},
-					blueprint,
-					{
-						unknown: true,
-					},
-				),
+				optimal(blueprint, {
+					unknown: true,
+				}).validate({
+					// @ts-expect-error Unknown
+					foo: 123,
+					bar: 456,
+				}),
 			).toEqual(
 				expect.objectContaining({
 					foo: 123,
@@ -395,54 +377,39 @@ describe('Optimal', () => {
 
 			// Dont error if all are undefined
 			expect(() => {
-				optimal(
-					{},
-					{
-						foo: string('a').and('bar', 'baz'),
-						bar: string('b').and('foo', 'baz'),
-						baz: string('c').and('foo', 'bar'),
-					},
-				);
+				optimal({
+					foo: string('a').and('bar', 'baz'),
+					bar: string('b').and('foo', 'baz'),
+					baz: string('c').and('foo', 'bar'),
+				}).validate({});
 			}).not.toThrow();
 
 			expect(() => {
-				optimal(
-					{
-						foo: 'a',
-					},
-					and,
-				);
+				optimal(and).validate({
+					foo: 'a',
+				});
 			}).toThrowErrorMatchingInlineSnapshot(`"All of these fields must be defined: foo, bar, baz"`);
 
 			expect(() => {
-				optimal(
-					{
-						foo: 'a',
-						bar: 'b',
-					},
-					and,
-				);
+				optimal(and).validate({
+					foo: 'a',
+					bar: 'b',
+				});
 			}).toThrowErrorMatchingInlineSnapshot(`"All of these fields must be defined: foo, bar, baz"`);
 
 			expect(() => {
-				optimal(
-					{
-						foo: 'a',
-						baz: 'c',
-					},
-					and,
-				);
+				optimal(and).validate({
+					foo: 'a',
+					baz: 'c',
+				});
 			}).toThrowErrorMatchingInlineSnapshot(`"All of these fields must be defined: foo, bar, baz"`);
 
 			expect(() => {
-				optimal(
-					{
-						foo: 'a',
-						bar: 'b',
-						baz: 'c',
-					},
-					and,
-				);
+				optimal(and).validate({
+					foo: 'a',
+					bar: 'b',
+					baz: 'c',
+				});
 			}).not.toThrow();
 		});
 
@@ -454,47 +421,35 @@ describe('Optimal', () => {
 			};
 
 			expect(() => {
-				optimal({}, or);
+				optimal(or).validate({});
 			}).toThrowErrorMatchingInlineSnapshot(
 				`"At least one of these fields must be defined: foo, bar, baz"`,
 			);
 
 			expect(() => {
-				optimal(
-					{
-						foo: 'a',
-					},
-					or,
-				);
+				optimal(or).validate({
+					foo: 'a',
+				});
 			}).not.toThrow();
 
 			expect(() => {
-				optimal(
-					{
-						bar: 'b',
-					},
-					or,
-				);
+				optimal(or).validate({
+					bar: 'b',
+				});
 			}).not.toThrow();
 
 			expect(() => {
-				optimal(
-					{
-						baz: 'c',
-					},
-					or,
-				);
+				optimal(or).validate({
+					baz: 'c',
+				});
 			}).not.toThrow();
 
 			expect(() => {
-				optimal(
-					{
-						foo: 'a',
-						bar: 'b',
-						baz: 'c',
-					},
-					or,
-				);
+				optimal(or).validate({
+					foo: 'a',
+					bar: 'b',
+					baz: 'c',
+				});
 			}).not.toThrow();
 		});
 
@@ -506,47 +461,35 @@ describe('Optimal', () => {
 			};
 
 			expect(() => {
-				optimal({}, xor);
+				optimal(xor).validate({});
 			}).toThrowErrorMatchingInlineSnapshot(
 				`"Only one of these fields may be defined: foo, bar, baz"`,
 			);
 
 			expect(() => {
-				optimal(
-					{
-						foo: 'a',
-					},
-					xor,
-				);
+				optimal(xor).validate({
+					foo: 'a',
+				});
 			}).not.toThrow();
 
 			expect(() => {
-				optimal(
-					{
-						bar: 'b',
-					},
-					xor,
-				);
+				optimal(xor).validate({
+					bar: 'b',
+				});
 			}).not.toThrow();
 
 			expect(() => {
-				optimal(
-					{
-						baz: 'c',
-					},
-					xor,
-				);
+				optimal(xor).validate({
+					baz: 'c',
+				});
 			}).not.toThrow();
 
 			expect(() => {
-				optimal(
-					{
-						foo: 'a',
-						bar: 'b',
-						baz: 'c',
-					},
-					xor,
-				);
+				optimal(xor).validate({
+					foo: 'a',
+					bar: 'b',
+					baz: 'c',
+				});
 			}).toThrowErrorMatchingInlineSnapshot(
 				`"Only one of these fields may be defined: foo, bar, baz"`,
 			);

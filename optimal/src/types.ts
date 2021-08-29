@@ -101,7 +101,7 @@ export interface ObjectCriterias<S> {
 }
 
 export interface ShapeCriterias<S> {
-	exact: () => S;
+	exact: (state?: boolean) => S;
 }
 
 export interface StringCriterias<S> {
@@ -170,3 +170,11 @@ export type Infer<T> = T extends Schema<infer U>
 	: T extends AnySchema[]
 	? InferFromObject<T>
 	: never;
+
+export type DeepPartial<T> = T extends Function
+	? T
+	: T extends (infer U)[]
+	? DeepPartial<U>[]
+	: T extends Record<string, unknown>
+	? { [K in keyof T]?: DeepPartial<T[K]> }
+	: T | undefined;

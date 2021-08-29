@@ -5,8 +5,11 @@ import { Blueprint, Criteria, Schema, SchemaState, UnknownObject } from '../type
  * Require a shape to be an exact shape.
  * No more and no less of the same properties.
  */
-export function exact<T extends object>(state: SchemaState<T>): Criteria<T> | void {
-	state.metadata.exact = true;
+export function exact<T extends object>(
+	state: SchemaState<T>,
+	value: boolean = true,
+): Criteria<T> | void {
+	state.metadata.exact = value;
 }
 
 /**

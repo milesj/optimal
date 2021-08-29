@@ -22,7 +22,7 @@ export interface ObjectSchema<T = object>
 	never: () => ObjectSchema<never>;
 	notNullable: () => ObjectSchema<NonNullable<T>>;
 	nullable: () => ObjectSchema<T | null>;
-	of: <V extends AnySchema, K extends string = string>(
+	of: <V extends AnySchema, K extends PropertyKey = keyof T>(
 		schema: V,
 	) => ObjectSchema<InferNullable<T, Record<K, InferSchemaType<V>>>>;
 }
@@ -36,7 +36,7 @@ function validateType(): Criteria<Record<string, unknown>> | void {
 	};
 }
 
-export function object<V = unknown, K extends string = string>(
+export function object<V = unknown, K extends PropertyKey = string>(
 	defaultValue?: DefaultValue<Record<K, V>>,
 ): ObjectSchema<Record<K, V>> {
 	return createSchema({
