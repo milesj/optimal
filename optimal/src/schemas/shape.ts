@@ -36,11 +36,10 @@ function validateType(): Criteria<unknown> | void {
 	};
 }
 
-export function shape<T extends object>(blueprint: Blueprint<T>, defaultValue?: T): ShapeSchema<T> {
+export function shape<T extends object>(blueprint: Blueprint<T>): ShapeSchema<T> {
 	return createSchema<ShapeSchema<T>>({
 		cast: createObject,
 		criteria: { ...commonCriteria, ...shapeCriteria },
-		defaultValue,
 		type: 'shape',
 		validateType,
 	}).of(blueprint);
