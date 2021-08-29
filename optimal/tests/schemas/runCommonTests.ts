@@ -134,7 +134,7 @@ export function runCommonTests<T>(
 
 			schema.custom(spy).validate(value, 'key', { key: null }, { root: true });
 
-			expect(spy).toHaveBeenCalledWith(value, { key: null }, { root: true });
+			expect(spy).toHaveBeenCalledWith(value, 'key', { key: null }, { root: true });
 		});
 
 		it('catches and re-throws errors', () => {

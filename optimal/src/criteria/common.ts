@@ -39,7 +39,7 @@ export function custom<T>(state: SchemaState<T>, handler: CustomCallback<T>): Cr
 		return {
 			validate(value, path, currentObject, rootObject) {
 				try {
-					handler(value, currentObject, rootObject);
+					handler(value, path, currentObject, rootObject);
 				} catch (error: unknown) {
 					if (error instanceof Error) {
 						invariant(false, error.message, path);

@@ -38,6 +38,7 @@ export type CriteriaFactory<Input> = (
 
 export type CustomCallback<Input> = (
 	value: Input,
+	path: string,
 	currentObject: UnknownObject,
 	rootObject: UnknownObject,
 ) => void;
