@@ -1,6 +1,6 @@
 import { createSchema } from '../createSchema';
 import { commonCriteria, unionCriteria } from '../criteria';
-import { AnySchema, CommonCriterias, Schema } from '../types';
+import { AnySchema, CommonCriterias, DefaultValue, Schema } from '../types';
 
 export interface UnionSchema<T> extends Schema<T>, CommonCriterias<UnionSchema<T>> {
 	never: () => UnionSchema<never>;
@@ -10,7 +10,7 @@ export interface UnionSchema<T> extends Schema<T>, CommonCriterias<UnionSchema<T
 	of: (schemas: AnySchema[]) => UnionSchema<T>;
 }
 
-export function union<T = unknown>(defaultValue: T): UnionSchema<T> {
+export function union<T = unknown>(defaultValue: DefaultValue<T>): UnionSchema<T> {
 	return createSchema<UnionSchema<T>>({
 		criteria: { ...commonCriteria, ...unionCriteria },
 		defaultValue,

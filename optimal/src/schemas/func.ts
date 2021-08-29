@@ -1,7 +1,7 @@
 import { createSchema } from '../createSchema';
 import { commonCriteria } from '../criteria';
 import { invariant } from '../helpers';
-import { CommonCriterias, Criteria, Schema, UnknownFunction } from '../types';
+import { CommonCriterias, Criteria, DefaultValue, Schema, UnknownFunction } from '../types';
 
 export interface FunctionSchema<T = UnknownFunction>
 	extends Schema<T>,
@@ -22,7 +22,9 @@ function validateType<T>(): Criteria<T> | void {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function func<T extends (...args: any[]) => any = UnknownFunction>(defaultValue?: T) {
+export function func<T extends (...args: any[]) => any = UnknownFunction>(
+	defaultValue?: DefaultValue<T>,
+) {
 	return createSchema<FunctionSchema<T>>({
 		criteria: { ...commonCriteria },
 		defaultValue,

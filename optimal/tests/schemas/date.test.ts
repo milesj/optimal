@@ -10,7 +10,7 @@ describe('date()', () => {
 		schema = date();
 	});
 
-	runCommonTests(() => date(now), now, {
+	runCommonTests((defaultValue) => date(defaultValue), now, {
 		defaultValue: now,
 	});
 

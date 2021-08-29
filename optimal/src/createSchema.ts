@@ -2,12 +2,14 @@ import { invariant } from './helpers';
 import {
 	Criteria,
 	CriteriaFactory,
+	DefaultValueInitializer,
 	InferSchemaType,
 	Schema,
 	SchemaOptions,
 	SchemaState,
 	UnknownObject,
 } from './types';
+import { AnySchema } from '.';
 
 /**
  * Run all validation checks that have been enqueued and return a type casted value.
@@ -28,7 +30,14 @@ function validate<T>(
 
 	// Handle undefined
 	if (value === undefined) {
-		value = defaultValue;
+		value =
+			typeof defaultValue === 'function'
+				? (defaultValue as DefaultValueInitializer<T>)(
+						path,
+						currentObject,
+						rootObject ?? currentObject,
+				  )
+				: defaultValue;
 
 		if (__DEV__) {
 			invariant(!state.required, 'Field is required and must be defined.', path);
@@ -66,8 +75,7 @@ function validate<T>(
 	return value!;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function createSchema<S extends Schema<any>, T = InferSchemaType<S>>({
+export function createSchema<S extends AnySchema, T = InferSchemaType<S>>({
 	cast,
 	criteria,
 	defaultValue,

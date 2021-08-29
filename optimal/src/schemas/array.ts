@@ -6,6 +6,7 @@ import {
 	ArrayCriterias,
 	CommonCriterias,
 	Criteria,
+	DefaultValue,
 	InferNullable,
 	InferSchemaType,
 	Schema,
@@ -30,7 +31,7 @@ function validateType(): Criteria<unknown[]> | void {
 	};
 }
 
-export function array<T = unknown>(defaultValue: T[] = []): ArraySchema<T[]> {
+export function array<T = unknown>(defaultValue: DefaultValue<T[]> = []): ArraySchema<T[]> {
 	return createSchema({
 		cast: createArray,
 		criteria: { ...commonCriteria, ...arrayCriteria },

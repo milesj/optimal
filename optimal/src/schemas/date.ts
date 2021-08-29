@@ -1,7 +1,14 @@
 import { createSchema } from '../createSchema';
 import { commonCriteria, dateCriteria } from '../criteria';
 import { createDate, invariant, isValidDate } from '../helpers';
-import { CommonCriterias, Criteria, DateCriterias, MaybeDate, Schema } from '../types';
+import {
+	CommonCriterias,
+	Criteria,
+	DateCriterias,
+	DefaultValue,
+	MaybeDate,
+	Schema,
+} from '../types';
 
 export interface DateSchema<T = Date>
 	extends Schema<T, MaybeDate>,
@@ -29,7 +36,7 @@ function validateType(): Criteria<MaybeDate> | void {
 	};
 }
 
-export function date(defaultValue?: Date): DateSchema<Date> {
+export function date(defaultValue?: DefaultValue<Date>): DateSchema<Date> {
 	return createSchema({
 		cast: createDate,
 		criteria: { ...commonCriteria, ...dateCriteria },

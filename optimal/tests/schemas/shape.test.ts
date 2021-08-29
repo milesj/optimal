@@ -18,8 +18,12 @@ describe('shape()', () => {
 	});
 
 	runCommonTests(
-		// @ts-expect-error Shape mismatch
-		(defaultValue) => shape(defaultValue),
+		() =>
+			shape({
+				foo: string(),
+				bar: number(),
+				baz: bool(),
+			}),
 		{
 			foo: 'abc',
 			bar: 123,
@@ -27,9 +31,9 @@ describe('shape()', () => {
 		},
 		{
 			defaultValue: {
-				foo: string(),
-				bar: number(),
-				baz: bool(),
+				foo: '',
+				bar: 0,
+				baz: false,
 			},
 			skipDefaultAsserts: true,
 		},

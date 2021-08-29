@@ -4,6 +4,7 @@ import { invariant } from '../helpers';
 import {
 	CommonCriterias,
 	Criteria,
+	DefaultValue,
 	InferNullable,
 	NumberCriterias,
 	Options,
@@ -36,7 +37,7 @@ function validateType(): Criteria<number> | void {
 	};
 }
 
-export function number<T extends number>(defaultValue: number = 0): NumberSchema<T> {
+export function number<T extends number>(defaultValue: DefaultValue<number> = 0): NumberSchema<T> {
 	return createSchema({
 		cast,
 		criteria: { ...commonCriteria, ...numberCriteria },

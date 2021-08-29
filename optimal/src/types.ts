@@ -8,6 +8,14 @@ export type Constructor<T> = (new (...args: unknown[]) => T) | (Function & { pro
 
 export type InferNullable<P, N> = P extends null ? N | null : N;
 
+export type DefaultValueInitializer<T> = (
+	path: string,
+	currentObject: UnknownObject,
+	rootObject: UnknownObject,
+) => T;
+
+export type DefaultValue<T> = DefaultValueInitializer<T> | T;
+
 // CRITERIA
 
 export interface Options {
@@ -130,7 +138,7 @@ export interface Schema<Output, Input = Output> {
 }
 
 export interface SchemaState<T> {
-	defaultValue: T | undefined;
+	defaultValue: DefaultValue<T> | undefined;
 	metadata: UnknownObject;
 	never: boolean;
 	nullable: boolean;
@@ -141,7 +149,7 @@ export interface SchemaState<T> {
 export interface SchemaOptions<T> {
 	cast?: (value: unknown) => T;
 	criteria: Record<string, CriteriaFactory<T>>;
-	defaultValue?: T;
+	defaultValue?: DefaultValue<T>;
 	type: string;
 	validateType?: CriteriaFactory<T>;
 }

@@ -4,6 +4,7 @@ import { invariant } from '../helpers';
 import {
 	CommonCriterias,
 	Criteria,
+	DefaultValue,
 	InferNullable,
 	Options,
 	Schema,
@@ -36,7 +37,9 @@ function validateType(): Criteria<string> | void {
 	};
 }
 
-export function string<T extends string = string>(defaultValue: string = ''): StringSchema<T> {
+export function string<T extends string = string>(
+	defaultValue: DefaultValue<string> = '',
+): StringSchema<T> {
 	return createSchema({
 		cast,
 		criteria: { ...commonCriteria, ...stringCriteria },

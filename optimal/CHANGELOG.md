@@ -26,6 +26,8 @@ changelog will use the new verbiage, but may affect previous APIs.
 - Added `date()`, `schema()` schemas.
 - Added `createSchema()` function for creating custom schemas.
 - Added `createPredicate()` function for creating boolean return checkers.
+- Added custom messages to all schema methods through a `message` option.
+- Added lazy default value initializer callbacks to all methods.
 
 #### 🛠 Internals
 

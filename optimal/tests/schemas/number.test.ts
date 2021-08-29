@@ -9,7 +9,7 @@ describe('number()', () => {
 		schema = number();
 	});
 
-	runCommonTests(() => number(), 123, { defaultValue: 0 });
+	runCommonTests((defaultValue) => number(defaultValue), 123, { defaultValue: 0 });
 
 	describe('oneOf()', () => {
 		beforeEach(() => {

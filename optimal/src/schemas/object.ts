@@ -5,6 +5,7 @@ import {
 	AnySchema,
 	CommonCriterias,
 	Criteria,
+	DefaultValue,
 	InferNullable,
 	InferSchemaType,
 	ObjectCriterias,
@@ -33,7 +34,7 @@ function validateType(): Criteria<Record<string, unknown>> | void {
 }
 
 export function object<V = unknown, K extends string = string>(
-	defaultValue?: Record<K, V>,
+	defaultValue?: DefaultValue<Record<K, V>>,
 ): ObjectSchema<Record<K, V>> {
 	return createSchema({
 		cast: createObject,

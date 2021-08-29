@@ -28,7 +28,7 @@ describe('tuple()', () => {
 			]),
 		[['a', 'b', 'c'], true, 3, { a: 1 }, 'baz'],
 		{
-			defaultValue: [[], false, 1, {}, 'foo'],
+			defaultValue: [[], true, 1, {}, 'foo'],
 			skipDefaultAsserts: true,
 		},
 	);

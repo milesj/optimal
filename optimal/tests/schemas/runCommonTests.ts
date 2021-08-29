@@ -1,4 +1,4 @@
-import { CommonCriterias, Schema } from '../../src';
+import { CommonCriterias, DefaultValue, Schema } from '../../src';
 import { runInProd } from '../helpers';
 
 interface TestCriterias<S> extends CommonCriterias<S> {
@@ -9,7 +9,7 @@ interface TestCriterias<S> extends CommonCriterias<S> {
 
 // eslint-disable-next-line jest/no-export
 export function runCommonTests<T>(
-	factory: (initialValue?: T) => CommonCriterias<Schema<T | null>> & Schema<T | null>,
+	factory: (initialValue?: DefaultValue<T>) => CommonCriterias<Schema<T | null>> & Schema<T | null>,
 	value: T | null,
 	{
 		defaultValue,
@@ -19,12 +19,58 @@ export function runCommonTests<T>(
 		skipDefaultAsserts?: boolean;
 	},
 ) {
+	const optionalByDefault = defaultValue === undefined;
 	const nullableByDefault = defaultValue === null;
+	const emptyByDefault = nullableByDefault || optionalByDefault;
 	let schema: Schema<T> & TestCriterias<Schema<T>>;
 
 	// eslint-disable-next-line jest/require-top-level-describe
 	beforeEach(() => {
 		schema = factory(defaultValue!) as any;
+	});
+
+	describe('default value', () => {
+		it('returns default value when undefined is passed', () => {
+			expect(schema.validate(undefined)).toEqual(defaultValue);
+		});
+
+		it('can lazy load the default value through a callback function', () => {
+			schema = factory(() => defaultValue!) as any;
+
+			expect(schema.validate(undefined)).toEqual(defaultValue);
+		});
+
+		if (!emptyByDefault && !skipDefaultAsserts) {
+			it('passes the current path and objects to the lazy callback function', () => {
+				const spy = jest.fn().mockReturnValue(defaultValue);
+
+				schema = factory(spy) as any;
+				schema.validate(
+					undefined,
+					'key.deep',
+					{ foo: '' },
+					{
+						key: {
+							deep: {
+								foo: '',
+							},
+						},
+					},
+				);
+
+				expect(spy).toHaveBeenCalledWith(
+					'key.deep',
+					{ foo: '' },
+					{
+						key: {
+							deep: {
+								foo: '',
+							},
+						},
+					},
+				);
+			});
+		}
 	});
 
 	describe('and()', () => {
@@ -305,7 +351,7 @@ export function runCommonTests<T>(
 			expect(() => schema.validate(value)).not.toThrow();
 		});
 
-		if (defaultValue !== null) {
+		if (!nullableByDefault) {
 			if (!skipDefaultAsserts) {
 				it('returns default value when undefined is passed', () => {
 					expect(schema.validate(undefined)).toEqual(defaultValue);
@@ -378,7 +424,7 @@ export function runCommonTests<T>(
 		});
 	});
 
-	if (defaultValue !== null && defaultValue !== undefined && !skipDefaultAsserts) {
+	if (!emptyByDefault && !skipDefaultAsserts) {
 		describe('only()', () => {
 			beforeEach(() => {
 				schema.only();
@@ -511,6 +557,4 @@ export function runCommonTests<T>(
 			);
 		});
 	});
-
-	describe('validate()', () => {});
 }
