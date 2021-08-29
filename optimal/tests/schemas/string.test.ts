@@ -310,13 +310,13 @@ describe('string()', () => {
 					// @ts-expect-error Testing wrong type
 					123,
 				);
-			}).toThrowErrorMatchingInlineSnapshot(`"One of requires a non-empty array of strings."`);
+			}).toThrowErrorMatchingInlineSnapshot(`"One of requires an array of strings."`);
 		});
 
 		it('errors if array is empty', () => {
 			expect(() => {
 				schema.oneOf([]);
-			}).toThrowErrorMatchingInlineSnapshot(`"One of requires a non-empty array of strings."`);
+			}).toThrowErrorMatchingInlineSnapshot(`"One of requires an array of strings."`);
 		});
 
 		it('errors if array contains a non-string', () => {
@@ -326,13 +326,19 @@ describe('string()', () => {
 					// @ts-expect-error Testing wrong type
 					123,
 				]);
-			}).toThrowErrorMatchingInlineSnapshot(`"One of requires a non-empty array of strings."`);
+			}).toThrowErrorMatchingInlineSnapshot(`"One of requires an array of strings."`);
 		});
 
 		it('errors if value is not in the list', () => {
 			expect(() => {
 				schema.validate('qux');
 			}).toThrowErrorMatchingInlineSnapshot(`"String must be one of: foo, bar, baz"`);
+		});
+
+		it('errors if an empty value is provided', () => {
+			expect(() => {
+				schema.oneOf(['']);
+			}).not.toThrow();
 		});
 
 		it('doesnt error if value contains token', () => {

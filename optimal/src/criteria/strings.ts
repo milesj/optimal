@@ -130,8 +130,8 @@ export function oneOf(
 ): Criteria<string> | void {
 	if (__DEV__) {
 		invariant(
-			Array.isArray(list) && list.length > 0 && list.every((item) => isValidString(item)),
-			'One of requires a non-empty array of strings.',
+			Array.isArray(list) && list.length > 0 && list.every((item) => typeof item === 'string'),
+			'One of requires an array of strings.',
 		);
 
 		return {
