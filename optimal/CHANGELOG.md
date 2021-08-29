@@ -12,6 +12,7 @@ changelog will use the new verbiage, but may affect previous APIs.
 - Updated `func()` to not be nullable by default. Instead uses `undefined`.
 - Updated `instance()` to no longer accept a schema as an argument, use `instance().of()` instead.
 - Updated `object()` to no longer accept a schema as an argument, use `object().of()` instead.
+- Updated `union()` to no longer accept a list of schemas as an argument, use `union().of()` instead.
 - Renamed `Schema#nonNullable()` method to `notNullable()`.
 - Removed `Schema#key()` method.
 - Removed `Schema#message()` method.

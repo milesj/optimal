@@ -279,38 +279,36 @@ const unions: {
 } = optimal(
 	{},
 	{
-		a: union<UnionType>([string(), bool(), number()], ''),
-		an: union<UnionType | null>([string(), bool(), number()], '').nullable(),
-		ac: union<ComplexUnionType | null>(
-			[
+		a: union<UnionType>('').of([string(), bool(), number()]),
+		an: union<UnionType | null>('').of([string(), bool(), number()]).nullable(),
+		ac: union<ComplexUnionType | null>(null)
+			.of([
 				array().of(object().of(string())),
 				object().of(func()),
 				shape({
 					a: bool(),
 					b: instance().of(Foo),
 				}),
-			],
-			null,
-		),
+			])
+			.nullable(),
 	},
 );
 
 const unionsInferred = optimal(
 	{},
 	{
-		a: union<UnionType>([string(), bool(), number()], ''),
-		an: union<UnionType>([string(), bool(), number()], '').nullable(),
-		ac: union<ComplexUnionType | null>(
-			[
+		a: union<UnionType>('').of([string(), bool(), number()]),
+		an: union<UnionType>('').of([string(), bool(), number()]).nullable(),
+		ac: union<ComplexUnionType | null>(null)
+			.of([
 				array().of(object().of(string())),
 				object().of(func()),
 				shape({
 					a: bool(),
 					b: instance().of(Foo),
 				}),
-			],
-			null,
-		),
+			])
+			.nullable(),
 	},
 );
 

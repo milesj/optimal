@@ -21,12 +21,15 @@ describe('Optimal', () => {
 
 	// This blueprint is based on Webpack's configuration: https://webpack.js.org/configuration/
 	// Webpack provides a pretty robust example of how to use this library.
-	const primitive = union<PrimitiveType>([string(), number(), bool()], false);
+	const primitive = union<PrimitiveType>(false).of([string(), number(), bool()]);
 
-	const condition = union<ConditionType>(
-		[string(), func(), regex(), array().of(regex()), object().of(regex())],
-		'',
-	);
+	const condition = union<ConditionType>('').of([
+		string(),
+		func(),
+		regex(),
+		array().of(regex()),
+		object().of(regex()),
+	]);
 
 	const rule = shape({
 		enforce: string('post').oneOf<'post' | 'pre'>(['pre', 'post']),
@@ -36,16 +39,13 @@ describe('Optimal', () => {
 		parser: object().of(bool()),
 		resource: condition,
 		use: array().of(
-			union<object | string>(
-				[
-					string(),
-					shape({
-						loader: string(),
-						options: object(primitive),
-					}),
-				],
-				[],
-			),
+			union<object | string>([]).of([
+				string(),
+				shape({
+					loader: string(),
+					options: object(primitive),
+				}),
+			]),
 		),
 	});
 
@@ -65,32 +65,30 @@ describe('Optimal', () => {
 
 	const blueprint = {
 		context: string(process.cwd()),
-		entry: union<EntryType>(
-			[
+		entry: union<EntryType>([])
+			.of([
 				string(),
 				array().of(string()),
-				object().of(union([string(), array().of(string())], '')),
+				object().of(union('').of([string(), array().of(string())])),
 				func(),
-			],
-			[],
-		).nullable(),
+			])
+			.nullable(),
 		output: shape({
 			chunkFilename: string('[id].js'),
 			chunkLoadTimeout: number(120_000),
-			crossOriginLoading: union<CrossOriginType | false>(
-				[
-					bool(false).only(),
-					string('anonymous').oneOf<CrossOriginType>(['anonymous', 'use-credentials']),
-				],
-				false,
-			),
+			crossOriginLoading: union<CrossOriginType | false>(false).of([
+				bool(false).only(),
+				string('anonymous').oneOf<CrossOriginType>(['anonymous', 'use-credentials']),
+			]),
 			filename: string('bundle.js'),
 			hashFunction: string('md5').oneOf<HashType>(['md5', 'sha256', 'sha512']),
 			path: string(),
 			publicPath: string(),
 		}),
 		module: shape({
-			noParse: union<NoParseType | null>([regex(), array().of(regex()), func()], null).nullable(),
+			noParse: union<NoParseType | null>(null)
+				.of([regex(), array().of(regex()), func()])
+				.nullable(),
 			rules: array().of(rule),
 		}),
 		resolve: shape({
@@ -111,7 +109,10 @@ describe('Optimal', () => {
 		]),
 		watch: bool(false),
 		node: object().of(
-			union<NodeType | boolean>([bool(), string('mock').oneOf<NodeType>(['mock', 'empty'])], false),
+			union<NodeType | boolean>(false).of([
+				bool(),
+				string('mock').oneOf<NodeType>(['mock', 'empty']),
+			]),
 		),
 	};
 
