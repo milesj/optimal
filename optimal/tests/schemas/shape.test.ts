@@ -53,20 +53,22 @@ describe('shape()', () => {
 	);
 
 	describe('exact()', () => {
+		let exactSchema: typeof schema;
+
 		beforeEach(() => {
-			schema.exact();
+			exactSchema = schema.exact();
 		});
 
 		it('errors if unknown properties passed', () => {
 			expect(() => {
 				// @ts-expect-error Invalid type
-				schema.validate({ foo: '', bar: 0, baz: true, qux: 'unknown' });
+				exactSchema.validate({ foo: '', bar: 0, baz: true, qux: 'unknown' });
 			}).toThrow('Unknown fields: qux.');
 		});
 
 		it('doesnt error if exact properties', () => {
 			expect(() => {
-				schema.validate({ foo: '', bar: 0, baz: true });
+				exactSchema.validate({ foo: '', bar: 0, baz: true });
 			}).not.toThrow();
 		});
 
@@ -75,7 +77,7 @@ describe('shape()', () => {
 				'errors if less properties',
 				runInProd(() => {
 					expect(() => {
-						schema.validate({});
+						exactSchema.validate({});
 					}).not.toThrow();
 				}),
 			);

@@ -24,13 +24,15 @@ describe('string()', () => {
 	});
 
 	describe('camelCase()', () => {
+		let camelSchema: StringSchema;
+
 		beforeEach(() => {
-			schema.camelCase();
+			camelSchema = schema.camelCase();
 		});
 
 		it('errors if less than 2 characters', () => {
 			expect(() => {
-				schema.validate('a');
+				camelSchema.validate('a');
 			}).toThrowErrorMatchingInlineSnapshot(
 				`"String must be in camel case. (pattern \\"^[a-z][a-zA-Z0-9]+$\\")"`,
 			);
@@ -38,7 +40,7 @@ describe('string()', () => {
 
 		it('errors if starts with a number', () => {
 			expect(() => {
-				schema.validate('1');
+				camelSchema.validate('1');
 			}).toThrowErrorMatchingInlineSnapshot(
 				`"String must be in camel case. (pattern \\"^[a-z][a-zA-Z0-9]+$\\")"`,
 			);
@@ -46,7 +48,7 @@ describe('string()', () => {
 
 		it('errors if in kebab case', () => {
 			expect(() => {
-				schema.validate(kebabCase);
+				camelSchema.validate(kebabCase);
 			}).toThrowErrorMatchingInlineSnapshot(
 				`"String must be in camel case. (pattern \\"^[a-z][a-zA-Z0-9]+$\\")"`,
 			);
@@ -54,7 +56,7 @@ describe('string()', () => {
 
 		it('errors if in pascal case', () => {
 			expect(() => {
-				schema.validate(pascalCase);
+				camelSchema.validate(pascalCase);
 			}).toThrowErrorMatchingInlineSnapshot(
 				`"String must be in camel case. (pattern \\"^[a-z][a-zA-Z0-9]+$\\")"`,
 			);
@@ -62,7 +64,7 @@ describe('string()', () => {
 
 		it('errors if in snake case', () => {
 			expect(() => {
-				schema.validate(snakeCase);
+				camelSchema.validate(snakeCase);
 			}).toThrowErrorMatchingInlineSnapshot(
 				`"String must be in camel case. (pattern \\"^[a-z][a-zA-Z0-9]+$\\")"`,
 			);
@@ -70,83 +72,86 @@ describe('string()', () => {
 
 		it('passes if in camel case', () => {
 			expect(() => {
-				schema.validate(camelCase);
+				camelSchema.validate(camelCase);
 			}).not.toThrow();
 		});
 
 		it('errors if `null`', () => {
 			expect(() => {
-				schema.validate(null);
+				camelSchema.validate(null);
 			}).toThrowErrorMatchingInlineSnapshot(`"Null is not allowed."`);
 		});
 
 		it('returns `null` if nullable', () => {
-			expect(schema.nullable().validate(null)).toBeNull();
+			expect(camelSchema.nullable().validate(null)).toBeNull();
 		});
 	});
 
 	describe('contains()', () => {
+		let containsSchema: StringSchema;
+
 		beforeEach(() => {
-			schema.contains('oo');
+			containsSchema = schema.contains('oo');
 		});
 
 		it('errors if token is not string', () => {
 			expect(() => {
 				// @ts-expect-error Testing wrong type
-				schema.contains(123);
+				containsSchema.contains(123);
 			}).toThrowErrorMatchingInlineSnapshot(`"Contains requires a non-empty token."`);
 		});
 
 		it('errors if token is an empty string', () => {
 			expect(() => {
-				schema.contains('');
+				containsSchema.contains('');
 			}).toThrowErrorMatchingInlineSnapshot(`"Contains requires a non-empty token."`);
 		});
 
 		it('errors if value does not contain token', () => {
 			expect(() => {
-				schema.validate('bar');
+				containsSchema.validate('bar');
 			}).toThrowErrorMatchingInlineSnapshot(`"String does not include \\"oo\\"."`);
 		});
 
 		it('errors if value matches default value and predicate is required', () => {
 			expect(() => {
-				schema.required();
-				schema.validate('');
+				containsSchema.required().validate('');
 			}).toThrowErrorMatchingInlineSnapshot(`"String does not include \\"oo\\"."`);
 		});
 
 		it('doesnt error if value matches default value and predicate is optional', () => {
 			expect(() => {
-				schema.validate('');
+				containsSchema.validate('');
 			}).not.toThrow();
 		});
 
 		it('doesnt error if value contains token', () => {
 			expect(() => {
-				schema.validate('foo');
+				containsSchema.validate('foo');
 			}).not.toThrow();
 		});
 
 		it('errors if `null`', () => {
 			expect(() => {
-				schema.validate(null);
+				containsSchema.validate(null);
 			}).toThrowErrorMatchingInlineSnapshot(`"Null is not allowed."`);
 		});
 
 		it('returns `null` if nullable', () => {
-			expect(schema.nullable().validate(null)).toBeNull();
+			expect(containsSchema.nullable().validate(null)).toBeNull();
 		});
 	});
 
 	describe('kebabCase()', () => {
+		let kebabSchema: StringSchema;
+
 		beforeEach(() => {
-			schema.kebabCase();
+			kebabSchema = schema.kebabCase();
 		});
 
 		it('errors if less than 2 characters', () => {
 			expect(() => {
-				schema.validate('a');
+				kebabSchema.validate('a');
 			}).toThrowErrorMatchingInlineSnapshot(
 				`"String must be in kebab case. (pattern \\"^[a-z][a-z0-9-]+$\\")"`,
 			);
@@ -154,7 +159,7 @@ describe('string()', () => {
 
 		it('errors if starts with a number', () => {
 			expect(() => {
-				schema.validate('1');
+				kebabSchema.validate('1');
 			}).toThrowErrorMatchingInlineSnapshot(
 				`"String must be in kebab case. (pattern \\"^[a-z][a-z0-9-]+$\\")"`,
 			);
@@ -162,7 +167,7 @@ describe('string()', () => {
 
 		it('errors if in camel case', () => {
 			expect(() => {
-				schema.validate(camelCase);
+				kebabSchema.validate(camelCase);
 			}).toThrowErrorMatchingInlineSnapshot(
 				`"String must be in kebab case. (pattern \\"^[a-z][a-z0-9-]+$\\")"`,
 			);
@@ -170,7 +175,7 @@ describe('string()', () => {
 
 		it('errors if in pascal case', () => {
 			expect(() => {
-				schema.validate(pascalCase);
+				kebabSchema.validate(pascalCase);
 			}).toThrowErrorMatchingInlineSnapshot(
 				`"String must be in kebab case. (pattern \\"^[a-z][a-z0-9-]+$\\")"`,
 			);
@@ -178,7 +183,7 @@ describe('string()', () => {
 
 		it('errors if in snake case', () => {
 			expect(() => {
-				schema.validate(snakeCase);
+				kebabSchema.validate(snakeCase);
 			}).toThrowErrorMatchingInlineSnapshot(
 				`"String must be in kebab case. (pattern \\"^[a-z][a-z0-9-]+$\\")"`,
 			);
@@ -186,52 +191,56 @@ describe('string()', () => {
 
 		it('passes if in kebab case', () => {
 			expect(() => {
-				schema.validate(kebabCase);
+				kebabSchema.validate(kebabCase);
 			}).not.toThrow();
 		});
 
 		it('errors if `null`', () => {
 			expect(() => {
-				schema.validate(null);
+				kebabSchema.validate(null);
 			}).toThrowErrorMatchingInlineSnapshot(`"Null is not allowed."`);
 		});
 
 		it('returns `null` if nullable', () => {
-			expect(schema.nullable().validate(null)).toBeNull();
+			expect(kebabSchema.nullable().validate(null)).toBeNull();
 		});
 	});
 
 	describe('lowerCase()', () => {
+		let lowerSchema: StringSchema;
+
 		beforeEach(() => {
-			schema.lowerCase();
+			lowerSchema = schema.lowerCase();
 		});
 
 		it('errors if value is not lower case', () => {
 			expect(() => {
-				schema.validate('FooBar');
+				lowerSchema.validate('FooBar');
 			}).toThrowErrorMatchingInlineSnapshot(`"String must be lower cased."`);
 		});
 
 		it('doesnt error if value is lower case', () => {
 			expect(() => {
-				schema.validate('foobar');
+				lowerSchema.validate('foobar');
 			}).not.toThrow();
 		});
 
 		it('errors if `null`', () => {
 			expect(() => {
-				schema.validate(null);
+				lowerSchema.validate(null);
 			}).toThrowErrorMatchingInlineSnapshot(`"Null is not allowed."`);
 		});
 
 		it('returns `null` if nullable', () => {
-			expect(schema.nullable().validate(null)).toBeNull();
+			expect(lowerSchema.nullable().validate(null)).toBeNull();
 		});
 	});
 
 	describe('match()', () => {
+		let matchSchema: StringSchema;
+
 		beforeEach(() => {
-			schema.match(/oo/u);
+			matchSchema = schema.match(/oo/u);
 		});
 
 		it('errors if pattern is not a regex', () => {
@@ -245,68 +254,70 @@ describe('string()', () => {
 
 		it('errors if value does not match pattern', () => {
 			expect(() => {
-				schema.validate('bar');
+				matchSchema.validate('bar');
 			}).toThrowErrorMatchingInlineSnapshot(`"String does not match. (pattern \\"oo\\")"`);
 		});
 
 		it('errors if value matches default value and predicate is required', () => {
 			expect(() => {
-				schema.required();
-				schema.validate('');
+				matchSchema.required().validate('');
 			}).toThrowErrorMatchingInlineSnapshot(`"String does not match. (pattern \\"oo\\")"`);
 		});
 
 		it('doesnt error if value matches default value and predicate is optional', () => {
 			expect(() => {
-				schema.validate('');
+				matchSchema.validate('');
 			}).not.toThrow();
 		});
 
 		it('doesnt error if value matches pattern', () => {
 			expect(() => {
-				schema.validate('foo');
+				matchSchema.validate('foo');
 			}).not.toThrow();
 		});
 
 		it('errors if `null`', () => {
 			expect(() => {
-				schema.validate(null);
+				matchSchema.validate(null);
 			}).toThrowErrorMatchingInlineSnapshot(`"Null is not allowed."`);
 		});
 
 		it('returns `null` if nullable', () => {
-			expect(schema.nullable().validate(null)).toBeNull();
+			expect(matchSchema.nullable().validate(null)).toBeNull();
 		});
 	});
 
 	describe('notEmpty()', () => {
+		let notEmptySchema: StringSchema;
+
 		beforeEach(() => {
-			schema.notEmpty();
+			notEmptySchema = schema.notEmpty();
 		});
 
 		it('errors if value is empty', () => {
 			expect(() => {
-				schema.validate('');
+				notEmptySchema.validate('');
 			}).toThrowErrorMatchingInlineSnapshot(`"String cannot be empty."`);
 		});
 
 		it('deosnt error if value is not empty', () => {
 			expect(() => {
-				schema.validate('foo');
+				notEmptySchema.validate('foo');
 			}).not.toThrow();
 		});
 
 		it('doesnt error if null', () => {
 			expect(() => {
-				schema.nullable();
-				schema.validate(null);
+				notEmptySchema.nullable().validate(null);
 			}).not.toThrow();
 		});
 	});
 
 	describe('oneOf()', () => {
+		let oneOfSchema: StringSchema<'bar' | 'baz' | 'foo'>;
+
 		beforeEach(() => {
-			schema.oneOf(['foo', 'bar', 'baz']);
+			oneOfSchema = schema.oneOf(['foo', 'bar', 'baz']);
 		});
 
 		it('errors if not an array', () => {
@@ -334,43 +345,46 @@ describe('string()', () => {
 			}).toThrowErrorMatchingInlineSnapshot(`"One of requires an array of strings."`);
 		});
 
-		it('errors if value is not in the list', () => {
-			expect(() => {
-				schema.validate('qux');
-			}).toThrowErrorMatchingInlineSnapshot(`"String must be one of: foo, bar, baz"`);
-		});
-
-		it('errors if an empty value is provided', () => {
+		it('doesnt error if an empty value is provided', () => {
 			expect(() => {
 				schema.oneOf(['']);
 			}).not.toThrow();
 		});
 
+		it('errors if value is not in the list', () => {
+			expect(() => {
+				// @ts-expect-error Invalid type
+				oneOfSchema.validate('qux');
+			}).toThrowErrorMatchingInlineSnapshot(`"String must be one of: foo, bar, baz"`);
+		});
+
 		it('doesnt error if value contains token', () => {
 			expect(() => {
-				schema.validate('foo');
+				oneOfSchema.validate('foo');
 			}).not.toThrow();
 		});
 
 		it('errors if `null`', () => {
 			expect(() => {
-				schema.validate(null);
+				oneOfSchema.validate(null);
 			}).toThrowErrorMatchingInlineSnapshot(`"Null is not allowed."`);
 		});
 
 		it('returns `null` if nullable', () => {
-			expect(schema.nullable().validate(null)).toBeNull();
+			expect(oneOfSchema.nullable().validate(null)).toBeNull();
 		});
 	});
 
 	describe('pascalCase()', () => {
+		let pascalSchema: StringSchema;
+
 		beforeEach(() => {
-			schema.pascalCase();
+			pascalSchema = schema.pascalCase();
 		});
 
 		it('errors if less than 2 characters', () => {
 			expect(() => {
-				schema.validate('A');
+				pascalSchema.validate('A');
 			}).toThrowErrorMatchingInlineSnapshot(
 				`"String must be in pascal case. (pattern \\"^[A-Z][a-zA-Z0-9]+$\\")"`,
 			);
@@ -378,7 +392,7 @@ describe('string()', () => {
 
 		it('errors if starts with a number', () => {
 			expect(() => {
-				schema.validate('1');
+				pascalSchema.validate('1');
 			}).toThrowErrorMatchingInlineSnapshot(
 				`"String must be in pascal case. (pattern \\"^[A-Z][a-zA-Z0-9]+$\\")"`,
 			);
@@ -386,7 +400,7 @@ describe('string()', () => {
 
 		it('errors if in camel case', () => {
 			expect(() => {
-				schema.validate(camelCase);
+				pascalSchema.validate(camelCase);
 			}).toThrowErrorMatchingInlineSnapshot(
 				`"String must be in pascal case. (pattern \\"^[A-Z][a-zA-Z0-9]+$\\")"`,
 			);
@@ -394,7 +408,7 @@ describe('string()', () => {
 
 		it('errors if in kebab case', () => {
 			expect(() => {
-				schema.validate(kebabCase);
+				pascalSchema.validate(kebabCase);
 			}).toThrowErrorMatchingInlineSnapshot(
 				`"String must be in pascal case. (pattern \\"^[A-Z][a-zA-Z0-9]+$\\")"`,
 			);
@@ -402,7 +416,7 @@ describe('string()', () => {
 
 		it('errors if in snake case', () => {
 			expect(() => {
-				schema.validate(snakeCase);
+				pascalSchema.validate(snakeCase);
 			}).toThrowErrorMatchingInlineSnapshot(
 				`"String must be in pascal case. (pattern \\"^[A-Z][a-zA-Z0-9]+$\\")"`,
 			);
@@ -410,57 +424,61 @@ describe('string()', () => {
 
 		it('passes if in pascal case', () => {
 			expect(() => {
-				schema.validate(pascalCase);
+				pascalSchema.validate(pascalCase);
 			}).not.toThrow();
 		});
 
 		it('errors if `null`', () => {
 			expect(() => {
-				schema.validate(null);
+				pascalSchema.validate(null);
 			}).toThrowErrorMatchingInlineSnapshot(`"Null is not allowed."`);
 		});
 
 		it('returns `null` if nullable', () => {
-			expect(schema.nullable().validate(null)).toBeNull();
+			expect(pascalSchema.nullable().validate(null)).toBeNull();
 		});
 	});
 
 	describe('sizeOf()', () => {
+		let sizeOfSchema: StringSchema;
+
 		beforeEach(() => {
-			schema.sizeOf(3);
+			sizeOfSchema = schema.sizeOf(3);
 		});
 
 		it('errors if length doesnt match', () => {
 			expect(() => {
-				schema.validate('');
+				sizeOfSchema.validate('');
 			}).toThrowErrorMatchingInlineSnapshot(`"String length must be 3."`);
 		});
 
 		it('doesnt error if length matches', () => {
 			expect(() => {
-				schema.validate('abc');
+				sizeOfSchema.validate('abc');
 			}).not.toThrow();
 		});
 
 		it('errors if `null`', () => {
 			expect(() => {
-				schema.validate(null);
+				sizeOfSchema.validate(null);
 			}).toThrowErrorMatchingInlineSnapshot(`"Null is not allowed."`);
 		});
 
 		it('returns `null` if nullable', () => {
-			expect(schema.nullable().validate(null)).toBeNull();
+			expect(sizeOfSchema.nullable().validate(null)).toBeNull();
 		});
 	});
 
 	describe('snakeCase()', () => {
+		let snakeSchema: StringSchema;
+
 		beforeEach(() => {
-			schema.snakeCase();
+			snakeSchema = schema.snakeCase();
 		});
 
 		it('errors if less than 2 characters', () => {
 			expect(() => {
-				schema.validate('a');
+				snakeSchema.validate('a');
 			}).toThrowErrorMatchingInlineSnapshot(
 				`"String must be in snake case. (pattern \\"^[a-z][a-z0-9_]+$\\")"`,
 			);
@@ -468,7 +486,7 @@ describe('string()', () => {
 
 		it('errors if starts with a number', () => {
 			expect(() => {
-				schema.validate('1');
+				snakeSchema.validate('1');
 			}).toThrowErrorMatchingInlineSnapshot(
 				`"String must be in snake case. (pattern \\"^[a-z][a-z0-9_]+$\\")"`,
 			);
@@ -476,7 +494,7 @@ describe('string()', () => {
 
 		it('errors if in camel case', () => {
 			expect(() => {
-				schema.validate(camelCase);
+				snakeSchema.validate(camelCase);
 			}).toThrowErrorMatchingInlineSnapshot(
 				`"String must be in snake case. (pattern \\"^[a-z][a-z0-9_]+$\\")"`,
 			);
@@ -484,7 +502,7 @@ describe('string()', () => {
 
 		it('errors if in kebab case', () => {
 			expect(() => {
-				schema.validate(kebabCase);
+				snakeSchema.validate(kebabCase);
 			}).toThrowErrorMatchingInlineSnapshot(
 				`"String must be in snake case. (pattern \\"^[a-z][a-z0-9_]+$\\")"`,
 			);
@@ -492,7 +510,7 @@ describe('string()', () => {
 
 		it('errors if in pascal case', () => {
 			expect(() => {
-				schema.validate(pascalCase);
+				snakeSchema.validate(pascalCase);
 			}).toThrowErrorMatchingInlineSnapshot(
 				`"String must be in snake case. (pattern \\"^[a-z][a-z0-9_]+$\\")"`,
 			);
@@ -500,46 +518,48 @@ describe('string()', () => {
 
 		it('passes if in snake case', () => {
 			expect(() => {
-				schema.validate(snakeCase);
+				snakeSchema.validate(snakeCase);
 			}).not.toThrow();
 		});
 
 		it('errors if `null`', () => {
 			expect(() => {
-				schema.validate(null);
+				snakeSchema.validate(null);
 			}).toThrowErrorMatchingInlineSnapshot(`"Null is not allowed."`);
 		});
 
 		it('returns `null` if nullable', () => {
-			expect(schema.nullable().validate(null)).toBeNull();
+			expect(snakeSchema.nullable().validate(null)).toBeNull();
 		});
 	});
 
 	describe('upperCase()', () => {
+		let upperSchema: StringSchema;
+
 		beforeEach(() => {
-			schema.upperCase();
+			upperSchema = schema.upperCase();
 		});
 
 		it('errors if value is not upper case', () => {
 			expect(() => {
-				schema.validate('FooBar');
+				upperSchema.validate('FooBar');
 			}).toThrowErrorMatchingInlineSnapshot(`"String must be upper cased."`);
 		});
 
 		it('doesnt error if value is upper case', () => {
 			expect(() => {
-				schema.validate('FOOBAR');
+				upperSchema.validate('FOOBAR');
 			}).not.toThrow();
 		});
 
 		it('errors if `null`', () => {
 			expect(() => {
-				schema.validate(null);
+				upperSchema.validate(null);
 			}).toThrowErrorMatchingInlineSnapshot(`"Null is not allowed."`);
 		});
 
 		it('returns `null` if nullable', () => {
-			expect(schema.nullable().validate(null)).toBeNull();
+			expect(upperSchema.nullable().validate(null)).toBeNull();
 		});
 	});
 
