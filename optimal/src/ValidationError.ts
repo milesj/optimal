@@ -1,13 +1,13 @@
 export class ValidationError extends Error {
-	errors: ValidationError[] = [];
+	path: string;
 
-	file: string = '';
+	value: unknown;
 
-	schema: string = '';
-
-	constructor(message: string) {
+	constructor(message: string, path: string, value: unknown) {
 		super(message);
 
 		this.name = 'ValidationError';
+		this.path = path;
+		this.value = value;
 	}
 }

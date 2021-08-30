@@ -1,4 +1,5 @@
 import { isObject } from './helpers';
+import { OptimalError } from './OptimalError';
 import { shape } from './schemas/shape';
 import { Blueprint, DeepPartial, UnknownObject } from './types';
 import { ValidationError } from './ValidationError';
@@ -41,12 +42,17 @@ export function optimal<Schemas extends object>(
 			try {
 				return schema.validate(struct, options.prefix ?? '', object, object);
 			} catch (error: unknown) {
-				const invalid =
-					error instanceof ValidationError ? error : new ValidationError((error as Error).message);
+				let invalid: OptimalError;
+
+				if (error instanceof OptimalError) {
+					invalid = error;
+				} else {
+					invalid = new OptimalError();
+					invalid.errors.push(error as ValidationError);
+				}
 
 				if (options.name) {
 					invalid.schema = options.name;
-					invalid.message = `${options.name}: ${invalid.message}`;
 				}
 
 				if (options.file) {

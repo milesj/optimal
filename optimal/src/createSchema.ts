@@ -1,4 +1,5 @@
 import { invariant } from './helpers';
+import { OptimalError } from './OptimalError';
 import {
 	AnySchema,
 	Criteria,
@@ -10,6 +11,7 @@ import {
 	SchemaState,
 	UnknownObject,
 } from './types';
+import { ValidationError } from './ValidationError';
 
 /**
  * Run all validation checks that have been enqueued and return a type casted value.
@@ -57,7 +59,9 @@ function validate<T>(
 	}
 
 	// Run validations and produce a new value
-	validators.forEach((test) => {
+	const schemaError = new OptimalError();
+
+	validators.some((test) => {
 		if (
 			(test.skipIfNull && value === null) ||
 			(test.skipIfOptional && !state.required && value === state.defaultValue)
@@ -65,12 +69,28 @@ function validate<T>(
 			return;
 		}
 
-		const result = test.validate(value!, path, currentObject, rootObject ?? currentObject);
+		try {
+			const result = test.validate(value!, path, currentObject, rootObject ?? currentObject);
 
-		if (result !== undefined) {
-			value = result as T;
+			if (result !== undefined) {
+				value = result as T;
+			}
+
+			return false;
+		} catch (error: unknown) {
+			if (error instanceof ValidationError) {
+				schemaError.errors.push(error);
+			} else {
+				throw error;
+			}
+
+			return true;
 		}
 	});
+
+	if (schemaError.errors.length > 0) {
+		throw schemaError;
+	}
 
 	return value!;
 }
