@@ -1,6 +1,6 @@
 import { createSchema } from '../createSchema';
 import { commonCriteria } from '../criteria';
-import { invariant } from '../helpers';
+import { invalid } from '../helpers';
 import { CommonCriterias, DefaultValue, Schema, UnknownFunction } from '../types';
 
 export interface FunctionSchema<T = UnknownFunction>
@@ -26,7 +26,7 @@ export function func<T extends (...args: any[]) => any = UnknownFunction>(
 				skipIfNull: true,
 				skipIfOptional: true,
 				validate(value, path) {
-					invariant(typeof value === 'function', 'Must be a function.', path);
+					invalid(typeof value === 'function', 'Must be a function.', path, value);
 				},
 			},
 		],

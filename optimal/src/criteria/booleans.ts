@@ -1,4 +1,4 @@
-import { invariant } from '../helpers';
+import { invalid } from '../helpers';
 import { Criteria, Options, SchemaState } from '../types';
 
 /**
@@ -13,7 +13,7 @@ export function onlyFalse(
 	if (__DEV__) {
 		return {
 			validate(value, path) {
-				invariant(!value, options.message ?? 'May only be `false`.', path);
+				invalid(!value, options.message ?? 'May only be `false`.', path, value);
 			},
 		};
 	}
@@ -31,7 +31,7 @@ export function onlyTrue(
 	if (__DEV__) {
 		return {
 			validate(value, path) {
-				invariant(value, options.message ?? 'May only be `true`.', path);
+				invalid(value, options.message ?? 'May only be `true`.', path, value);
 			},
 		};
 	}

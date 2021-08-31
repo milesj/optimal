@@ -1,6 +1,6 @@
 import { createSchema } from '../createSchema';
 import { commonCriteria } from '../criteria';
-import { CommonCriterias, CustomCallback, DefaultValue, Schema } from '../types';
+import { CommonCriterias, CriteriaValidator, DefaultValue, Schema } from '../types';
 
 export interface CustomSchema<T> extends Schema<T>, CommonCriterias<CustomSchema<T>> {
 	never: () => CustomSchema<never>;
@@ -8,10 +8,10 @@ export interface CustomSchema<T> extends Schema<T>, CommonCriterias<CustomSchema
 	nullable: () => CustomSchema<T | null>;
 }
 
-export function custom<T>(callback: CustomCallback<T>, defaultValue?: DefaultValue<T>) {
+export function custom<T>(validator: CriteriaValidator<T>, defaultValue?: DefaultValue<T>) {
 	return createSchema<CustomSchema<T>>({
 		api: { ...commonCriteria },
 		defaultValue,
 		type: 'custom',
-	}).custom(callback);
+	}).custom(validator);
 }

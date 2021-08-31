@@ -1,5 +1,4 @@
 import { bool, BooleanSchema, Infer } from '../../src';
-import { runInProd } from '../helpers';
 import { runCommonTests } from './runCommonTests';
 
 describe('bool()', () => {
@@ -52,18 +51,6 @@ describe('bool()', () => {
 				falseSchema.validate(undefined);
 			}).not.toThrow();
 		});
-
-		describe('production', () => {
-			it(
-				'doesnt error if value is `true`',
-				runInProd(() => {
-					expect(() => {
-						// @ts-expect-error Invalid type
-						falseSchema.validate(true);
-					}).not.toThrow();
-				}),
-			);
-		});
 	});
 
 	describe('onlyTrue()', () => {
@@ -97,18 +84,6 @@ describe('bool()', () => {
 				trueSchema.validate(undefined);
 			}).not.toThrow();
 		});
-
-		describe('production', () => {
-			it(
-				'doesnt error if value is `false`',
-				runInProd(() => {
-					expect(() => {
-						// @ts-expect-error Invalid type
-						trueSchema.validate(false);
-					}).not.toThrow();
-				}),
-			);
-		});
 	});
 
 	describe('type()', () => {
@@ -135,18 +110,6 @@ describe('bool()', () => {
 			expect(() => {
 				schema.validate(null);
 			}).toThrow('Null is not allowed.');
-		});
-
-		describe('production', () => {
-			it(
-				'doesnt error if a non-boolean is passed',
-				runInProd(() => {
-					expect(() => {
-						// @ts-expect-error Invalid type
-						schema.validate({});
-					}).not.toThrow();
-				}),
-			);
 		});
 	});
 });

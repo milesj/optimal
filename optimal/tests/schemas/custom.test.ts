@@ -1,11 +1,10 @@
-import { custom, CustomCallback, CustomSchema, Infer } from '../../src';
-import { runInProd } from '../helpers';
+import { CriteriaValidator, custom, CustomSchema, Infer } from '../../src';
 import { runCommonTests } from './runCommonTests';
 
 describe('custom()', () => {
 	let schema: CustomSchema<string>;
 
-	const cb: CustomCallback<string> = (value) => {
+	const cb: CriteriaValidator<string> = (value) => {
 		if (typeof value !== 'string' && value !== null) {
 			throw new TypeError('Must be a string!!!');
 		}
@@ -66,18 +65,6 @@ describe('custom()', () => {
 				// @ts-expect-error Invalid type
 				schema.validate(123);
 			}).toThrow('Must be a string!!!');
-		});
-
-		describe('production', () => {
-			it(
-				'doesnt error if a non-string is passed',
-				runInProd(() => {
-					expect(() => {
-						// @ts-expect-error Invalid type
-						schema.validate(123);
-					}).not.toThrow();
-				}),
-			);
 		});
 	});
 });

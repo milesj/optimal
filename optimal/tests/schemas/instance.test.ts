@@ -1,5 +1,4 @@
 import { Infer, instance, InstanceSchema } from '../../src';
-import { runInProd } from '../helpers';
 import { runCommonTests } from './runCommonTests';
 
 describe('instance()', () => {
@@ -110,27 +109,6 @@ describe('instance()', () => {
 				}).not.toThrow();
 			});
 		});
-
-		describe('production', () => {
-			it(
-				'doesnt error if invalid value is passed',
-				runInProd(() => {
-					expect(() => {
-						// @ts-expect-error Invalid type
-						schema.of(new Foo());
-					}).not.toThrow();
-				}),
-			);
-
-			it(
-				'doesnt error if the wrong class is passed',
-				runInProd(() => {
-					expect(() => {
-						schema.validate(new Bar());
-					}).not.toThrow();
-				}),
-			);
-		});
 	});
 
 	describe('type()', () => {
@@ -167,17 +145,6 @@ describe('instance()', () => {
 			expect(() => {
 				schema.validate(null);
 			}).not.toThrow();
-		});
-
-		describe('production', () => {
-			it(
-				'doesnt error if a plain object is passed',
-				runInProd(() => {
-					expect(() => {
-						schema.validate({});
-					}).not.toThrow();
-				}),
-			);
 		});
 	});
 });

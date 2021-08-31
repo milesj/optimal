@@ -1,4 +1,5 @@
-import { invariant } from './helpers';
+import { invalid, tryAndCollect } from './helpers';
+import { OptimalError } from './OptimalError';
 import {
 	AnySchema,
 	Criteria,
@@ -8,7 +9,7 @@ import {
 	Schema,
 	SchemaOptions,
 	SchemaState,
-	UnknownObject,
+	SchemaValidateOptions,
 } from './types';
 
 /**
@@ -21,8 +22,11 @@ function validate<T>(
 	validators: Criteria<T>[],
 	initialValue: T | null | undefined,
 	path: string = '',
-	currentObject: UnknownObject = {},
-	rootObject?: UnknownObject,
+	{
+		collectErrors = true,
+		currentObject = {},
+		rootObject = currentObject,
+	}: SchemaValidateOptions = {},
 ): T | null {
 	const { defaultValue, metadata } = state;
 
@@ -32,15 +36,11 @@ function validate<T>(
 	if (value === undefined) {
 		value =
 			typeof defaultValue === 'function'
-				? (defaultValue as DefaultValueInitializer<T>)(
-						path,
-						currentObject,
-						rootObject ?? currentObject,
-				  )
+				? (defaultValue as DefaultValueInitializer<T>)(path, currentObject, rootObject)
 				: defaultValue;
 
 		if (__DEV__) {
-			invariant(!state.required, 'Field is required and must be defined.', path);
+			invalid(!state.required, 'Field is required and must be defined.', path);
 		}
 	} else if (__DEV__) {
 		if (metadata.deprecatedMessage) {
@@ -48,15 +48,17 @@ function validate<T>(
 			console.info(`Field "${path}" is deprecated. ${metadata.deprecatedMessage}`);
 		}
 
-		invariant(!state.never, 'Field should never be used.', path);
+		invalid(!state.never, 'Field should never be used.', path);
 	}
 
 	// Handle null
 	if (__DEV__ && value === null) {
-		invariant(state.nullable, 'Null is not allowed.', path);
+		invalid(state.nullable, 'Null is not allowed.', path);
 	}
 
 	// Run validations and produce a new value
+	const optimalError = new OptimalError();
+
 	validators.forEach((test) => {
 		if (
 			(test.skipIfNull && value === null) ||
@@ -65,12 +67,26 @@ function validate<T>(
 			return;
 		}
 
-		const result = test.validate(value!, path, currentObject, rootObject ?? currentObject);
+		tryAndCollect(
+			() => {
+				const result = test.validate(value!, path, {
+					collectErrors,
+					currentObject,
+					rootObject,
+				});
 
-		if (result !== undefined) {
-			value = result as T;
-		}
+				if (result !== undefined) {
+					value = result as T;
+				}
+			},
+			optimalError,
+			collectErrors,
+		);
 	});
+
+	if (optimalError.errors.length > 0) {
+		throw optimalError;
+	}
 
 	return value!;
 }
@@ -109,8 +125,8 @@ export function createSchema<S extends AnySchema, T = InferSchemaType<S>>(
 		type() {
 			return state.type;
 		},
-		validate(value, path, currentObject, rootObject) {
-			const result = validate(state, validators, value, path, currentObject, rootObject)!;
+		validate(value, path, options) {
+			const result = validate(state, validators, value, path, options)!;
 
 			return cast && result !== null ? cast(result) : result;
 		},

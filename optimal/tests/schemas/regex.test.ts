@@ -1,5 +1,4 @@
 import { Infer, InstanceSchema, regex } from '../../src';
-import { runInProd } from '../helpers';
 import { runCommonTests } from './runCommonTests';
 
 describe('regex()', () => {
@@ -47,18 +46,6 @@ describe('regex()', () => {
 			expect(() => {
 				schema.validate(null);
 			}).not.toThrow();
-		});
-
-		describe('production', () => {
-			it(
-				'doesnt error if a plain object is passed',
-				runInProd(() => {
-					expect(() => {
-						// @ts-expect-error Invalid type
-						schema.validate({});
-					}).not.toThrow();
-				}),
-			);
 		});
 	});
 });

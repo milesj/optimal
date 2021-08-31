@@ -1,5 +1,4 @@
 import { bool, Infer, number, shape, ShapeSchema, string } from '../../src';
-import { runInProd } from '../helpers';
 import { runCommonTests } from './runCommonTests';
 
 describe('shape()', () => {
@@ -71,17 +70,6 @@ describe('shape()', () => {
 				exactSchema.validate({ foo: '', bar: 0, baz: true });
 			}).not.toThrow();
 		});
-
-		describe('production', () => {
-			it(
-				'errors if less properties',
-				runInProd(() => {
-					expect(() => {
-						exactSchema.validate({});
-					}).not.toThrow();
-				}),
-			);
-		});
 	});
 
 	describe('type()', () => {
@@ -122,18 +110,6 @@ describe('shape()', () => {
 				// @ts-expect-error Invalid type
 				schema.validate(123);
 			}).toThrow('Must be a shaped object.');
-		});
-
-		describe('production', () => {
-			it(
-				'doesnt error if a non-string is passed',
-				runInProd(() => {
-					expect(() => {
-						// @ts-expect-error Invalid type
-						schema.validate(123);
-					}).not.toThrow();
-				}),
-			);
 		});
 	});
 });

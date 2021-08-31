@@ -1,6 +1,6 @@
 import { createSchema } from '../createSchema';
 import { commonCriteria, shapeCriteria } from '../criteria';
-import { createObject, invariant, isObject } from '../helpers';
+import { createObject, invalid, isObject } from '../helpers';
 import { Blueprint, CommonCriterias, InferNullable, Schema, ShapeCriterias } from '../types';
 
 export interface ShapeSchema<T>
@@ -30,7 +30,7 @@ export function shape<T extends object>(blueprint: Blueprint<T>): ShapeSchema<T>
 						return {};
 					}
 
-					invariant(isObject(value), 'Must be a shaped object.', path);
+					invalid(isObject(value), 'Must be a shaped object.', path, value);
 
 					return value;
 				},

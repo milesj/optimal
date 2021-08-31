@@ -1,4 +1,5 @@
 import { Constructor, Schema, UnknownObject } from './types';
+import { ValidationError } from './ValidationError';
 
 export function isObject(value: unknown): value is object {
 	return !!value && typeof value === 'object' && !Array.isArray(value);
@@ -88,13 +89,26 @@ export function instanceOf<T = unknown>(object: unknown, contract: Constructor<T
 	return false;
 }
 
-export function invariant(condition: boolean, message: string, path: string = '') {
-	if (__DEV__) {
-		if (condition) {
-			return;
-		}
+export function invalid(
+	condition: boolean,
+	message: string,
+	path: string = '',
+	value: unknown = undefined,
+) {
+	if (condition) {
+		return;
+	}
 
-		throw new Error(`${path ? `Invalid field "${path}".` : ''} ${message}`.trim());
+	throw new ValidationError(message, path, value);
+}
+
+export function invariant(condition: boolean, message: string) {
+	if (condition) {
+		return;
+	}
+
+	if (__DEV__) {
+		throw new Error(message);
 	}
 }
 
@@ -111,7 +125,37 @@ export function logUnknown(unknownFields: object, pathPrefix?: string) {
 }
 
 export function pathKey(path: string): string {
+	if (path.endsWith(']')) {
+		const index = path.lastIndexOf('[');
+
+		return index > 0 ? path.slice(index) : path;
+	}
+
 	const index = path.lastIndexOf('.');
 
 	return index > 0 ? path.slice(index + 1) : path;
+}
+
+export function tryAndCollect(
+	validator: () => boolean | void,
+	validError: ValidationError,
+	collectErrors?: boolean,
+): boolean {
+	let result = false;
+
+	try {
+		const value = validator();
+
+		if (typeof value === 'boolean') {
+			result = value;
+		}
+	} catch (error: unknown) {
+		if (error instanceof Error && collectErrors) {
+			validError.addError(error);
+		} else {
+			throw error;
+		}
+	}
+
+	return result;
 }

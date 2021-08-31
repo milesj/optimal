@@ -29,8 +29,7 @@ export interface InclusiveOptions extends Options {
 export type CriteriaValidator<Input> = (
 	value: Input,
 	path: string,
-	currentObject: UnknownObject,
-	rootObject: UnknownObject,
+	options: SchemaValidateOptions,
 ) => unknown;
 
 export interface Criteria<Input> {
@@ -44,16 +43,9 @@ export type CriteriaFactory<Input> = (
 	...args: any[]
 ) => Criteria<Input> | void;
 
-export type CustomCallback<Input> = (
-	value: Input,
-	path: string,
-	currentObject: UnknownObject,
-	rootObject: UnknownObject,
-) => void;
-
 export interface CommonCriterias<S> {
 	and: (...keys: string[]) => S;
-	custom: (callback: CustomCallback<InferSchemaType<S>>) => S;
+	custom: (callback: CriteriaValidator<InferSchemaType<S>>) => S;
 	deprecate: (message: string) => S;
 	notRequired: () => S;
 	only: () => S;
@@ -121,14 +113,19 @@ export interface StringCriterias<S> {
 
 // SCHEMAS
 
+export interface SchemaValidateOptions {
+	collectErrors?: boolean;
+	currentObject?: UnknownObject;
+	rootObject?: UnknownObject;
+}
+
 export interface Schema<Output, Input = Output> {
 	schema: () => string;
 	type: () => string;
 	validate: (
 		value: Input | null | undefined,
 		path?: string,
-		currentObject?: UnknownObject,
-		rootObject?: UnknownObject,
+		options?: SchemaValidateOptions,
 	) => Output;
 }
 

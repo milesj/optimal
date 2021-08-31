@@ -1,5 +1,4 @@
 import { array, ArraySchema, bool, Infer, number, object, string } from '../../src';
-import { runInProd } from '../helpers';
 import { runCommonTests } from './runCommonTests';
 
 describe('array()', () => {
@@ -37,17 +36,6 @@ describe('array()', () => {
 				schema.validate(['foo']);
 			}).not.toThrow();
 		});
-
-		describe('production', () => {
-			it(
-				'errors if array is empty',
-				runInProd(() => {
-					expect(() => {
-						schema.validate([]);
-					}).not.toThrow();
-				}),
-			);
-		});
 	});
 
 	describe('sizeOf()', () => {
@@ -78,17 +66,6 @@ describe('array()', () => {
 			expect(() => {
 				schema.validate(['foo']);
 			}).not.toThrow();
-		});
-
-		describe('production', () => {
-			it(
-				'errors if array has less items',
-				runInProd(() => {
-					expect(() => {
-						schema.validate([]);
-					}).not.toThrow();
-				}),
-			);
 		});
 	});
 
@@ -134,19 +111,7 @@ describe('array()', () => {
 			expect(() => {
 				// @ts-expect-error Invalid type
 				schema.validate([123]);
-			}).toThrow('Invalid field "[0]". Must be a string.');
-		});
-
-		describe('production', () => {
-			it(
-				'doesnt error if a non-string is passed',
-				runInProd(() => {
-					expect(() => {
-						// @ts-expect-error Invalid type
-						schema.validate(123);
-					}).not.toThrow();
-				}),
-			);
+			}).toThrow('Must be a string.');
 		});
 	});
 });

@@ -12,7 +12,6 @@ import {
 	string,
 	union,
 } from '../src';
-import { runInProd } from './helpers';
 
 class Plugin {}
 
@@ -247,9 +246,10 @@ describe('Optimal', () => {
 				// @ts-expect-error Invalid type
 				entry: 123,
 			});
-		}).toThrowErrorMatchingInlineSnapshot(
-			`"Invalid field \\"entry\\". Value must be one of: string, array<string>, object<string | array<string>>, function."`,
-		);
+		}).toThrowErrorMatchingInlineSnapshot(`
+		"The following validations have failed:
+		  - Invalid field \\"entry\\". Value must be one of: string, array<string>, object<string | array<string>>, function."
+	`);
 	});
 
 	it('runs checks for nested level values', () => {
@@ -261,9 +261,47 @@ describe('Optimal', () => {
 				},
 			});
 		}).toThrowErrorMatchingInlineSnapshot(`
-		      "Invalid field \\"output.crossOriginLoading\\". Value must be one of: boolean, string. Received string with the following invalidations:
-		       - Invalid field \\"output.crossOriginLoading\\". String must be one of: anonymous, use-credentials"
-	    `);
+		"The following validations have failed:
+		  - Invalid field \\"output\\". The following validations have failed:
+		    - Invalid field \\"crossOriginLoading\\". Received string with the following failures:
+		      - String must be one of: anonymous, use-credentials"
+	`);
+	});
+
+	it('collects multiple errors from anywhere in the object', () => {
+		const data = {
+			entry: 123,
+			output: {
+				crossOriginLoading: 'not-anonymous',
+				publicPath: 123,
+			},
+			resolve: {
+				alias: [],
+			},
+			target: 'what',
+		};
+
+		expect(() => {
+			// @ts-expect-error Invalid types
+			optimal(blueprint).validate(data);
+		}).toThrowErrorMatchingInlineSnapshot(`
+		"The following validations have failed:
+		  - Invalid field \\"entry\\". Value must be one of: string, array<string>, object<string | array<string>>, function.
+		  - Invalid field \\"output\\". The following validations have failed:
+		    - Invalid field \\"crossOriginLoading\\". Received string with the following failures:
+		      - String must be one of: anonymous, use-credentials
+		    - Invalid field \\"publicPath\\". Must be a string.
+		  - Invalid field \\"resolve\\". The following validations have failed:
+		    - Invalid field \\"alias\\". Must be a plain object.
+		  - Invalid field \\"target\\". String must be one of: async-node, electron-main, electron-renderer, node, node-webkit, web, webworker"
+	`);
+
+		expect(() => {
+			// @ts-expect-error Invalid types
+			optimal(blueprint).validate(data, { collectErrors: false });
+		}).toThrowErrorMatchingInlineSnapshot(
+			`"Invalid field \\"entry\\". Value must be one of: string, array<string>, object<string | array<string>>, function."`,
+		);
 	});
 
 	it('includes a custom `name` in the error message', () => {
@@ -274,56 +312,10 @@ describe('Optimal', () => {
 				// @ts-expect-error Invalid type
 				entry: 123,
 			});
-		}).toThrowErrorMatchingInlineSnapshot(
-			`"FooBar: Invalid field \\"entry\\". Value must be one of: string, array<string>, object<string | array<string>>, function."`,
-		);
-	});
-
-	describe('production', () => {
-		it(
-			'sets and returns correct properties',
-			runInProd(() => {
-				const options = optimal(blueprint).validate({
-					entry: ['foo.js'],
-					output: {
-						hashFunction: 'sha256',
-					},
-					module: {
-						noParse: /foo/u,
-					},
-					// @ts-expect-error Invalid type
-					target: 'unknown',
-				});
-
-				expect(options).toEqual({
-					context: process.cwd(),
-					entry: ['foo.js'],
-					output: {
-						chunkFilename: '[id].js',
-						chunkLoadTimeout: 120_000,
-						crossOriginLoading: false,
-						filename: 'bundle.js',
-						hashFunction: 'sha256',
-						path: '',
-						publicPath: '',
-					},
-					module: {
-						noParse: /foo/u,
-						rules: [],
-					},
-					resolve: {
-						alias: {},
-						extensions: [],
-						plugins: [],
-						resolveLoader: {},
-					},
-					plugins: [],
-					target: 'unknown',
-					watch: false,
-					node: {},
-				});
-			}),
-		);
+		}).toThrowErrorMatchingInlineSnapshot(`
+		"The following validations have failed:
+		  - Invalid field \\"entry\\". Value must be one of: string, array<string>, object<string | array<string>>, function."
+	`);
 	});
 
 	describe('unknown fields', () => {
@@ -388,21 +380,30 @@ describe('Optimal', () => {
 				optimal(and).validate({
 					foo: 'a',
 				});
-			}).toThrowErrorMatchingInlineSnapshot(`"All of these fields must be defined: foo, bar, baz"`);
+			}).toThrowErrorMatchingInlineSnapshot(`
+			"The following validations have failed:
+			  - All of these fields must be defined: bar, baz, foo"
+		`);
 
 			expect(() => {
 				optimal(and).validate({
 					foo: 'a',
 					bar: 'b',
 				});
-			}).toThrowErrorMatchingInlineSnapshot(`"All of these fields must be defined: foo, bar, baz"`);
+			}).toThrowErrorMatchingInlineSnapshot(`
+			"The following validations have failed:
+			  - All of these fields must be defined: bar, baz, foo"
+		`);
 
 			expect(() => {
 				optimal(and).validate({
 					foo: 'a',
 					baz: 'c',
 				});
-			}).toThrowErrorMatchingInlineSnapshot(`"All of these fields must be defined: foo, bar, baz"`);
+			}).toThrowErrorMatchingInlineSnapshot(`
+			"The following validations have failed:
+			  - All of these fields must be defined: bar, baz, foo"
+		`);
 
 			expect(() => {
 				optimal(and).validate({
@@ -422,9 +423,10 @@ describe('Optimal', () => {
 
 			expect(() => {
 				optimal(or).validate({});
-			}).toThrowErrorMatchingInlineSnapshot(
-				`"At least one of these fields must be defined: foo, bar, baz"`,
-			);
+			}).toThrowErrorMatchingInlineSnapshot(`
+			"The following validations have failed:
+			  - At least one of these fields must be defined: bar, baz, foo"
+		`);
 
 			expect(() => {
 				optimal(or).validate({
@@ -462,9 +464,10 @@ describe('Optimal', () => {
 
 			expect(() => {
 				optimal(xor).validate({});
-			}).toThrowErrorMatchingInlineSnapshot(
-				`"Only one of these fields may be defined: foo, bar, baz"`,
-			);
+			}).toThrowErrorMatchingInlineSnapshot(`
+			"The following validations have failed:
+			  - Only one of these fields may be defined: bar, baz, foo"
+		`);
 
 			expect(() => {
 				optimal(xor).validate({
@@ -490,9 +493,10 @@ describe('Optimal', () => {
 					bar: 'b',
 					baz: 'c',
 				});
-			}).toThrowErrorMatchingInlineSnapshot(
-				`"Only one of these fields may be defined: foo, bar, baz"`,
-			);
+			}).toThrowErrorMatchingInlineSnapshot(`
+			"The following validations have failed:
+			  - Only one of these fields may be defined: bar, baz, foo"
+		`);
 		});
 	});
 });

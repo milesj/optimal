@@ -1,6 +1,6 @@
 import { createSchema } from '../createSchema';
 import { commonCriteria, dateCriteria } from '../criteria';
-import { createDate, invariant, isValidDate } from '../helpers';
+import { createDate, invalid, isValidDate } from '../helpers';
 import { CommonCriterias, DateCriterias, DefaultValue, MaybeDate, Schema } from '../types';
 
 export interface DateSchema<T = Date>
@@ -26,10 +26,11 @@ export function date(defaultValue?: DefaultValue<Date>): DateSchema<Date> {
 				validate(value, path) {
 					const time = createDate(value);
 
-					invariant(
+					invalid(
 						isValidDate(time),
 						'Must be a string, number, or `Date` that resolves to a valid date.',
 						path,
+						value,
 					);
 
 					return time;

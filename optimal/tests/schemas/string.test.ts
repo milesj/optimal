@@ -1,5 +1,4 @@
 import { Infer, string, StringSchema } from '../../src';
-import { runInProd } from '../helpers';
 import { runCommonTests } from './runCommonTests';
 
 const camelCase = 'fooBarBaz1';
@@ -595,18 +594,6 @@ describe('string()', () => {
 			expect(() => {
 				schema.validate(null);
 			}).toThrow('Null is not allowed.');
-		});
-
-		describe('production', () => {
-			it(
-				'doesnt error if a non-string is passed',
-				runInProd(() => {
-					expect(() => {
-						// @ts-expect-error Invalid type
-						schema.validate(123);
-					}).not.toThrow();
-				}),
-			);
 		});
 	});
 });

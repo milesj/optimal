@@ -1,5 +1,6 @@
-import { invariant, isObject, isSchema, logUnknown } from '../helpers';
+import { invalid, invariant, isObject, isSchema, logUnknown, tryAndCollect } from '../helpers';
 import { Blueprint, Criteria, Schema, SchemaState, UnknownObject } from '../types';
+import { ValidationError } from '../ValidationError';
 
 /**
  * Require a shape to be an exact shape.
@@ -37,29 +38,42 @@ export function of<T extends object>(
 
 	return {
 		skipIfNull: true,
-		validate(value, path, currentObject, rootObject) {
+		validate(value, path, validateOptions) {
 			if (__DEV__ && value) {
-				invariant(isObject(value), 'Value passed to shape must be an object.', path);
+				invalid(isObject(value), 'Value passed to shape must be an object.', path, value);
 			}
 
 			const isPlainObject = value.constructor === Object;
 			const unknown: Partial<T> = isPlainObject ? { ...value } : {};
 			const shape: Partial<T> = {};
+			const collectionError = new ValidationError(
+				'The following validations have failed:',
+				path,
+				value,
+			);
 
 			Object.keys(schemas).forEach((prop) => {
 				const key = prop as keyof T;
 				const schema = schemas[key];
 
-				shape[key] = schema.validate(
-					value[key],
-					path ? `${path}.${key}` : String(key),
-					value as UnknownObject,
-					rootObject,
+				tryAndCollect(
+					() => {
+						shape[key] = schema.validate(value[key], path ? `${path}.${key}` : String(key), {
+							...validateOptions,
+							currentObject: value as UnknownObject,
+						});
+					},
+					collectionError,
+					validateOptions.collectErrors,
 				);
 
 				// Delete the prop and mark it as known
 				delete unknown[key];
 			});
+
+			if (collectionError.errors.length > 0) {
+				throw collectionError;
+			}
 
 			// Handle unknown fields
 			if (state.metadata.exact) {

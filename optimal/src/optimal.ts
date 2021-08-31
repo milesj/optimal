@@ -1,6 +1,7 @@
 import { isObject } from './helpers';
+import { OptimalError } from './OptimalError';
 import { shape } from './schemas/shape';
-import { Blueprint, DeepPartial, UnknownObject } from './types';
+import { Blueprint, DeepPartial, SchemaValidateOptions, UnknownObject } from './types';
 import { ValidationError } from './ValidationError';
 
 export interface OptimalOptions {
@@ -12,7 +13,7 @@ export interface OptimalOptions {
 
 export interface Optimal<T extends object> {
 	configure: (options: OptimalOptions) => void;
-	validate: (struct: DeepPartial<T>) => T;
+	validate: (struct: DeepPartial<T>, options?: SchemaValidateOptions) => T;
 }
 
 export function optimal<Schemas extends object>(
@@ -35,18 +36,28 @@ export function optimal<Schemas extends object>(
 
 	return {
 		configure,
-		validate(struct) {
+		validate(struct, validateOptions) {
 			const object = struct as UnknownObject;
 
 			try {
-				return schema.validate(struct, options.prefix ?? '', object, object);
+				return schema.validate(struct, options.prefix ?? '', {
+					collectErrors: true,
+					...validateOptions,
+					currentObject: object,
+					rootObject: object,
+				});
 			} catch (error: unknown) {
-				const invalid =
-					error instanceof ValidationError ? error : new ValidationError((error as Error).message);
+				let invalid: OptimalError;
+
+				if (error instanceof OptimalError) {
+					invalid = error;
+				} else {
+					invalid = new OptimalError();
+					invalid.addError(error as ValidationError);
+				}
 
 				if (options.name) {
 					invalid.schema = options.name;
-					invalid.message = `${options.name}: ${invalid.message}`;
 				}
 
 				if (options.file) {

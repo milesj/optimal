@@ -1,5 +1,4 @@
 import { AnySchema, blueprint, number, ObjectSchema, string } from '../../src';
-import { runInProd } from '../helpers';
 
 describe('blueprint()', () => {
 	let schema: ObjectSchema<Record<string, AnySchema>>;
@@ -31,25 +30,13 @@ describe('blueprint()', () => {
 			expect(() => {
 				// @ts-expect-error Invalid type
 				schema.validate({ foo: 123 });
-			}).toThrow('Invalid field "foo". Must be a schema.');
+			}).toThrow('Must be a schema.');
 		});
 
 		it('errors if null is passed', () => {
 			expect(() => {
 				schema.validate(null);
 			}).toThrow('Null is not allowed.');
-		});
-
-		describe('production', () => {
-			it(
-				'doesnt error if a non-object is passed',
-				runInProd(() => {
-					expect(() => {
-						// @ts-expect-error Invalid type
-						schema.validate(123);
-					}).not.toThrow();
-				}),
-			);
 		});
 	});
 });

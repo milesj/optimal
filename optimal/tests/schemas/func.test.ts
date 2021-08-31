@@ -1,5 +1,4 @@
 import { func, FunctionSchema, Infer, UnknownFunction } from '../../src';
-import { runInProd } from '../helpers';
 import { runCommonTests } from './runCommonTests';
 
 describe('func()', () => {
@@ -43,18 +42,6 @@ describe('func()', () => {
 			expect(() => {
 				schema.validate(null);
 			}).toThrow('Null is not allowed.');
-		});
-
-		describe('production', () => {
-			it(
-				'doesnt error if a non-function is passed',
-				runInProd(() => {
-					expect(() => {
-						// @ts-expect-error Invalid type
-						schema.validate({});
-					}).not.toThrow();
-				}),
-			);
 		});
 	});
 });

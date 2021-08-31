@@ -1,5 +1,4 @@
 import { CommonCriterias, DefaultValue, Schema } from '../../src';
-import { runInProd } from '../helpers';
 
 interface TestCriterias<S> extends CommonCriterias<S> {
 	never: () => S;
@@ -59,18 +58,16 @@ export function runCommonTests<T>(
 				const spy = jest.fn().mockReturnValue(defaultValue);
 
 				schema = factory(spy) as any;
-				schema.validate(
-					undefined,
-					'key.deep',
-					{ foo: '' },
-					{
+				schema.validate(undefined, 'key.deep', {
+					currentObject: { foo: '' },
+					rootObject: {
 						key: {
 							deep: {
 								foo: '',
 							},
 						},
 					},
-				);
+				});
 
 				expect(spy).toHaveBeenCalledWith(
 					'key.deep',
@@ -103,8 +100,10 @@ export function runCommonTests<T>(
 		it('errors if not all properties are defined', () => {
 			expect(() => {
 				andSchema.validate(value, 'a', {
-					a: 'a',
-					b: 'b',
+					currentObject: {
+						a: 'a',
+						b: 'b',
+					},
 				});
 			}).toThrow('All of these fields must be defined: a, c');
 		});
@@ -113,8 +112,10 @@ export function runCommonTests<T>(
 			it('errors if not all properties are defined and null is passed', () => {
 				expect(() => {
 					andSchema.validate(null, 'a', {
-						a: 'a',
-						b: 'b',
+						currentObject: {
+							a: 'a',
+							b: 'b',
+						},
 					});
 				}).toThrow('All of these fields must be defined: a, c');
 			});
@@ -123,9 +124,11 @@ export function runCommonTests<T>(
 		it('doesnt error if all are defined', () => {
 			expect(() => {
 				andSchema.validate(value, 'a', {
-					a: 'a',
-					b: 'b',
-					c: 'c',
+					currentObject: {
+						a: 'a',
+						b: 'b',
+						c: 'c',
+					},
 				});
 			}).not.toThrow();
 		});
@@ -134,9 +137,11 @@ export function runCommonTests<T>(
 			it('doesnt error if all are defined and null is passed', () => {
 				expect(() => {
 					andSchema.validate(null, 'a', {
-						a: 'a',
-						b: 'b',
-						c: 'c',
+						currentObject: {
+							a: 'a',
+							b: 'b',
+							c: 'c',
+						},
 					});
 				}).not.toThrow();
 			});
@@ -144,36 +149,15 @@ export function runCommonTests<T>(
 			it('errors if all are defined and null is passed', () => {
 				expect(() => {
 					andSchema.validate(null, 'a', {
-						a: 'a',
-						b: 'b',
-						c: 'c',
-					});
-				}).toThrow('Invalid field "a". Null is not allowed.');
-			});
-		}
-
-		describe('production', () => {
-			it(
-				'doesnt error if no keys are defined',
-				runInProd(() => {
-					expect(() => {
-						schema.and();
-					}).not.toThrow();
-				}),
-			);
-
-			it(
-				'doesnt error if not all properties are defined',
-				runInProd(() => {
-					expect(() => {
-						schema.validate(value, 'a', {
+						currentObject: {
 							a: 'a',
 							b: 'b',
-						});
-					}).not.toThrow();
-				}),
-			);
-		});
+							c: 'c',
+						},
+					});
+				}).toThrow('Null is not allowed.');
+			});
+		}
 	});
 
 	describe('custom()', () => {
@@ -194,9 +178,16 @@ export function runCommonTests<T>(
 		it('triggers callback function', () => {
 			const spy = jest.fn();
 
-			schema.custom(spy).validate(value, 'key', { key: null }, { root: true });
+			schema.custom(spy).validate(value, 'key', {
+				currentObject: { key: null },
+				rootObject: { root: true },
+			});
 
-			expect(spy).toHaveBeenCalledWith(value, 'key', { key: null }, { root: true });
+			expect(spy).toHaveBeenCalledWith(value, 'key', {
+				collectErrors: true,
+				currentObject: { key: null },
+				rootObject: { root: true },
+			});
 		});
 
 		it('catches and re-throws errors', () => {
@@ -207,41 +198,6 @@ export function runCommonTests<T>(
 					})
 					.validate(value, 'key'),
 			).toThrow('Oops');
-		});
-
-		describe('production', () => {
-			it(
-				'doesnt error if no callback',
-				runInProd(() => {
-					expect(() =>
-						// @ts-expect-error Missing arg
-						schema.custom(),
-					).not.toThrow();
-				}),
-			);
-
-			it(
-				'doesnt error if callback is not a function',
-				runInProd(() => {
-					expect(() =>
-						// @ts-expect-error Invalid type
-						schema.custom(123),
-					).not.toThrow();
-				}),
-			);
-
-			it(
-				'doesnt catch and re-throws errors',
-				runInProd(() => {
-					expect(() =>
-						schema
-							.custom(() => {
-								throw new Error('Oops');
-							})
-							.validate(value, 'key'),
-					).not.toThrow('Oops');
-				}),
-			);
 		});
 	});
 
@@ -275,46 +231,11 @@ export function runCommonTests<T>(
 
 			spy.mockRestore();
 		});
-
-		describe('production', () => {
-			it(
-				'doesnt error if no message',
-				runInProd(() => {
-					expect(() =>
-						// @ts-expect-error Missing arg
-						schema.deprecate(),
-					).not.toThrow();
-				}),
-			);
-
-			it(
-				'doesnt log a message when validating',
-				runInProd(() => {
-					const spy = jest.spyOn(console, 'info').mockImplementation();
-
-					schema.deprecate('Migrate away!').validate(value, 'key', {});
-
-					expect(spy).not.toHaveBeenCalled();
-
-					spy.mockRestore();
-				}),
-			);
-		});
 	});
 
 	describe('never()', () => {
 		it('errors when validating', () => {
 			expect(() => schema.never().validate(value)).toThrow('Field should never be used.');
-		});
-
-		describe('production', () => {
-			it(
-				'doesnt error when validating',
-				runInProd(() => {
-					expect(() => schema.never().validate(value)).not.toThrow();
-					expect(schema.never().validate(value)).toEqual(value);
-				}),
-			);
 		});
 	});
 
@@ -382,16 +303,6 @@ export function runCommonTests<T>(
 				expect(() => notNullSchema.validate(undefined)).not.toThrow();
 			});
 		}
-
-		describe('production', () => {
-			it(
-				'doesnt error when null is passed',
-				runInProd(() => {
-					expect(() => notNullSchema.validate(null)).not.toThrow();
-					expect(notNullSchema.validate(null)).toBeNull(); // How to handle?
-				}),
-			);
-		});
 	});
 
 	describe('required()', () => {
@@ -412,18 +323,6 @@ export function runCommonTests<T>(
 		it('doesnt error when a valid value is passed', () => {
 			expect(() => reqSchema.validate(value)).not.toThrow();
 		});
-
-		if (!skipDefaultAsserts) {
-			describe('production', () => {
-				it(
-					'doesnt error when undefined is passed',
-					runInProd(() => {
-						expect(() => reqSchema.validate(undefined)).not.toThrow();
-						expect(reqSchema.validate(undefined)).toEqual(defaultValue);
-					}),
-				);
-			});
-		}
 	});
 
 	describe('notRequired()', () => {
@@ -461,17 +360,6 @@ export function runCommonTests<T>(
 					onlySchema.validate(defaultValue);
 				}).not.toThrow();
 			});
-
-			describe('production', () => {
-				it(
-					'doesnt error if default value is not the same type',
-					runInProd(() => {
-						expect(() => {
-							factory(defaultValue).only();
-						}).not.toThrow();
-					}),
-				);
-			});
 		});
 	}
 
@@ -496,34 +384,14 @@ export function runCommonTests<T>(
 
 		it('doesnt error if at least 1 option is defined', () => {
 			expect(() => {
-				orSchema.validate(value, 'a', { a: 'a' });
+				orSchema.validate(value, 'a', { currentObject: { a: 'a' } });
 			}).not.toThrow();
 		});
 
 		it('doesnt error if at least 1 option is defined that isnt the main field', () => {
 			expect(() => {
-				orSchema.validate(value, 'a', { b: 'b' });
+				orSchema.validate(value, 'a', { currentObject: { b: 'b' } });
 			}).not.toThrow();
-		});
-
-		describe('production', () => {
-			it(
-				'errors if no keys are defined',
-				runInProd(() => {
-					expect(() => {
-						schema.or();
-					}).not.toThrow();
-				}),
-			);
-
-			it(
-				'errors if not 1 option is defined',
-				runInProd(() => {
-					expect(() => {
-						orSchema.validate(value, 'a', {});
-					}).not.toThrow();
-				}),
-			);
 		});
 	});
 
@@ -548,43 +416,14 @@ export function runCommonTests<T>(
 
 		it('errors if more than 1 option is defined', () => {
 			expect(() => {
-				xorSchema.validate(value, 'a', { a: 'a', b: 'b' });
+				xorSchema.validate(value, 'a', { currentObject: { a: 'a', b: 'b' } });
 			}).toThrow('Only one of these fields may be defined: a, b, c');
 		});
 
 		it('doesnt error if only 1 option is defined', () => {
 			expect(() => {
-				xorSchema.validate(value, 'a', { a: 'a' });
+				xorSchema.validate(value, 'a', { currentObject: { a: 'a' } });
 			}).not.toThrow();
-		});
-
-		describe('production', () => {
-			it(
-				'doesnt error if no keys are defined',
-				runInProd(() => {
-					expect(() => {
-						schema.xor();
-					}).not.toThrow();
-				}),
-			);
-
-			it(
-				'doesnt error if no options are defined',
-				runInProd(() => {
-					expect(() => {
-						xorSchema.validate(value, 'a', {});
-					}).not.toThrow();
-				}),
-			);
-
-			it(
-				'doesnt error if more than 1 option is defined',
-				runInProd(() => {
-					expect(() => {
-						xorSchema.validate(value, 'a', { a: 'a', b: 'b' });
-					}).not.toThrow();
-				}),
-			);
 		});
 	});
 }

@@ -1,5 +1,6 @@
-import { invariant, isObject, isSchema } from '../helpers';
+import { invalid, invariant, isObject, isSchema, tryAndCollect } from '../helpers';
 import { Criteria, Schema, SchemaState } from '../types';
+import { ValidationError } from '../ValidationError';
 
 function typeOf(value: unknown): string {
 	if (Array.isArray(value)) {
@@ -31,58 +32,54 @@ export function of<T = unknown>(
 
 	return {
 		skipIfNull: true,
-		validate(value, path, currentObject, rootObject) {
+		validate(value, path, validateOptions) {
 			let nextValue: unknown = value;
 
 			if (__DEV__) {
 				const allowedValues = schemas.map((schema) => schema.type()).join(', ');
 				const valueType = typeOf(value);
-				const errors = new Set<string>();
+				const collectionError = new ValidationError(
+					`Received ${valueType} with the following failures:`,
+					path,
+					value,
+				);
 
-				// eslint-disable-next-line complexity
 				const passed = schemas.some((schema) => {
 					const schemaType = schema.schema();
 
 					if (schemaType === 'union') {
-						invariant(false, 'Nested unions are not supported.', path);
+						invalid(false, 'Nested unions are not supported.', path);
 					}
 
-					try {
-						if (
-							valueType === schemaType ||
-							(valueType === 'object/shape' && schemaType === 'object') ||
-							(valueType === 'object/shape' && schemaType === 'shape') ||
-							(valueType === 'array/tuple' && schemaType === 'array') ||
-							(valueType === 'array/tuple' && schemaType === 'tuple') ||
-							schemaType === 'custom'
-						) {
-							nextValue = schema.validate(value, path, currentObject, rootObject);
+					return tryAndCollect(
+						() => {
+							if (
+								valueType === schemaType ||
+								(valueType === 'object/shape' && schemaType === 'object') ||
+								(valueType === 'object/shape' && schemaType === 'shape') ||
+								(valueType === 'array/tuple' && schemaType === 'array') ||
+								(valueType === 'array/tuple' && schemaType === 'tuple') ||
+								schemaType === 'custom'
+							) {
+								// Dont pass path so its not included in the error message
+								nextValue = schema.validate(value, '', validateOptions);
 
-							return true;
-						}
+								return true;
+							}
 
-						return false;
-					} catch (error: unknown) {
-						if (error instanceof Error) {
-							errors.add(` - ${error.message}\n`);
-						}
-					}
-
-					return false;
+							return false;
+						},
+						collectionError,
+						validateOptions.collectErrors,
+					);
 				});
 
 				if (!passed) {
-					let message = `Value must be one of: ${allowedValues}.`;
-
-					if (errors.size > 0) {
-						message += ` Received ${valueType} with the following invalidations:\n`;
-
-						errors.forEach((error) => {
-							message += error;
-						});
+					if (collectionError.errors.length > 0) {
+						throw collectionError;
+					} else {
+						invalid(false, `Value must be one of: ${allowedValues}.`, path, value);
 					}
-
-					invariant(false, message.trim(), path);
 				}
 			}
 

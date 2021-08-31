@@ -1,6 +1,6 @@
 import { createSchema } from '../createSchema';
 import { classCriteria, commonCriteria } from '../criteria';
-import { invariant, isObject } from '../helpers';
+import { invalid, isObject } from '../helpers';
 import { CommonCriterias, Constructor, InferNullable, Schema } from '../types';
 
 export interface InstanceSchema<T> extends Schema<T>, CommonCriterias<InstanceSchema<T>> {
@@ -21,12 +21,13 @@ export function instance() {
 			(state) => ({
 				skipIfNull: true,
 				validate(value, path) {
-					invariant(
+					invalid(
 						isObject(value) && value.constructor !== Object,
 						state.type === 'class'
 							? 'Must be a class instance.'
 							: `Must be an instance of ${state.type}.`,
 						path,
+						value,
 					);
 				},
 			}),

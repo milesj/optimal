@@ -1,6 +1,6 @@
 import { createSchema } from '../createSchema';
 import { commonCriteria, shapeCriteria } from '../criteria';
-import { createObject, invariant, isObject } from '../helpers';
+import { createObject, invalid, isObject } from '../helpers';
 import { AnySchema } from '../types';
 import { func } from './func';
 import { ShapeSchema } from './shape';
@@ -17,7 +17,7 @@ export function schema<T extends AnySchema>(): ShapeSchema<T> {
 			{
 				skipIfNull: true,
 				validate(value, path) {
-					invariant(isObject(value), 'Must be a schema.', path);
+					invalid(isObject(value), 'Must be a schema.', path, value);
 				},
 			},
 		],
