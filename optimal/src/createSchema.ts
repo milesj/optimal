@@ -1,4 +1,4 @@
-import { invalid } from './helpers';
+import { invalid, tryAndCollect } from './helpers';
 import { OptimalError } from './OptimalError';
 import {
 	AnySchema,
@@ -67,23 +67,21 @@ function validate<T>(
 			return;
 		}
 
-		try {
-			const result = test.validate(value!, path, {
-				collectErrors,
-				currentObject,
-				rootObject,
-			});
+		tryAndCollect(
+			() => {
+				const result = test.validate(value!, path, {
+					collectErrors,
+					currentObject,
+					rootObject,
+				});
 
-			if (result !== undefined) {
-				value = result as T;
-			}
-		} catch (error: unknown) {
-			if (error instanceof Error && collectErrors) {
-				optimalError.addError(error);
-			} else {
-				throw error;
-			}
-		}
+				if (result !== undefined) {
+					value = result as T;
+				}
+			},
+			optimalError,
+			collectErrors,
+		);
 	});
 
 	if (optimalError.errors.length > 0) {

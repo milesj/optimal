@@ -1,4 +1,4 @@
-import { invalid, invariant, isObject, isSchema } from '../helpers';
+import { invalid, invariant, isObject, isSchema, tryAndCollect } from '../helpers';
 import { Criteria, Schema, SchemaState } from '../types';
 import { ValidationError } from '../ValidationError';
 
@@ -44,7 +44,6 @@ export function of<T = unknown>(
 					value,
 				);
 
-				// eslint-disable-next-line complexity
 				const passed = schemas.some((schema) => {
 					const schemaType = schema.schema();
 
@@ -52,31 +51,27 @@ export function of<T = unknown>(
 						invalid(false, 'Nested unions are not supported.', path);
 					}
 
-					try {
-						if (
-							valueType === schemaType ||
-							(valueType === 'object/shape' && schemaType === 'object') ||
-							(valueType === 'object/shape' && schemaType === 'shape') ||
-							(valueType === 'array/tuple' && schemaType === 'array') ||
-							(valueType === 'array/tuple' && schemaType === 'tuple') ||
-							schemaType === 'custom'
-						) {
-							// Dont pass path so its not included in the error message
-							nextValue = schema.validate(value, '', validateOptions);
+					return tryAndCollect(
+						() => {
+							if (
+								valueType === schemaType ||
+								(valueType === 'object/shape' && schemaType === 'object') ||
+								(valueType === 'object/shape' && schemaType === 'shape') ||
+								(valueType === 'array/tuple' && schemaType === 'array') ||
+								(valueType === 'array/tuple' && schemaType === 'tuple') ||
+								schemaType === 'custom'
+							) {
+								// Dont pass path so its not included in the error message
+								nextValue = schema.validate(value, '', validateOptions);
 
-							return true;
-						}
+								return true;
+							}
 
-						return false;
-					} catch (error: unknown) {
-						if (error instanceof Error && validateOptions.collectErrors) {
-							collectionError.addError(error);
-						} else {
-							throw error;
-						}
-					}
-
-					return false;
+							return false;
+						},
+						collectionError,
+						validateOptions.collectErrors,
+					);
 				});
 
 				if (!passed) {

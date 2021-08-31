@@ -1,5 +1,5 @@
 import { Constructor, Schema, UnknownObject } from './types';
-import { ValidationError } from '.';
+import { ValidationError } from './ValidationError';
 
 export function isObject(value: unknown): value is object {
 	return !!value && typeof value === 'object' && !Array.isArray(value);
@@ -134,4 +134,28 @@ export function pathKey(path: string): string {
 	const index = path.lastIndexOf('.');
 
 	return index > 0 ? path.slice(index + 1) : path;
+}
+
+export function tryAndCollect(
+	validator: () => boolean | void,
+	validError: ValidationError,
+	collectErrors?: boolean,
+): boolean {
+	let result = false;
+
+	try {
+		const value = validator();
+
+		if (typeof value === 'boolean') {
+			result = value;
+		}
+	} catch (error: unknown) {
+		if (error instanceof Error && collectErrors) {
+			validError.addError(error);
+		} else {
+			throw error;
+		}
+	}
+
+	return result;
 }

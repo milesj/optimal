@@ -21,7 +21,8 @@ export function keysOf<T>(
 				if (isObject(value)) {
 					Object.keys(value).forEach((key) => {
 						try {
-							keysSchema.validate(key, path, validateOptions);
+							// Dont pass path so its not included in the error message
+							keysSchema.validate(key, '', validateOptions);
 						} catch (error: unknown) {
 							if (error instanceof Error) {
 								invalid(false, `Invalid key "${key}". ${error.message}`, path, value);
