@@ -81,7 +81,7 @@ describe('union()', () => {
 				// @ts-expect-error Invalid type
 				.validate(new Foo());
 		}).toThrowErrorMatchingInlineSnapshot(`
-		"Value must be one of: number, Buffer. Received class with the following invalidations:
+		"Received class with the following failures:
 		  - Must be an instance of \\"Buffer\\"."
 	`);
 	});
@@ -94,8 +94,8 @@ describe('union()', () => {
 		expect(() => {
 			schema.validate([123]);
 		}).toThrowErrorMatchingInlineSnapshot(`
-		"Value must be one of: array<string>, boolean, number, Foo, object<number>, string. Received array/tuple with the following invalidations:
-		  - Must be a string."
+		"Received array/tuple with the following failures:
+		  - Invalid member \\"[0]\\". Must be a string."
 	`);
 	});
 
@@ -103,7 +103,7 @@ describe('union()', () => {
 		expect(() => {
 			schema.validate(false);
 		}).toThrowErrorMatchingInlineSnapshot(`
-		"Value must be one of: array<string>, boolean, number, Foo, object<number>, string. Received boolean with the following invalidations:
+		"Received boolean with the following failures:
 		  - May only be \`true\`."
 	`);
 	});
@@ -121,7 +121,7 @@ describe('union()', () => {
 				])
 				.validate(123);
 		}).toThrowErrorMatchingInlineSnapshot(`
-		"Value must be one of: string, custom. Received number with the following invalidations:
+		"Received number with the following failures:
 		  - Encountered a number!"
 	`);
 	});
@@ -130,7 +130,7 @@ describe('union()', () => {
 		expect(() => {
 			schema.validate(new Bar());
 		}).toThrowErrorMatchingInlineSnapshot(`
-		"Value must be one of: array<string>, boolean, number, Foo, object<number>, string. Received class with the following invalidations:
+		"Received class with the following failures:
 		  - Must be an instance of \\"Foo\\"."
 	`);
 	});
@@ -139,7 +139,7 @@ describe('union()', () => {
 		expect(() => {
 			schema.validate(10);
 		}).toThrowErrorMatchingInlineSnapshot(`
-		"Value must be one of: array<string>, boolean, number, Foo, object<number>, string. Received number with the following invalidations:
+		"Received number with the following failures:
 		  - Number must be between 0 and 5."
 	`);
 	});
@@ -148,8 +148,8 @@ describe('union()', () => {
 		expect(() => {
 			schema.validate({ foo: 'foo' });
 		}).toThrowErrorMatchingInlineSnapshot(`
-		"Value must be one of: array<string>, boolean, number, Foo, object<number>, string. Received object/shape with the following invalidations:
-		  - Must be a number."
+		"Received object/shape with the following failures:
+		  - Invalid field \\"foo\\". Must be a number."
 	`);
 	});
 
@@ -166,8 +166,9 @@ describe('union()', () => {
 				// @ts-expect-error Invalid type
 				.validate({ foo: 123 });
 		}).toThrowErrorMatchingInlineSnapshot(`
-		"Value must be one of: shape<{ foo: string, bar: number }>. Received object/shape with the following invalidations:
-		  - Must be a string."
+		"Received object/shape with the following failures:
+		  - The following validations have failed:
+		    - Invalid field \\"foo\\". Must be a string."
 	`);
 	});
 
@@ -175,7 +176,7 @@ describe('union()', () => {
 		expect(() => {
 			schema.validate('qux');
 		}).toThrowErrorMatchingInlineSnapshot(`
-		"Value must be one of: array<string>, boolean, number, Foo, object<number>, string. Received string with the following invalidations:
+		"Received string with the following failures:
 		  - String must be one of: foo, bar, baz"
 	`);
 	});
@@ -187,8 +188,8 @@ describe('union()', () => {
 				// @ts-expect-error Invalid type
 				.validate([1]);
 		}).toThrowErrorMatchingInlineSnapshot(`
-		"Value must be one of: tuple<string, string, string>. Received array/tuple with the following invalidations:
-		  - Must be a string."
+		"Received array/tuple with the following failures:
+		  - Invalid member \\"[0]\\". Must be a string."
 	`);
 	});
 
@@ -208,9 +209,9 @@ describe('union()', () => {
 			// @ts-expect-error Invalid type
 			arrayUnion.validate([true]);
 		}).toThrowErrorMatchingInlineSnapshot(`
-		"Value must be one of: array<string>, array<number>. Received array/tuple with the following invalidations:
-		  - Must be a string.
-		  - Must be a number."
+		"Received array/tuple with the following failures:
+		  - Invalid member \\"[0]\\". Must be a string.
+		  - Invalid member \\"[0]\\". Must be a number."
 	`);
 
 		expect(() => {
@@ -232,9 +233,9 @@ describe('union()', () => {
 			// @ts-expect-error Invalid type
 			objectUnion.validate({ foo: true });
 		}).toThrowErrorMatchingInlineSnapshot(`
-		"Value must be one of: object<string>, object<number>. Received object/shape with the following invalidations:
-		  - Must be a string.
-		  - Must be a number."
+		"Received object/shape with the following failures:
+		  - Invalid field \\"foo\\". Must be a string.
+		  - Invalid field \\"foo\\". Must be a number."
 	`);
 
 		expect(() => {
@@ -305,14 +306,14 @@ describe('union()', () => {
 		// invalid
 		expect(() => complexUnion.validate(['a', ['b', null], ['c', {}], 'd', 123]))
 			.toThrowErrorMatchingInlineSnapshot(`
-		"Value must be one of: array<string | tuple<string, boolean | object>>, object<boolean | object>. Received array/tuple with the following invalidations:
-		  - Value must be one of: string, tuple<string, boolean | object>. Received array/tuple with the following invalidations:
-		  - Null is not allowed."
+		"Received array/tuple with the following failures:
+		  - Invalid member \\"[1]\\". Received array/tuple with the following failures:
+		    - Invalid member \\"[1]\\". Null is not allowed."
 	`);
 		expect(() => complexUnion.validate({ a: true, b: 123, c: {} }))
 			.toThrowErrorMatchingInlineSnapshot(`
-		"Value must be one of: array<string | tuple<string, boolean | object>>, object<boolean | object>. Received object/shape with the following invalidations:
-		  - Value must be one of: boolean, object."
+		"Received object/shape with the following failures:
+		  - Invalid field \\"b\\". Value must be one of: boolean, object."
 	`);
 	});
 
@@ -330,26 +331,30 @@ describe('union()', () => {
 			// @ts-expect-error Invalid type
 			mixedUnion.validate({ unknown: true });
 		}).toThrowErrorMatchingInlineSnapshot(`
-		"Value must be one of: shape<{ foo: string, bar: number, baz: boolean }>, object<string>. Received object/shape with the following invalidations:
+		"Received object/shape with the following failures:
 		  - Unknown fields: unknown.
-		  - Must be a string."
+		  - Invalid field \\"unknown\\". Must be a string."
 	`);
 
 		expect(() => {
 			// @ts-expect-error Invalid type
 			mixedUnion.validate({ foo: 123 });
 		}).toThrowErrorMatchingInlineSnapshot(`
-		"Value must be one of: shape<{ foo: string, bar: number, baz: boolean }>, object<string>. Received object/shape with the following invalidations:
-		  - Must be a string."
+		"Received object/shape with the following failures:
+		  - The following validations have failed:
+		    - Invalid field \\"foo\\". Must be a string.
+		  - Invalid field \\"foo\\". Must be a string."
 	`);
 
 		expect(() => {
 			// @ts-expect-error Invalid type
 			mixedUnion.validate({ foo: 'abc', bar: 'abc', baz: 123 });
 		}).toThrowErrorMatchingInlineSnapshot(`
-		"Value must be one of: shape<{ foo: string, bar: number, baz: boolean }>, object<string>. Received object/shape with the following invalidations:
-		  - Must be a number.
-		  - Must be a string."
+		"Received object/shape with the following failures:
+		  - The following validations have failed:
+		    - Invalid field \\"bar\\". Must be a number.
+		    - Invalid field \\"baz\\". Must be a boolean.
+		  - Invalid field \\"baz\\". Must be a string."
 	`);
 
 		expect(() => {
@@ -442,7 +447,7 @@ describe('union()', () => {
 			expect(() => {
 				schema.validate('not a whitelisted string');
 			}).toThrowErrorMatchingInlineSnapshot(`
-			"Value must be one of: array<string>, boolean, number, Foo, object<number>, string. Received string with the following invalidations:
+			"Received string with the following failures:
 			  - String must be one of: foo, bar, baz"
 		`);
 		});

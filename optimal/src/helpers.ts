@@ -99,7 +99,7 @@ export function invalid(
 		return;
 	}
 
-	throw path ? new ValidationError(message, path, value) : new Error(message);
+	throw new ValidationError(message, path, value);
 }
 
 export function invariant(condition: boolean, message: string) {
@@ -125,6 +125,12 @@ export function logUnknown(unknownFields: object, pathPrefix?: string) {
 }
 
 export function pathKey(path: string): string {
+	if (path.endsWith(']')) {
+		const index = path.lastIndexOf('[');
+
+		return index > 0 ? path.slice(index) : path;
+	}
+
 	const index = path.lastIndexOf('.');
 
 	return index > 0 ? path.slice(index + 1) : path;

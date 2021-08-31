@@ -1,5 +1,6 @@
 import { invalid, invariant, isObject, isSchema } from '../helpers';
 import { Criteria, Schema, SchemaState } from '../types';
+import { ValidationError } from '../ValidationError';
 
 function typeOf(value: unknown): string {
 	if (Array.isArray(value)) {
@@ -37,7 +38,11 @@ export function of<T = unknown>(
 			if (__DEV__) {
 				const allowedValues = schemas.map((schema) => schema.type()).join(', ');
 				const valueType = typeOf(value);
-				const errors = new Set<string>();
+				const collectionError = new ValidationError(
+					`Received ${valueType} with the following failures:`,
+					path,
+					value,
+				);
 
 				// eslint-disable-next-line complexity
 				const passed = schemas.some((schema) => {
@@ -56,15 +61,18 @@ export function of<T = unknown>(
 							(valueType === 'array/tuple' && schemaType === 'tuple') ||
 							schemaType === 'custom'
 						) {
-							nextValue = schema.validate(value, path, validateOptions);
+							// Dont pass path so its not included in the error message
+							nextValue = schema.validate(value, '', validateOptions);
 
 							return true;
 						}
 
 						return false;
 					} catch (error: unknown) {
-						if (error instanceof Error) {
-							errors.add(`  - ${error.message}\n`);
+						if (error instanceof Error && validateOptions.collectErrors) {
+							collectionError.addError(error);
+						} else {
+							throw error;
 						}
 					}
 
@@ -72,17 +80,11 @@ export function of<T = unknown>(
 				});
 
 				if (!passed) {
-					let message = `Value must be one of: ${allowedValues}.`;
-
-					if (errors.size > 0) {
-						message += ` Received ${valueType} with the following invalidations:\n`;
-
-						errors.forEach((error) => {
-							message += error;
-						});
+					if (collectionError.errors.length > 0) {
+						throw collectionError;
+					} else {
+						invalid(false, `Value must be one of: ${allowedValues}.`, path, value);
 					}
-
-					invalid(false, message.trim(), path, value);
 				}
 			}
 

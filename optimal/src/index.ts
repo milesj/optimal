@@ -12,6 +12,7 @@ export * from './createPredicate';
 export * from './createSchema';
 export * from './criteria';
 export * from './optimal';
+export * from './OptimalError';
 export * from './schemas/array';
 export * from './schemas/blueprint';
 export * from './schemas/bool';

@@ -11,7 +11,6 @@ import {
 	SchemaState,
 	SchemaValidateOptions,
 } from './types';
-import { ValidationError } from './ValidationError';
 
 /**
  * Run all validation checks that have been enqueued and return a type casted value.
@@ -23,7 +22,11 @@ function validate<T>(
 	validators: Criteria<T>[],
 	initialValue: T | null | undefined,
 	path: string = '',
-	{ collectErrors, currentObject = {}, rootObject = currentObject }: SchemaValidateOptions = {},
+	{
+		collectErrors = true,
+		currentObject = {},
+		rootObject = currentObject,
+	}: SchemaValidateOptions = {},
 ): T | null {
 	const { defaultValue, metadata } = state;
 
@@ -54,7 +57,7 @@ function validate<T>(
 	}
 
 	// Run validations and produce a new value
-	const errors: ValidationError[] = [];
+	const optimalError = new OptimalError();
 
 	validators.forEach((test) => {
 		if (
@@ -66,7 +69,7 @@ function validate<T>(
 
 		try {
 			const result = test.validate(value!, path, {
-				collectErrors: false,
+				collectErrors,
 				currentObject,
 				rootObject,
 			});
@@ -75,22 +78,16 @@ function validate<T>(
 				value = result as T;
 			}
 		} catch (error: unknown) {
-			if (error instanceof ValidationError && collectErrors) {
-				errors.push(error);
+			if (error instanceof Error && collectErrors) {
+				optimalError.addError(error);
 			} else {
 				throw error;
 			}
 		}
 	});
 
-	if (errors.length > 0) {
-		const collectionError = new OptimalError();
-
-		errors.forEach((error) => {
-			collectionError.addError(error);
-		});
-
-		throw collectionError;
+	if (optimalError.errors.length > 0) {
+		throw optimalError;
 	}
 
 	return value!;

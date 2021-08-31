@@ -10,7 +10,7 @@ export function and<T>(state: SchemaState<T>, ...keys: string[]): Criteria<T> | 
 
 		return {
 			validate(value, path, { currentObject }) {
-				const andKeys = [...new Set([pathKey(path), ...keys])];
+				const andKeys = [...new Set([pathKey(path), ...keys])].sort();
 				const undefs = andKeys.filter(
 					(key) => currentObject?.[key] === undefined || currentObject?.[key] === null,
 				);
@@ -119,7 +119,7 @@ export function or<T>(state: SchemaState<T>, ...keys: string[]): Criteria<T> | v
 
 		return {
 			validate(value, path, { currentObject }) {
-				const orKeys = [...new Set([pathKey(path), ...keys])];
+				const orKeys = [...new Set([pathKey(path), ...keys])].sort();
 				const defs = orKeys.filter(
 					(key) => currentObject?.[key] !== undefined && currentObject?.[key] !== null,
 				);
@@ -149,7 +149,7 @@ export function xor<T>(state: SchemaState<T>, ...keys: string[]): Criteria<T> | 
 
 		return {
 			validate(value, path, { currentObject }) {
-				const xorKeys = [...new Set([pathKey(path), ...keys])];
+				const xorKeys = [...new Set([pathKey(path), ...keys])].sort();
 				const defs = xorKeys.filter(
 					(key) => currentObject?.[key] !== undefined && currentObject?.[key] !== null,
 				);
