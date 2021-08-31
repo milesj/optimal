@@ -1,4 +1,5 @@
 import { Constructor, Schema, UnknownObject } from './types';
+import { ValidationError } from '.';
 
 export function isObject(value: unknown): value is object {
 	return !!value && typeof value === 'object' && !Array.isArray(value);
@@ -88,13 +89,26 @@ export function instanceOf<T = unknown>(object: unknown, contract: Constructor<T
 	return false;
 }
 
-export function invariant(condition: boolean, message: string, path: string = '') {
-	if (__DEV__) {
-		if (condition) {
-			return;
-		}
+export function invalid(
+	condition: boolean,
+	message: string,
+	path: string = '',
+	value: unknown = undefined,
+) {
+	if (condition) {
+		return;
+	}
 
-		throw new Error(`${path ? `Invalid field "${path}".` : ''} ${message}`.trim());
+	throw path ? new ValidationError(message, path, value) : new Error(message);
+}
+
+export function invariant(condition: boolean, message: string) {
+	if (condition) {
+		return;
+	}
+
+	if (__DEV__) {
+		throw new Error(message);
 	}
 }
 

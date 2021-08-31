@@ -1,4 +1,4 @@
-import { invariant } from './helpers';
+import { invalid } from './helpers';
 import { OptimalError } from './OptimalError';
 import {
 	AnySchema,
@@ -9,7 +9,7 @@ import {
 	Schema,
 	SchemaOptions,
 	SchemaState,
-	UnknownObject,
+	SchemaValidateOptions,
 } from './types';
 import { ValidationError } from './ValidationError';
 
@@ -23,8 +23,7 @@ function validate<T>(
 	validators: Criteria<T>[],
 	initialValue: T | null | undefined,
 	path: string = '',
-	currentObject: UnknownObject = {},
-	rootObject?: UnknownObject,
+	{ collectErrors, currentObject = {}, rootObject = currentObject }: SchemaValidateOptions = {},
 ): T | null {
 	const { defaultValue, metadata } = state;
 
@@ -34,15 +33,11 @@ function validate<T>(
 	if (value === undefined) {
 		value =
 			typeof defaultValue === 'function'
-				? (defaultValue as DefaultValueInitializer<T>)(
-						path,
-						currentObject,
-						rootObject ?? currentObject,
-				  )
+				? (defaultValue as DefaultValueInitializer<T>)(path, currentObject, rootObject)
 				: defaultValue;
 
 		if (__DEV__) {
-			invariant(!state.required, 'Field is required and must be defined.', path);
+			invalid(!state.required, 'Field is required and must be defined.', path);
 		}
 	} else if (__DEV__) {
 		if (metadata.deprecatedMessage) {
@@ -50,12 +45,12 @@ function validate<T>(
 			console.info(`Field "${path}" is deprecated. ${metadata.deprecatedMessage}`);
 		}
 
-		invariant(!state.never, 'Field should never be used.', path);
+		invalid(!state.never, 'Field should never be used.', path);
 	}
 
 	// Handle null
 	if (__DEV__ && value === null) {
-		invariant(state.nullable, 'Null is not allowed.', path);
+		invalid(state.nullable, 'Null is not allowed.', path);
 	}
 
 	// Run validations and produce a new value
@@ -70,18 +65,21 @@ function validate<T>(
 		}
 
 		try {
-			const result = test.validate(value!, path, currentObject, rootObject ?? currentObject);
+			const result = test.validate(value!, path, {
+				collectErrors: false,
+				currentObject,
+				rootObject,
+			});
 
 			if (result !== undefined) {
 				value = result as T;
 			}
 		} catch (error: unknown) {
-			// We only want to collect errors when running at the top level, the root,
-			// so we do this by checking for the existence of the root object
-			if (error instanceof Error && !rootObject) {
+			// We only want to collect errors when running at the top level
+			if (error instanceof Error && collectErrors) {
 				errors.push(new ValidationError(error.message, path, value));
 
-				// Nested validations should just throw immediately instead
+				// Nested validations should typically throw immediately instead
 				// of looping through all criteria and collecting errors
 			} else {
 				throw error;
@@ -136,8 +134,8 @@ export function createSchema<S extends AnySchema, T = InferSchemaType<S>>(
 		type() {
 			return state.type;
 		},
-		validate(value, path, currentObject, rootObject) {
-			const result = validate(state, validators, value, path, currentObject, rootObject)!;
+		validate(value, path, options) {
+			const result = validate(state, validators, value, path, options)!;
 
 			return cast && result !== null ? cast(result) : result;
 		},

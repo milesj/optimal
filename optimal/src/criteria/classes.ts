@@ -1,4 +1,4 @@
-import { instanceOf, invariant, isObject } from '../helpers';
+import { instanceOf, invalid, invariant, isObject } from '../helpers';
 import { Constructor, Criteria, SchemaState } from '../types';
 
 /**
@@ -17,11 +17,12 @@ export function of<T>(
 		return {
 			skipIfNull: true,
 			validate(value, path) {
-				invariant(
+				invalid(
 					typeof ref === 'function' &&
 						(value instanceof ref || (loose && isObject(value) && instanceOf(value, ref))),
 					`Must be an instance of "${state.type}".`,
 					path,
+					value,
 				);
 			},
 		};

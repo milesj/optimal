@@ -1,11 +1,11 @@
-import { custom, CustomCallback, CustomSchema, Infer } from '../../src';
+import { CriteriaValidator, custom, CustomSchema, Infer } from '../../src';
 import { runInProd } from '../helpers';
 import { runCommonTests } from './runCommonTests';
 
 describe('custom()', () => {
 	let schema: CustomSchema<string>;
 
-	const cb: CustomCallback<string> = (value) => {
+	const cb: CriteriaValidator<string> = (value) => {
 		if (typeof value !== 'string' && value !== null) {
 			throw new TypeError('Must be a string!!!');
 		}

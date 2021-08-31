@@ -1,4 +1,4 @@
-import { invariant, isObject, isSchema, logUnknown } from '../helpers';
+import { invalid, invariant, isObject, isSchema, logUnknown } from '../helpers';
 import { Blueprint, Criteria, Schema, SchemaState, UnknownObject } from '../types';
 
 /**
@@ -37,9 +37,9 @@ export function of<T extends object>(
 
 	return {
 		skipIfNull: true,
-		validate(value, path, currentObject, rootObject) {
+		validate(value, path, validateOptions) {
 			if (__DEV__ && value) {
-				invariant(isObject(value), 'Value passed to shape must be an object.', path);
+				invalid(isObject(value), 'Value passed to shape must be an object.', path, value);
 			}
 
 			const isPlainObject = value.constructor === Object;
@@ -50,12 +50,10 @@ export function of<T extends object>(
 				const key = prop as keyof T;
 				const schema = schemas[key];
 
-				shape[key] = schema.validate(
-					value[key],
-					path ? `${path}.${key}` : String(key),
-					value as UnknownObject,
-					rootObject,
-				);
+				shape[key] = schema.validate(value[key], path ? `${path}.${key}` : String(key), {
+					...validateOptions,
+					currentObject: value as UnknownObject,
+				});
 
 				// Delete the prop and mark it as known
 				delete unknown[key];

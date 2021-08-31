@@ -1,6 +1,6 @@
 import { createSchema } from '../createSchema';
 import { commonCriteria, stringCriteria } from '../criteria';
-import { invariant } from '../helpers';
+import { invalid } from '../helpers';
 import {
 	CommonCriterias,
 	DefaultValue,
@@ -41,7 +41,7 @@ export function string<T extends string = string>(
 			{
 				skipIfNull: true,
 				validate(value, path) {
-					invariant(typeof value === 'string', 'Must be a string.', path);
+					invalid(typeof value === 'string', 'Must be a string.', path, value);
 				},
 			},
 		],

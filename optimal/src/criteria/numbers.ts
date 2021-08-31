@@ -1,4 +1,4 @@
-import { invariant, isValidNumber } from '../helpers';
+import { invalid, invariant, isValidNumber } from '../helpers';
 import { Criteria, InclusiveOptions, Options, SchemaState } from '../types';
 
 /**
@@ -19,12 +19,13 @@ export function between(
 		return {
 			skipIfNull: true,
 			validate(value, path) {
-				invariant(
+				invalid(
 					isValidNumber(value) &&
 						(options.inclusive ? value >= min && value <= max : value > min && value < max),
 					options.message ??
 						`Number must be between ${min} and ${max}${options.inclusive ? ' inclusive' : ''}.`,
 					path,
+					value,
 				);
 			},
 		};
@@ -39,10 +40,11 @@ export function float(state: SchemaState<number>, options: Options = {}): Criter
 		return {
 			skipIfNull: true,
 			validate(value, path) {
-				invariant(
+				invalid(
 					isValidNumber(value) && value % 1 !== 0,
 					options.message ?? 'Number must be a float.',
 					path,
+					value,
 				);
 			},
 		};
@@ -64,16 +66,18 @@ export function gt(
 			skipIfNull: true,
 			validate(value, path) {
 				if (options.inclusive) {
-					invariant(
+					invalid(
 						isValidNumber(value) && value >= min,
 						options.message ?? `Number must be greater than or equal to ${min}.`,
 						path,
+						value,
 					);
 				} else {
-					invariant(
+					invalid(
 						isValidNumber(value) && value > min,
 						options.message ?? `Number must be greater than ${min}.`,
 						path,
+						value,
 					);
 				}
 			},
@@ -100,10 +104,11 @@ export function int(state: SchemaState<number>, options: Options = {}): Criteria
 		return {
 			skipIfNull: true,
 			validate(value, path) {
-				invariant(
+				invalid(
 					Number.isSafeInteger(value),
 					options.message ?? 'Number must be an integer.',
 					path,
+					value,
 				);
 			},
 		};
@@ -125,16 +130,18 @@ export function lt(
 			skipIfNull: true,
 			validate(value, path) {
 				if (options.inclusive) {
-					invariant(
+					invalid(
 						isValidNumber(value) && value <= max,
 						options.message ?? `Number must be less than or equal to ${max}.`,
 						path,
+						value,
 					);
 				} else {
-					invariant(
+					invalid(
 						isValidNumber(value) && value < max,
 						options.message ?? `Number must be less than ${max}.`,
 						path,
+						value,
 					);
 				}
 			},
@@ -164,10 +171,11 @@ export function negative(
 		return {
 			skipIfNull: true,
 			validate(value, path) {
-				invariant(
+				invalid(
 					isValidNumber(value) && value < 0,
 					options.message ?? 'Number must be negative.',
 					path,
+					value,
 				);
 			},
 		};
@@ -191,10 +199,11 @@ export function oneOf(
 		return {
 			skipIfNull: true,
 			validate(value, path) {
-				invariant(
+				invalid(
 					list.includes(value),
 					options.message ?? `Number must be one of: ${list.join(', ')}`,
 					path,
+					value,
 				);
 			},
 		};
@@ -212,10 +221,11 @@ export function positive(
 		return {
 			skipIfNull: true,
 			validate(value, path) {
-				invariant(
+				invalid(
 					isValidNumber(value) && value > 0,
 					options.message ?? 'Number must be positive.',
 					path,
+					value,
 				);
 			},
 		};

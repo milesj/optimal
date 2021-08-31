@@ -1,5 +1,5 @@
-import { invariant, isValidString, pathKey } from '../helpers';
-import { Criteria, CustomCallback, SchemaState } from '../types';
+import { invalid, invariant, isValidString, pathKey } from '../helpers';
+import { Criteria, CriteriaValidator, SchemaState } from '../types';
 
 /**
  * Map a list of field names that must be defined alongside this field.
@@ -9,10 +9,10 @@ export function and<T>(state: SchemaState<T>, ...keys: string[]): Criteria<T> | 
 		invariant(keys.length > 0, 'AND requires a list of field names.');
 
 		return {
-			validate(value, path, currentObject) {
+			validate(value, path, { currentObject }) {
 				const andKeys = [...new Set([pathKey(path), ...keys])];
 				const undefs = andKeys.filter(
-					(key) => currentObject[key] === undefined || currentObject[key] === null,
+					(key) => currentObject?.[key] === undefined || currentObject?.[key] === null,
 				);
 
 				// Only error once when one of the struct is defined
@@ -20,10 +20,7 @@ export function and<T>(state: SchemaState<T>, ...keys: string[]): Criteria<T> | 
 					return;
 				}
 
-				invariant(
-					undefs.length === 0,
-					`All of these fields must be defined: ${andKeys.join(', ')}`,
-				);
+				invalid(undefs.length === 0, `All of these fields must be defined: ${andKeys.join(', ')}`);
 			},
 		};
 	}
@@ -32,17 +29,20 @@ export function and<T>(state: SchemaState<T>, ...keys: string[]): Criteria<T> | 
 /**
  * Set a callback to run custom validation logic.
  */
-export function custom<T>(state: SchemaState<T>, handler: CustomCallback<T>): Criteria<T> | void {
+export function custom<T>(
+	state: SchemaState<T>,
+	validator: CriteriaValidator<T>,
+): Criteria<T> | void {
 	if (__DEV__) {
-		invariant(typeof handler === 'function', 'Custom requires a validation function.');
+		invariant(typeof validator === 'function', 'Custom requires a validation function.');
 
 		return {
-			validate(value, path, currentObject, rootObject) {
+			validate(value, path, validateOptions) {
 				try {
-					handler(value, path, currentObject, rootObject);
+					validator(value, path, validateOptions);
 				} catch (error: unknown) {
 					if (error instanceof Error) {
-						invariant(false, error.message, path);
+						invalid(false, error.message, path, value);
 					}
 				}
 			},
@@ -104,7 +104,7 @@ export function only<T>(state: SchemaState<T>): Criteria<T> | void {
 
 		return {
 			validate(value, path) {
-				invariant(value === defaultValue, `Value may only be "${defaultValue}".`, path);
+				invalid(value === defaultValue, `Value may only be "${defaultValue}".`, path, value);
 			},
 		};
 	}
@@ -118,13 +118,13 @@ export function or<T>(state: SchemaState<T>, ...keys: string[]): Criteria<T> | v
 		invariant(keys.length > 0, 'OR requires a list of field names.');
 
 		return {
-			validate(value, path, currentObject) {
+			validate(value, path, { currentObject }) {
 				const orKeys = [...new Set([pathKey(path), ...keys])];
 				const defs = orKeys.filter(
-					(key) => currentObject[key] !== undefined && currentObject[key] !== null,
+					(key) => currentObject?.[key] !== undefined && currentObject?.[key] !== null,
 				);
 
-				invariant(
+				invalid(
 					defs.length > 0,
 					`At least one of these fields must be defined: ${orKeys.join(', ')}`,
 				);
@@ -148,13 +148,13 @@ export function xor<T>(state: SchemaState<T>, ...keys: string[]): Criteria<T> | 
 		invariant(keys.length > 0, 'XOR requires a list of field names.');
 
 		return {
-			validate(value, path, currentObject) {
+			validate(value, path, { currentObject }) {
 				const xorKeys = [...new Set([pathKey(path), ...keys])];
 				const defs = xorKeys.filter(
-					(key) => currentObject[key] !== undefined && currentObject[key] !== null,
+					(key) => currentObject?.[key] !== undefined && currentObject?.[key] !== null,
 				);
 
-				invariant(
+				invalid(
 					defs.length === 1,
 					`Only one of these fields may be defined: ${xorKeys.join(', ')}`,
 				);

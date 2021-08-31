@@ -1,4 +1,4 @@
-import { createDate, invariant, isValidDate } from '../helpers';
+import { createDate, invalid, invariant, isValidDate } from '../helpers';
 import { Criteria, InclusiveOptions, MaybeDate, Options, SchemaState } from '../types';
 
 /**
@@ -17,10 +17,11 @@ export function after(
 		return {
 			skipIfNull: true,
 			validate(value, path) {
-				invariant(
+				invalid(
 					isValidDate(value) && value > afterDate,
 					options.message ?? `Date must come after ${afterDate.toLocaleDateString()}.`,
 					path,
+					value,
 				);
 			},
 		};
@@ -43,10 +44,11 @@ export function before(
 		return {
 			skipIfNull: true,
 			validate(value, path) {
-				invariant(
+				invalid(
 					isValidDate(value) && value < beforeDate,
 					options.message ?? `Date must come before ${beforeDate.toLocaleDateString()}.`,
 					path,
+					value,
 				);
 			},
 		};
@@ -72,7 +74,7 @@ export function between(
 		return {
 			skipIfNull: true,
 			validate(value, path) {
-				invariant(
+				invalid(
 					isValidDate(value) &&
 						(options.inclusive
 							? value >= startDate && value <= endDate
@@ -82,6 +84,7 @@ export function between(
 							options.inclusive ? ' inclusive' : ''
 						}.`,
 					path,
+					value,
 				);
 			},
 		};

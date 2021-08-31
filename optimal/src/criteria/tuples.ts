@@ -1,4 +1,4 @@
-import { invariant, isSchema } from '../helpers';
+import { invalid, invariant, isSchema } from '../helpers';
 import { Criteria, Schema, SchemaState } from '../types';
 
 export type InferTupleItems<T> = T extends [infer A, infer B, infer C, infer D, infer E]
@@ -32,16 +32,18 @@ export function of<T extends unknown[]>(
 
 	return {
 		skipIfNull: true,
-		validate(value, path, currentObject, rootObject) {
+		validate(value, path, validateOptions) {
 			if (__DEV__) {
-				invariant(
+				invalid(
 					Array.isArray(value) && value.length <= itemsSchemas.length,
 					`Value must be a tuple with ${itemsSchemas.length} items.`,
+					path,
+					value,
 				);
 			}
 
 			return itemsSchemas.map((item, i) =>
-				item.validate(value[i], `${path}[${i}]`, currentObject, rootObject),
+				item.validate(value[i], `${path}[${i}]`, validateOptions),
 			);
 		},
 	};

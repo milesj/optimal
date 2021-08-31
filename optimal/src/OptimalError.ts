@@ -20,6 +20,6 @@ export class OptimalError extends Error {
 			.join('\n');
 
 		this.errors.push(error);
-		this.message += `\n${message}`;
+		this.message += error.path ? `\nInvalid field "${error.path}". ${message}` : `\n${message}`;
 	}
 }

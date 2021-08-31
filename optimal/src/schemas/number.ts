@@ -1,6 +1,6 @@
 import { createSchema } from '../createSchema';
 import { commonCriteria, numberCriteria } from '../criteria';
-import { invariant } from '../helpers';
+import { invalid } from '../helpers';
 import {
 	CommonCriterias,
 	DefaultValue,
@@ -39,7 +39,7 @@ export function number<T extends number>(defaultValue: DefaultValue<number> = 0)
 			{
 				skipIfNull: true,
 				validate(value, path) {
-					invariant(typeof value === 'number', 'Must be a number.', path);
+					invalid(typeof value === 'number', 'Must be a number.', path, value);
 				},
 			},
 		],

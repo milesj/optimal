@@ -40,7 +40,10 @@ export function optimal<Schemas extends object>(
 			const object = struct as UnknownObject;
 
 			try {
-				return schema.validate(struct, options.prefix ?? '', object);
+				return schema.validate(struct, options.prefix ?? '', {
+					collectErrors: true,
+					currentObject: object,
+				});
 			} catch (error: unknown) {
 				let invalid: OptimalError;
 

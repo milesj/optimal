@@ -1,6 +1,6 @@
 import { createSchema } from '../createSchema';
 import { commonCriteria, objectCriteria } from '../criteria';
-import { createObject, invariant, isObject } from '../helpers';
+import { createObject, invalid, isObject } from '../helpers';
 import {
 	AnySchema,
 	CommonCriterias,
@@ -40,7 +40,7 @@ export function object<V = unknown, K extends PropertyKey = string>(
 			{
 				skipIfNull: true,
 				validate(value, path) {
-					invariant(isObject(value), 'Must be a plain object.', path);
+					invalid(isObject(value), 'Must be a plain object.', path, value);
 				},
 			},
 		],

@@ -1,4 +1,4 @@
-import { invariant, isObject, isSchema } from '../helpers';
+import { invalid, invariant, isObject, isSchema } from '../helpers';
 import { StringSchema } from '../schemas/string';
 import { Criteria, Options, Schema, SchemaState } from '../types';
 
@@ -17,15 +17,14 @@ export function keysOf<T>(
 
 		return {
 			skipIfNull: true,
-			validate(value, path, currentObject, rootObject) {
+			validate(value, path, validateOptions) {
 				if (isObject(value)) {
 					Object.keys(value).forEach((key) => {
 						try {
-							// Dont pass a path so we can change error message
-							keysSchema.validate(key, '', currentObject, rootObject);
+							keysSchema.validate(key, path, validateOptions);
 						} catch (error: unknown) {
 							if (error instanceof Error) {
-								throw new TypeError(`Invalid key "${key}". ${error.message}`);
+								invalid(false, `Invalid key "${key}". ${error.message}`, path, value);
 							}
 						}
 					});
@@ -46,10 +45,11 @@ export function notEmpty<T>(
 		return {
 			skipIfNull: true,
 			validate(value, path) {
-				invariant(
+				invalid(
 					Object.keys(value).length > 0,
 					options.message ?? 'Object cannot be empty.',
 					path,
+					value,
 				);
 			},
 		};
@@ -72,7 +72,7 @@ export function of<T>(
 
 	return {
 		skipIfNull: true,
-		validate(value, path, currentObject, rootObject) {
+		validate(value, path, validateOptions) {
 			if (!isObject(value)) {
 				return {};
 			}
@@ -85,8 +85,7 @@ export function of<T>(
 				nextValue[key] = valuesSchema.validate(
 					value[key],
 					path ? `${path}.${key}` : String(key),
-					currentObject,
-					rootObject,
+					validateOptions,
 				);
 			});
 
@@ -109,13 +108,14 @@ export function sizeOf<T>(
 		return {
 			skipIfNull: true,
 			validate(value, path) {
-				invariant(
+				invalid(
 					Object.keys(value).length === size,
 					options.message ??
 						(size === 1
 							? `Object must have ${size} property.`
 							: `Object must have ${size} properties.`),
 					path,
+					value,
 				);
 			},
 		};

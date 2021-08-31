@@ -39,17 +39,5 @@ describe('blueprint()', () => {
 				schema.validate(null);
 			}).toThrow('Null is not allowed.');
 		});
-
-		describe('production', () => {
-			it(
-				'doesnt error if a non-object is passed',
-				runInProd(() => {
-					expect(() => {
-						// @ts-expect-error Invalid type
-						schema.validate(123);
-					}).not.toThrow();
-				}),
-			);
-		});
 	});
 });

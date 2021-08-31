@@ -1,4 +1,4 @@
-import { invariant, isValidString } from '../helpers';
+import { invalid, invariant, isValidString } from '../helpers';
 import { Criteria, Options, SchemaState } from '../types';
 
 /**
@@ -16,10 +16,11 @@ export function contains(
 			skipIfNull: true,
 			skipIfOptional: true,
 			validate(value, path) {
-				invariant(
+				invalid(
 					value.includes(token, options.index ?? 0),
 					options.message ?? `String does not include "${token}".`,
 					path,
+					value,
 				);
 			},
 		};
@@ -41,10 +42,11 @@ export function match(
 			skipIfNull: true,
 			skipIfOptional: true,
 			validate(value, path) {
-				invariant(
+				invalid(
 					!!value.match(pattern),
 					`${options.message ?? 'String does not match.'} (pattern "${pattern.source}")`,
 					path,
+					value,
 				);
 			},
 		};
@@ -114,7 +116,7 @@ export function notEmpty(
 		return {
 			skipIfNull: true,
 			validate(value, path) {
-				invariant(isValidString(value), options.message ?? 'String cannot be empty.', path);
+				invalid(isValidString(value), options.message ?? 'String cannot be empty.', path, value);
 			},
 		};
 	}
@@ -137,10 +139,11 @@ export function oneOf(
 		return {
 			skipIfNull: true,
 			validate(value, path) {
-				invariant(
+				invalid(
 					list.includes(value),
 					options.message ?? `String must be one of: ${list.join(', ')}`,
 					path,
+					value,
 				);
 			},
 		};
@@ -158,10 +161,11 @@ export function lowerCase(
 		return {
 			skipIfNull: true,
 			validate(value, path) {
-				invariant(
+				invalid(
 					value === value.toLocaleLowerCase(),
 					options.message ?? 'String must be lower cased.',
 					path,
+					value,
 				);
 			},
 		};
@@ -179,10 +183,11 @@ export function upperCase(
 		return {
 			skipIfNull: true,
 			validate(value, path) {
-				invariant(
+				invalid(
 					value === value.toLocaleUpperCase(),
 					options.message ?? 'String must be upper cased.',
 					path,
+					value,
 				);
 			},
 		};
@@ -203,7 +208,12 @@ export function sizeOf(
 		return {
 			skipIfNull: true,
 			validate(value, path) {
-				invariant(value.length === size, options.message ?? `String length must be ${size}.`, path);
+				invalid(
+					value.length === size,
+					options.message ?? `String length must be ${size}.`,
+					path,
+					value,
+				);
 			},
 		};
 	}

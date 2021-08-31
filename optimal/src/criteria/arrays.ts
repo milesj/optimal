@@ -1,4 +1,4 @@
-import { invariant, isSchema } from '../helpers';
+import { invalid, invariant, isSchema } from '../helpers';
 import { Criteria, Options, Schema, SchemaState } from '../types';
 
 /**
@@ -9,7 +9,7 @@ export function notEmpty<T>(state: SchemaState<T[]>, options: Options = {}): Cri
 		return {
 			skipIfNull: true,
 			validate(value, path) {
-				invariant(value.length > 0, options.message ?? 'Array cannot be empty.', path);
+				invalid(value.length > 0, options.message ?? 'Array cannot be empty.', path, value);
 			},
 		};
 	}
@@ -28,7 +28,7 @@ export function of<T>(state: SchemaState<T[]>, itemsSchema: Schema<T>): Criteria
 
 	return {
 		skipIfNull: true,
-		validate(value, path, currentObject, rootObject) {
+		validate(value, path, validateOptions) {
 			if (!Array.isArray(value)) {
 				return [];
 			}
@@ -36,7 +36,7 @@ export function of<T>(state: SchemaState<T[]>, itemsSchema: Schema<T>): Criteria
 			const nextValue = [...value];
 
 			value.forEach((item, i) => {
-				nextValue[i] = itemsSchema.validate(item, `${path}[${i}]`, currentObject, rootObject);
+				nextValue[i] = itemsSchema.validate(item, `${path}[${i}]`, validateOptions);
 			});
 
 			return nextValue;
@@ -58,7 +58,12 @@ export function sizeOf<T>(
 		return {
 			skipIfNull: true,
 			validate(value, path) {
-				invariant(value.length === size, options.message ?? `Array length must be ${size}.`, path);
+				invalid(
+					value.length === size,
+					options.message ?? `Array length must be ${size}.`,
+					path,
+					value,
+				);
 			},
 		};
 	}

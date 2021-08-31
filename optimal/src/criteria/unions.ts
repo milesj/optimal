@@ -1,4 +1,4 @@
-import { invariant, isObject, isSchema } from '../helpers';
+import { invalid, invariant, isObject, isSchema } from '../helpers';
 import { Criteria, Schema, SchemaState } from '../types';
 
 function typeOf(value: unknown): string {
@@ -31,7 +31,7 @@ export function of<T = unknown>(
 
 	return {
 		skipIfNull: true,
-		validate(value, path, currentObject, rootObject) {
+		validate(value, path, validateOptions) {
 			let nextValue: unknown = value;
 
 			if (__DEV__) {
@@ -44,7 +44,7 @@ export function of<T = unknown>(
 					const schemaType = schema.schema();
 
 					if (schemaType === 'union') {
-						invariant(false, 'Nested unions are not supported.', path);
+						invalid(false, 'Nested unions are not supported.', path);
 					}
 
 					try {
@@ -56,7 +56,7 @@ export function of<T = unknown>(
 							(valueType === 'array/tuple' && schemaType === 'tuple') ||
 							schemaType === 'custom'
 						) {
-							nextValue = schema.validate(value, path, currentObject, rootObject);
+							nextValue = schema.validate(value, path, validateOptions);
 
 							return true;
 						}
@@ -82,7 +82,7 @@ export function of<T = unknown>(
 						});
 					}
 
-					invariant(false, message.trim(), path);
+					invalid(false, message.trim(), path, value);
 				}
 			}
 
