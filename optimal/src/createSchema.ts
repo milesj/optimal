@@ -59,9 +59,9 @@ function validate<T>(
 	}
 
 	// Run validations and produce a new value
-	const schemaError = new OptimalError();
+	const errors: ValidationError[] = [];
 
-	validators.some((test) => {
+	validators.forEach((test) => {
 		if (
 			(test.skipIfNull && value === null) ||
 			(test.skipIfOptional && !state.required && value === state.defaultValue)
@@ -75,21 +75,28 @@ function validate<T>(
 			if (result !== undefined) {
 				value = result as T;
 			}
-
-			return false;
 		} catch (error: unknown) {
-			if (error instanceof ValidationError) {
-				schemaError.errors.push(error);
+			// We only want to collect errors when running at the top level, the root,
+			// so we do this by checking for the existence of the root object
+			if (error instanceof Error && !rootObject) {
+				errors.push(new ValidationError(error.message, path, value));
+
+				// Nested validations should just throw immediately instead
+				// of looping through all criteria and collecting errors
 			} else {
 				throw error;
 			}
-
-			return true;
 		}
 	});
 
-	if (schemaError.errors.length > 0) {
-		throw schemaError;
+	if (errors.length > 0) {
+		const collectionError = new OptimalError();
+
+		errors.forEach((error) => {
+			collectionError.addError(error);
+		});
+
+		throw collectionError;
 	}
 
 	return value!;

@@ -64,7 +64,7 @@ export function of<T = unknown>(
 						return false;
 					} catch (error: unknown) {
 						if (error instanceof Error) {
-							errors.add(` - ${error.message}\n`);
+							errors.add(`  - ${error.message}\n`);
 						}
 					}
 
