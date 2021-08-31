@@ -1,5 +1,4 @@
 import { array, Infer, number, object, ObjectSchema, string, tuple } from '../../src';
-import { runInProd } from '../helpers';
 import { runCommonTests } from './runCommonTests';
 
 describe('object()', () => {
@@ -75,17 +74,6 @@ describe('object()', () => {
 				notEmptySchema.validate({ foo: 'bar' });
 			}).not.toThrow();
 		});
-
-		describe('production', () => {
-			it(
-				'errors if object is empty',
-				runInProd(() => {
-					expect(() => {
-						notEmptySchema.validate({});
-					}).not.toThrow();
-				}),
-			);
-		});
 	});
 
 	describe('sizeOf()', () => {
@@ -118,17 +106,6 @@ describe('object()', () => {
 			expect(() => {
 				sizeOfSchema.validate({ foo: 'bar' });
 			}).not.toThrow();
-		});
-
-		describe('production', () => {
-			it(
-				'errors if object has less properties',
-				runInProd(() => {
-					expect(() => {
-						sizeOfSchema.validate({});
-					}).not.toThrow();
-				}),
-			);
 		});
 	});
 
@@ -174,19 +151,7 @@ describe('object()', () => {
 			expect(() => {
 				// @ts-expect-error Invalid type
 				schema.validate({ a: 123 });
-			}).toThrow('Invalid field "a". Must be a string.');
-		});
-
-		describe('production', () => {
-			it(
-				'doesnt error if a non-string is passed',
-				runInProd(() => {
-					expect(() => {
-						// @ts-expect-error Invalid type
-						schema.validate(123);
-					}).not.toThrow();
-				}),
-			);
+			}).toThrow('Must be a string.');
 		});
 	});
 });

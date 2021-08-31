@@ -14,12 +14,13 @@ export class OptimalError extends Error {
 	}
 
 	addError(error: ValidationError) {
+		const prefix = error.path ? `Invalid field "${error.path}". ` : '';
 		const message = error.message
 			.split('\n')
-			.map((line) => (line.match(/^\s+-/g) ? `  ${line}` : `  - ${line}`))
+			.map((line) => (line.match(/^\s+-/g) ? `  ${prefix}${line}` : `  - ${prefix}${line}`))
 			.join('\n');
 
 		this.errors.push(error);
-		this.message += error.path ? `\nInvalid field "${error.path}". ${message}` : `\n${message}`;
+		this.message += `\n${message}`;
 	}
 }

@@ -1,5 +1,4 @@
 import { array, ArraySchema, bool, Infer, number, object, string } from '../../src';
-import { runInProd } from '../helpers';
 import { runCommonTests } from './runCommonTests';
 
 describe('array()', () => {
@@ -112,10 +111,7 @@ describe('array()', () => {
 			expect(() => {
 				// @ts-expect-error Invalid type
 				schema.validate([123]);
-			}).toThrowErrorMatchingInlineSnapshot(`
-			"The following validations have failed:
-			  - Must be a string."
-		`);
+			}).toThrow('Must be a string.');
 		});
 	});
 });

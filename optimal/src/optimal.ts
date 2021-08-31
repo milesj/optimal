@@ -43,6 +43,7 @@ export function optimal<Schemas extends object>(
 				return schema.validate(struct, options.prefix ?? '', {
 					collectErrors: true,
 					currentObject: object,
+					rootObject: object,
 				});
 			} catch (error: unknown) {
 				let invalid: OptimalError;
@@ -51,7 +52,7 @@ export function optimal<Schemas extends object>(
 					invalid = error;
 				} else {
 					invalid = new OptimalError();
-					invalid.errors.push(error as ValidationError);
+					invalid.addError(error as ValidationError);
 				}
 
 				if (options.name) {

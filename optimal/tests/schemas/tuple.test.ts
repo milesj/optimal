@@ -1,5 +1,4 @@
 import { array, bool, Infer, number, object, string, tuple, TupleSchema } from '../../src';
-import { runInProd } from '../helpers';
 import { runCommonTests } from './runCommonTests';
 
 describe('tuple()', () => {
@@ -68,20 +67,20 @@ describe('tuple()', () => {
 			expect(() => {
 				// @ts-expect-error Invalid type
 				schema.validate([null, false, 4, {}, 'foo']);
-			}).toThrow('Invalid field "[0]". Null is not allowed.');
+			}).toThrow('Null is not allowed.');
 		});
 
 		it('errors if a middle tuple item is invalid', () => {
 			expect(() => {
 				schema.validate([[], false, -10, {}, 'bar']);
-			}).toThrow('Invalid field "[2]". Number must be between 0 and 5.');
+			}).toThrow('Number must be between 0 and 5.');
 		});
 
 		it('errors if the last tuple item is invalid', () => {
 			expect(() => {
 				// @ts-expect-error Invalid type
 				schema.validate([[], false, 4, {}, 'qux']);
-			}).toThrow('Invalid field "[4]". String must be one of: foo, bar, baz');
+			}).toThrow('String must be one of: foo, bar, baz');
 		});
 
 		it('doesnt error if a matching tuple is passed', () => {
@@ -113,18 +112,6 @@ describe('tuple()', () => {
 		it('returns the default value from its items when an empty array is passed', () => {
 			// @ts-expect-error Invalid type
 			expect(schema.validate([])).toEqual([[], true, 1, {}, 'foo']);
-		});
-
-		describe('production', () => {
-			it(
-				'doesnt error if a non-tuple is passed',
-				runInProd(() => {
-					expect(() => {
-						// @ts-expect-error Invalid type
-						schema.validate({});
-					}).not.toThrow();
-				}),
-			);
 		});
 	});
 });

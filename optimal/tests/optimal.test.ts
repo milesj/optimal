@@ -12,7 +12,6 @@ import {
 	string,
 	union,
 } from '../src';
-import { runInProd } from './helpers';
 
 class Plugin {}
 
@@ -254,6 +253,17 @@ describe('Optimal', () => {
 	});
 
 	it('runs checks for nested level values', () => {
+		try {
+			optimal(blueprint).validate({
+				output: {
+					// @ts-expect-error Invalid type
+					crossOriginLoading: 'not-anonymous',
+				},
+			});
+		} catch (error) {
+			console.log(error);
+		}
+
 		expect(() => {
 			optimal(blueprint).validate({
 				output: {
@@ -280,53 +290,6 @@ describe('Optimal', () => {
 		"The following validations have failed:
 		  - Invalid field \\"entry\\". Value must be one of: string, array<string>, object<string | array<string>>, function."
 	`);
-	});
-
-	describe('production', () => {
-		it(
-			'sets and returns correct properties',
-			runInProd(() => {
-				const options = optimal(blueprint).validate({
-					entry: ['foo.js'],
-					output: {
-						hashFunction: 'sha256',
-					},
-					module: {
-						noParse: /foo/u,
-					},
-					// @ts-expect-error Invalid type
-					target: 'unknown',
-				});
-
-				expect(options).toEqual({
-					context: process.cwd(),
-					entry: ['foo.js'],
-					output: {
-						chunkFilename: '[id].js',
-						chunkLoadTimeout: 120_000,
-						crossOriginLoading: false,
-						filename: 'bundle.js',
-						hashFunction: 'sha256',
-						path: '',
-						publicPath: '',
-					},
-					module: {
-						noParse: /foo/u,
-						rules: [],
-					},
-					resolve: {
-						alias: {},
-						extensions: [],
-						plugins: [],
-						resolveLoader: {},
-					},
-					plugins: [],
-					target: 'unknown',
-					watch: false,
-					node: {},
-				});
-			}),
-		);
 	});
 
 	describe('unknown fields', () => {

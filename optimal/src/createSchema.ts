@@ -75,12 +75,8 @@ function validate<T>(
 				value = result as T;
 			}
 		} catch (error: unknown) {
-			// We only want to collect errors when running at the top level
-			if (error instanceof Error && collectErrors) {
-				errors.push(new ValidationError(error.message, path, value));
-
-				// Nested validations should typically throw immediately instead
-				// of looping through all criteria and collecting errors
+			if (error instanceof ValidationError && collectErrors) {
+				errors.push(error);
 			} else {
 				throw error;
 			}

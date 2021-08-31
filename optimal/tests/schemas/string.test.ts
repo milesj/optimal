@@ -1,5 +1,4 @@
 import { Infer, string, StringSchema } from '../../src';
-import { runInProd } from '../helpers';
 import { runCommonTests } from './runCommonTests';
 
 const camelCase = 'fooBarBaz1';
@@ -33,46 +32,41 @@ describe('string()', () => {
 		it('errors if less than 2 characters', () => {
 			expect(() => {
 				camelSchema.validate('a');
-			}).toThrowErrorMatchingInlineSnapshot(`
-			"The following validations have failed:
-			  - String must be in camel case. (pattern \\"^[a-z][a-zA-Z0-9]+$\\")"
-		`);
+			}).toThrowErrorMatchingInlineSnapshot(
+				`"String must be in camel case. (pattern \\"^[a-z][a-zA-Z0-9]+$\\")"`,
+			);
 		});
 
 		it('errors if starts with a number', () => {
 			expect(() => {
 				camelSchema.validate('1');
-			}).toThrowErrorMatchingInlineSnapshot(`
-			"The following validations have failed:
-			  - String must be in camel case. (pattern \\"^[a-z][a-zA-Z0-9]+$\\")"
-		`);
+			}).toThrowErrorMatchingInlineSnapshot(
+				`"String must be in camel case. (pattern \\"^[a-z][a-zA-Z0-9]+$\\")"`,
+			);
 		});
 
 		it('errors if in kebab case', () => {
 			expect(() => {
 				camelSchema.validate(kebabCase);
-			}).toThrowErrorMatchingInlineSnapshot(`
-			"The following validations have failed:
-			  - String must be in camel case. (pattern \\"^[a-z][a-zA-Z0-9]+$\\")"
-		`);
+			}).toThrowErrorMatchingInlineSnapshot(
+				`"String must be in camel case. (pattern \\"^[a-z][a-zA-Z0-9]+$\\")"`,
+			);
 		});
 
 		it('errors if in pascal case', () => {
 			expect(() => {
 				camelSchema.validate(pascalCase);
-			}).toThrowErrorMatchingInlineSnapshot(`
-			"The following validations have failed:
-			  - String must be in camel case. (pattern \\"^[a-z][a-zA-Z0-9]+$\\")"
-		`);
+			}).toThrowErrorMatchingInlineSnapshot(
+				`"String must be in camel case. (pattern \\"^[a-z][a-zA-Z0-9]+$\\")"`,
+			);
 		});
 
 		it('errors if in snake case', () => {
 			expect(() => {
 				camelSchema.validate(snakeCase);
-			}).toThrowErrorMatchingInlineSnapshot(`
-			"The following validations have failed:
-			  - String must be in camel case. (pattern \\"^[a-z][a-zA-Z0-9]+$\\")"
-		`);
+			}).toThrowErrorMatchingInlineSnapshot(
+				`"String must be in camel case. (pattern \\"^[a-z][a-zA-Z0-9]+$\\")"`,
+			);
 		});
 
 		it('passes if in camel case', () => {
@@ -115,19 +109,13 @@ describe('string()', () => {
 		it('errors if value does not contain token', () => {
 			expect(() => {
 				containsSchema.validate('bar');
-			}).toThrowErrorMatchingInlineSnapshot(`
-			"The following validations have failed:
-			  - String does not include \\"oo\\"."
-		`);
+			}).toThrowErrorMatchingInlineSnapshot(`"String does not include \\"oo\\"."`);
 		});
 
 		it('errors if value matches default value and predicate is required', () => {
 			expect(() => {
 				containsSchema.required().validate('');
-			}).toThrowErrorMatchingInlineSnapshot(`
-			"The following validations have failed:
-			  - String does not include \\"oo\\"."
-		`);
+			}).toThrowErrorMatchingInlineSnapshot(`"String does not include \\"oo\\"."`);
 		});
 
 		it('doesnt error if value matches default value and predicate is optional', () => {
@@ -163,46 +151,41 @@ describe('string()', () => {
 		it('errors if less than 2 characters', () => {
 			expect(() => {
 				kebabSchema.validate('a');
-			}).toThrowErrorMatchingInlineSnapshot(`
-			"The following validations have failed:
-			  - String must be in kebab case. (pattern \\"^[a-z][a-z0-9-]+$\\")"
-		`);
+			}).toThrowErrorMatchingInlineSnapshot(
+				`"String must be in kebab case. (pattern \\"^[a-z][a-z0-9-]+$\\")"`,
+			);
 		});
 
 		it('errors if starts with a number', () => {
 			expect(() => {
 				kebabSchema.validate('1');
-			}).toThrowErrorMatchingInlineSnapshot(`
-			"The following validations have failed:
-			  - String must be in kebab case. (pattern \\"^[a-z][a-z0-9-]+$\\")"
-		`);
+			}).toThrowErrorMatchingInlineSnapshot(
+				`"String must be in kebab case. (pattern \\"^[a-z][a-z0-9-]+$\\")"`,
+			);
 		});
 
 		it('errors if in camel case', () => {
 			expect(() => {
 				kebabSchema.validate(camelCase);
-			}).toThrowErrorMatchingInlineSnapshot(`
-			"The following validations have failed:
-			  - String must be in kebab case. (pattern \\"^[a-z][a-z0-9-]+$\\")"
-		`);
+			}).toThrowErrorMatchingInlineSnapshot(
+				`"String must be in kebab case. (pattern \\"^[a-z][a-z0-9-]+$\\")"`,
+			);
 		});
 
 		it('errors if in pascal case', () => {
 			expect(() => {
 				kebabSchema.validate(pascalCase);
-			}).toThrowErrorMatchingInlineSnapshot(`
-			"The following validations have failed:
-			  - String must be in kebab case. (pattern \\"^[a-z][a-z0-9-]+$\\")"
-		`);
+			}).toThrowErrorMatchingInlineSnapshot(
+				`"String must be in kebab case. (pattern \\"^[a-z][a-z0-9-]+$\\")"`,
+			);
 		});
 
 		it('errors if in snake case', () => {
 			expect(() => {
 				kebabSchema.validate(snakeCase);
-			}).toThrowErrorMatchingInlineSnapshot(`
-			"The following validations have failed:
-			  - String must be in kebab case. (pattern \\"^[a-z][a-z0-9-]+$\\")"
-		`);
+			}).toThrowErrorMatchingInlineSnapshot(
+				`"String must be in kebab case. (pattern \\"^[a-z][a-z0-9-]+$\\")"`,
+			);
 		});
 
 		it('passes if in kebab case', () => {
@@ -232,10 +215,7 @@ describe('string()', () => {
 		it('errors if value is not lower case', () => {
 			expect(() => {
 				lowerSchema.validate('FooBar');
-			}).toThrowErrorMatchingInlineSnapshot(`
-			"The following validations have failed:
-			  - String must be lower cased."
-		`);
+			}).toThrowErrorMatchingInlineSnapshot(`"String must be lower cased."`);
 		});
 
 		it('doesnt error if value is lower case', () => {
@@ -274,19 +254,13 @@ describe('string()', () => {
 		it('errors if value does not match pattern', () => {
 			expect(() => {
 				matchSchema.validate('bar');
-			}).toThrowErrorMatchingInlineSnapshot(`
-			"The following validations have failed:
-			  - String does not match. (pattern \\"oo\\")"
-		`);
+			}).toThrowErrorMatchingInlineSnapshot(`"String does not match. (pattern \\"oo\\")"`);
 		});
 
 		it('errors if value matches default value and predicate is required', () => {
 			expect(() => {
 				matchSchema.required().validate('');
-			}).toThrowErrorMatchingInlineSnapshot(`
-			"The following validations have failed:
-			  - String does not match. (pattern \\"oo\\")"
-		`);
+			}).toThrowErrorMatchingInlineSnapshot(`"String does not match. (pattern \\"oo\\")"`);
 		});
 
 		it('doesnt error if value matches default value and predicate is optional', () => {
@@ -322,10 +296,7 @@ describe('string()', () => {
 		it('errors if value is empty', () => {
 			expect(() => {
 				notEmptySchema.validate('');
-			}).toThrowErrorMatchingInlineSnapshot(`
-			"The following validations have failed:
-			  - String cannot be empty."
-		`);
+			}).toThrowErrorMatchingInlineSnapshot(`"String cannot be empty."`);
 		});
 
 		it('deosnt error if value is not empty', () => {
@@ -383,10 +354,7 @@ describe('string()', () => {
 			expect(() => {
 				// @ts-expect-error Invalid type
 				oneOfSchema.validate('qux');
-			}).toThrowErrorMatchingInlineSnapshot(`
-			"The following validations have failed:
-			  - String must be one of: foo, bar, baz"
-		`);
+			}).toThrowErrorMatchingInlineSnapshot(`"String must be one of: foo, bar, baz"`);
 		});
 
 		it('doesnt error if value contains token', () => {
@@ -416,46 +384,41 @@ describe('string()', () => {
 		it('errors if less than 2 characters', () => {
 			expect(() => {
 				pascalSchema.validate('A');
-			}).toThrowErrorMatchingInlineSnapshot(`
-			"The following validations have failed:
-			  - String must be in pascal case. (pattern \\"^[A-Z][a-zA-Z0-9]+$\\")"
-		`);
+			}).toThrowErrorMatchingInlineSnapshot(
+				`"String must be in pascal case. (pattern \\"^[A-Z][a-zA-Z0-9]+$\\")"`,
+			);
 		});
 
 		it('errors if starts with a number', () => {
 			expect(() => {
 				pascalSchema.validate('1');
-			}).toThrowErrorMatchingInlineSnapshot(`
-			"The following validations have failed:
-			  - String must be in pascal case. (pattern \\"^[A-Z][a-zA-Z0-9]+$\\")"
-		`);
+			}).toThrowErrorMatchingInlineSnapshot(
+				`"String must be in pascal case. (pattern \\"^[A-Z][a-zA-Z0-9]+$\\")"`,
+			);
 		});
 
 		it('errors if in camel case', () => {
 			expect(() => {
 				pascalSchema.validate(camelCase);
-			}).toThrowErrorMatchingInlineSnapshot(`
-			"The following validations have failed:
-			  - String must be in pascal case. (pattern \\"^[A-Z][a-zA-Z0-9]+$\\")"
-		`);
+			}).toThrowErrorMatchingInlineSnapshot(
+				`"String must be in pascal case. (pattern \\"^[A-Z][a-zA-Z0-9]+$\\")"`,
+			);
 		});
 
 		it('errors if in kebab case', () => {
 			expect(() => {
 				pascalSchema.validate(kebabCase);
-			}).toThrowErrorMatchingInlineSnapshot(`
-			"The following validations have failed:
-			  - String must be in pascal case. (pattern \\"^[A-Z][a-zA-Z0-9]+$\\")"
-		`);
+			}).toThrowErrorMatchingInlineSnapshot(
+				`"String must be in pascal case. (pattern \\"^[A-Z][a-zA-Z0-9]+$\\")"`,
+			);
 		});
 
 		it('errors if in snake case', () => {
 			expect(() => {
 				pascalSchema.validate(snakeCase);
-			}).toThrowErrorMatchingInlineSnapshot(`
-			"The following validations have failed:
-			  - String must be in pascal case. (pattern \\"^[A-Z][a-zA-Z0-9]+$\\")"
-		`);
+			}).toThrowErrorMatchingInlineSnapshot(
+				`"String must be in pascal case. (pattern \\"^[A-Z][a-zA-Z0-9]+$\\")"`,
+			);
 		});
 
 		it('passes if in pascal case', () => {
@@ -485,10 +448,7 @@ describe('string()', () => {
 		it('errors if length doesnt match', () => {
 			expect(() => {
 				sizeOfSchema.validate('');
-			}).toThrowErrorMatchingInlineSnapshot(`
-			"The following validations have failed:
-			  - String length must be 3."
-		`);
+			}).toThrowErrorMatchingInlineSnapshot(`"String length must be 3."`);
 		});
 
 		it('doesnt error if length matches', () => {
@@ -518,46 +478,41 @@ describe('string()', () => {
 		it('errors if less than 2 characters', () => {
 			expect(() => {
 				snakeSchema.validate('a');
-			}).toThrowErrorMatchingInlineSnapshot(`
-			"The following validations have failed:
-			  - String must be in snake case. (pattern \\"^[a-z][a-z0-9_]+$\\")"
-		`);
+			}).toThrowErrorMatchingInlineSnapshot(
+				`"String must be in snake case. (pattern \\"^[a-z][a-z0-9_]+$\\")"`,
+			);
 		});
 
 		it('errors if starts with a number', () => {
 			expect(() => {
 				snakeSchema.validate('1');
-			}).toThrowErrorMatchingInlineSnapshot(`
-			"The following validations have failed:
-			  - String must be in snake case. (pattern \\"^[a-z][a-z0-9_]+$\\")"
-		`);
+			}).toThrowErrorMatchingInlineSnapshot(
+				`"String must be in snake case. (pattern \\"^[a-z][a-z0-9_]+$\\")"`,
+			);
 		});
 
 		it('errors if in camel case', () => {
 			expect(() => {
 				snakeSchema.validate(camelCase);
-			}).toThrowErrorMatchingInlineSnapshot(`
-			"The following validations have failed:
-			  - String must be in snake case. (pattern \\"^[a-z][a-z0-9_]+$\\")"
-		`);
+			}).toThrowErrorMatchingInlineSnapshot(
+				`"String must be in snake case. (pattern \\"^[a-z][a-z0-9_]+$\\")"`,
+			);
 		});
 
 		it('errors if in kebab case', () => {
 			expect(() => {
 				snakeSchema.validate(kebabCase);
-			}).toThrowErrorMatchingInlineSnapshot(`
-			"The following validations have failed:
-			  - String must be in snake case. (pattern \\"^[a-z][a-z0-9_]+$\\")"
-		`);
+			}).toThrowErrorMatchingInlineSnapshot(
+				`"String must be in snake case. (pattern \\"^[a-z][a-z0-9_]+$\\")"`,
+			);
 		});
 
 		it('errors if in pascal case', () => {
 			expect(() => {
 				snakeSchema.validate(pascalCase);
-			}).toThrowErrorMatchingInlineSnapshot(`
-			"The following validations have failed:
-			  - String must be in snake case. (pattern \\"^[a-z][a-z0-9_]+$\\")"
-		`);
+			}).toThrowErrorMatchingInlineSnapshot(
+				`"String must be in snake case. (pattern \\"^[a-z][a-z0-9_]+$\\")"`,
+			);
 		});
 
 		it('passes if in snake case', () => {
@@ -587,10 +542,7 @@ describe('string()', () => {
 		it('errors if value is not upper case', () => {
 			expect(() => {
 				upperSchema.validate('FooBar');
-			}).toThrowErrorMatchingInlineSnapshot(`
-			"The following validations have failed:
-			  - String must be upper cased."
-		`);
+			}).toThrowErrorMatchingInlineSnapshot(`"String must be upper cased."`);
 		});
 
 		it('doesnt error if value is upper case', () => {
@@ -642,18 +594,6 @@ describe('string()', () => {
 			expect(() => {
 				schema.validate(null);
 			}).toThrow('Null is not allowed.');
-		});
-
-		describe('production', () => {
-			it(
-				'doesnt error if a non-string is passed',
-				runInProd(() => {
-					expect(() => {
-						// @ts-expect-error Invalid type
-						schema.validate(123);
-					}).not.toThrow();
-				}),
-			);
 		});
 	});
 });

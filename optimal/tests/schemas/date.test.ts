@@ -1,5 +1,4 @@
 import { date, DateSchema, Infer } from '../../src';
-import { runInProd } from '../helpers';
 import { runCommonTests } from './runCommonTests';
 
 describe('date()', () => {
@@ -213,18 +212,6 @@ describe('date()', () => {
 			expect(() => {
 				schema.nullable().validate(null);
 			}).not.toThrow();
-		});
-
-		describe('production', () => {
-			it(
-				'doesnt error if a non-date value is passed',
-				runInProd(() => {
-					expect(() => {
-						// @ts-expect-error Invalid type
-						schema.validate([]);
-					}).not.toThrow();
-				}),
-			);
 		});
 	});
 });

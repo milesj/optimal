@@ -1,5 +1,4 @@
 import { Infer, number, NumberSchema } from '../../src';
-import { runInProd } from '../helpers';
 import { runCommonTests } from './runCommonTests';
 
 describe('number()', () => {
@@ -42,18 +41,6 @@ describe('number()', () => {
 				oneOfSchema.validate(1);
 			}).not.toThrow();
 		});
-
-		describe('production', () => {
-			it(
-				'doesnt error if number is not in list',
-				runInProd(() => {
-					expect(() => {
-						// @ts-expect-error Invalid type
-						oneOfSchema.validate(5);
-					}).not.toThrow();
-				}),
-			);
-		});
 	});
 
 	describe('between()', () => {
@@ -88,17 +75,6 @@ describe('number()', () => {
 					betweenSchema.validate(3);
 				}).not.toThrow();
 			});
-
-			describe('production', () => {
-				it(
-					'doesnt error if number is out of range',
-					runInProd(() => {
-						expect(() => {
-							betweenSchema.validate(10);
-						}).not.toThrow();
-					}),
-				);
-			});
 		});
 
 		describe('inclusive', () => {
@@ -123,17 +99,6 @@ describe('number()', () => {
 					betweenSchema.validate(3);
 				}).not.toThrow();
 			});
-
-			describe('production', () => {
-				it(
-					'doesnt error if number is out of range',
-					runInProd(() => {
-						expect(() => {
-							betweenSchema.validate(10);
-						}).not.toThrow();
-					}),
-				);
-			});
 		});
 	});
 
@@ -154,17 +119,6 @@ describe('number()', () => {
 			expect(() => {
 				floatSchema.validate(1.2);
 			}).not.toThrow();
-		});
-
-		describe('production', () => {
-			it(
-				'doesnt error if number is a non-float',
-				runInProd(() => {
-					expect(() => {
-						floatSchema.validate(1);
-					}).not.toThrow();
-				}),
-			);
 		});
 	});
 
@@ -199,17 +153,6 @@ describe('number()', () => {
 				gtSchema.validate(15);
 			}).not.toThrow();
 		});
-
-		describe('production', () => {
-			it(
-				'doesnt error if number is too low',
-				runInProd(() => {
-					expect(() => {
-						gtSchema.validate(5);
-					}).not.toThrow();
-				}),
-			);
-		});
 	});
 
 	describe('gte()', () => {
@@ -236,17 +179,6 @@ describe('number()', () => {
 				gteSchema.validate(15);
 			}).not.toThrow();
 		});
-
-		describe('production', () => {
-			it(
-				'doesnt error if number is too low',
-				runInProd(() => {
-					expect(() => {
-						gteSchema.validate(5);
-					}).not.toThrow();
-				}),
-			);
-		});
 	});
 
 	describe('int()', () => {
@@ -266,17 +198,6 @@ describe('number()', () => {
 			expect(() => {
 				intSchema.validate(1);
 			}).not.toThrow();
-		});
-
-		describe('production', () => {
-			it(
-				'doesnt error if number is a non-integer',
-				runInProd(() => {
-					expect(() => {
-						intSchema.validate(1.2);
-					}).not.toThrow();
-				}),
-			);
 		});
 	});
 
@@ -311,17 +232,6 @@ describe('number()', () => {
 				ltSchema.validate(5);
 			}).not.toThrow();
 		});
-
-		describe('production', () => {
-			it(
-				'doesnt error if number is too high',
-				runInProd(() => {
-					expect(() => {
-						ltSchema.validate(15);
-					}).not.toThrow();
-				}),
-			);
-		});
 	});
 
 	describe('lte()', () => {
@@ -347,17 +257,6 @@ describe('number()', () => {
 			expect(() => {
 				lteSchema.validate(5);
 			}).not.toThrow();
-		});
-
-		describe('production', () => {
-			it(
-				'doesnt error if number is too high',
-				runInProd(() => {
-					expect(() => {
-						lteSchema.validate(15);
-					}).not.toThrow();
-				}),
-			);
 		});
 	});
 
@@ -385,17 +284,6 @@ describe('number()', () => {
 				negaSchema.validate(-10);
 			}).not.toThrow();
 		});
-
-		describe('production', () => {
-			it(
-				'doesnt error if number is positive',
-				runInProd(() => {
-					expect(() => {
-						negaSchema.validate(10);
-					}).not.toThrow();
-				}),
-			);
-		});
 	});
 
 	describe('positive()', () => {
@@ -421,17 +309,6 @@ describe('number()', () => {
 			expect(() => {
 				posiSchema.validate(10);
 			}).not.toThrow();
-		});
-
-		describe('production', () => {
-			it(
-				'doesnt error if number is negative',
-				runInProd(() => {
-					expect(() => {
-						posiSchema.validate(-10);
-					}).not.toThrow();
-				}),
-			);
 		});
 	});
 
@@ -459,18 +336,6 @@ describe('number()', () => {
 			expect(() => {
 				schema.validate(null);
 			}).toThrow('Null is not allowed.');
-		});
-
-		describe('production', () => {
-			it(
-				'doesnt error if a non-number is passed',
-				runInProd(() => {
-					expect(() => {
-						// @ts-expect-error Invalid type
-						schema.validate({});
-					}).not.toThrow();
-				}),
-			);
 		});
 	});
 });

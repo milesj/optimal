@@ -1,5 +1,4 @@
 import { CommonCriterias, DefaultValue, Schema } from '../../src';
-import { runInProd } from '../helpers';
 
 interface TestCriterias<S> extends CommonCriterias<S> {
 	never: () => S;
@@ -185,6 +184,7 @@ export function runCommonTests<T>(
 			});
 
 			expect(spy).toHaveBeenCalledWith(value, 'key', {
+				collectErrors: false,
 				currentObject: { key: null },
 				rootObject: { root: true },
 			});
