@@ -6,10 +6,7 @@ import { ValidationError } from '../ValidationError';
  * Require a shape to be an exact shape.
  * No more and no less of the same properties.
  */
-export function exact<T extends object>(
-	state: SchemaState<T>,
-	value: boolean = true,
-): Criteria<T> | void {
+export function exact<T extends object>(state: SchemaState<T>, value: boolean = true) {
 	state.metadata.exact = value;
 }
 
@@ -17,18 +14,11 @@ export function exact<T extends object>(
  * Require field to be an object with every property being a schema type.
  * Will rebuild the object (if not a class instance) and type cast values.
  */
-export function of<T extends object>(
-	state: SchemaState<T>,
-	schemas: Blueprint<T>,
-): Criteria<T> | void {
-	if (__DEV__) {
-		invariant(
-			isObject(schemas) &&
-				Object.keys(schemas).length > 0 &&
-				Object.values(schemas).every(isSchema),
-			'A non-empty object of schemas are required for a shape.',
-		);
-	}
+export function of<T extends object>(state: SchemaState<T>, schemas: Blueprint<T>): Criteria<T> {
+	invariant(
+		isObject(schemas) && Object.keys(schemas).length > 0 && Object.values(schemas).every(isSchema),
+		'A non-empty object of schemas are required for a shape.',
+	);
 
 	const types = Object.entries(schemas).map(
 		([key, value]) => `${key}: ${(value as Schema<unknown>).type()}`,
@@ -39,7 +29,7 @@ export function of<T extends object>(
 	return {
 		skipIfNull: true,
 		validate(value, path, validateOptions) {
-			if (__DEV__ && value) {
+			if (value) {
 				invalid(isObject(value), 'Value passed to shape must be an object.', path, value);
 			}
 

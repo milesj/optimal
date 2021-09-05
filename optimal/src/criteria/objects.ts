@@ -9,30 +9,34 @@ export function keysOf<T>(
 	state: SchemaState<Record<string, T>>,
 	keysSchema: StringSchema,
 	options: Options = {},
-): Criteria<Record<string, T>> | void {
-	if (__DEV__) {
-		if (!isSchema(keysSchema) || keysSchema.schema() !== 'string') {
-			invariant(false, 'A string schema is required for object keys.');
-		}
+): Criteria<Record<string, T>> {
+	invariant(
+		isSchema(keysSchema) && keysSchema.schema() === 'string',
+		'A string schema is required for object keys.',
+	);
 
-		return {
-			skipIfNull: true,
-			validate(value, path, validateOptions) {
-				if (isObject(value)) {
-					Object.keys(value).forEach((key) => {
-						try {
-							// Dont pass path so its not included in the error message
-							keysSchema.validate(key, '', validateOptions);
-						} catch (error: unknown) {
-							if (error instanceof Error) {
-								invalid(false, `Invalid key "${key}". ${error.message}`, path, value);
-							}
+	return {
+		skipIfNull: true,
+		validate(value, path, validateOptions) {
+			if (isObject(value)) {
+				Object.keys(value).forEach((key) => {
+					try {
+						// Dont pass path so its not included in the error message
+						keysSchema.validate(key, '', validateOptions);
+					} catch (error: unknown) {
+						if (error instanceof Error) {
+							invalid(
+								false,
+								`Invalid key "${key}". ${options.message ?? error.message}`,
+								path,
+								value,
+							);
 						}
-					});
-				}
-			},
-		};
-	}
+					}
+				});
+			}
+		},
+	};
 }
 
 /**
@@ -41,20 +45,18 @@ export function keysOf<T>(
 export function notEmpty<T>(
 	state: SchemaState<Record<string, T>>,
 	options: Options = {},
-): Criteria<Record<string, T>> | void {
-	if (__DEV__) {
-		return {
-			skipIfNull: true,
-			validate(value, path) {
-				invalid(
-					Object.keys(value).length > 0,
-					options.message ?? 'Object cannot be empty.',
-					path,
-					value,
-				);
-			},
-		};
-	}
+): Criteria<Record<string, T>> {
+	return {
+		skipIfNull: true,
+		validate(value, path) {
+			invalid(
+				Object.keys(value).length > 0,
+				options.message ?? 'Object cannot be empty.',
+				path,
+				value,
+			);
+		},
+	};
 }
 
 /**
@@ -64,10 +66,8 @@ export function notEmpty<T>(
 export function of<T>(
 	state: SchemaState<Record<string, T>>,
 	valuesSchema: Schema<T>,
-): Criteria<Record<string, T>> | void {
-	if (__DEV__ && !isSchema(valuesSchema)) {
-		invariant(false, 'A schema is required for object values.');
-	}
+): Criteria<Record<string, T>> {
+	invariant(isSchema(valuesSchema), 'A schema is required for object values.');
 
 	state.type += `<${valuesSchema.type()}>`;
 
@@ -102,23 +102,21 @@ export function sizeOf<T>(
 	state: SchemaState<Record<string, T>>,
 	size: number,
 	options: Options = {},
-): Criteria<Record<string, T>> | void {
-	if (__DEV__) {
-		invariant(typeof size === 'number' && size > 0, 'Size of requires a non-zero positive number.');
+): Criteria<Record<string, T>> {
+	invariant(typeof size === 'number' && size > 0, 'Size of requires a non-zero positive number.');
 
-		return {
-			skipIfNull: true,
-			validate(value, path) {
-				invalid(
-					Object.keys(value).length === size,
-					options.message ??
-						(size === 1
-							? `Object must have ${size} property.`
-							: `Object must have ${size} properties.`),
-					path,
-					value,
-				);
-			},
-		};
-	}
+	return {
+		skipIfNull: true,
+		validate(value, path) {
+			invalid(
+				Object.keys(value).length === size,
+				options.message ??
+					(size === 1
+						? `Object must have ${size} property.`
+						: `Object must have ${size} properties.`),
+				path,
+				value,
+			);
+		},
+	};
 }

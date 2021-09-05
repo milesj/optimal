@@ -4,61 +4,52 @@ import { Criteria, CriteriaValidator, SchemaState } from '../types';
 /**
  * Map a list of field names that must be defined alongside this field.
  */
-export function and<T>(state: SchemaState<T>, ...keys: string[]): Criteria<T> | void {
-	if (__DEV__) {
-		invariant(keys.length > 0, 'AND requires a list of field names.');
+export function and<T>(state: SchemaState<T>, ...keys: string[]): Criteria<T> {
+	invariant(keys.length > 0, 'AND requires a list of field names.');
 
-		return {
-			validate(value, path, { currentObject }) {
-				const andKeys = [...new Set([pathKey(path), ...keys])].sort();
-				const undefs = andKeys.filter(
-					(key) => currentObject?.[key] === undefined || currentObject?.[key] === null,
-				);
+	return {
+		validate(value, path, { currentObject }) {
+			const andKeys = [...new Set([pathKey(path), ...keys])].sort();
+			const undefs = andKeys.filter(
+				(key) => currentObject?.[key] === undefined || currentObject?.[key] === null,
+			);
 
-				// Only error once when one of the struct is defined
-				if (undefs.length === andKeys.length) {
-					return;
-				}
+			// Only error once when one of the struct is defined
+			if (undefs.length === andKeys.length) {
+				return;
+			}
 
-				invalid(undefs.length === 0, `All of these fields must be defined: ${andKeys.join(', ')}`);
-			},
-		};
-	}
+			invalid(undefs.length === 0, `All of these fields must be defined: ${andKeys.join(', ')}`);
+		},
+	};
 }
 
 /**
  * Set a callback to run custom validation logic.
  */
-export function custom<T>(
-	state: SchemaState<T>,
-	validator: CriteriaValidator<T>,
-): Criteria<T> | void {
-	if (__DEV__) {
-		invariant(typeof validator === 'function', 'Custom requires a validation function.');
+export function custom<T>(state: SchemaState<T>, validator: CriteriaValidator<T>): Criteria<T> {
+	invariant(typeof validator === 'function', 'Custom requires a validation function.');
 
-		return {
-			validate(value, path, validateOptions) {
-				try {
-					validator(value, path, validateOptions);
-				} catch (error: unknown) {
-					if (error instanceof Error) {
-						invalid(false, error.message, path, value);
-					}
+	return {
+		validate(value, path, validateOptions) {
+			try {
+				validator(value, path, validateOptions);
+			} catch (error: unknown) {
+				if (error instanceof Error) {
+					invalid(false, error.message, path, value);
 				}
-			},
-		};
-	}
+			}
+		},
+	};
 }
 
 /**
  * Set a message to log when this field is present.
  */
 export function deprecate<T>(state: SchemaState<T>, message: string) {
-	if (__DEV__) {
-		invariant(isValidString(message), 'A non-empty string is required for deprecated messages.');
+	invariant(isValidString(message), 'A non-empty string is required for deprecated messages.');
 
-		state.metadata.deprecatedMessage = message;
-	}
+	state.metadata.deprecatedMessage = message;
 }
 
 /**
@@ -93,44 +84,40 @@ export function nullable<T>(state: SchemaState<T>) {
 /**
  * Mark that this field can ONLY use a value that matches the default value.
  */
-export function only<T>(state: SchemaState<T>): Criteria<T> | void {
-	if (__DEV__) {
-		const { defaultValue } = state;
+export function only<T>(state: SchemaState<T>): Criteria<T> {
+	const { defaultValue } = state;
 
-		invariant(
-			defaultValue !== null && defaultValue !== undefined,
-			'Only requires a non-empty default value.',
-		);
+	invariant(
+		defaultValue !== null && defaultValue !== undefined,
+		'Only requires a non-empty default value.',
+	);
 
-		return {
-			validate(value, path) {
-				invalid(value === defaultValue, `Value may only be "${defaultValue}".`, path, value);
-			},
-		};
-	}
+	return {
+		validate(value, path) {
+			invalid(value === defaultValue, `Value may only be "${defaultValue}".`, path, value);
+		},
+	};
 }
 
 /**
  * Map a list of field names that must have at least 1 defined.
  */
-export function or<T>(state: SchemaState<T>, ...keys: string[]): Criteria<T> | void {
-	if (__DEV__) {
-		invariant(keys.length > 0, 'OR requires a list of field names.');
+export function or<T>(state: SchemaState<T>, ...keys: string[]): Criteria<T> {
+	invariant(keys.length > 0, 'OR requires a list of field names.');
 
-		return {
-			validate(value, path, { currentObject }) {
-				const orKeys = [...new Set([pathKey(path), ...keys])].sort();
-				const defs = orKeys.filter(
-					(key) => currentObject?.[key] !== undefined && currentObject?.[key] !== null,
-				);
+	return {
+		validate(value, path, { currentObject }) {
+			const orKeys = [...new Set([pathKey(path), ...keys])].sort();
+			const defs = orKeys.filter(
+				(key) => currentObject?.[key] !== undefined && currentObject?.[key] !== null,
+			);
 
-				invalid(
-					defs.length > 0,
-					`At least one of these fields must be defined: ${orKeys.join(', ')}`,
-				);
-			},
-		};
-	}
+			invalid(
+				defs.length > 0,
+				`At least one of these fields must be defined: ${orKeys.join(', ')}`,
+			);
+		},
+	};
 }
 
 /**
@@ -143,22 +130,17 @@ export function required<T>(state: SchemaState<T>) {
 /**
  * Map a list of field names that must not be defined alongside this field.
  */
-export function xor<T>(state: SchemaState<T>, ...keys: string[]): Criteria<T> | void {
-	if (__DEV__) {
-		invariant(keys.length > 0, 'XOR requires a list of field names.');
+export function xor<T>(state: SchemaState<T>, ...keys: string[]): Criteria<T> {
+	invariant(keys.length > 0, 'XOR requires a list of field names.');
 
-		return {
-			validate(value, path, { currentObject }) {
-				const xorKeys = [...new Set([pathKey(path), ...keys])].sort();
-				const defs = xorKeys.filter(
-					(key) => currentObject?.[key] !== undefined && currentObject?.[key] !== null,
-				);
+	return {
+		validate(value, path, { currentObject }) {
+			const xorKeys = [...new Set([pathKey(path), ...keys])].sort();
+			const defs = xorKeys.filter(
+				(key) => currentObject?.[key] !== undefined && currentObject?.[key] !== null,
+			);
 
-				invalid(
-					defs.length === 1,
-					`Only one of these fields may be defined: ${xorKeys.join(', ')}`,
-				);
-			},
-		};
-	}
+			invalid(defs.length === 1, `Only one of these fields may be defined: ${xorKeys.join(', ')}`);
+		},
+	};
 }

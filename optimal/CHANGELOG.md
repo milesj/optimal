@@ -21,6 +21,7 @@ changelog will use the new verbiage, but may affect previous APIs.
 - Removed `.message()` method.
 - Removed the `predicate()` schema (use `schema()` instead).
 - Removed the state boolean argument from `.required()` (use `.notRequired()`).
+- Removed internal `__DEV__` checks. Validations will now run in production!
 
 #### 🚀 Updates
 

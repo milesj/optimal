@@ -39,11 +39,9 @@ function validate<T>(
 				? (defaultValue as DefaultValueInitializer<T>)(path, currentObject, rootObject)
 				: defaultValue;
 
-		if (__DEV__) {
-			invalid(!state.required, 'Field is required and must be defined.', path);
-		}
-	} else if (__DEV__) {
-		if (metadata.deprecatedMessage) {
+		invalid(!state.required, 'Field is required and must be defined.', path);
+	} else {
+		if (__DEV__ && metadata.deprecatedMessage) {
 			// eslint-disable-next-line no-console
 			console.info(`Field "${path}" is deprecated. ${metadata.deprecatedMessage}`);
 		}
@@ -52,7 +50,7 @@ function validate<T>(
 	}
 
 	// Handle null
-	if (__DEV__ && value === null) {
+	if (value === null) {
 		invalid(state.nullable, 'Null is not allowed.', path);
 	}
 

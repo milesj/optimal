@@ -20,27 +20,23 @@ export type InferTupleItems<T> = T extends [infer A, infer B, infer C, infer D, 
 export function of<T extends unknown[]>(
 	state: SchemaState<T>,
 	itemsSchemas: InferTupleItems<T>,
-): Criteria<T> | void {
-	if (__DEV__) {
-		invariant(
-			Array.isArray(itemsSchemas) && itemsSchemas.length > 0 && itemsSchemas.every(isSchema),
-			'A non-empty array of schemas are required for a tuple.',
-		);
-	}
+): Criteria<T> {
+	invariant(
+		Array.isArray(itemsSchemas) && itemsSchemas.length > 0 && itemsSchemas.every(isSchema),
+		'A non-empty array of schemas are required for a tuple.',
+	);
 
 	state.type = `tuple<${itemsSchemas.map((item) => item.type()).join(', ')}>`;
 
 	return {
 		skipIfNull: true,
 		validate(value, path, validateOptions) {
-			if (__DEV__) {
-				invalid(
-					Array.isArray(value) && value.length <= itemsSchemas.length,
-					`Value must be a tuple with ${itemsSchemas.length} items.`,
-					path,
-					value,
-				);
-			}
+			invalid(
+				Array.isArray(value) && value.length <= itemsSchemas.length,
+				`Value must be a tuple with ${itemsSchemas.length} items.`,
+				path,
+				value,
+			);
 
 			return itemsSchemas.map((item, i) =>
 				item.validate(value[i], `${path}[${i}]`, validateOptions),

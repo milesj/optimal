@@ -24,7 +24,7 @@ export function optimal<Schemas extends object>(
 	let schema = shape(blueprint);
 
 	function configure(nextOpts: OptimalOptions) {
-		if (__DEV__ && !isObject(nextOpts)) {
+		if (!isObject(nextOpts)) {
 			throw new TypeError('Optimal options must be a plain object.');
 		}
 

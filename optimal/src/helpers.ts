@@ -107,9 +107,7 @@ export function invariant(condition: boolean, message: string) {
 		return;
 	}
 
-	if (__DEV__) {
-		throw new Error(message);
-	}
+	throw new Error(message);
 }
 
 export function logUnknown(unknownFields: object, pathPrefix?: string) {

@@ -8,23 +8,21 @@ export function contains(
 	state: SchemaState<string>,
 	token: string,
 	options: Options & { index?: number } = {},
-): Criteria<string> | void {
-	if (__DEV__) {
-		invariant(isValidString(token), 'Contains requires a non-empty token.');
+): Criteria<string> {
+	invariant(isValidString(token), 'Contains requires a non-empty token.');
 
-		return {
-			skipIfNull: true,
-			skipIfOptional: true,
-			validate(value, path) {
-				invalid(
-					value.includes(token, options.index ?? 0),
-					options.message ?? `String does not include "${token}".`,
-					path,
-					value,
-				);
-			},
-		};
-	}
+	return {
+		skipIfNull: true,
+		skipIfOptional: true,
+		validate(value, path) {
+			invalid(
+				value.includes(token, options.index ?? 0),
+				options.message ?? `String does not include "${token}".`,
+				path,
+				value,
+			);
+		},
+	};
 }
 
 /**
@@ -34,32 +32,27 @@ export function match(
 	state: SchemaState<string>,
 	pattern: RegExp,
 	options: Options = {},
-): Criteria<string> | void {
-	if (__DEV__) {
-		invariant(pattern instanceof RegExp, 'Match requires a regular expression to match against.');
+): Criteria<string> {
+	invariant(pattern instanceof RegExp, 'Match requires a regular expression to match against.');
 
-		return {
-			skipIfNull: true,
-			skipIfOptional: true,
-			validate(value, path) {
-				invalid(
-					!!value.match(pattern),
-					`${options.message ?? 'String does not match.'} (pattern "${pattern.source}")`,
-					path,
-					value,
-				);
-			},
-		};
-	}
+	return {
+		skipIfNull: true,
+		skipIfOptional: true,
+		validate(value, path) {
+			invalid(
+				!!value.match(pattern),
+				`${options.message ?? 'String does not match.'} (pattern "${pattern.source}")`,
+				path,
+				value,
+			);
+		},
+	};
 }
 
 /**
  * Require field value to be formatted in camel case (fooBar).
  */
-export function camelCase(
-	state: SchemaState<string>,
-	options: Options = {},
-): Criteria<string> | void {
+export function camelCase(state: SchemaState<string>, options: Options = {}): Criteria<string> {
 	return match(state, /^[a-z][a-zA-Z0-9]+$/u, {
 		message: 'String must be in camel case.',
 		...options,
@@ -69,10 +62,7 @@ export function camelCase(
 /**
  * Require field value to be formatted in kebab case (foo-bar).
  */
-export function kebabCase(
-	state: SchemaState<string>,
-	options: Options = {},
-): Criteria<string> | void {
+export function kebabCase(state: SchemaState<string>, options: Options = {}): Criteria<string> {
 	return match(state, /^[a-z][a-z0-9-]+$/u, {
 		message: 'String must be in kebab case.',
 		...options,
@@ -82,10 +72,7 @@ export function kebabCase(
 /**
  * Require field value to be formatted in pascal case (FooBar).
  */
-export function pascalCase(
-	state: SchemaState<string>,
-	options: Options = {},
-): Criteria<string> | void {
+export function pascalCase(state: SchemaState<string>, options: Options = {}): Criteria<string> {
 	return match(state, /^[A-Z][a-zA-Z0-9]+$/u, {
 		message: 'String must be in pascal case.',
 		...options,
@@ -95,10 +82,7 @@ export function pascalCase(
 /**
  * Require field value to be formatted in snake case (foo_bar).
  */
-export function snakeCase(
-	state: SchemaState<string>,
-	options: Options = {},
-): Criteria<string> | void {
+export function snakeCase(state: SchemaState<string>, options: Options = {}): Criteria<string> {
 	return match(state, /^[a-z][a-z0-9_]+$/u, {
 		message: 'String must be in snake case.',
 		...options,
@@ -108,18 +92,13 @@ export function snakeCase(
 /**
  * Require field value to not be an empty string.
  */
-export function notEmpty(
-	state: SchemaState<string>,
-	options: Options = {},
-): Criteria<string> | void {
-	if (__DEV__) {
-		return {
-			skipIfNull: true,
-			validate(value, path) {
-				invalid(isValidString(value), options.message ?? 'String cannot be empty.', path, value);
-			},
-		};
-	}
+export function notEmpty(state: SchemaState<string>, options: Options = {}): Criteria<string> {
+	return {
+		skipIfNull: true,
+		validate(value, path) {
+			invalid(isValidString(value), options.message ?? 'String cannot be empty.', path, value);
+		},
+	};
 }
 
 /**
@@ -129,69 +108,57 @@ export function oneOf(
 	state: SchemaState<string>,
 	list: string[],
 	options: Options = {},
-): Criteria<string> | void {
-	if (__DEV__) {
-		invariant(
-			Array.isArray(list) && list.length > 0 && list.every((item) => typeof item === 'string'),
-			'One of requires an array of strings.',
-		);
+): Criteria<string> {
+	invariant(
+		Array.isArray(list) && list.length > 0 && list.every((item) => typeof item === 'string'),
+		'One of requires an array of strings.',
+	);
 
-		return {
-			skipIfNull: true,
-			validate(value, path) {
-				invalid(
-					list.includes(value),
-					options.message ?? `String must be one of: ${list.join(', ')}`,
-					path,
-					value,
-				);
-			},
-		};
-	}
+	return {
+		skipIfNull: true,
+		validate(value, path) {
+			invalid(
+				list.includes(value),
+				options.message ?? `String must be one of: ${list.join(', ')}`,
+				path,
+				value,
+			);
+		},
+	};
 }
 
 /**
  * Require field value to be all lower case.
  */
-export function lowerCase(
-	state: SchemaState<string>,
-	options: Options = {},
-): Criteria<string> | void {
-	if (__DEV__) {
-		return {
-			skipIfNull: true,
-			validate(value, path) {
-				invalid(
-					value === value.toLocaleLowerCase(),
-					options.message ?? 'String must be lower cased.',
-					path,
-					value,
-				);
-			},
-		};
-	}
+export function lowerCase(state: SchemaState<string>, options: Options = {}): Criteria<string> {
+	return {
+		skipIfNull: true,
+		validate(value, path) {
+			invalid(
+				value === value.toLocaleLowerCase(),
+				options.message ?? 'String must be lower cased.',
+				path,
+				value,
+			);
+		},
+	};
 }
 
 /**
  * Require field value to be all upper case.
  */
-export function upperCase(
-	state: SchemaState<string>,
-	options: Options = {},
-): Criteria<string> | void {
-	if (__DEV__) {
-		return {
-			skipIfNull: true,
-			validate(value, path) {
-				invalid(
-					value === value.toLocaleUpperCase(),
-					options.message ?? 'String must be upper cased.',
-					path,
-					value,
-				);
-			},
-		};
-	}
+export function upperCase(state: SchemaState<string>, options: Options = {}): Criteria<string> {
+	return {
+		skipIfNull: true,
+		validate(value, path) {
+			invalid(
+				value === value.toLocaleUpperCase(),
+				options.message ?? 'String must be upper cased.',
+				path,
+				value,
+			);
+		},
+	};
 }
 
 /**
@@ -201,20 +168,18 @@ export function sizeOf(
 	state: SchemaState<string>,
 	size: number,
 	options: Options = {},
-): Criteria<string> | void {
-	if (__DEV__) {
-		invariant(typeof size === 'number' && size > 0, 'Size requires a non-zero positive number.');
+): Criteria<string> {
+	invariant(typeof size === 'number' && size > 0, 'Size requires a non-zero positive number.');
 
-		return {
-			skipIfNull: true,
-			validate(value, path) {
-				invalid(
-					value.length === size,
-					options.message ?? `String length must be ${size}.`,
-					path,
-					value,
-				);
-			},
-		};
-	}
+	return {
+		skipIfNull: true,
+		validate(value, path) {
+			invalid(
+				value.length === size,
+				options.message ?? `String length must be ${size}.`,
+				path,
+				value,
+			);
+		},
+	};
 }
