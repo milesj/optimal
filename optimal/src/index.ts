@@ -20,6 +20,7 @@ export * from './schemas/custom';
 export * from './schemas/date';
 export * from './schemas/func';
 export * from './schemas/instance';
+export * from './schemas/lazy';
 export * from './schemas/number';
 export * from './schemas/object';
 export * from './schemas/regex';

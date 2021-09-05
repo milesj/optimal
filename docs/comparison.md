@@ -4,6 +4,7 @@
 | Deep validation      |         | ✅  |     |     |
 | Immutable schemas    |   ✅    | ✅  | ✅  |     |
 | Lazy default values  |   ✅    | ✅  | ✅  |     |
+| Lazy schemas         |   ✅    | ✅  |     |
 | Localization         |         | ✅  |     |     |
 | Native TypeScript    |   ✅    |     |     |     |
 | Nullable fields      |   ✅    | ✅  |     |     |
@@ -24,7 +25,6 @@ This functionality is available across all schema types.
 | default value  |   ✅    | ✅  | ✅  |     |
 | defined        |         | ✅  |     |     |
 | deprecate      |   ✅    |     |     |     |
-| lazy / defer   |         | ✅  |     |     |
 | nand           |         |     | 1️⃣  |     |
 | never          |   ✅    |     | ✅  |     |
 | not nullable   |   ✅    |     |     |     |

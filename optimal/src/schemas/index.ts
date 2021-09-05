@@ -5,6 +5,7 @@ export { custom } from './custom';
 export { date } from './date';
 export { func } from './func';
 export { instance } from './instance';
+export { lazy } from './lazy';
 export { number } from './number';
 export { object } from './object';
 export { regex } from './regex';
