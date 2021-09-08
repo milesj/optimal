@@ -16,6 +16,14 @@ export type DefaultValueInitializer<T> = (
 
 export type DefaultValue<T> = DefaultValueInitializer<T> | T;
 
+export type ValueComparator<T> = (
+	value: T,
+	currentObject?: UnknownObject,
+	rootObject?: UnknownObject,
+) => boolean;
+
+export type WhenCondition<T> = T | ValueComparator<T>;
+
 // CRITERIA
 
 export interface Options {
@@ -51,6 +59,7 @@ export interface CommonCriterias<S> {
 	only: () => S;
 	or: (...keys: string[]) => S;
 	required: () => S;
+	when: (condition: WhenCondition<InferSchemaType<S>>, pass: AnySchema, fail?: AnySchema) => S;
 	xor: (...keys: string[]) => S;
 	// Define in schemas directly
 	// never: () => S;

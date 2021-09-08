@@ -34,7 +34,7 @@ This functionality is available across all schema types.
 | or             |   ✅    |     | 1️⃣  |     |
 | oxor           |         |     | 1️⃣  |     |
 | required       |   ✅    | ✅  | ✅  |     |
-| when           |         | ✅  | ✅  |     |
+| when           |   ✅    | ✅  | ✅  |     |
 | xor            |   ✅    |     | 1️⃣  |     |
 
 ### Any
@@ -113,6 +113,13 @@ The `func()` schema for functions.
 |       | optimal | yup ❌ | joi | zod |
 | :---- | :-----: | :----: | :-: | :-: |
 | arity |         |        | ✅  |     |
+
+### Lazy
+
+The `lazy()` schema for deferring evaluation.
+
+|     | optimal | yup | joi ❌ | zod |
+| :-- | :-----: | :-: | :----: | :-: |
 
 ### Number
 

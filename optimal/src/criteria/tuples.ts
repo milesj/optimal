@@ -1,5 +1,5 @@
 import { invalid, invariant, isSchema } from '../helpers';
-import { Criteria, Schema, SchemaState } from '../types';
+import { AnySchema, Criteria, Schema, SchemaState } from '../types';
 
 export type InferTupleItems<T> = T extends [infer A, infer B, infer C, infer D, infer E]
 	? [Schema<A>, Schema<B>, Schema<C>, Schema<D>, Schema<E>]
@@ -11,7 +11,7 @@ export type InferTupleItems<T> = T extends [infer A, infer B, infer C, infer D, 
 	? [Schema<A>, Schema<B>]
 	: T extends [infer A]
 	? [Schema<A>]
-	: Schema<unknown>[];
+	: AnySchema[];
 
 /**
  * Require field array items to be of a specific schema type.
@@ -38,8 +38,8 @@ export function of<T extends unknown[]>(
 				value,
 			);
 
-			return itemsSchemas.map((item, i) =>
-				item.validate(value[i], `${path}[${i}]`, validateOptions),
+			return itemsSchemas.map(
+				(item, i) => item.validate(value[i], `${path}[${i}]`, validateOptions) as unknown,
 			);
 		},
 	};

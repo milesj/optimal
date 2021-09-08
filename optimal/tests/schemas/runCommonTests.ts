@@ -1,4 +1,4 @@
-import { CommonCriterias, DefaultValue, Schema } from '../../src';
+import { AnySchema, CommonCriterias, DefaultValue, Schema } from '../../src';
 
 interface TestCriterias<S> extends CommonCriterias<S> {
 	never: () => S;
@@ -8,7 +8,7 @@ interface TestCriterias<S> extends CommonCriterias<S> {
 
 // eslint-disable-next-line jest/no-export
 export function runCommonTests<T>(
-	factory: (initialValue?: DefaultValue<T>) => CommonCriterias<Schema<T | null>> & Schema<T | null>,
+	factory: (initialValue?: DefaultValue<T>) => AnySchema,
 	value: T | null,
 	{
 		defaultValue,

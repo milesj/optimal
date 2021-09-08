@@ -1,5 +1,5 @@
-import { invalid, invariant, isValidString, pathKey } from '../helpers';
-import { Criteria, CriteriaValidator, SchemaState } from '../types';
+import { invalid, invariant, isSchema, isValidString, pathKey } from '../helpers';
+import { Criteria, CriteriaValidator, Schema, SchemaState, ValueComparator } from '../types';
 
 /**
  * Map a list of field names that must be defined alongside this field.
@@ -125,6 +125,45 @@ export function or<T>(state: SchemaState<T>, ...keys: string[]): Criteria<T> {
  */
 export function required<T>(state: SchemaState<T>) {
 	state.required = true;
+}
+
+/**
+ * TODO
+ */
+export function when<T>(
+	state: SchemaState<T>,
+	condition: T | ValueComparator<T>,
+	pass: Schema<T>,
+	fail?: Schema<T>,
+): Criteria<T> {
+	invariant(isSchema(pass), 'A schema is required when the condition passes.');
+
+	if (fail !== undefined) {
+		invariant(isSchema(fail), 'A schema is required when the condition fails.');
+	}
+
+	return {
+		validate(value, path, validateOptions) {
+			const passed =
+				typeof condition === 'function'
+					? (condition as ValueComparator<T>)(
+							value,
+							validateOptions.currentObject,
+							validateOptions.rootObject,
+					  )
+					: condition === value;
+
+			if (passed) {
+				return pass.validate(value, path);
+			}
+
+			if (fail) {
+				return fail.validate(value, path, validateOptions);
+			}
+
+			return undefined;
+		},
+	};
 }
 
 /**
