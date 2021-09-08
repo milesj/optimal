@@ -4,7 +4,7 @@
   "scripts": {
     "prepare": "beemo create-config",
     "build": "packemon build --addEngines",
-    "pack": "NODE_ENV=production packemon pack --addEngines --declaration=standard",
+    "pack": "NODE_ENV=production packemon pack --addEngines --addExports --declaration=standard",
     "check": "yarn run type && yarn run test && yarn run lint",
     "clean": "packemon clean",
     "coverage": "yarn run test --coverage",
@@ -21,9 +21,9 @@
   "devDependencies": {
     "@beemo/cli": "^2.0.1",
     "@beemo/core": "^2.0.2",
-    "@beemo/dev": "^1.5.0",
-    "@types/node": "^15.6.1",
-    "packemon": "^1.4.1"
+    "@beemo/dev": "^1.6.0",
+    "@types/node": "^15.14.9",
+    "packemon": "^1.4.2"
   },
   "workspaces": [
     "optimal/"

@@ -1,3 +1,4 @@
+import { jest } from '@jest/globals';
 import { AnySchema, CommonCriterias, DefaultValue, Schema } from '../../src';
 
 interface TestCriterias<S> extends CommonCriterias<S> {
@@ -57,6 +58,7 @@ export function runCommonTests<T>(
 			it('passes the current path and objects to the lazy callback function', () => {
 				const spy = jest.fn().mockReturnValue(defaultValue);
 
+				// @ts-expect-error Ignore type requirement
 				schema = factory(spy) as any;
 				schema.validate(undefined, 'key.deep', {
 					currentObject: { foo: '' },
@@ -223,7 +225,7 @@ export function runCommonTests<T>(
 		});
 
 		it('logs a message when validating', () => {
-			const spy = jest.spyOn(console, 'info').mockImplementation();
+			const spy = jest.spyOn(console, 'info').mockImplementation(() => {});
 
 			schema.deprecate('Migrate away!').validate(value, 'key', {});
 
