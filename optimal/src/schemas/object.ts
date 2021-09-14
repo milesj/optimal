@@ -2,11 +2,9 @@ import { createSchema } from '../createSchema';
 import { commonCriteria, objectCriteria } from '../criteria';
 import { createObject, invalid, isObject } from '../helpers';
 import {
-	AnySchema,
 	CommonCriterias,
 	DefaultValue,
 	InferNullable,
-	InferSchemaType,
 	ObjectCriterias,
 	Options,
 	Schema,
@@ -21,9 +19,9 @@ export interface ObjectSchema<T = object>
 	never: () => ObjectSchema<never>;
 	notNullable: () => ObjectSchema<NonNullable<T>>;
 	nullable: () => ObjectSchema<T | null>;
-	of: <V extends AnySchema, K extends PropertyKey = keyof T>(
-		schema: V,
-	) => ObjectSchema<InferNullable<T, Record<K, InferSchemaType<V>>>>;
+	of: <V, K extends PropertyKey = keyof T>(
+		schema: Schema<V>,
+	) => ObjectSchema<InferNullable<T, Record<K, V>>>;
 }
 
 export function object<V = unknown, K extends PropertyKey = string>(

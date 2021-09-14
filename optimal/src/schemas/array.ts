@@ -1,15 +1,7 @@
 import { createSchema } from '../createSchema';
 import { arrayCriteria, commonCriteria } from '../criteria';
 import { createArray, invalid } from '../helpers';
-import {
-	AnySchema,
-	ArrayCriterias,
-	CommonCriterias,
-	DefaultValue,
-	InferNullable,
-	InferSchemaType,
-	Schema,
-} from '../types';
+import { ArrayCriterias, CommonCriterias, DefaultValue, InferNullable, Schema } from '../types';
 
 export interface ArraySchema<T = unknown[]>
 	extends Schema<T>,
@@ -18,7 +10,7 @@ export interface ArraySchema<T = unknown[]>
 	never: () => ArraySchema<never>;
 	notNullable: () => ArraySchema<NonNullable<T>>;
 	nullable: () => ArraySchema<T | null>;
-	of: <V extends AnySchema>(schema: V) => ArraySchema<InferNullable<T, InferSchemaType<V>[]>>;
+	of: <V>(schema: Schema<V>) => ArraySchema<InferNullable<T, V[]>>;
 }
 
 export function array<T = unknown>(defaultValue: DefaultValue<T[]> = []): ArraySchema<T[]> {
