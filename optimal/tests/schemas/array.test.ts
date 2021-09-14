@@ -102,14 +102,12 @@ describe('array()', () => {
 
 		it('errors if a non-array is passed', () => {
 			expect(() => {
-				// @ts-expect-error Invalid type
 				schema.validate(123);
 			}).toThrow('Must be an array.');
 		});
 
 		it('errors if array value type is invalid', () => {
 			expect(() => {
-				// @ts-expect-error Invalid type
 				schema.validate([123]);
 			}).toThrow('Must be a string.');
 		});

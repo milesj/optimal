@@ -23,7 +23,6 @@ describe('schema()', () => {
 	describe('validateType()', () => {
 		it('errors if a non-object is passed', () => {
 			expect(() => {
-				// @ts-expect-error Invalid type
 				schema.validate(123);
 			}).toThrow('Must be a schema.');
 		});
@@ -36,21 +35,18 @@ describe('schema()', () => {
 
 		it('errors if a schema is not a function', () => {
 			expect(() => {
-				// @ts-expect-error Invalid type
 				schema.validate({ schema: 123 });
 			}).toThrow('Must be a function.');
 		});
 
 		it('errors if a type is not a function', () => {
 			expect(() => {
-				// @ts-expect-error Invalid type
 				schema.validate({ schema() {}, type: 123 });
 			}).toThrow('Must be a function.');
 		});
 
 		it('errors if a validate is not a function', () => {
 			expect(() => {
-				// @ts-expect-error Invalid type
 				schema.validate({ schema() {}, type() {}, validate: 123 });
 			}).toThrow('Must be a function.');
 		});

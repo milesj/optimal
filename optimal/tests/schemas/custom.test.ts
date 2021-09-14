@@ -62,7 +62,6 @@ describe('custom()', () => {
 
 		it('errors if a non-string is passed', () => {
 			expect(() => {
-				// @ts-expect-error Invalid type
 				schema.validate(123);
 			}).toThrow('Must be a string!!!');
 		});

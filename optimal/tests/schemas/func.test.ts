@@ -1,4 +1,4 @@
-import { AnyFunction,func, FunctionSchema, Infer } from '../../src';
+import { AnyFunction, func, FunctionSchema, Infer } from '../../src';
 import { runCommonTests } from './runCommonTests';
 
 describe('func()', () => {
@@ -27,7 +27,6 @@ describe('func()', () => {
 	describe('validateType()', () => {
 		it('errors if a non-function is passed', () => {
 			expect(() => {
-				// @ts-expect-error Invalid type
 				schema.validate(123);
 			}).toThrow('Must be a function.');
 		});

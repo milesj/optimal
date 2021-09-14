@@ -142,14 +142,12 @@ describe('object()', () => {
 
 		it('errors if a non-object is passed', () => {
 			expect(() => {
-				// @ts-expect-error Invalid type
 				schema.validate(123);
 			}).toThrow('Must be a plain object.');
 		});
 
 		it('errors if object value type is invalid', () => {
 			expect(() => {
-				// @ts-expect-error Invalid type
 				schema.validate({ a: 123 });
 			}).toThrow('Must be a string.');
 		});

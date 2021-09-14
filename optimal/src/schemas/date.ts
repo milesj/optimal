@@ -1,10 +1,10 @@
 import { createSchema } from '../createSchema';
 import { commonCriteria, dateCriteria } from '../criteria';
 import { createDate, invalid, isValidDate } from '../helpers';
-import { CommonCriterias, DateCriterias, DefaultValue, MaybeDate, Schema } from '../types';
+import { CommonCriterias, DateCriterias, DefaultValue, Schema } from '../types';
 
 export interface DateSchema<T = Date>
-	extends Schema<T, MaybeDate>,
+	extends Schema<T>,
 		DateCriterias<DateSchema<T>>,
 		CommonCriterias<DateSchema<T>> {
 	never: () => DateSchema<never>;

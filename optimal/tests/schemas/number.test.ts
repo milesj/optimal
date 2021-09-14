@@ -31,7 +31,6 @@ describe('number()', () => {
 
 		it('errors if number is not in list', () => {
 			expect(() => {
-				// @ts-expect-error Invalid type
 				oneOfSchema.validate(5);
 			}).toThrow('Number must be one of: 1, 2, 3');
 		});
@@ -321,7 +320,6 @@ describe('number()', () => {
 	describe('validateType()', () => {
 		it('errors if a non-number is passed', () => {
 			expect(() => {
-				// @ts-expect-error Invalid type
 				schema.validate('abc');
 			}).toThrow('Must be a number.');
 		});

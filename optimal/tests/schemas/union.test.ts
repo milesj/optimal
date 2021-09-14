@@ -59,10 +59,7 @@ describe('union()', () => {
 
 	it('errors if a unsupported type is used', () => {
 		expect(() => {
-			union<boolean | number | string>(0)
-				.of([bool(), number(), string()])
-				// @ts-expect-error Invalid type
-				.validate({});
+			union<boolean | number | string>(0).of([bool(), number(), string()]).validate({});
 		}).toThrowErrorMatchingInlineSnapshot(`"Value must be one of: boolean, number, string."`);
 	});
 
@@ -78,7 +75,6 @@ describe('union()', () => {
 		expect(() => {
 			union<Buffer | number | null>(0)
 				.of([number(), instance().of(Buffer)])
-				// @ts-expect-error Invalid type
 				.validate(new Foo());
 		}).toThrowErrorMatchingInlineSnapshot(`
 		"Received class with the following failures:
@@ -163,7 +159,6 @@ describe('union()', () => {
 					}),
 				])
 
-				// @ts-expect-error Invalid type
 				.validate({ foo: 123 });
 		}).toThrowErrorMatchingInlineSnapshot(`
 		"Received object/shape with the following failures:
@@ -185,7 +180,6 @@ describe('union()', () => {
 		expect(() => {
 			union(['foo', 'bar', 'baz'])
 				.of([tuple<['foo', 'bar', 'baz']>([string(), string(), string()])])
-				// @ts-expect-error Invalid type
 				.validate([1]);
 		}).toThrowErrorMatchingInlineSnapshot(`
 		"Received array/tuple with the following failures:
@@ -206,7 +200,6 @@ describe('union()', () => {
 		]);
 
 		expect(() => {
-			// @ts-expect-error Invalid type
 			arrayUnion.validate([true]);
 		}).toThrowErrorMatchingInlineSnapshot(`
 		"Received array/tuple with the following failures:
@@ -230,7 +223,6 @@ describe('union()', () => {
 		]);
 
 		expect(() => {
-			// @ts-expect-error Invalid type
 			objectUnion.validate({ foo: true });
 		}).toThrowErrorMatchingInlineSnapshot(`
 		"Received object/shape with the following failures:
@@ -328,7 +320,6 @@ describe('union()', () => {
 		]);
 
 		expect(() => {
-			// @ts-expect-error Invalid type
 			mixedUnion.validate({ unknown: true });
 		}).toThrowErrorMatchingInlineSnapshot(`
 		"Received object/shape with the following failures:
@@ -337,7 +328,6 @@ describe('union()', () => {
 	`);
 
 		expect(() => {
-			// @ts-expect-error Invalid type
 			mixedUnion.validate({ foo: 123 });
 		}).toThrowErrorMatchingInlineSnapshot(`
 		"Received object/shape with the following failures:
@@ -347,7 +337,6 @@ describe('union()', () => {
 	`);
 
 		expect(() => {
-			// @ts-expect-error Invalid type
 			mixedUnion.validate({ foo: 'abc', bar: 'abc', baz: 123 });
 		}).toThrowErrorMatchingInlineSnapshot(`
 		"Received object/shape with the following failures:
@@ -358,7 +347,6 @@ describe('union()', () => {
 	`);
 
 		expect(() => {
-			// @ts-expect-error Invalid type
 			mixedUnion.validate({ foo: 'abc', bar: 123 });
 		}).not.toThrow();
 
@@ -378,7 +366,6 @@ describe('union()', () => {
 		]);
 
 		expect(shapesUnion.validate({})).toEqual({});
-		// @ts-expect-error Mixed types
 		expect(shapesUnion.validate({ foo: 'foo' })).toEqual({
 			foo: 'foo',
 			bar: 0,
@@ -399,7 +386,6 @@ describe('union()', () => {
 		]);
 
 		expect(arrayShapesUnion.validate([])).toEqual([]);
-		// @ts-expect-error Partial types are allowed?
 		expect(arrayShapesUnion.validate([{ foo: 'foo' }, { bar: 123 }, { baz: true }])).toEqual([
 			{
 				foo: 'foo',

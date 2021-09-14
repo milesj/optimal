@@ -21,14 +21,12 @@ describe('blueprint()', () => {
 	describe('validateType()', () => {
 		it('errors if a non-object is passed', () => {
 			expect(() => {
-				// @ts-expect-error Invalid type
 				schema.validate(123);
 			}).toThrow('Must be a plain object.');
 		});
 
 		it('errors if a value is not a schema', () => {
 			expect(() => {
-				// @ts-expect-error Invalid type
 				schema.validate({ foo: 123 });
 			}).toThrow('Must be a schema.');
 		});

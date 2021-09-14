@@ -60,7 +60,6 @@ describe('shape()', () => {
 
 		it('errors if unknown properties passed', () => {
 			expect(() => {
-				// @ts-expect-error Invalid type
 				exactSchema.validate({ foo: '', bar: 0, baz: true, qux: 'unknown' });
 			}).toThrow('Unknown fields: qux.');
 		});
@@ -107,7 +106,6 @@ describe('shape()', () => {
 
 		it('errors if a non-shape is passed', () => {
 			expect(() => {
-				// @ts-expect-error Invalid type
 				schema.validate(123);
 			}).toThrow('Must be a shaped object.');
 		});

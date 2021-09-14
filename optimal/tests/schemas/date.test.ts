@@ -185,7 +185,6 @@ describe('date()', () => {
 	describe('validateType()', () => {
 		it('errors if a non-date value is passed', () => {
 			expect(() => {
-				// @ts-expect-error Invalid type
 				schema.validate([]);
 			}).toThrow('Must be a string, number, or `Date` that resolves to a valid date.');
 		});

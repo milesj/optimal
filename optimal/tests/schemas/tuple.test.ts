@@ -58,14 +58,12 @@ describe('tuple()', () => {
 	describe('validateType()', () => {
 		it('errors if a non-tuple is passed', () => {
 			expect(() => {
-				// @ts-expect-error Invalid type
 				schema.validate(123);
 			}).toThrow('Must be a tuple.');
 		});
 
 		it('errors if the first tuple item is invalid', () => {
 			expect(() => {
-				// @ts-expect-error Invalid type
 				schema.validate([null, false, 4, {}, 'foo']);
 			}).toThrow('Null is not allowed.');
 		});
@@ -78,7 +76,6 @@ describe('tuple()', () => {
 
 		it('errors if the last tuple item is invalid', () => {
 			expect(() => {
-				// @ts-expect-error Invalid type
 				schema.validate([[], false, 4, {}, 'qux']);
 			}).toThrow('String must be one of: foo, bar, baz');
 		});
@@ -110,7 +107,6 @@ describe('tuple()', () => {
 		});
 
 		it('returns the default value from its items when an empty array is passed', () => {
-			// @ts-expect-error Invalid type
 			expect(schema.validate([])).toEqual([[], true, 1, {}, 'foo']);
 		});
 	});

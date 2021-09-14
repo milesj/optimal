@@ -126,14 +126,10 @@ export interface SchemaValidateOptions {
 	rootObject?: UnknownObject;
 }
 
-export interface Schema<Output, Input = Output> {
+export interface Schema<Output> {
 	schema: () => string;
 	type: () => string;
-	validate: (
-		value: Input | null | undefined,
-		path?: string,
-		options?: SchemaValidateOptions,
-	) => Output;
+	validate: (value: unknown, path?: string, options?: SchemaValidateOptions) => Output;
 }
 
 export interface SchemaState<T> {
@@ -180,6 +176,6 @@ export type DeepPartial<T> = T extends Function
 
 // Any is required for generics to be typed correctly for consumers
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export type AnySchema = Schema<any, any>;
+export type AnySchema = Schema<any>;
 
 export type AnyFunction = (...args: any[]) => any;

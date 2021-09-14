@@ -352,7 +352,6 @@ describe('string()', () => {
 
 		it('errors if value is not in the list', () => {
 			expect(() => {
-				// @ts-expect-error Invalid type
 				oneOfSchema.validate('qux');
 			}).toThrowErrorMatchingInlineSnapshot(`"String must be one of: foo, bar, baz"`);
 		});
@@ -571,7 +570,6 @@ describe('string()', () => {
 	describe('validateType()', () => {
 		it('errors if a non-string is passed', () => {
 			expect(() => {
-				// @ts-expect-error Invalid type
 				schema.validate(123);
 			}).toThrow('Must be a string.');
 		});

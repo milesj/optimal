@@ -4,7 +4,7 @@ import { createObject, invalid, isObject } from '../helpers';
 import { Blueprint, CommonCriterias, InferNullable, Schema, ShapeCriterias } from '../types';
 
 export interface ShapeSchema<T>
-	extends Schema<T, Partial<T>>,
+	extends Schema<T>,
 		ShapeCriterias<ShapeSchema<T>>,
 		CommonCriterias<ShapeSchema<T>> {
 	never: () => ShapeSchema<never>;

@@ -20,7 +20,7 @@ import {
 function validate<T>(
 	state: SchemaState<T>,
 	validators: Criteria<T>[],
-	initialValue: T | null | undefined,
+	initialValue: unknown,
 	path: string = '',
 	{
 		collectErrors = true,
@@ -30,7 +30,7 @@ function validate<T>(
 ): T | null {
 	const { defaultValue, metadata } = state;
 
-	let value: T | null | undefined = initialValue;
+	let value: unknown = initialValue;
 
 	// Handle undefined
 	if (value === undefined) {
@@ -67,7 +67,7 @@ function validate<T>(
 
 		tryAndCollect(
 			() => {
-				const result = test.validate(value!, path, {
+				const result = test.validate(value as T, path, {
 					collectErrors,
 					currentObject,
 					rootObject,
@@ -86,7 +86,7 @@ function validate<T>(
 		throw optimalError;
 	}
 
-	return value!;
+	return value as T;
 }
 
 export function createSchema<S extends AnySchema, T = InferSchemaType<S>>(

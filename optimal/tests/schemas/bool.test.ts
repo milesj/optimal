@@ -29,7 +29,6 @@ describe('bool()', () => {
 
 		it('errors if value is `true`', () => {
 			expect(() => {
-				// @ts-expect-error Invalid type
 				falseSchema.validate(true);
 			}).toThrow('May only be `false`.');
 		});
@@ -62,7 +61,6 @@ describe('bool()', () => {
 
 		it('errors if value is `false`', () => {
 			expect(() => {
-				// @ts-expect-error Invalid type
 				trueSchema.validate(false);
 			}).toThrow('May only be `true`.');
 		});
@@ -95,7 +93,6 @@ describe('bool()', () => {
 	describe('validateType()', () => {
 		it('errors if a non-boolean is passed', () => {
 			expect(() => {
-				// @ts-expect-error Invalid type
 				schema.validate(123);
 			}).toThrow('Must be a boolean.');
 		});

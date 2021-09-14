@@ -119,7 +119,6 @@ describe('lazy()', () => {
 
 		it('errors if valid values the lazy schema', () => {
 			expect(() => {
-				// @ts-expect-error Invalid type
 				schema.validate(123);
 			}).toThrow('Must be a string.');
 
