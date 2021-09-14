@@ -2,7 +2,7 @@ export type UnknownObject = Record<string, unknown>;
 
 export type MaybeDate = Date | number | string;
 
-export type Constructor<T> = (new (...args: unknown[]) => T) | (Function & { prototype: T });
+export type Constructor<T> = (abstract new (...args: any[]) => T) | (new (...args: any[]) => T);
 
 export type InferNullable<P, N> = P extends null ? N | null : N;
 
