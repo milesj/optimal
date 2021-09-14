@@ -1,5 +1,3 @@
-export type UnknownFunction = (...args: unknown[]) => unknown;
-
 export type UnknownObject = Record<string, unknown>;
 
 export type MaybeDate = Date | number | string;
@@ -160,11 +158,7 @@ export type Blueprint<T extends object> = { [K in keyof T]-?: Schema<T[K]> };
 
 export type Predicate<T> = (value: T | null | undefined) => boolean;
 
-// Any is required for generics to be typed correctly for consumers
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type AnySchema = Schema<any, any>;
-
-// INFERR
+// INFER
 
 export type InferFromObject<T> = { [K in keyof T]: Infer<T[K]> };
 
@@ -183,3 +177,9 @@ export type DeepPartial<T> = T extends Function
 	: T extends Record<string, unknown>
 	? { [K in keyof T]?: DeepPartial<T[K]> }
 	: T | undefined;
+
+// Any is required for generics to be typed correctly for consumers
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export type AnySchema = Schema<any, any>;
+
+export type AnyFunction = (...args: any[]) => any;

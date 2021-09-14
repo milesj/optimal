@@ -1,9 +1,9 @@
 import { createSchema } from '../createSchema';
 import { commonCriteria } from '../criteria';
 import { invalid } from '../helpers';
-import { CommonCriterias, DefaultValue, Schema, UnknownFunction } from '../types';
+import { AnyFunction,CommonCriterias, DefaultValue, Schema } from '../types';
 
-export interface FunctionSchema<T = UnknownFunction>
+export interface FunctionSchema<T = AnyFunction>
 	extends Schema<T>,
 		CommonCriterias<FunctionSchema<T>> {
 	never: () => FunctionSchema<never>;
@@ -12,7 +12,7 @@ export interface FunctionSchema<T = UnknownFunction>
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function func<T extends (...args: any[]) => any = UnknownFunction>(
+export function func<T extends (...args: any[]) => any = AnyFunction>(
 	defaultValue?: DefaultValue<T>,
 ) {
 	return createSchema<FunctionSchema<T>>(

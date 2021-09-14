@@ -1,4 +1,5 @@
 import {
+	AnyFunction,
 	array,
 	Blueprint,
 	blueprint,
@@ -15,7 +16,6 @@ import {
 	shape,
 	string,
 	union,
-	UnknownFunction,
 } from '../src';
 
 type BasicBlueprint = Blueprint<{
@@ -232,9 +232,7 @@ const shapesInferred = optimal({
 
 type UnionType = boolean | number | string;
 type ComplexUnionType =
-	| Record<string, string>[]
-	| Record<string, UnknownFunction>
-	| { a: boolean; b: Foo | null };
+	Record<string, AnyFunction> | Record<string, string>[] | { a: boolean; b: Foo | null };
 
 const unions: {
 	a: UnionType;

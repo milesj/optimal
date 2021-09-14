@@ -1,8 +1,8 @@
-import { func, FunctionSchema, Infer, UnknownFunction } from '../../src';
+import { AnyFunction,func, FunctionSchema, Infer } from '../../src';
 import { runCommonTests } from './runCommonTests';
 
 describe('func()', () => {
-	let schema: FunctionSchema<UnknownFunction>;
+	let schema: FunctionSchema<AnyFunction>;
 	const noop = () => {};
 
 	beforeEach(() => {
