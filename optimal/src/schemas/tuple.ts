@@ -2,14 +2,14 @@ import { createSchema } from '../createSchema';
 import { commonCriteria, tupleCriteria } from '../criteria';
 import { InferTupleItems } from '../criteria/tuples';
 import { createArray, invalid } from '../helpers';
-import { CommonCriterias, InferNullable, Schema } from '../types';
+import { CommonCriterias, Schema } from '../types';
 
 export interface TupleSchema<T> extends Schema<T>, CommonCriterias<TupleSchema<T>> {
 	never: () => TupleSchema<never>;
 	notNullable: () => TupleSchema<NonNullable<T>>;
 	nullable: () => TupleSchema<T | null>;
 	/** @internal */
-	of: <I extends unknown[]>(schemas: InferTupleItems<I>) => TupleSchema<InferNullable<T, I>>;
+	of: <I extends unknown[]>(schemas: InferTupleItems<I>) => TupleSchema<I>;
 }
 
 export function tuple<T extends unknown[] = unknown[]>(

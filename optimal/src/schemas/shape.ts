@@ -1,7 +1,7 @@
 import { createSchema } from '../createSchema';
 import { commonCriteria, shapeCriteria } from '../criteria';
 import { createObject, invalid, isObject } from '../helpers';
-import { Blueprint, CommonCriterias, InferNullable, Schema, ShapeCriterias } from '../types';
+import { Blueprint, CommonCriterias, Schema, ShapeCriterias } from '../types';
 
 export interface ShapeSchema<T>
 	extends Schema<T>,
@@ -11,7 +11,7 @@ export interface ShapeSchema<T>
 	notNullable: () => ShapeSchema<NonNullable<T>>;
 	nullable: () => ShapeSchema<T | null>;
 	/** @internal */
-	of: <S extends object>(schema: Blueprint<S>) => ShapeSchema<InferNullable<T, S>>;
+	of: <S extends object>(schema: Blueprint<S>) => ShapeSchema<S>;
 }
 
 export function shape<T extends object>(blueprint: Blueprint<T>): ShapeSchema<T> {

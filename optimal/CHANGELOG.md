@@ -10,8 +10,8 @@ changelog will use the new verbiage, but may affect previous APIs.
 
 - Dropped Node.js v10 support. Minimum requirement v12.17.
 - Updated to ECMAScript modules, and now publishes `.mjs` for Node.js, and ESM `.js` for browsers.
-- Updated `optimal()` to no longer accept the object to validate and build as the 1st argument. Instead a `validate()` function is returned, in which that object should be passed to. Because of this change, TypeScript types are more powerful and accurate.
 - Updated the API to be immutable, so each chained method will return a new schema instance.
+- Updated `optimal()` to no longer accept the object to validate and build as the 1st argument. Instead a `validate()` function is returned, in which that object should be passed to. Because of this change, TypeScript types are more powerful and accurate.
 - Updated `array()` to no longer accept a schema as an argument, use `array().of()` instead.
 - Updated `func()` to not be nullable by default. Instead uses `undefined`.
 - Updated `instance()` to no longer accept a schema as an argument, use `instance().of()` instead.

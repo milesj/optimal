@@ -1,3 +1,7 @@
+export type Primitive = bigint | boolean | number | string | symbol | null | undefined;
+
+export type Builtin = Date | Error | Function | RegExp;
+
 export type UnknownObject = Record<string, unknown>;
 
 export type MaybeDate = Date | number | string;
@@ -166,16 +170,17 @@ export type Infer<T> = T extends Schema<infer U>
 	? InferFromObject<T>
 	: never;
 
-export type DeepPartial<T> = T extends Function
+export type DeepPartial<T> = T extends Builtin | Primitive
 	? T
-	: T extends (infer U)[]
-	? DeepPartial<U>[]
-	: T extends Record<string, unknown>
+	: T extends (infer I)[]
+	? DeepPartial<I>[]
+	: T extends object
 	? { [K in keyof T]?: DeepPartial<T[K]> }
-	: T | undefined;
+	: never;
 
 // Any is required for generics to be typed correctly for consumers
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
 export type AnySchema = Schema<any>;
 
 export type AnyFunction = (...args: any[]) => any;
