@@ -3,8 +3,7 @@ import { Blueprint, Criteria, Schema, SchemaState, UnknownObject } from '../type
 import { ValidationError } from '../ValidationError';
 
 /**
- * Require a shape to be an exact shape.
- * No more and no less of the same properties.
+ * Require a shape to be an exact. No more and no less of the same properties.
  */
 export function exact<T extends object>(state: SchemaState<T>, value: boolean = true) {
 	state.metadata.exact = value;
@@ -13,6 +12,7 @@ export function exact<T extends object>(state: SchemaState<T>, value: boolean = 
 /**
  * Require field to be an object with every property being a schema type.
  * Will rebuild the object (if not a class instance) and type cast values.
+ * @internal
  */
 export function of<T extends object>(state: SchemaState<T>, schemas: Blueprint<T>): Criteria<T> {
 	invariant(

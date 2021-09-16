@@ -5,15 +5,27 @@ import { Blueprint, DeepPartial, SchemaValidateOptions, UnknownObject } from './
 import { ValidationError } from './ValidationError';
 
 export interface OptimalOptions {
+	/** Include a filename in validation error messages. Can be used in conjunction with
+  `name`. */
 	file?: string;
+	/** Include a unique identifier in validation error messages. Can be used in conjunction
+  with `file`. */
 	name?: string;
+	/** @internal */
 	prefix?: string;
+	/** Allow unknown fields to be passed within the object being validate. Otherwise, an error will
+  be thrown. */
 	unknown?: boolean;
 }
 
 export interface Optimal<T extends object> {
+	/** Modify optimal options after instantiation. */
 	configure: (options: OptimalOptions) => void;
-	validate: (struct: DeepPartial<T>, options?: SchemaValidateOptions) => Required<T>;
+	/**
+	 * Validate an object with the defined blueprint and options,
+	 * and return a deeply built object with correct types and values.
+	 */
+	validate: (object: DeepPartial<T>, options?: SchemaValidateOptions) => Required<T>;
 }
 
 export function optimal<Schemas extends object>(

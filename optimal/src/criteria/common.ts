@@ -177,7 +177,7 @@ export function notUndefinable<T>(state: SchemaState<T>) {
 }
 
 /**
- * Validate with a specific schema when a condition is met.
+ * Validate with another schema when a condition is met.
  */
 export function when<T>(
 	state: SchemaState<T>,

@@ -16,10 +16,14 @@ export interface NumberSchema<T = number>
 	extends Schema<T>,
 		NumberCriterias<NumberSchema<T>>,
 		CommonCriterias<NumberSchema<T>> {
+	/** Mark that this field should never be used. */
 	never: (options?: Options) => NumberSchema<never>;
+	/** Disallow null values. */
 	notNullable: (options?: Options) => NumberSchema<NotNull<T>>;
 	notUndefinable: () => NumberSchema<NotUndefined<T>>;
+	/** Allow null values. */
 	nullable: () => NumberSchema<T | null>;
+	/** Require field value to be one of the provided numbers. */
 	oneOf: <I extends number = number>(
 		list: I[],
 		options?: Options,

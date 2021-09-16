@@ -11,11 +11,15 @@ import {
 } from '../types';
 
 export interface UnionSchema<T> extends Schema<T>, CommonCriterias<UnionSchema<T>> {
+	/** Mark that this field should never be used. */
 	never: (options?: Options) => UnionSchema<never>;
+	/** Disallow null values. */
 	notNullable: (options?: Options) => UnionSchema<NotNull<T>>;
 	notUndefinable: () => UnionSchema<NotUndefined<T>>;
+	/** Allow null values. */
 	nullable: () => UnionSchema<T | null>;
 	// Distribute these types in the future. Currently breaks on nulls...
+	/** Require field value to be one of a specific schema type. */
 	of: (schemas: AnySchema[], options?: Options) => UnionSchema<T>;
 	undefinable: () => UnionSchema<T | undefined>;
 }

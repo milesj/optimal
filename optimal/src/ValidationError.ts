@@ -4,10 +4,13 @@ const PATH_TOKEN = /"(\[\d+]|\w+)"/i;
 const LIST_CHECK = /(\n|\s)+-/;
 
 export class ValidationError extends Error {
+	/** List of invalidations for the field. */
 	errors: ValidationError[] = [];
 
+	/** Object path for the invalid field. */
 	path: string;
 
+	/** Field value at time of failure. */
 	value: unknown;
 
 	hasOriginalMessage: boolean = false;

@@ -32,7 +32,7 @@ export function between(
 }
 
 /**
- * Require field value to be a float (includes a decimal).
+ * Require field value to be a float (requires a decimal).
  */
 export function float(state: SchemaState<number>, options: Options = {}): Criteria<number> {
 	return {
@@ -150,7 +150,7 @@ export function lte(
 }
 
 /**
- * Require field value to be negative and not zero.
+ * Require field value to be negative and _not_ zero.
  */
 export function negative(state: SchemaState<number>, options: Options = {}): Criteria<number> {
 	return {
@@ -192,7 +192,7 @@ export function oneOf(
 }
 
 /**
- * Require field value to be positive and not zero.
+ * Require field value to be positive and _not_ zero.
  */
 export function positive(state: SchemaState<number>, options: Options = {}): Criteria<number> {
 	return {

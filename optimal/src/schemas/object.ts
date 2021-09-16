@@ -18,10 +18,17 @@ export interface ObjectSchema<T = object>
 		ObjectCriterias<ObjectSchema<T>>,
 		CommonCriterias<ObjectSchema<T>> {
 	keysOf: (schema: StringSchema, options?: Options) => ObjectSchema<T>;
+	/** Mark that this field should never be used. */
 	never: (options?: Options) => ObjectSchema<never>;
+	/** Disallow null values. */
 	notNullable: (options?: Options) => ObjectSchema<NotNull<T>>;
 	notUndefinable: () => ObjectSchema<NotUndefined<T>>;
+	/** Allow null values. */
 	nullable: () => ObjectSchema<T | null>;
+	/**
+	 * Require field object values to be of a specific schema type.
+	 * Will rebuild the object and type cast values.
+	 */
 	of: <V, K extends PropertyKey = keyof T>(
 		schema: Schema<V>,
 	) => ObjectSchema<InferNullable<T, Record<K, V>>>;

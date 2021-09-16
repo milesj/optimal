@@ -14,9 +14,12 @@ import {
 export interface FunctionSchema<T = AnyFunction>
 	extends Schema<T>,
 		CommonCriterias<FunctionSchema<T>> {
+	/** Mark that this field should never be used. */
 	never: (options?: Options) => FunctionSchema<never>;
+	/** Disallow null values. */
 	notNullable: (options?: Options) => FunctionSchema<NotNull<T>>;
 	notUndefinable: () => FunctionSchema<NotUndefined<T>>;
+	/** Allow null values. */
 	nullable: () => FunctionSchema<T | null>;
 	undefinable: () => FunctionSchema<T | undefined>;
 }

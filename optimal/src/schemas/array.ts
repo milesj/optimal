@@ -16,11 +16,20 @@ export interface ArraySchema<T = unknown[]>
 	extends Schema<T>,
 		ArrayCriterias<ArraySchema<T>>,
 		CommonCriterias<ArraySchema<T>> {
+	/** Mark that this field should never be used. */
 	never: (options?: Options) => ArraySchema<never>;
+	/** Disallow null values. */
 	notNullable: (options?: Options) => ArraySchema<NotNull<T>>;
+	/** Disallow undefined values. */
 	notUndefinable: () => ArraySchema<NotUndefined<T>>;
+	/** Allow null values. */
 	nullable: () => ArraySchema<T | null>;
+	/**
+	 * Require field array items to be of a specific schema type.
+	 * Will rebuild the array and type cast values.
+	 */
 	of: <V>(schema: Schema<V>) => ArraySchema<InferNullable<T, V[]>>;
+	/** Allow undefined values. */
 	undefinable: () => ArraySchema<T | undefined>;
 }
 

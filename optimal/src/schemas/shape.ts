@@ -15,9 +15,12 @@ export interface ShapeSchema<T>
 	extends Schema<Required<T>>,
 		ShapeCriterias<ShapeSchema<T>>,
 		CommonCriterias<ShapeSchema<T>> {
+	/** Mark that this field should never be used. */
 	never: (options?: Options) => ShapeSchema<never>;
+	/** Disallow null values. */
 	notNullable: (options?: Options) => ShapeSchema<NotNull<T>>;
 	notUndefinable: () => ShapeSchema<NotUndefined<T>>;
+	/** Allow null values. */
 	nullable: () => ShapeSchema<T | null>;
 	/** @internal */
 	of: <S extends object>(schema: Blueprint<S>) => ShapeSchema<S>;

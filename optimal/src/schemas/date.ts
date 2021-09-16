@@ -15,9 +15,12 @@ export interface DateSchema<T = Date>
 	extends Schema<T>,
 		DateCriterias<DateSchema<T>>,
 		CommonCriterias<DateSchema<T>> {
+	/** Mark that this field should never be used. */
 	never: (options?: Options) => DateSchema<never>;
+	/** Disallow null values. */
 	notNullable: (options?: Options) => DateSchema<NotNull<T>>;
 	notUndefinable: () => DateSchema<NotUndefined<T>>;
+	/** Allow null values. */
 	nullable: () => DateSchema<T | null>;
 	undefinable: () => DateSchema<T | undefined>;
 }

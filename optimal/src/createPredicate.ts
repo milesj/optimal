@@ -1,5 +1,9 @@
 import { AnySchema, InferSchemaType, Predicate } from './types';
 
+/**
+ * Create a reusable predicate from a schema that validates a value to
+ * return a boolean if no validation errors arise.
+ */
 export function createPredicate<S extends AnySchema, T = InferSchemaType<S>>(
 	schema: S,
 ): Predicate<T> {

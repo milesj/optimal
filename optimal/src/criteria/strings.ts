@@ -97,7 +97,7 @@ export function notEmpty(state: SchemaState<string>, options: Options = {}): Cri
 }
 
 /**
- * Require field value to be one of the provided string.
+ * Require field value to be one of the provided strings.
  */
 export function oneOf(
 	state: SchemaState<string>,
@@ -155,14 +155,14 @@ export function upperCase(state: SchemaState<string>, options: Options = {}): Cr
 }
 
 /**
- * Require field array to be of a specific size.
+ * Require field value to be of a specific string length.
  */
-export function sizeOf(
+export function lengthOf(
 	state: SchemaState<string>,
 	size: number,
 	options: Options = {},
 ): Criteria<string> {
-	invariant(typeof size === 'number' && size > 0, 'Size requires a non-zero positive number.');
+	invariant(typeof size === 'number' && size > 0, 'Length requires a non-zero positive number.');
 
 	return {
 		validate(value, path) {

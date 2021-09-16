@@ -1,4 +1,6 @@
-# Predicates
+---
+title: Schemas
+---
 
 A predicate is a factory function that returns a fluent type-specific builder interface. This
 builder can be used to chain validation rules and define a default value. All predicates support the

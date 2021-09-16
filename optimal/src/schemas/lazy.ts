@@ -4,9 +4,12 @@ import { invariant, isSchema } from '../helpers';
 import { DefaultValue, NotNull, NotUndefined, Options, Schema } from '../types';
 
 export interface LazySchema<T = boolean> extends Schema<T> {
+	/** Mark that this field should never be used. */
 	never: (options?: Options) => LazySchema<never>;
+	/** Disallow null values. */
 	notNullable: (options?: Options) => LazySchema<NotNull<T>>;
 	notUndefinable: () => LazySchema<NotUndefined<T>>;
+	/** Allow null values. */
 	nullable: () => LazySchema<T | null>;
 	undefinable: () => LazySchema<T | undefined>;
 }

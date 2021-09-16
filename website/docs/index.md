@@ -1,4 +1,7 @@
-# Optimal
+---
+title: Introduction
+slug: /
+---
 
 A system for building and validating defined object structures, like argument options, configuration
 files, data bags, validation fields, and more! Runs checks in development and strips checks in

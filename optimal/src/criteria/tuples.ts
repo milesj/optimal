@@ -17,6 +17,7 @@ export type InferTupleItems<T> = T extends [infer A, infer B, infer C, infer D, 
 /**
  * Require field array items to be of a specific schema type.
  * Will rebuild the array and type cast values.
+ * @internal
  */
 export function of<T extends unknown[]>(
 	state: SchemaState<T>,

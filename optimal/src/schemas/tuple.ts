@@ -5,9 +5,12 @@ import { createArray, invalid, typeOf } from '../helpers';
 import { CommonCriterias, NotNull, NotUndefined, Options, Schema } from '../types';
 
 export interface TupleSchema<T> extends Schema<Required<T>>, CommonCriterias<TupleSchema<T>> {
+	/** Mark that this field should never be used. */
 	never: (options?: Options) => TupleSchema<never>;
+	/** Disallow null values. */
 	notNullable: (options?: Options) => TupleSchema<NotNull<T>>;
 	notUndefinable: () => TupleSchema<NotUndefined<T>>;
+	/** Allow null values. */
 	nullable: () => TupleSchema<T | null>;
 	/** @internal */
 	of: <I extends unknown[]>(schemas: InferTupleItems<I>) => TupleSchema<I>;

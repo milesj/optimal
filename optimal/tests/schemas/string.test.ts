@@ -439,33 +439,33 @@ describe('string()', () => {
 		});
 	});
 
-	describe('sizeOf()', () => {
-		let sizeOfSchema: StringSchema;
+	describe('lengthOf()', () => {
+		let lengthOfSchema: StringSchema;
 
 		beforeEach(() => {
-			sizeOfSchema = schema.sizeOf(3);
+			lengthOfSchema = schema.lengthOf(3);
 		});
 
 		it('errors if length doesnt match', () => {
 			expect(() => {
-				sizeOfSchema.validate('');
-			}).toThrowErrorMatchingInlineSnapshot(`"String length must be 3, received 0."`);
+				lengthOfSchema.validate('');
+			}).toThrowErrorMatchingInlineSnapshot(`"String length must be 3."`);
 		});
 
 		it('doesnt error if length matches', () => {
 			expect(() => {
-				sizeOfSchema.validate('abc');
+				lengthOfSchema.validate('abc');
 			}).not.toThrow();
 		});
 
 		it('errors if `null`', () => {
 			expect(() => {
-				sizeOfSchema.validate(null);
+				lengthOfSchema.validate(null);
 			}).toThrowErrorMatchingInlineSnapshot(`"Null is not allowed."`);
 		});
 
 		it('returns `null` if nullable', () => {
-			expect(sizeOfSchema.nullable().validate(null)).toBeNull();
+			expect(lengthOfSchema.nullable().validate(null)).toBeNull();
 		});
 	});
 
