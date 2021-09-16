@@ -1,4 +1,9 @@
-# 5.0.0
+# Change Log
+
+All notable changes to this project will be documented in this file.
+See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+# 5.0.0-alpha - 2020-09-08
 
 Ground-up rewrite that migrates to a more composable API. Under the hood, classes were refactored
 into functions to reduce file size and overhead.

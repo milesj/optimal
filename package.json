@@ -10,7 +10,7 @@
     "coverage": "yarn run test --coverage",
     "lint": "beemo eslint",
     "format": "beemo prettier",
-    "release": "yarn run pack && yarn run check && cd optimal && npx np --yolo --no-yarn",
+    "release": "yarn run pack && yarn run check && yarn beemo run-script lerna-release",
     "test": "beemo jest",
     "type": "beemo typescript --build"
   },
@@ -23,6 +23,7 @@
     "@beemo/core": "^2.1.0",
     "@beemo/dev": "^1.6.1",
     "@types/node": "^15.14.9",
+    "lerna": "^4.0.0",
     "packemon": "^1.5.0"
   },
   "workspaces": [
