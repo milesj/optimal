@@ -19,9 +19,9 @@
     "npm": ">=6.13.0"
   },
   "devDependencies": {
-    "@beemo/cli": "^2.0.1",
-    "@beemo/core": "^2.0.2",
-    "@beemo/dev": "^1.6.0",
+    "@beemo/cli": "^2.0.2",
+    "@beemo/core": "^2.1.0",
+    "@beemo/dev": "^1.6.1",
     "@types/node": "^15.14.9",
     "packemon": "^1.4.2"
   },
