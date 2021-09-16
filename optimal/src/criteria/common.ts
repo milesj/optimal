@@ -128,7 +128,7 @@ export function required<T>(state: SchemaState<T>) {
 }
 
 /**
- * TODO
+ * Validate with a specific schema when a condition is met.
  */
 export function when<T>(
 	state: SchemaState<T>,
