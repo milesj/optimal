@@ -13,7 +13,7 @@ export interface OptimalOptions {
 
 export interface Optimal<T extends object> {
 	configure: (options: OptimalOptions) => void;
-	validate: (struct: DeepPartial<T>, options?: SchemaValidateOptions) => T;
+	validate: (struct: DeepPartial<T>, options?: SchemaValidateOptions) => Required<T>;
 }
 
 export function optimal<Schemas extends object>(

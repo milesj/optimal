@@ -45,7 +45,7 @@ describe('Optimal', () => {
 				string(),
 				shape({
 					loader: string(),
-					options: object(primitive),
+					options: object().of(primitive),
 				}),
 			]),
 		),

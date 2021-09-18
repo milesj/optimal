@@ -4,7 +4,7 @@ import { InferTupleItems } from '../criteria/tuples';
 import { createArray, invalid } from '../helpers';
 import { CommonCriterias, Schema } from '../types';
 
-export interface TupleSchema<T> extends Schema<T>, CommonCriterias<TupleSchema<T>> {
+export interface TupleSchema<T> extends Schema<Required<T>>, CommonCriterias<TupleSchema<T>> {
 	never: () => TupleSchema<never>;
 	notNullable: () => TupleSchema<NonNullable<T>>;
 	nullable: () => TupleSchema<T | null>;

@@ -176,7 +176,7 @@ export type DeepPartial<T> = T extends Builtin | Primitive
 	? DeepPartial<I>[]
 	: T extends object
 	? { [K in keyof T]?: DeepPartial<T[K]> }
-	: never;
+	: T;
 
 // Any is required for generics to be typed correctly for consumers
 /* eslint-disable @typescript-eslint/no-explicit-any */

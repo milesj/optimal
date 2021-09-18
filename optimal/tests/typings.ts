@@ -23,6 +23,11 @@ type BasicBlueprint = Blueprint<{
 	bar: number | null;
 }>;
 
+type MixedOptionalRequiredBlueprint = Blueprint<{
+	foo: string;
+	bar?: number | null;
+}>;
+
 type OptionalPropsBlueprint = Blueprint<{
 	foo?: string;
 	bar?: number | null;
@@ -86,7 +91,7 @@ const primitivesInferred = optimal({
 
 const other: {
 	c: string;
-	f: (() => void) | null;
+	f: () => void;
 	i: Object | null;
 	ic: Foo | null;
 	ir: Foo | null;
@@ -116,7 +121,7 @@ const otherInferred = optimal({
 }).validate({});
 
 const funcs: {
-	opt?: (() => void) | null;
+	opt?: (() => void) | undefined;
 	req: () => void;
 	isNull: (() => void) | null;
 	notNull: () => void;
@@ -172,7 +177,7 @@ const objects: {
 
 const objectsInferred = optimal({
 	o: object(),
-	oo: object().of(object(number())),
+	oo: object().of(object().of(number())),
 	oc: object().of(number()),
 	on: object().of(number().nullable()).nullable(),
 	od: object({ foo: 'bar' }).of(string()),
@@ -231,8 +236,11 @@ const shapesInferred = optimal({
 }).validate({});
 
 type UnionType = boolean | number | string;
+
 type ComplexUnionType =
-	Record<string, AnyFunction> | Record<string, string>[] | { a: boolean; b: Foo | null };
+	| Record<string, AnyFunction>
+	| Record<string, string>[]
+	| { a: boolean; b: Foo | null };
 
 const unions: {
 	a: UnionType;

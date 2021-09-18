@@ -41,6 +41,10 @@ changelog will use the new verbiage, but may affect previous APIs.
 - Added custom messages to all schema methods through a `message` option.
 - Added lazy default value initializer callbacks to all schemas.
 
+#### ⚙️ Types
+
+- Updated `optimal()`, `shape()`, and `tuple()` to return `Required<T>`.
+
 #### 🛠 Internals
 
 - A `ValidationError` is now thrown instead of an `Error`.
