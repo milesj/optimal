@@ -18,6 +18,13 @@ describe('func()', () => {
 
 	runCommonTests(() => func(), noop, { defaultValue: undefined });
 
+	it('supports default values', () => {
+		const spy = jest.fn();
+		schema = func<AnyFunction>(() => spy);
+
+		expect(schema.validate(undefined)).toBe(spy);
+	});
+
 	describe('type()', () => {
 		it('returns "function"', () => {
 			expect(func().type()).toBe('function');

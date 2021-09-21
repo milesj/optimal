@@ -18,6 +18,7 @@ changelog will use the new verbiage, but may affect previous APIs.
 - Updated `optimal()` to no longer accept the object to validate and build as the 1st argument. Instead a `validate()` function is returned, in which that object should be passed to. Because of this change, TypeScript types are more powerful and accurate.
 - Updated `array()` to no longer accept a schema as an argument, use `array().of()` instead.
 - Updated `func()` to not be nullable by default. Instead uses `undefined`.
+- Updated `func()` default values to now be factoried (function returns a function).
 - Updated `instance()` to no longer accept a schema as an argument, use `instance().of()` instead.
 - Updated `object()` to no longer accept a schema as an argument, use `object().of()` instead.
 - Updated `union()` to no longer accept a list of schemas as an argument, use `union().of()` instead.
