@@ -60,7 +60,8 @@ function validate<T>(
 	validators.forEach((test) => {
 		if (
 			(test.skipIfNull && value === null) ||
-			(test.skipIfOptional && !state.required && value === state.defaultValue)
+			(test.skipIfOptional && !state.required && value === state.defaultValue) ||
+			state.never
 		) {
 			return;
 		}
