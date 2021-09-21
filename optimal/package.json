@@ -1,7 +1,7 @@
 {
   "name": "optimal",
   "type": "module",
-  "version": "5.0.0-alpha.3",
+  "version": "5.0.0-alpha.4",
   "description": "A system for building and validating defined object structures with schemas.",
   "main": "./lib/node/index.js",
   "browser": "./lib/browser/index.js",

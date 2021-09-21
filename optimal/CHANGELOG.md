@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 5.0.0-alpha.4 - 2021-09-21
+
+#### 🚀 Updates
+
+- Show value in error messages. ([fbdde11](https://github.com/milesj/optimal/commit/fbdde11))
+
+#### 🐞 Fixes
+
+- Allow empty blueprints for shapes. ([6319a06](https://github.com/milesj/optimal/commit/6319a06))
+- Dont run criteria if never flag is set. ([822f8da](https://github.com/milesj/optimal/commit/822f8da))
+- Include schema name in error message. ([7dac519](https://github.com/milesj/optimal/commit/7dac519))
+
+#### 🛠 Internals
+
+- Verify function default values. ([ac456bc](https://github.com/milesj/optimal/commit/ac456bc))
+
+**Note:** Version bump only for package optimal
+
+
+
+
+
 # 5.0.0-alpha - 2020-09-08
 
 Ground-up rewrite that migrates to a more composable API. Under the hood, classes were refactored
