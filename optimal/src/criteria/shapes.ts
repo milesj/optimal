@@ -16,8 +16,8 @@ export function exact<T extends object>(state: SchemaState<T>, value: boolean = 
  */
 export function of<T extends object>(state: SchemaState<T>, schemas: Blueprint<T>): Criteria<T> {
 	invariant(
-		isObject(schemas) && Object.keys(schemas).length > 0 && Object.values(schemas).every(isSchema),
-		'A non-empty object of schemas are required for a shape.',
+		isObject(schemas) && Object.values(schemas).every(isSchema),
+		'An object of schemas are required for a blueprint.',
 	);
 
 	const types = Object.entries(schemas).map(

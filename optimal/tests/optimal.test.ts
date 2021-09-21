@@ -126,52 +126,41 @@ describe('Optimal', () => {
 	it('errors if a non-object is passed', () => {
 		expect(() => {
 			optimal([], {});
-		}).toThrowErrorMatchingInlineSnapshot(
-			`"A non-empty object of schemas are required for a shape."`,
-		);
+		}).toThrowErrorMatchingInlineSnapshot(`"An object of schemas are required for a blueprint."`);
 
 		expect(() => {
 			// @ts-expect-error Invalid type
 			optimal(123, {});
-		}).toThrowErrorMatchingInlineSnapshot(
-			`"A non-empty object of schemas are required for a shape."`,
-		);
+		}).toThrowErrorMatchingInlineSnapshot(`"An object of schemas are required for a blueprint."`);
 
 		expect(() => {
 			// @ts-expect-error Invalid type
 			optimal('foo', {});
-		}).toThrowErrorMatchingInlineSnapshot(
-			`"A non-empty object of schemas are required for a shape."`,
-		);
+		}).toThrowErrorMatchingInlineSnapshot(`"An object of schemas are required for a blueprint."`);
 
 		expect(() => {
 			optimal(() => {}, {});
-		}).toThrowErrorMatchingInlineSnapshot(
-			`"A non-empty object of schemas are required for a shape."`,
-		);
+		}).toThrowErrorMatchingInlineSnapshot(`"An object of schemas are required for a blueprint."`);
 	});
 
 	it('errors if a non-object is passed as a blueprint', () => {
 		expect(() => {
 			// @ts-expect-error Invalid type
 			optimal({}, 123);
-		}).toThrowErrorMatchingInlineSnapshot(
-			`"A non-empty object of schemas are required for a shape."`,
-		);
+		}).toThrowErrorMatchingInlineSnapshot(`"Optimal options must be a plain object."`);
 	});
 
 	it('errors if a non-schema is passed within the blueprint', () => {
 		expect(() => {
 			optimal(
-				{},
 				{
 					// @ts-expect-error Invalid type
 					foo: 123,
 				},
+
+				{},
 			);
-		}).toThrowErrorMatchingInlineSnapshot(
-			`"A non-empty object of schemas are required for a shape."`,
-		);
+		}).toThrowErrorMatchingInlineSnapshot(`"An object of schemas are required for a blueprint."`);
 	});
 
 	it('errors if a non-object config is passed', () => {
