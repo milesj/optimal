@@ -3,57 +3,6 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# 5.0.0-alpha.3 - 2021-09-21
-
-#### 💥 Breaking
-
-- Implement an immutable API. (#37) ([d1f12ba](https://github.com/milesj/optimal/commit/d1f12ba)), closes [#37](https://github.com/milesj/optimal/issues/37)
-- Migrate to ESM only. ([5a7b10a](https://github.com/milesj/optimal/commit/5a7b10a))
-- Rework optimal() API. ([e1edef8](https://github.com/milesj/optimal/commit/e1edef8))
-
-#### 🚀 Updates
-
-- Add default value callbacks for lazy init. ([89115c0](https://github.com/milesj/optimal/commit/89115c0))
-- Add lazy() schema. ([0fca859](https://github.com/milesj/optimal/commit/0fca859))
-- Add new Infer type. ([b0c42db](https://github.com/milesj/optimal/commit/b0c42db))
-- Add when() criteria. ([8ffb9c8](https://github.com/milesj/optimal/commit/8ffb9c8))
-- Added keysOf() to objects. ([186d509](https://github.com/milesj/optimal/commit/186d509))
-- Collect all errors instead of failing on the first. (#38) ([61ce05f](https://github.com/milesj/optimal/commit/61ce05f)), closes [#38](https://github.com/milesj/optimal/issues/38)
-
-#### 🐞 Fixes
-
-- Allow empty strings for oneOf(). ([67fddaf](https://github.com/milesj/optimal/commit/67fddaf))
-- Pass path to custom callbacks. ([fa2800a](https://github.com/milesj/optimal/commit/fa2800a))
-- Remove default value from shape(). ([96905e2](https://github.com/milesj/optimal/commit/96905e2))
-- Remove default value from tuple(). ([97ec98b](https://github.com/milesj/optimal/commit/97ec98b))
-- Remove schemas from union() call. ([c71191e](https://github.com/milesj/optimal/commit/c71191e))
-- Switch to any function for consumers. ([628e513](https://github.com/milesj/optimal/commit/628e513))
-
-#### ⚙️ Types
-
-- Improve deep partial. ([f36807b](https://github.com/milesj/optimal/commit/f36807b))
-- Update of to use generics for value. ([a582bf6](https://github.com/milesj/optimal/commit/a582bf6))
-- Update schema validation to use unknown. ([72269c4](https://github.com/milesj/optimal/commit/72269c4))
-- Update to use Required. ([cdce9b7](https://github.com/milesj/optimal/commit/cdce9b7))
-- Use new 'abstract new' constructor type. ([a2a1e4f](https://github.com/milesj/optimal/commit/a2a1e4f))
-
-#### 📦 Dependencies
-
-- **[packemon]** Update to v1.5. ([06bea75](https://github.com/milesj/optimal/commit/06bea75))
-
-#### 🛠 Internals
-
-- Add Lerna for releasing. ([afa13e4](https://github.com/milesj/optimal/commit/afa13e4))
-- Remove __DEV__ checks. ([4887f65](https://github.com/milesj/optimal/commit/4887f65))
-- Revert esm migration. ([ec46014](https://github.com/milesj/optimal/commit/ec46014))
-- Switch to a monorepo. (#36) ([52b7140](https://github.com/milesj/optimal/commit/52b7140)), closes [#36](https://github.com/milesj/optimal/issues/36)
-
-**Note:** Version bump only for package optimal
-
-
-
-
-
 # 5.0.0-alpha - 2020-09-08
 
 Ground-up rewrite that migrates to a more composable API. Under the hood, classes were refactored

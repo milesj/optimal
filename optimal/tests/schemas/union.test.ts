@@ -91,7 +91,7 @@ describe('union()', () => {
 			schema.validate([123]);
 		}).toThrowErrorMatchingInlineSnapshot(`
 		"Received array/tuple with the following failures:
-		  - Invalid member \\"[0]\\". Must be a string."
+		  - Invalid member \\"[0]\\" with value 123. Must be a string."
 	`);
 	});
 
@@ -145,7 +145,7 @@ describe('union()', () => {
 			schema.validate({ foo: 'foo' });
 		}).toThrowErrorMatchingInlineSnapshot(`
 		"Received object/shape with the following failures:
-		  - Invalid field \\"foo\\". Must be a number."
+		  - Invalid field \\"foo\\" with value \\"foo\\". Must be a number."
 	`);
 	});
 
@@ -158,12 +158,11 @@ describe('union()', () => {
 						bar: number(),
 					}),
 				])
-
 				.validate({ foo: 123 });
 		}).toThrowErrorMatchingInlineSnapshot(`
 		"Received object/shape with the following failures:
 		  - The following validations have failed:
-		    - Invalid field \\"foo\\". Must be a string."
+		    - Invalid field \\"foo\\" with value 123. Must be a string."
 	`);
 	});
 
@@ -183,7 +182,7 @@ describe('union()', () => {
 				.validate([1]);
 		}).toThrowErrorMatchingInlineSnapshot(`
 		"Received array/tuple with the following failures:
-		  - Invalid member \\"[0]\\". Must be a string."
+		  - Invalid member \\"[0]\\" with value 1. Must be a string."
 	`);
 	});
 
@@ -203,8 +202,8 @@ describe('union()', () => {
 			arrayUnion.validate([true]);
 		}).toThrowErrorMatchingInlineSnapshot(`
 		"Received array/tuple with the following failures:
-		  - Invalid member \\"[0]\\". Must be a string.
-		  - Invalid member \\"[0]\\". Must be a number."
+		  - Invalid member \\"[0]\\" with value \`true\`. Must be a string.
+		  - Invalid member \\"[0]\\" with value \`true\`. Must be a number."
 	`);
 
 		expect(() => {
@@ -226,8 +225,8 @@ describe('union()', () => {
 			objectUnion.validate({ foo: true });
 		}).toThrowErrorMatchingInlineSnapshot(`
 		"Received object/shape with the following failures:
-		  - Invalid field \\"foo\\". Must be a string.
-		  - Invalid field \\"foo\\". Must be a number."
+		  - Invalid field \\"foo\\" with value \`true\`. Must be a string.
+		  - Invalid field \\"foo\\" with value \`true\`. Must be a number."
 	`);
 
 		expect(() => {
@@ -300,12 +299,12 @@ describe('union()', () => {
 			.toThrowErrorMatchingInlineSnapshot(`
 		"Received array/tuple with the following failures:
 		  - Invalid member \\"[1]\\". Received array/tuple with the following failures:
-		    - Invalid member \\"[1]\\". Null is not allowed."
+		    - Invalid member \\"[1]\\" with value \`null\`. Null is not allowed."
 	`);
 		expect(() => complexUnion.validate({ a: true, b: 123, c: {} }))
 			.toThrowErrorMatchingInlineSnapshot(`
 		"Received object/shape with the following failures:
-		  - Invalid field \\"b\\". Value must be one of: boolean, object."
+		  - Invalid field \\"b\\" with value 123. Value must be one of: boolean, object."
 	`);
 	});
 
@@ -324,7 +323,7 @@ describe('union()', () => {
 		}).toThrowErrorMatchingInlineSnapshot(`
 		"Received object/shape with the following failures:
 		  - Unknown fields: unknown.
-		  - Invalid field \\"unknown\\". Must be a string."
+		  - Invalid field \\"unknown\\" with value \`true\`. Must be a string."
 	`);
 
 		expect(() => {
@@ -332,8 +331,8 @@ describe('union()', () => {
 		}).toThrowErrorMatchingInlineSnapshot(`
 		"Received object/shape with the following failures:
 		  - The following validations have failed:
-		    - Invalid field \\"foo\\". Must be a string.
-		  - Invalid field \\"foo\\". Must be a string."
+		    - Invalid field \\"foo\\" with value 123. Must be a string.
+		  - Invalid field \\"foo\\" with value 123. Must be a string."
 	`);
 
 		expect(() => {
@@ -341,9 +340,9 @@ describe('union()', () => {
 		}).toThrowErrorMatchingInlineSnapshot(`
 		"Received object/shape with the following failures:
 		  - The following validations have failed:
-		    - Invalid field \\"bar\\". Must be a number.
-		    - Invalid field \\"baz\\". Must be a boolean.
-		  - Invalid field \\"baz\\". Must be a string."
+		    - Invalid field \\"bar\\" with value \\"abc\\". Must be a number.
+		    - Invalid field \\"baz\\" with value 123. Must be a boolean.
+		  - Invalid field \\"baz\\" with value 123. Must be a string."
 	`);
 
 		expect(() => {

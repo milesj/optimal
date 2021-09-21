@@ -134,6 +134,32 @@ export function pathKey(path: string): string {
 	return index > 0 ? path.slice(index + 1) : path;
 }
 
+export function prettyValue(value: unknown): string | null {
+	switch (typeof value) {
+		case 'string':
+			return `"${value}"`;
+
+		case 'number':
+		case 'function':
+			return String(value);
+
+		case 'object': {
+			if (value === null) {
+				return `\`null\``;
+			}
+
+			if (value.constructor !== Object) {
+				return value.constructor.name === 'Array' ? null : `\`${value.constructor.name}\``;
+			}
+
+			return null;
+		}
+
+		default:
+			return `\`${value}\``;
+	}
+}
+
 export function tryAndCollect(
 	validator: () => boolean | void,
 	validError: ValidationError,

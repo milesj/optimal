@@ -39,7 +39,7 @@ function validate<T>(
 				? (defaultValue as DefaultValueInitializer<T>)(path, currentObject, rootObject)
 				: defaultValue;
 
-		invalid(!state.required, 'Field is required and must be defined.', path);
+		invalid(!state.required, 'Field is required and must be defined.', path, undefined);
 	} else {
 		if (__DEV__ && metadata.deprecatedMessage) {
 			// eslint-disable-next-line no-console
@@ -51,7 +51,7 @@ function validate<T>(
 
 	// Handle null
 	if (value === null) {
-		invalid(state.nullable, 'Null is not allowed.', path);
+		invalid(state.nullable, 'Null is not allowed.', path, null);
 	}
 
 	// Run validations and produce a new value

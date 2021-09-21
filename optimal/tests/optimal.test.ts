@@ -248,7 +248,7 @@ describe('Optimal', () => {
 			});
 		}).toThrowErrorMatchingInlineSnapshot(`
 		"The following validations have failed:
-		  - Invalid field \\"entry\\". Value must be one of: string, array<string>, object<string | array<string>>, function."
+		  - Invalid field \\"entry\\" with value 123. Value must be one of: string, array<string>, object<string | array<string>>, function."
 	`);
 	});
 
@@ -263,7 +263,7 @@ describe('Optimal', () => {
 		}).toThrowErrorMatchingInlineSnapshot(`
 		"The following validations have failed:
 		  - Invalid field \\"output\\". The following validations have failed:
-		    - Invalid field \\"crossOriginLoading\\". Received string with the following failures:
+		    - Invalid field \\"crossOriginLoading\\" with value \\"not-anonymous\\". Received string with the following failures:
 		      - String must be one of: anonymous, use-credentials"
 	`);
 	});
@@ -286,21 +286,21 @@ describe('Optimal', () => {
 			optimal(blueprint).validate(data);
 		}).toThrowErrorMatchingInlineSnapshot(`
 		"The following validations have failed:
-		  - Invalid field \\"entry\\". Value must be one of: string, array<string>, object<string | array<string>>, function.
+		  - Invalid field \\"entry\\" with value 123. Value must be one of: string, array<string>, object<string | array<string>>, function.
 		  - Invalid field \\"output\\". The following validations have failed:
-		    - Invalid field \\"crossOriginLoading\\". Received string with the following failures:
+		    - Invalid field \\"crossOriginLoading\\" with value \\"not-anonymous\\". Received string with the following failures:
 		      - String must be one of: anonymous, use-credentials
-		    - Invalid field \\"publicPath\\". Must be a string.
+		    - Invalid field \\"publicPath\\" with value 123. Must be a string.
 		  - Invalid field \\"resolve\\". The following validations have failed:
 		    - Invalid field \\"alias\\". Must be a plain object.
-		  - Invalid field \\"target\\". String must be one of: async-node, electron-main, electron-renderer, node, node-webkit, web, webworker"
+		  - Invalid field \\"target\\" with value \\"what\\". String must be one of: async-node, electron-main, electron-renderer, node, node-webkit, web, webworker"
 	`);
 
 		expect(() => {
 			// @ts-expect-error Invalid types
 			optimal(blueprint).validate(data, { collectErrors: false });
 		}).toThrowErrorMatchingInlineSnapshot(
-			`"Invalid field \\"entry\\". Value must be one of: string, array<string>, object<string | array<string>>, function."`,
+			`"Invalid field \\"entry\\" with value 123. Value must be one of: string, array<string>, object<string | array<string>>, function."`,
 		);
 	});
 
@@ -314,7 +314,7 @@ describe('Optimal', () => {
 			});
 		}).toThrowErrorMatchingInlineSnapshot(`
 		"The following validations have failed:
-		  - Invalid field \\"entry\\". Value must be one of: string, array<string>, object<string | array<string>>, function."
+		  - Invalid field \\"entry\\" with value 123. Value must be one of: string, array<string>, object<string | array<string>>, function."
 	`);
 	});
 
