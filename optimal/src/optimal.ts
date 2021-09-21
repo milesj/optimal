@@ -48,6 +48,7 @@ export function optimal<Schemas extends object>(
 				});
 			} catch (error: unknown) {
 				let invalid: OptimalError;
+				let prefix = '';
 
 				if (error instanceof OptimalError) {
 					invalid = error;
@@ -58,10 +59,16 @@ export function optimal<Schemas extends object>(
 
 				if (options.name) {
 					invalid.schema = options.name;
+					prefix = options.name;
 				}
 
 				if (options.file) {
 					invalid.file = options.file;
+					prefix = prefix ? `${prefix} (${options.file})` : options.file;
+				}
+
+				if (prefix) {
+					invalid.message = `${prefix}: ${invalid.message}`;
 				}
 
 				throw invalid;
