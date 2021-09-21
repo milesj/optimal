@@ -3,7 +3,8 @@
   "type": "module",
   "version": "5.0.0-alpha.2",
   "description": "A system for building and validating defined object structures with schemas.",
-  "main": "./mjs/index.mjs",
+  "main": "./lib/node/index.js",
+  "browser": "./lib/browser/index.js",
   "module": "./esm/index.js",
   "types": "./dts/index.d.ts",
   "keywords": [
@@ -31,8 +32,7 @@
   "files": [
     "dts/**/*.d.ts",
     "esm/**/*.{js,map}",
-    "mjs/**/*.{js,map}",
-    "mjs/**/*.{mjs,map}",
+    "lib/**/*.{js,map}",
     "src/**/*.{ts,tsx,json}"
   ],
   "engines": {
@@ -46,28 +46,12 @@
   "packemon": {
     "bundle": true,
     "format": [
-      "mjs",
+      "lib",
       "esm"
     ],
     "platform": [
       "browser",
       "node"
     ]
-  },
-  "devDependencies": {
-    "@jest/globals": "*"
-  },
-  "exports": {
-    "./package.json": "./package.json",
-    ".": {
-      "browser": {
-        "import": "./esm/index.js",
-        "module": "./esm/index.js"
-      },
-      "node": {
-        "import": "./mjs/index.mjs"
-      },
-      "types": "./dts/index.d.ts"
-    }
   }
 }

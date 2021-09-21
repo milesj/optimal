@@ -4,7 +4,7 @@
   "scripts": {
     "prepare": "beemo create-config",
     "build": "packemon build --addEngines",
-    "pack": "NODE_ENV=production packemon pack --addEngines --addExports --declaration=standard",
+    "pack": "NODE_ENV=production packemon pack --addEngines --declaration=standard",
     "check": "yarn run type && yarn run test && yarn run lint",
     "clean": "packemon clean",
     "coverage": "yarn run test --coverage",

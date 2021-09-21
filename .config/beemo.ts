@@ -12,7 +12,4 @@ export default {
 			},
 		],
 	],
-	settings: {
-		esm: true,
-	},
 };
