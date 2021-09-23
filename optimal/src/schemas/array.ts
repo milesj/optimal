@@ -33,6 +33,9 @@ export interface ArraySchema<T = unknown[]>
 	undefinable: () => ArraySchema<T | undefined>;
 }
 
+/**
+ * Create a schema that validates a value is an array, and optionally validate its items.
+ */
 export function array<T = unknown>(defaultValue: DefaultValue<T[]> = []): ArraySchema<T[]> {
 	return createSchema(
 		{

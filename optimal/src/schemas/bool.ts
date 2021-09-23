@@ -18,6 +18,9 @@ export interface BooleanSchema<T = boolean> extends Schema<T>, CommonCriterias<B
 	undefinable: () => BooleanSchema<T | undefined>;
 }
 
+/**
+ * Create a schema that validates a value is a boolean.
+ */
 export function bool(defaultValue: DefaultValue<boolean> = false): BooleanSchema {
 	return createSchema(
 		{

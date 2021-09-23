@@ -2,113 +2,106 @@
 title: Schemas
 ---
 
-A predicate is a factory function that returns a fluent type-specific builder interface. This
-builder can be used to chain validation rules and define a default value. All predicates support the
-following methods:
+A schema is a factory function that returns a fluent and typed builder interface. This builder can
+be used to chain validation rules, define a default value, parse values, and more!
 
-- `and(...names: string[])` - Requires all of the additional fields by name to be defined.
-- `custom(cb: (value: any, struct: object) => void)` - Trigger a custom handler which can optionally
-  throw an error.
-- `default()` - Returns the default value (not chainable).
-- `deprecate(message: string)` - Mark the field as deprecated. Logs the message to the console in
-  development.
-- `message(error: string)` - Set a custom error message that will override all validation error
-  messages.
-- `never()` - Field should never be used. Will error immediately and return an undefined value.
-- `nullable()` - Mark the field as nullable and allow a `null` value.
-- `notNullable()` - Mark the field as non-nullable and disallow a `null` value.
-- `only()` - Field value must match the default value, otherwise will throw an error.
-- `or(...names: string[])` - Requires at least 1 of the additional fields by name to be defined.
-- `required()` - Mark the field as required. A value must be explicitly defined in the struct.
-- `xor(...names: string[])` - Requires none of the additional fields by name to be defined.
-
-> These predicates can be used to model any structure. For example, here's Optimal replicating a
-> [Webpack configuration object](https://github.com/milesj/optimal/blob/master/tests/optimal.test.ts#L17).
+All schemas support methods found on the [`CommonCriterias`](/api/optimal/interface/CommonCriterias)
+interface.
 
 ## Array
 
-The `array(predicate?: Predicate | null, default?: any[])` predicate verifies a value is an array or
-an array of a specific type by accepting a predicate. Defaults to `[]` but can be customized with
-the 2nd argument. Array predicate supports the following additional method:
-
-- `notEmpty()` - Requires the array to not be empty. Does not validate `null`.
-- `sizeOf(length: number)` - Requires the array to be an exact length.
+The [`array()`](/api/optimal/function/array) schema verifies a value is an array, or an array _of_ a
+specific type. For undefined values, an empty array (`[]`) is returned, which can be customized with
+the 1st argument.
 
 ```ts
-optimal(
-	{},
-	{
-		items: array(),
-		extensions: array(string(), ['js']).notEmpty(),
-	},
-);
+import { array, string } from 'optimal';
+
+const anyArray = array();
+
+anyArray.validate([]); // pass
+anyArray.validate([1, 2, 3]); // pass
+anyArray.validate(['a', 'b', 'c']); // pass
+
+const stringArray = array().of(string()).notEmpty();
+
+stringArray.validate([]); // fail
+stringArray.validate([1, 2, 3]); // fail
+stringArray.validate(['a', 'b', 'c']); // pass
 ```
+
+Array schemas support all methods found on the [`ArraySchema`](/api/optimal/interface/ArraySchema)
+interface.
 
 ## Blueprint
 
-The `blueprint(default?: { [key: string]: Predicate })` predicate verifies a value is an object that
-maps properties to predicate instances.
+The [`blueprint()`](/api/optimal/function/blueprint) schema verifies a value is an object that maps
+properties to schema instances. This schema is useful for composition based APIs.
 
 ```ts
-optimal(
-	{
-		settings: {
-			name: string(),
-			type: number(),
-		},
-	},
-	{
-		settings: blueprint(),
-	},
-);
-```
+import { blueprint } from 'optimal';
 
-> This works in a similar fashion to `shape()` but without the wrapping predicate. It allows the
-> object to be passed to other `optimal` calls.
+blueprint().validate({
+	name: string(),
+	type: number(),
+});
+```
 
 ## Boolean
 
-The `bool(default?: boolean)` predicate verifies a value is a boolean. Defaults to `false` but can
-be customized with the 1st argument. Boolean predicate supports the following additional methods:
-
-- `onlyFalse()` - Validate the value is only ever `false` (or undefined).
-- `onlyTrue()` - Validate the value is only ever `true` (or undefined).
+The [`bool()`](/api/optimal/function/bool) schema verifies a value is a boolean. For undefined
+values, `false` is returned, which can be customized with the 1st argument.
 
 ```ts
-optimal(
-	{},
-	{
-		watch: bool(), // false
-		debug: bool(true),
-	},
-);
+import { bool } from 'optimal';
+
+const anyBool = bool();
+
+anyBool.validate(true); // pass
+anyBool.validate(false); // pass
+anyBool.validate(123); // fail
+
+const falsyBool = bool().onlyFalse();
+
+falsyBool.validate(true); // fail
+falsyBool.validate(false); // pass
 ```
+
+Boolean schemas support all methods found on the
+[`BooleanSchema`](/api/optimal/interface/BooleanSchema) interface.
 
 ## Custom
 
-The `custom(cb: (value: any, schema: Schema) => void, default: any)` predicate verifies a value
-based on a callback. The 1st argument is the callback, which accepts the value to be validated, and
-the struct object. The 2nd argument is the default value, which must be explicitly defined.
+The [`custom()`](/api/optimal/function/custom) schema verifies a value based on a user-provided
+callback. This callback receives the current value to validate, an object path, and validation
+options (which includes any root and current objects).
+
+By default this schema has no default value (returns `undefined`), but this can be customized with
+the 2nd argument.
 
 ```ts
-optimal(
-	{},
-	{
-		path: custom((value) => {
-			if (!path.isAbsolute(value)) {
-				throw new Error('Path must be absolute.');
-			}
-		}, process.cwd()),
-	},
-);
+import path from 'path';
+import { custom } from 'optimal';
+
+const pathLike = custom((value) => {
+	if (!path.isAbsolute(value)) {
+		throw new Error('Path must be absolute.');
+	}
+}, process.cwd());
+
+pathLike.validate('/absolute/path'); // pass
+pathLike.validate('../relative/path'); // fail
 ```
+
+Custom schemas support all methods found on the
+[`CustomSchema`](/api/optimal/interface/CustomSchema) interface.
 
 > When using TypeScript, the type is inferred based on the default value. This can be overridden by
 > explicitly defining the generic: `custom<string>()`.
 
 ## Date
 
-The `date()` predicate verifies a value is an instance of `Date`.
+The `date()` schema verifies a value is an instance of `Date`.
 
 ```ts
 optimal(
@@ -121,8 +114,8 @@ optimal(
 
 ## Function
 
-The `func(default?: Function | null)` predicate verifies a value is a function. Defaults to `null`
-but can be customized with the 1st argument.
+The `func(default?: Function | null)` schema verifies a value is a function. Defaults to `null` but
+can be customized with the 1st argument.
 
 ```ts
 optimal(
@@ -134,11 +127,11 @@ optimal(
 );
 ```
 
-> This predicate is nullable by default.
+> This schema is nullable by default.
 
 ## Instance
 
-The `instance(contract?: Constructor<any>)` predicate verifies a value is an instance of a specific
+The `instance(contract?: Constructor<any>)` schema verifies a value is an instance of a specific
 class (passed as the 1st argument), or simply an instance of any class (no argument). Defaults to
 `null` and _cannot_ be customized.
 
@@ -156,12 +149,12 @@ Since `instanceof` checks are problematic cross realm or cross module version, a
 argument can be enabled as the 2nd argument: `instance(Plugin, true)`. This will compare constructor
 names, which is brittle, but unblocks certain scenarios.
 
-> This predicate is nullable by default.
+> This schema is nullable by default.
 
 ## Number
 
-The `number(default?: number)` predicate verifies a value is a number. Defaults to `0` but can be
-customized with the 1st argument. Number predicate supports the following additional methods:
+The `number(default?: number)` schema verifies a value is a number. Defaults to `0` but can be
+customized with the 1st argument. Number schema supports the following additional methods:
 
 - `between(min: number, max: number, inclusive?: boolean)` - Validate value is between 2 numbers.
   When `inclusive`, will compare against outer bounds, otherwise only compares between bounds.
@@ -187,10 +180,9 @@ optimal(
 
 ## Object
 
-The `object(predicate?: Predicate | null, default?: { [key: string]: any })` predicate verifies a
-value is a plain object or an object with all values of a specific type by accepting a predicate.
-Defaults to `{}` but can be customized with the 2nd argument. Object predicate supports the
-following additional method:
+The `object(schema?: Schema | null, default?: { [key: string]: any })` schema verifies a value is a
+plain object or an object with all values of a specific type by accepting a schema. Defaults to `{}`
+but can be customized with the 2nd argument. Object schema supports the following additional method:
 
 - `notEmpty()` - Requires the object to not be empty. Does not validate `null`.
 - `sizeOf(length: number)` - Requires the object to have an exact number of properties.
@@ -205,9 +197,9 @@ optimal(
 );
 ```
 
-## Predicate
+## Schema
 
-The `predicate()` predicate verifies a value is a predicate instance. This is useful for composing
+The `schema()` schema verifies a value is a schema instance. This is useful for composing
 blueprints.
 
 ```ts
@@ -216,14 +208,14 @@ optimal(
 		value: string(),
 	},
 	{
-		value: predicate(),
+		value: schema(),
 	},
 );
 ```
 
 ## Regex
 
-The `date()` predicate verifies a value is an instance of `RegExp`.
+The `date()` schema verifies a value is an instance of `RegExp`.
 
 ```ts
 optimal(
@@ -236,9 +228,9 @@ optimal(
 
 ## Shape
 
-The `shape(shape: { [key: string]: Predicate })` predicate verifies a value matches a specific
-object shape, defined by a collection of properties to predicates. Defaults to the structure of the
-shape and _cannot_ be customized. Shape predicate supports the following additional method:
+The `shape(shape: { [key: string]: Schema })` schema verifies a value matches a specific object
+shape, defined by a collection of properties to schemas. Defaults to the structure of the shape and
+_cannot_ be customized. Shape schema supports the following additional method:
 
 - `exact()` - Requires the object to be exact. Unknown fields will error.
 
@@ -258,9 +250,9 @@ optimal(
 
 ## String
 
-The `string(default?: string)` predicate verifies a value is a string. Defaults to an empty string
-(`''`) but can be customized with the 1st argument. String predicate supports the following
-additional methods:
+The `string(default?: string)` schema verifies a value is a string. Defaults to an empty string
+(`''`) but can be customized with the 1st argument. String schema supports the following additional
+methods:
 
 - `camelCase()` - Validate the value is in camel case (`fooBarBaz`). Must start with a lowercase
   character and contain at minimum 2 characters.
@@ -292,8 +284,8 @@ optimal(
 ## Tuple
 
 A tuple is an array-like structure with a defined set of items, each with their own unique type. The
-`tuple(predicates: Predicate[])` predicate will validate each item and return an array of the same
-length and types. Defaults to the structure of the tuple and _cannot_ be customized.
+`tuple(schemas: Schema[])` schema will validate each item and return an array of the same length and
+types. Defaults to the structure of the tuple and _cannot_ be customized.
 
 ```ts
 type Record = [number, string]; // ID, name
@@ -306,14 +298,14 @@ optimal(
 );
 ```
 
-> When using TypeScript, a generic type is required for predicates to type correctly. Furthermore,
-> the predicate only supports a max length of 5 items.
+> When using TypeScript, a generic type is required for schemas to type correctly. Furthermore, the
+> schema only supports a max length of 5 items.
 
 ## Union
 
-The `union(predicates: Predicate[], default: any)` predicate verifies a value against a list of
-possible values. The 1st argument is a list of predicates to compare against. The 2nd argument is
-the default value, which must be explicitly defined.
+The `union(schemas: Schema[], default: any)` schema verifies a value against a list of possible
+values. The 1st argument is a list of schemas to compare against. The 2nd argument is the default
+value, which must be explicitly defined.
 
 ```ts
 optimal(
@@ -333,8 +325,8 @@ optimal(
 );
 ```
 
-Unions support multiple predicates of the same type in unison, and the first one that passes
-validation will be used.
+Unions support multiple schemas of the same type in unison, and the first one that passes validation
+will be used.
 
 ```ts
 optimal(
