@@ -29,6 +29,9 @@ export interface InstanceSchema<T> extends Schema<T>, CommonCriterias<InstanceSc
 	undefinable: () => InstanceSchema<T | undefined>;
 }
 
+/**
+ * Create a schema that validates a value is an instance of a class.
+ */
 export function instance() {
 	return createSchema<InstanceSchema<Object | null>>(
 		{

@@ -35,6 +35,9 @@ export interface ObjectSchema<T = object>
 	undefinable: () => ObjectSchema<T | undefined>;
 }
 
+/**
+ * Create a schema that validates a value is an indexed object (implicit keys).
+ */
 export function object<V = unknown, K extends PropertyKey = string>(
 	defaultValue?: DefaultValue<Record<K, V>>,
 ): ObjectSchema<Record<K, V>> {
@@ -59,3 +62,8 @@ export function object<V = unknown, K extends PropertyKey = string>(
 		],
 	);
 }
+
+/**
+ * Create a schema that validates a value is an indexed object (implicit keys).
+ */
+export const record = object;

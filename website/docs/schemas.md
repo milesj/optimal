@@ -8,7 +8,7 @@ be used to chain validation rules, define a default value, parse values, and mor
 All schemas support methods found on the [`CommonCriterias`](/api/optimal/interface/CommonCriterias)
 interface.
 
-## Array
+## Arrays
 
 The [`array()`](/api/optimal/function/array) schema verifies a value is an array, or an array _of_ a
 specific type. For undefined values, an empty array (`[]`) is returned, which can be customized with
@@ -17,23 +17,23 @@ the 1st argument.
 ```ts
 import { array, string } from 'optimal';
 
-const anyArray = array();
+const anyArraySchema = array();
 
-anyArray.validate([]); // pass
-anyArray.validate([1, 2, 3]); // pass
-anyArray.validate(['a', 'b', 'c']); // pass
+anyArraySchema.validate([]); // pass
+anyArraySchema.validate([1, 2, 3]); // pass
+anyArraySchema.validate(['a', 'b', 'c']); // pass
 
-const stringArray = array().of(string()).notEmpty();
+const stringArraySchema = array(['foo']).of(string()).notEmpty();
 
-stringArray.validate([]); // fail
-stringArray.validate([1, 2, 3]); // fail
-stringArray.validate(['a', 'b', 'c']); // pass
+stringArraySchema.validate([]); // fail
+stringArraySchema.validate([1, 2, 3]); // fail
+stringArraySchema.validate(['a', 'b', 'c']); // pass
 ```
 
 Array schemas support all methods found on the [`ArraySchema`](/api/optimal/interface/ArraySchema)
 interface.
 
-## Blueprint
+## Blueprints
 
 The [`blueprint()`](/api/optimal/function/blueprint) schema verifies a value is an object that maps
 properties to schema instances. This schema is useful for composition based APIs.
@@ -47,7 +47,7 @@ blueprint().validate({
 });
 ```
 
-## Boolean
+## Booleans
 
 The [`bool()`](/api/optimal/function/bool) schema verifies a value is a boolean. For undefined
 values, `false` is returned, which can be customized with the 1st argument.
@@ -55,20 +55,54 @@ values, `false` is returned, which can be customized with the 1st argument.
 ```ts
 import { bool } from 'optimal';
 
-const anyBool = bool();
+const anyBoolSchema = bool();
 
-anyBool.validate(true); // pass
-anyBool.validate(false); // pass
-anyBool.validate(123); // fail
+anyBoolSchema.validate(true); // pass
+anyBoolSchema.validate(false); // pass
+anyBoolSchema.validate(123); // fail
 
-const falsyBool = bool().onlyFalse();
+const falsyBoolSchema = bool().onlyFalse();
 
-falsyBool.validate(true); // fail
-falsyBool.validate(false); // pass
+falsyBoolSchema.validate(true); // fail
+falsyBoolSchema.validate(false); // pass
 ```
 
 Boolean schemas support all methods found on the
 [`BooleanSchema`](/api/optimal/interface/BooleanSchema) interface.
+
+## Class instances
+
+The [`instance()`](/api/optimal/function/instance) schema verifies a value is an instance of a
+specific class (when using `of()`), or simply an instance of any class (by default). This schema is
+nullable by default and may return `null`.
+
+```ts
+import { instance } from 'optimal';
+
+class Foo {}
+class Bar {}
+
+const anyClassSchema = instance();
+
+anyClassSchema.validate(new Foo()); // pass
+anyClassSchema.validate(new Bar()); // pass
+
+const fooSchema = instance().of(Foo);
+
+fooSchema.validate(new Foo()); // pass
+fooSchema.validate(new Bar()); // fail
+```
+
+Since `instanceof` checks are problematic across realms or when dealing with dual-package hazards,
+an optional `loose` argument can be enabled as the 2nd argument on `of()`. This will compare
+constructor names, which is brittle, but unblocks certain scenarios.
+
+```ts
+const looseFooSchema = instance().of(Foo, true);
+```
+
+Instance schemas support all methods found on the
+[`InstanceSchema`](/api/optimal/interface/InstanceSchema) interface.
 
 ## Custom
 
@@ -83,121 +117,161 @@ the 2nd argument.
 import path from 'path';
 import { custom } from 'optimal';
 
-const pathLike = custom((value) => {
+const absPathSchema = custom((value) => {
 	if (!path.isAbsolute(value)) {
 		throw new Error('Path must be absolute.');
 	}
 }, process.cwd());
 
-pathLike.validate('/absolute/path'); // pass
-pathLike.validate('../relative/path'); // fail
+absPathSchema.validate('/absolute/path'); // pass
+absPathSchema.validate('../relative/path'); // fail
 ```
 
 Custom schemas support all methods found on the
 [`CustomSchema`](/api/optimal/interface/CustomSchema) interface.
 
-> When using TypeScript, the type is inferred based on the default value. This can be overridden by
-> explicitly defining the generic: `custom<string>()`.
+## Dates
 
-## Date
+The [`date()`](/api/optimal/function/date) schema verifies a value is date-like, which supports
+`Date` objects, an ISO-8601 string, or a UNIX timestamp. Regardless of the input value, a `Date`
+object is always returned as the output value. For undefined values, a new `Date` is returned.
 
-The `date()` schema verifies a value is an instance of `Date`.
+```ts
+import { date } from 'optimal';
+
+const dateSchema = date();
+
+dateSchema.validate(new Date()); // pass
+dateSchema.validate(1632450940763); // pass
+dateSchema.validate('2021-09-24T02:32:31.610Z'); // pass
+```
+
+Date schemas support all methods found on the [`DateSchema`](/api/optimal/interface/DateSchema)
+interface.
+
+## Functions
+
+The [`func()`](/api/optimal/function/func) schema verifies a value is a function.
+
+```ts
+import { func } from 'optimal';
+
+const funcSchema = func();
+
+funcSchema.validate(() => {}); // pass
+funcSchema.validate(123); // fail
+```
+
+By default this schema has no default value (returns `undefined`), but this can be customized with
+the 1st argument. However, because of our lazy default values, the "default function" must be
+returned with another function.
+
+```ts
+import { func } from 'optimal';
+
+function noop() {}
+
+// Incorrect
+func(noop);
+
+// Correct
+func(() => noop);
+```
+
+Function schemas support all methods found on the
+[`FunctionSchema`](/api/optimal/interface/FunctionSchema) interface.
+
+## Lazy / recursive
+
+The `lazy()` schema is useful for declaring deferred evaluation or recursive schemas. When using
+this pattern, the lazy element _must_ declare a default value, and _must_ never be required.
+
+```ts
+import { lazy, LazySchema, number, shape } from 'optimal';
+
+interface Node {
+	id: number;
+	child?: Node | null;
+}
+
+const node: LazySchema<Node> = shape({
+	id: number(),
+	child: lazy(() => node, null).nullable(),
+});
+```
+
+> Because of a limitation in TypeScript, the return type cannot be statically inferred, so you'll
+> need to type the schema variable directly with `LazySchema`.
+
+## Numbers
+
+The [`number()`](/api/optimal/function/number) schema verifies a value is a number. For undefined
+values, a `0` is returned, which can be customized with the 1st argument.
+
+```ts
+import { number } from 'optimal';
+
+const anyNumberSchema = number();
+
+anyNumberSchema.validate(123); // pass
+anyNumberSchema.validate('abc'); // fail
+
+const intGteNumberSchema = number(100).int().gte(100);
+
+intGteNumberSchema.validate(150); // pass
+intGteNumberSchema.validate(50); // fail
+intGteNumberSchema.validate(200.25); // fail
+```
+
+Number schemas support all methods found on the
+[`NumberSchema`](/api/optimal/interface/NumberSchema) interface.
+
+## Objects
+
+The [`object()`](/api/optimal/function/object) schema verifies a value is a plain object or an
+indexed object with all values of a specific type. For undefined values, an empty object (`{}`) is
+returned, which can be customized with the 1st argument.
+
+```ts
+import { object, number } from 'optimal';
+
+const anyObjectSchema = object();
+
+anyObjectSchema.validate({}); // pass
+anyObjectSchema.validate({ foo: 123 }); // pass
+anyObjectSchema.validate({ bar: 'abc' }); // pass
+
+const numberObjectSchema = object().of(number());
+
+numberObjectSchema.validate({ foo: 123 }); // pass
+numberObjectSchema.validate({ bar: 'abc' }); // fail
+```
+
+Object schemas support all methods found on the
+[`ObjectSchema`](/api/optimal/interface/ObjectSchema) interface.
+
+## Records
+
+The [`record()`](/api/optimal/function/record) schema is an alias for [objects](#objects).
+
+```ts
+import { object } from 'optimal';
+```
+
+## Regex patterns
+
+The `date()` schema verifies a value is an instance of `RegExp`.
 
 ```ts
 optimal(
 	{},
 	{
-		timestamp: date(),
+		pattern: regex(),
 	},
 );
 ```
 
-## Function
-
-The `func(default?: Function | null)` schema verifies a value is a function. Defaults to `null` but
-can be customized with the 1st argument.
-
-```ts
-optimal(
-	{},
-	{
-		callback: func(),
-		click: func(onClick),
-	},
-);
-```
-
-> This schema is nullable by default.
-
-## Instance
-
-The `instance(contract?: Constructor<any>)` schema verifies a value is an instance of a specific
-class (passed as the 1st argument), or simply an instance of any class (no argument). Defaults to
-`null` and _cannot_ be customized.
-
-```ts
-optimal(
-	{},
-	{
-		plugin: instance(Plugin),
-		instance: instance(),
-	},
-);
-```
-
-Since `instanceof` checks are problematic cross realm or cross module version, an optional `loose`
-argument can be enabled as the 2nd argument: `instance(Plugin, true)`. This will compare constructor
-names, which is brittle, but unblocks certain scenarios.
-
-> This schema is nullable by default.
-
-## Number
-
-The `number(default?: number)` schema verifies a value is a number. Defaults to `0` but can be
-customized with the 1st argument. Number schema supports the following additional methods:
-
-- `between(min: number, max: number, inclusive?: boolean)` - Validate value is between 2 numbers.
-  When `inclusive`, will compare against outer bounds, otherwise only compares between bounds.
-- `float()` - Require a floating point / decimal number.
-- `gt(min: number)` - Validate the value is greater than the minimum.
-- `gte(min: number)` - Validate the value is greater than or equal to the minimum.
-- `int()` - Require an integer.
-- `lt(max: number)` - Validate the value is less than the maximum.
-- `lte(max: number)` - Validate the value is less than or equal to the maximum.
-- `negative()` - Validate the value is negative and not zero.
-- `oneOf(list: number[])` - Validate the value is one of the following numbers.
-- `positive()` - Validate the value is positive and not zero.
-
-```ts
-optimal(
-	{},
-	{
-		maxSize: number(10000).lte(10000),
-		minSize: number().gte(0), // 0
-	},
-);
-```
-
-## Object
-
-The `object(schema?: Schema | null, default?: { [key: string]: any })` schema verifies a value is a
-plain object or an object with all values of a specific type by accepting a schema. Defaults to `{}`
-but can be customized with the 2nd argument. Object schema supports the following additional method:
-
-- `notEmpty()` - Requires the object to not be empty. Does not validate `null`.
-- `sizeOf(length: number)` - Requires the object to have an exact number of properties.
-
-```ts
-optimal(
-	{},
-	{
-		settings: object().notEmpty(),
-		flags: object(bool()),
-	},
-);
-```
-
-## Schema
+## Schemas
 
 The `schema()` schema verifies a value is a schema instance. This is useful for composing
 blueprints.
@@ -213,20 +287,7 @@ optimal(
 );
 ```
 
-## Regex
-
-The `date()` schema verifies a value is an instance of `RegExp`.
-
-```ts
-optimal(
-	{},
-	{
-		pattern: regex(),
-	},
-);
-```
-
-## Shape
+## Shapes
 
 The `shape(shape: { [key: string]: Schema })` schema verifies a value matches a specific object
 shape, defined by a collection of properties to schemas. Defaults to the structure of the shape and
@@ -248,7 +309,7 @@ optimal(
 );
 ```
 
-## String
+## Strings
 
 The `string(default?: string)` schema verifies a value is a string. Defaults to an empty string
 (`''`) but can be customized with the 1st argument. String schema supports the following additional
@@ -281,7 +342,7 @@ optimal(
 );
 ```
 
-## Tuple
+## Tuples
 
 A tuple is an array-like structure with a defined set of items, each with their own unique type. The
 `tuple(schemas: Schema[])` schema will validate each item and return an array of the same length and
@@ -301,7 +362,7 @@ optimal(
 > When using TypeScript, a generic type is required for schemas to type correctly. Furthermore, the
 > schema only supports a max length of 5 items.
 
-## Union
+## Unions
 
 The `union(schemas: Schema[], default: any)` schema verifies a value against a list of possible
 values. The 1st argument is a list of schemas to compare against. The 2nd argument is the default

@@ -32,6 +32,9 @@ export interface FunctionSchema<T = AnyFunction>
 // (option objects, etc). So by default (pun intended),
 // this schema's default value is `undefined`.
 
+/**
+ * Create a schema that validates a value is a function.
+ */
 export function func<T extends AnyFunction = AnyFunction>(
 	defaultValue?: DefaultValueInitializer<T>,
 ) {

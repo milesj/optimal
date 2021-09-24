@@ -14,6 +14,10 @@ export interface LazySchema<T = boolean> extends Schema<T> {
 	undefinable: () => LazySchema<T | undefined>;
 }
 
+/**
+ * Create a schema that defers evaluation of the schema until it's needed.
+ * This is useful for recursive schemas.
+ */
 export function lazy<T>(
 	factory: (value: unknown) => Schema<T>,
 	defaultValue: DefaultValue<T | null | undefined>,

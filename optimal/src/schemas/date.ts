@@ -25,6 +25,10 @@ export interface DateSchema<T = Date>
 	undefinable: () => DateSchema<T | undefined>;
 }
 
+/**
+ * Create a schema that validates a value is a date.
+ * Supports `Date` objects, an ISO-8601 string, or a UNIX timestamp
+ */
 export function date(defaultValue?: DefaultValue<Date>): DateSchema<Date> {
 	return createSchema(
 		{

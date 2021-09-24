@@ -35,6 +35,9 @@ function cast(value: unknown): number {
 	return value === undefined ? 0 : Number(value);
 }
 
+/**
+ * Create a schema that validates a value is a number.
+ */
 export function number<T extends number>(defaultValue: DefaultValue<number> = 0): NumberSchema<T> {
 	return createSchema(
 		{
