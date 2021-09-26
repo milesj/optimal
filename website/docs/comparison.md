@@ -1,16 +1,27 @@
-|                      | optimal | yup | joi | zod |
-| :------------------- | :-----: | :-: | :-: | :-: |
-| Async validation     |         | ✅  | ✅  |     |
-| Deep validation      |         | ✅  |     |     |
-| Immutable schemas    |   ✅    | ✅  | ✅  |     |
-| Lazy default values  |   ✅    | ✅  | ✅  |     |
-| Lazy schemas         |   ✅    | ✅  |     |
-| Localization         |         | ✅  |     |     |
-| Native TypeScript    |   ✅    |     |     |     |
-| Nullable fields      |   ✅    | ✅  |     |     |
-| Optional fields      |   ✅    | ✅  | ✅  |     |
-| Type casting         |   ✅    | ✅  | ✅  |     |
-| Value transformation |         | ✅  | ✅  |     |
+---
+title: Comparison
+---
+
+A comparison between other object/schema validation libraries in the JavaScript ecosystem. Choose
+the library thats best for you!
+
+### APIs
+
+|                          | optimal | yup | joi | zod |
+| :----------------------- | :-----: | :-: | :-: | :-: |
+| Async validation         |         | ✅  | ✅  |     |
+| Deep validation          |         | ✅  |     |     |
+| File size (unminified)   |  41kb   |     |     |     |
+| Immutable schemas        |   ✅    | ✅  | ✅  |     |
+| Lazy default values      |   ✅    | ✅  | ✅  |     |
+| Lazy schemas             |   ✅    | ✅  |     |
+| Localization             |         | ✅  |     |     |
+| Native TypeScript        |   ✅    |     |     |     |
+| Nullable fields          |   ✅    | ✅  |     |     |
+| Required/optional fields |   ✅    | ✅  | ✅  |     |
+| Type casting             |   ✅    | ✅  | ✅  |     |
+| Undefined fields         |         |     |     |     |
+| Value transformation     |         | ✅  | ✅  |     |
 
 ### Common
 

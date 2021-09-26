@@ -1,3 +1,3 @@
 module.exports = {
-	docs: ['index', 'usage', 'schemas', 'guides', 'comparison'],
+	docs: ['index', 'usage', 'schemas', 'comparison'],
 };

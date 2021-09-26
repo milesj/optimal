@@ -3,9 +3,8 @@ title: Introduction
 slug: /
 ---
 
-A system for building and validating defined object structures, like argument options, configuration
-files, data bags, validation fields, and more! Runs checks in development and strips checks in
-production using dead code elimination.
+Optimal is a system for building and validating defined object structures, like argument options,
+configuration files, data bags, validation fields, and many more, using typed schemas.
 
 - Recursively builds and validates nested structures.
 - Supports common data types.
@@ -15,18 +14,15 @@ production using dead code elimination.
 - Handles logical operators AND, OR, and XOR.
 
 ```ts
-import optimal, { array, string, number } from 'optimal';
+import { array, string, number, optimal } from 'optimal';
 
-// Pass a partial object and define an explicit blueprint
-optimal(
-  { name: 'Optimal' },
-  {
-    name: string().notEmpty(),
-    include: array(string()),
-    exclude: array(string()),
-    maxSize: number(10000).gte(0),
-  },
-);
+// Define an explicit blueprint, and pass a partial object to validate
+const options = optimal({
+  name: string().notEmpty(),
+  include: array().of(string()),
+  exclude: array().of(string()),
+  maxSize: number(10000).gte(0),
+}).validate({ name: 'Optimal' });
 
 // Which validates, builds, and returns the following object
 {
@@ -39,8 +35,8 @@ optimal(
 
 ## Requirements
 
-- Node 10 (server)
-- IE 11+ (browser)
+- Node v12.17 (server)
+- Edge, Chrome, Firefox, Safari (browser)
 
 ## Installation
 

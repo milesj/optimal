@@ -83,3 +83,116 @@ optimal(
 	},
 );
 ```
+
+## Validating values
+
+## Default values
+
+Most schemas support a custom default value when being instantiated, which will be used as a
+fallback when the field is not explicitly defined, or an explicit `undefined` is passed. The default
+value must be the same type as the schema.
+
+```ts
+const severitySchema = string('low').oneOf(['low', 'high']);
+
+severitySchema.validate(undefined); // -> low
+severitySchema.validate('high'); // -> high
+```
+
+Furthermore, the default value can also be a function that returns a value. This is useful for
+deferring execution, or avoiding computation heavy code. This function is passed an object path for
+the field being validated, the current depth object, and the entire object.
+
+```ts
+const dateSchema = date(() => new Date(2020, 1, 1));
+```
+
+> The [`func()`](./schemas.md#functions) schema must _always_ use the factory pattern for defining a
+> default value, otherwise, the default function will be executed inadvertently.
+
+## Nullable fields
+
+Excluding [`instance()`](./schemas.md#class-instances), all schemas are _not_ nullable by default.
+This means `null` cannot be passed as a value to a field being validated. To accept `null` values,
+chain the `nullable()` method on a schema, inversely, chain `notNullable()` to _not_ accept `null`
+values.
+
+```ts
+const objectSchema = object().notNullable(); // default
+const nullableObjectSchema = object().nullable();
+
+objectSchema.validate(null); // throw error
+nullableObjectSchema.validate(null); // -> null
+```
+
+## Required fields
+
+When a schema is marked as `required()`, it requires the field to be explicitly defined and passed
+when validating a _shape_, otherwise it throws an error. This _does not_ change the typing and
+acceptance of `undefined` values, it simply checks existence.
+
+```ts
+const userSchema = shape({
+	name: string().required().notEmpty(),
+	age: number().positive(),
+});
+
+userSchema.validate({}); // throw error
+userSchema.validate({ name: 'Bruce Wayne' }); // -> (shape)
+```
+
+## Logical operators
+
+[Shapes](./schemas.md#shapes) support the AND, OR, and XOR logical operators. When a schema is
+configured with these operators and is validated _outside_ of a shape, they do nothing.
+
+When [`and()`](/api/optimal/interface/CommonCriterias#and) is chained on a schema, it requires all
+related fields to be defined.
+
+```ts
+const andSchema = shape({
+	foo: string().and('bar'),
+	bar: number().and('foo'),
+});
+
+andSchema.validate({ foo: 'abc' }); // throw error
+
+// Requires both fields to be defined
+andSchema.validate({ foo: 'abc', bar: 123 }); // -> (shape)
+```
+
+When [`or()`](/api/optimal/interface/CommonCriterias#or) is chained, it requires 1 or more of the
+fields to be defined.
+
+```ts
+const orSchema = shape({
+	foo: string().or('bar', 'baz'),
+	bar: number().or('foo', 'baz'),
+	baz: bool().or('foo', 'bar'),
+});
+
+orSchema.validate({}); // throw error
+
+// Requires at least 1 field to be defined
+orSchema.validate({ foo: 'abc' }); // -> (shape)
+orSchema.validate({ bar: 123 }); // -> (shape)
+orSchema.validate({ foo: 'abc', baz: true }); // -> (shape)
+```
+
+When [`xor()`](/api/optimal/interface/CommonCriterias#xor) is chained, it requires _only_ 1 of the
+fields to be defined.
+
+```ts
+const xorSchema = shape({
+	foo: string().xor('bar', 'baz'),
+	bar: number().xor('foo', 'baz'),
+	baz: bool().xor('foo', 'bar'),
+});
+
+xorSchema.validate({}); // throw error
+xorSchema.validate({ foo: 'abc', baz: true }); // throw error
+
+// Requires only 1 field to be defined
+xorSchema.validate({ foo: 'abc' }); // -> (shape)
+xorSchema.validate({ bar: 123 }); // -> (shape)
+```
