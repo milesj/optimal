@@ -163,8 +163,8 @@ funcSchema.validate(123); // fail
 ```
 
 By default this schema has no default value (returns `undefined`), but this can be customized with
-the 1st argument. However, because of our lazy default values, the "default function" must be
-returned with another function.
+the 1st argument. However, because of our [lazy default values](./usage.md#default-values), the
+"default function" must be returned with another function.
 
 ```ts
 import { func } from 'optimal';

@@ -110,6 +110,20 @@ const dateSchema = date(() => new Date(2020, 1, 1));
 > The [`func()`](./schemas.md#functions) schema must _always_ use the factory pattern for defining a
 > default value, otherwise, the default function will be executed inadvertently.
 
+## Error messages
+
+All failed validations throw an error with descriptive messages for a better user experience.
+However, these messages are quite generic to support all scenarios, but can be customized with a
+`message` object as the last argument.
+
+```ts
+// throw "String must be lower cased."
+string().lowerCase().validate('FOO');
+
+// throw "Please provide a lowercased value."
+string().lowerCase({ message: 'Please provide a lowercased value.' }).validate('FOO');
+```
+
 ## Nullable fields
 
 Excluding [`instance()`](./schemas.md#class-instances), all schemas are _not_ nullable by default.

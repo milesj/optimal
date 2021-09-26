@@ -1,8 +1,10 @@
-# Optimal
+---
+title: Introduction
+slug: /
+---
 
-[![Build Status](https://github.com/milesj/optimal/workflows/Build/badge.svg)](https://github.com/milesj/optimal/actions?query=branch%3Amaster)
-[![npm version](https://badge.fury.io/js/optimal.svg)](https://www.npmjs.com/package/optimal)
-[![npm deps](https://david-dm.org/milesj/optimal.svg)](https://www.npmjs.com/package/optimal)
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 Optimal is a system for building and validating defined object structures, like options objects,
 configuration files, validation fields, and many more, using typed schemas. Optimal aims to provide
@@ -58,10 +60,39 @@ const options = schema.validate({ name: 'Optimal' });
 
 ## Installation
 
-```
+Install optimal with yarn or npm.
+
+<Tabs
+  groupId="package-manager"
+  defaultValue="yarn"
+  values={[
+    { label: 'Yarn', value: 'yarn' },
+    { label: 'npm', value: 'npm' },
+  ]}
+>
+  <TabItem value="yarn">
+
+```bash
 yarn add optimal
 ```
 
-## Documentation
+  </TabItem>
+  <TabItem value="npm">
 
-[https://optimallib.dev](https://optimallib.dev)
+```bash
+npm install optimal
+```
+
+  </TabItem>
+</Tabs>
+
+If using TypeScript, we highly _encourage_ the use of strict mode. We cannot guarantee types will
+infer correctly otherwise.
+
+```json title="tsconfig.json"
+{
+	"compilerOptions": {
+		"strict": true
+	}
+}
+```

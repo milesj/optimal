@@ -2,8 +2,7 @@
 title: Comparison
 ---
 
-A comparison between other object/schema validation libraries in the JavaScript ecosystem. Choose
-the library thats best for you!
+A comparison between other object/schema validation libraries in the JavaScript ecosystem.
 
 ### APIs
 
