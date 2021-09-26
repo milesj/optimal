@@ -7,56 +7,57 @@ the library thats best for you!
 
 ### APIs
 
-|                          | optimal | yup | joi | zod |
-| :----------------------- | :-----: | :-: | :-: | :-: |
-| Async validation         |         | ✅  | ✅  |     |
-| Deep validation          |         | ✅  |     |     |
-| File size (unminified)   |  41kb   |     |     |     |
-| Immutable schemas        |   ✅    | ✅  | ✅  |     |
-| Lazy default values      |   ✅    | ✅  | ✅  |     |
-| Lazy schemas             |   ✅    | ✅  |     |
-| Localization             |         | ✅  |     |     |
-| Native TypeScript        |   ✅    |     |     |     |
-| Nullable fields          |   ✅    | ✅  |     |     |
-| Required/optional fields |   ✅    | ✅  | ✅  |     |
-| Type casting             |   ✅    | ✅  | ✅  |     |
-| Undefined fields         |         |     |     |     |
-| Value transformation     |         | ✅  | ✅  |     |
+|                          | optimal |  yup   |   joi   |  zod   |
+| :----------------------- | :-----: | :----: | :-----: | :----: |
+| Async validation         |         |   ✅   |   ✅    |   ✅   |
+| Custom error mesages     |   ✅    |        |         |   ✅   |
+| Deep path validation     |         |   ✅   |         |        |
+| Dependency count         |    0    |   7    |    5    |   0    |
+| File size (unminified)   |  41kB   | 152kB  |  430kB  | 217kB  |
+| File size (minified)     |  16kB   | 59.5kB | 145.1kB |  49kB  |
+| File size (gzipped)      |  4.6kB  | 18.1kB | 41.8kB  | 11.2kB |
+| Immutable schemas        |   ✅    |   ✅   |   ✅    |   ✅   |
+| Lazy default values      |   ✅    |   ✅   |   ✅    |   ✅   |
+| Lazy schemas             |   ✅    |   ✅   |         |   ✅   |
+| Localization             |         |   ✅   |         |        |
+| Native TypeScript        |   ✅    |        |         |   ✅   |
+| Nullable fields          |   ✅    |   ✅   |         |   ✅   |
+| Required/optional fields |   ✅    |   ✅   |   ✅    |   ✅   |
+| Tree-shakable            |   ✅    |   ✅   |         |   ✅   |
+| Type casting             |   ✅    |   ✅   |   ✅    |        |
+| Undefined fields         |         |        |         |   ✅   |
+| Value transformation     |         |   ✅   |   ✅    |   ✅   |
 
-### Common
+### Common methods
 
-This functionality is available across all schema types.
+This functionality is available across all schema types, typically as chainable methods.
 
-- 1️⃣ - `joi` only supports these on `object()`.
+- 1️⃣ - Only supports these on objects/shapes.
 
 |                | optimal | yup | joi | zod |
 | :------------- | :-----: | :-: | :-: | :-: |
-| and            |   ✅    |     | 1️⃣  |     |
+| and            |   1️⃣    |     | 1️⃣  | ✅  |
+| any            |         |     |     | ✅  |
 | custom handler |   ✅    |     | ✅  |     |
-| default value  |   ✅    | ✅  | ✅  |     |
-| defined        |   ✅    | ✅  |     |     |
+| default value  |   ✅    | ✅  | ✅  | ✅  |
+| defined        |         | ✅  |     |     |
 | deprecate      |   ✅    |     |     |     |
 | nand           |         |     | 1️⃣  |     |
-| never          |   ✅    |     | ✅  |     |
+| never          |   ✅    |     | ✅  | ✅  |
 | not nullable   |   ✅    |     |     |     |
 | not required   |   ✅    | ✅  | ✅  |     |
-| nullable       |   ✅    | ✅  |     |     |
+| nullable       |   ✅    | ✅  |     | ✅  |
 | only           |   ✅    |     | ✅  |     |
-| or             |   ✅    |     | 1️⃣  |     |
+| or             |   1️⃣    |     | 1️⃣  |     |
 | oxor           |         |     | 1️⃣  |     |
 | required       |   ✅    | ✅  | ✅  |     |
+| undefined      |   ✅    |     |     | ✅  |
+| unknown        |         |     |     | ✅  |
+| void           |         |     |     | ✅  |
 | when           |   ✅    | ✅  | ✅  |     |
-| xor            |   ✅    |     | 1️⃣  |     |
+| xor            |   1️⃣    |     | 1️⃣  |     |
 
-### Any
-
-The `any()` schema for any values.
-
-|         | optimal ❌ | yup ❌ | joi | zod |
-| :------ | :--------: | :----: | :-: | :-: |
-| allowed |            |        | ✅  |     |
-
-### Array
+### Arrays
 
 The `array()` schema for arrays.
 
@@ -65,10 +66,10 @@ The `array()` schema for arrays.
 | filter       |         | ✅  |     |     |
 | has          |         |     | ✅  |     |
 | items schema |   ✅    |     | ✅  |     |
-| length       |   ✅    |     | ✅  |     |
-| max          |         | ✅  | ✅  |     |
-| min          |         | ✅  | ✅  |     |
-| not empty    |   ✅    | ✅  | ✅  |     |
+| length       |   ✅    |     | ✅  | ✅  |
+| max          |         | ✅  | ✅  | ✅  |
+| min          |         | ✅  | ✅  | ✅  |
+| not empty    |   ✅    | ✅  | ✅  | ✅  |
 | order        |         |     | ✅  |     |
 | sort         |         |     | ✅  |     |
 | unique       |         |     | ✅  |     |
@@ -77,14 +78,14 @@ The `array()` schema for arrays.
 
 The `binary()` schema for binary/blob values.
 
-|          | optimal ❌ | yup ❌ | joi | zod |
-| :------- | :--------: | :----: | :-: | :-: |
-| encoding |            |        | ✅  |     |
-| length   |            |        | ✅  |     |
-| max      |            |        | ✅  |     |
-| min      |            |        | ✅  |     |
+|          | optimal ❌ | yup ❌ | joi | zod ❌ |
+| :------- | :--------: | :----: | :-: | :----: |
+| encoding |            |        | ✅  |        |
+| length   |            |        | ✅  |        |
+| max      |            |        | ✅  |        |
+| min      |            |        | ✅  |        |
 
-### Boolean
+### Booleans
 
 The `bool()` (or `boolean()`) schema for booleans.
 
@@ -95,17 +96,17 @@ The `bool()` (or `boolean()`) schema for booleans.
 | only true     |   ✅    |     |     |     |
 | truthy values |         |     | ✅  |     |
 
-### Classes
+### Class instances
 
-The `instance()` schema for class instances.
+The `instance()` (or `instanceof()`) schema for class instances.
 
 - 1️⃣ - `joi` only supports these on `object.instance()`.
 
-|             | optimal | yup ❌ | joi ❌ | zod |
-| :---------- | :-----: | :----: | :----: | :-: |
-| inheritance |   ✅    |        |   1️⃣   |     |
+|             | optimal | yup ❌ | joi | zod |
+| :---------- | :-----: | :----: | :-: | :-: |
+| inheritance |   ✅    |        | 1️⃣  | ✅  |
 
-### Date
+### Dates
 
 The `date()` schema for `Date`s.
 
@@ -117,22 +118,26 @@ The `date()` schema for `Date`s.
 | iso       |         |     | ✅  |     |
 | timestamp |         |     | ✅  |     |
 
-### Function
+### Functions
 
-The `func()` schema for functions.
+The `func()` (or `function()`) schema for functions.
 
-|       | optimal | yup ❌ | joi | zod |
-| :---- | :-----: | :----: | :-: | :-: |
-| arity |         |        | ✅  |     |
+|            | optimal | yup ❌ | joi | zod |
+| :--------- | :-----: | :----: | :-: | :-: |
+| arity      |         |        | ✅  |     |
+| args       |         |        |     | ✅  |
+| implements |         |        |     | ✅  |
+| return     |         |        |     | ✅  |
 
 ### Lazy
 
-The `lazy()` schema for deferring evaluation.
+The `lazy()` schema for deferring evaluation, or recursive schemas.
 
 |     | optimal | yup | joi ❌ | zod |
 | :-- | :-----: | :-: | :----: | :-: |
+| \*  |   ✅    | ✅  |        | ✅  |
 
-### Number
+### Numbers
 
 The `number()` schema for numbers.
 
@@ -141,61 +146,67 @@ The `number()` schema for numbers.
 | base       |         |     | ✅  |     |
 | between    |   ✅    |     |     |     |
 | float      |   ✅    |     |     |     |
-| gt         |   ✅    | ✅  | ✅  |     |
-| gte        |   ✅    |     | ✅  |     |
-| integer    |   ✅    |     | ✅  |     |
-| lt         |   ✅    | ✅  | ✅  |     |
-| lte        |   ✅    |     | ✅  |     |
+| gt         |   ✅    | ✅  | ✅  | ✅  |
+| gte        |   ✅    |     | ✅  | ✅  |
+| integer    |   ✅    |     | ✅  | ✅  |
+| lt         |   ✅    | ✅  | ✅  | ✅  |
+| lte        |   ✅    |     | ✅  | ✅  |
 | max        |   ✅    | ✅  | ✅  |     |
 | min        |   ✅    | ✅  | ✅  |     |
-| negative   |   ✅    | ✅  | ✅  |     |
+| negative   |   ✅    | ✅  | ✅  | ✅  |
 | not one of |         | ✅  |     |     |
 | one of     |   ✅    | ✅  |     |     |
 | precision  |         |     | ✅  |     |
 | port       |         |     | ✅  |     |
-| positive   |   ✅    | ✅  | ✅  |     |
+| positive   |   ✅    | ✅  | ✅  | ✅  |
 | rounding   |         | ✅  |     |     |
 | sign       |         |     | ✅  |     |
 
-### Object
+### Objects / records
 
-The `object()` schema for _indexed_ objects. For `joi` and `yup`, they don't support this type, see
-[shapes](#shape).
+The `object()` schema for _indexed_ objects.
+
+- For `joi` and `yup`, they don't support this type, see [shapes](#shape).
+- For `zod`, this is a `record()`.
 
 |               | optimal | yup ❌ | joi ❌ | zod |
 | :------------ | :-----: | :----: | :----: | :-: |
 | keys schema   |   ✅    |        |        |     |
 | length        |   ✅    |        |        |     |
 | not empty     |   ✅    |        |        |     |
-| values schema |   ✅    |        |        |     |
+| values schema |   ✅    |        |        | ✅  |
 
-### Regex
+### Regex patterns
 
 The `regex()` schema for `RegExp` inheritance.
 
 - 1️⃣ - `joi` only supports these on `object.regex()`.
 
-|             | optimal | yup ❌ | joi ❌ | zod |
-| :---------- | :-----: | :----: | :----: | :-: |
-| inheritance |   ✅    |        |   1️⃣   |     |
+|             | optimal | yup ❌ | joi | zod ❌ |
+| :---------- | :-----: | :----: | :-: | :----: |
+| inheritance |   ✅    |        | 1️⃣  |        |
 
-### Shape
+### Shapes
 
-The `shape()` schema for _shaped_ objects. For `yup`, this is `object().shape()`.
+The `shape()` schema for _shaped_ objects.
+
+- For `yup`, this is `object().shape()`.
+- For `joi` and `zod`, this is `object()`.
 
 |                 | optimal | yup | joi | zod |
 | :-------------- | :-----: | :-: | :-: | :-: |
-| exact / unknown |   ✅    | ✅  | ✅  |     |
-| extending       |         | ✅  | ✅  |     |
+| exact / unknown |   ✅    | ✅  | ✅  | ✅  |
+| extending       |         | ✅  | ✅  | ✅  |
 | key rename      |         |     | ✅  |     |
 | max             |         |     | ✅  |     |
 | min             |         |     | ✅  |     |
-| omit            |         | ✅  |     |     |
-| pick            |         | ✅  |     |     |
+| merge           |         |     |     | ✅  |
+| omit            |         | ✅  |     | ✅  |
+| pick            |         | ✅  |     | ✅  |
 | with            |         |     | ✅  |     |
 | without         |         |     | ✅  |     |
 
-### String
+### Strings
 
 The `string()` schema for strings.
 
@@ -207,17 +218,17 @@ The `string()` schema for strings.
 | contains     |   ✅    |     |     |     |
 | credit card  |         |     | ✅  |     |
 | domain       |         |     | ✅  |     |
-| email        |         | ✅  | ✅  |     |
+| email        |         | ✅  | ✅  | ✅  |
 | hex          |         |     | ✅  |     |
 | hostname     |         |     | ✅  |     |
 | ip           |         |     | ✅  |     |
 | kebab case   |   ✅    | ✅  |     |     |
-| length       |   ✅    | ✅  | ✅  |     |
+| length       |   ✅    | ✅  | ✅  | ✅  |
 | lower case   |   ✅    | ✅  | ✅  |     |
-| matches      |   ✅    | ✅  | ✅  |     |
-| max          |         |     | ✅  |     |
-| min          |         |     | ✅  |     |
-| not empty    |   ✅    |     |     |     |
+| matches      |   ✅    | ✅  | ✅  | ✅  |
+| max          |         |     | ✅  | ✅  |
+| min          |         |     | ✅  | ✅  |
+| not empty    |   ✅    |     |     | ✅  |
 | not one of   |         | ✅  |     |     |
 | one of       |   ✅    | ✅  |     |     |
 | pascal case  |   ✅    |     |     |     |
@@ -228,28 +239,41 @@ The `string()` schema for strings.
 | token        |         |     | ✅  |     |
 | upper case   |   ✅    | ✅  | ✅  |     |
 | uri          |         |     | ✅  |     |
-| url          |         | ✅  |     |     |
-| uuid         |         | ✅  | ✅  |     |
+| url          |         | ✅  |     | ✅  |
+| uuid         |         | ✅  | ✅  | ✅  |
 
-### Symbol
+### Symbols
 
 The `symbol()` schema for symbols.
 
-|     | optimal ❌ | yup ❌ | joi | zod |
-| :-- | :--------: | :----: | :-: | :-: |
+|     | optimal ❌ | yup ❌ | joi | zod ❌ |
+| :-- | :--------: | :----: | :-: | :----: |
+| \*  |            |        | ✅  |        |
 
-### Tuple
+### Tuples
 
 The `tuple()` schema for tuples (fixed arrays).
 
 |                | optimal | yup ❌ | joi ❌ | zod |
 | :------------- | :-----: | :----: | :----: | :-: |
-| members schema |   ✅    |        |        |     |
+| members schema |   ✅    |        |        | ✅  |
 
-### Union
+### Unions
 
 The `union()` schema for unions.
 
 |                | optimal | yup ❌ | joi ❌ | zod |
 | :------------- | :-----: | :----: | :----: | :-: |
-| options schema |   ✅    |        |        |     |
+| options schema |   ✅    |        |        | ✅  |
+
+### Other schemas
+
+|             | optimal | yup | joi | zod |
+| :---------- | :-----: | :-: | :-: | :-: |
+| `any()`     |         |     | ✅  |     |
+| `bigint()`  |         |     |     | ✅  |
+| `enum()`    |         |     |     | ✅  |
+| `literal()` |         |     |     | ✅  |
+| `map()`     |         |     |     | ✅  |
+| `promise()` |         |     |     | ✅  |
+| `set()`     |         |     |     | ✅  |
