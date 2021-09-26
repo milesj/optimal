@@ -247,6 +247,12 @@ numberObjectSchema.validate({ foo: 123 }); // pass
 numberObjectSchema.validate({ bar: 'abc' }); // fail
 ```
 
+Objects can also define schemas for keys. For example, say we _only_ want underscored names.
+
+```ts
+object().keyOf(string().snakeCase());
+```
+
 Object schemas support all methods found on the
 [`ObjectSchema`](/api/optimal/interface/ObjectSchema) interface.
 
@@ -255,168 +261,165 @@ Object schemas support all methods found on the
 The [`record()`](/api/optimal/function/record) schema is an alias for [objects](#objects).
 
 ```ts
-import { object } from 'optimal';
+import { record } from 'optimal';
 ```
 
 ## Regex patterns
 
-The `date()` schema verifies a value is an instance of `RegExp`.
+The [`regex()`](/api/optimal/function/regex) schema verifies a value is an instance of `RegExp`.
+This schema is nullable by default and may return `null`.
 
 ```ts
-optimal(
-	{},
-	{
-		pattern: regex(),
-	},
-);
+import { regex } from 'optimal';
+
+const regexSchema = regex();
+
+regexSchema.validate(/foo/); // pass
+regexSchema.validate(new RegExp('bar')); // pass
+regexSchema.validate('baz'); // fail
 ```
+
+Regex schemas support all methods found on the
+[`InstanceSchema`](/api/optimal/interface/InstanceSchema) interface.
 
 ## Schemas
 
-The `schema()` schema verifies a value is a schema instance. This is useful for composing
-blueprints.
+The [`schema()`](/api/optimal/function/schema) schema verifies a value is a schema instance. This is
+useful for composing blueprints.
 
 ```ts
-optimal(
-	{
-		value: string(),
-	},
-	{
-		value: schema(),
-	},
-);
+import { number, schema } from 'optimal';
+
+const anySchema = schema();
+
+anySchema.validate(number()); // pass
+anySchema.validate({}); // fail
 ```
 
 ## Shapes
 
-The `shape(shape: { [key: string]: Schema })` schema verifies a value matches a specific object
-shape, defined by a collection of properties to schemas. Defaults to the structure of the shape and
-_cannot_ be customized. Shape schema supports the following additional method:
-
-- `exact()` - Requires the object to be exact. Unknown fields will error.
+The [`shape()`](/api/optimal/function/shape) schema verifies a value matches a explicit object
+shape, defined as a blueprint mapping properties to schemas. For undefined values, defaults to the
+structure of the shape and _cannot_ be customized.
 
 ```ts
-optimal(
-	{},
-	{
-		image: shape({
-			name: string().notEmpty(),
-			path: string(),
-			type: string('png'),
-			relative: bool(),
-		}),
-	},
-);
+import { bool, shape, string } from 'optimal';
+
+const imageSchema = shape({
+	name: string().notEmpty().required(),
+	path: string().required(),
+	type: string('png'),
+	relative: bool(),
+});
+
+imageSchema.validate({
+	name: 'Image',
+	path: '/some/path/image.png',
+	type: 'png',
+	relative: false,
+}); // pass
+
+imageSchema.validate({ name: 'Invalid', size: 123 }); // fail
 ```
+
+Shape schemas support all methods found on the [`ShapeSchema`](/api/optimal/interface/ShapeSchema)
+interface.
 
 ## Strings
 
-The `string(default?: string)` schema verifies a value is a string. Defaults to an empty string
-(`''`) but can be customized with the 1st argument. String schema supports the following additional
-methods:
-
-- `camelCase()` - Validate the value is in camel case (`fooBarBaz`). Must start with a lowercase
-  character and contain at minimum 2 characters.
-- `contains(token: string, index?: number)` - Validate the value contains the defined token.
-  Supports an optional start index.
-- `kebabCase()` - Validate the value is in kebab case (`foo-bar-baz`). Must separate words with a
-  dash and contain at minimum 2 characters.
-- `lowerCase()` - Validate the value is lower cased.
-- `match(pattern: RegExp)` - Validate the value against a regex pattern.
-- `notEmpty()` - Requires the value to not be empty. Does not validate `null`.
-- `oneOf(list: string[])` - Validate the value is one of the following strings.
-- `pascalCase()` - Validate the value is in pascal case (`FooBarBaz`). Must start with an uppercase
-  character and contain at minimum 2 characters.
-- `sizeOf(length: number)` - Requires the string to be an exact length.
-- `snakeCase()` - Validate the value is in snake case (`foo_bar_baz`). Must separate words with an
-  underscore and contain at minimum 2 characters.
-- `upperCase()` - Validate the value is upper cased.
+The [`string()`](/api/optimal/function/string) schema verifies a value is a string. For undefined
+values, an empty string (`''`) is returned, which can be customized with the 1st argument.
 
 ```ts
-optimal(
-	{},
-	{
-		filename: string('[id].js').notEmpty(),
-		target: string('dev').oneOf(['dev', 'prod', 'staging', 'qa']),
-	},
-);
+import { string } from 'optimal';
+
+const anyStringSchema = string();
+
+anyStringSchema.validate(''); // pass
+anyStringSchema.validate('abc'); // pass
+
+const fileTypeSchema = string('js').oneOf(['js', 'ts', 'css', 'html']);
+
+fileTypeSchema.validate('js'); // pass
+fileTypeSchema.validate('png'); // fail
 ```
 
 ## Tuples
 
 A tuple is an array-like structure with a defined set of items, each with their own unique type. The
-`tuple(schemas: Schema[])` schema will validate each item and return an array of the same length and
-types. Defaults to the structure of the tuple and _cannot_ be customized.
+[`tuple()`](/api/optimal/function/tuple) schema will validate each item and return an array of the
+same length and types. Defaults to the structure of the tuple and _cannot_ be customized.
 
 ```ts
-type Record = [number, string]; // ID, name
+import { number, string tuple } from 'optimal';
 
-optimal(
-	{},
-	{
-		record: tuple<Record>([number().gt(0).required(), string().notEmpty()]),
-	},
-);
+type Item = [number, string]; // ID, name
+
+const itemTuple = tuple<Item>([number().gt(0).required(), string().notEmpty()]);
+
+itemTuple.validate([]); // fail
+itemTuple.validate([123]); // pass
+itemTuple.validate([123, 'abc']); // pass
+itemTuple.validate([123, 'abc', true]); // fail
 ```
+
+Tuple schemas support all methods found on the [`TupleSchema`](/api/optimal/interface/TupleSchema)
+interface.
 
 > When using TypeScript, a generic type is required for schemas to type correctly. Furthermore, the
 > schema only supports a max length of 5 items.
 
 ## Unions
 
-The `union(schemas: Schema[], default: any)` schema verifies a value against a list of possible
-values. The 1st argument is a list of schemas to compare against. The 2nd argument is the default
-value, which must be explicitly defined.
+The [`union()`](api/optimal/function/union) schema verifies a value against a list of possible
+values. All unions _require_ a default value as the 1st argument, as we need a value to fallback to.
 
 ```ts
-optimal(
-	{},
-	{
-		source: union(
-			[
-				string(),
-				array(string()),
-				shape({
-					path: string(),
-				}),
-			],
-			'./src',
-		),
-	},
-);
+import { array, string, shape, union } from 'optimal';
+
+type EntryPoint = string | string[] | { path: string };
+
+const entryPointSchema = union<EntryPoint>('./src/index.ts').of([
+	string(),
+	array(string()),
+	shape({
+		path: string(),
+	}),
+]);
+
+entryPointSchema.validate('./some/path'); // pass
+entryPointSchema.validate(['./some/path', './another/path']); // pass
+entryPointSchema.validate({ path: './some/path' }); // pass
 ```
 
 Unions support multiple schemas of the same type in unison, and the first one that passes validation
 will be used.
 
 ```ts
-optimal(
-	{},
-	{
-		source: union([object(number()), object(string())], {}),
-	},
-);
+import { number, string, object, union } from 'optimal';
+
+const objectOfNumberOrString = union<Record<string, number> | Record<string, string>>({}).of([
+	object(number()),
+	object(string()),
+]);
 ```
 
 Unions also support objects and shapes in unison. However, when using this approach, be sure that
 shapes are listed first so that they validate their shape early and exit the validation process.
 
 ```ts
-optimal(
-	{},
-	{
-		source: union(
-			[
-				shape({
-					path: string(),
-				}),
-				object(number()),
-			],
-			{},
-		),
-	},
-);
+import { number, string, object, union } from 'optimal';
+
+const shapeOrObject = union<{ path: string } | Record<string, number>>({}).of([
+	shape({
+		path: string(),
+	}),
+	object(number()),
+]);
 ```
 
-> When using TypeScript, the type cannot be inferred automatically, so defaults to `any`. This can
-> be overridden by explicitly defining the generic: `union<string | string[] | { path: string }>()`.
+Union schemas support all methods found on the [`UnionSchema`](/api/optimal/interface/UnionSchema)
+interface.
+
+> When using TypeScript, the type cannot be inferred automatically, so defaults to `unknown`. This
+> can be overridden by explicitly defining the generic, as seen in the examples above.

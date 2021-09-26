@@ -17,6 +17,9 @@ export interface TupleSchema<T> extends Schema<Required<T>>, CommonCriterias<Tup
 	undefinable: () => TupleSchema<T | undefined>;
 }
 
+/**
+ * Create a schema that validates a value is a tuple; an explicit list of types.
+ */
 export function tuple<T extends unknown[] = unknown[]>(
 	schemas: InferTupleItems<T>,
 ): TupleSchema<T> {

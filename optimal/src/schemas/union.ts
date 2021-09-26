@@ -24,6 +24,9 @@ export interface UnionSchema<T> extends Schema<T>, CommonCriterias<UnionSchema<T
 	undefinable: () => UnionSchema<T | undefined>;
 }
 
+/**
+ * Create a schema that validates a value against a list of possible values.
+ */
 export function union<T = unknown>(defaultValue: DefaultValue<T>): UnionSchema<T> {
 	return createSchema<UnionSchema<T>>({
 		api: { ...commonCriteria, ...unionCriteria },

@@ -35,6 +35,9 @@ function cast(value: unknown): string {
 	return value === undefined ? '' : String(value);
 }
 
+/**
+ * Create a schema that validates a value is a string.
+ */
 export function string<T extends string = string>(
 	defaultValue: DefaultValue<string> = '',
 ): StringSchema<T> {

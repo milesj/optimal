@@ -27,6 +27,9 @@ export interface ShapeSchema<T>
 	undefinable: () => ShapeSchema<T | undefined>;
 }
 
+/**
+ * Create a schema that validates a value is a shaped object (explicit keys).
+ */
 export function shape<T extends object>(blueprint: Blueprint<T>): ShapeSchema<T> {
 	return createSchema<ShapeSchema<T>>(
 		{
