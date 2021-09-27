@@ -24,8 +24,8 @@ export function schema<T extends AnySchema>(): ShapeSchema<T> {
 	);
 
 	return shape.of({
-		schema: func<T['schema']>().notNullable().required(),
-		type: func<T['type']>().notNullable().required(),
-		validate: func<T['validate']>().notNullable().required(),
+		schema: func<T['schema']>().notNullable().defined(),
+		type: func<T['type']>().notNullable().defined(),
+		validate: func<T['validate']>().notNullable().defined(),
 	}) as unknown as ShapeSchema<T>;
 }

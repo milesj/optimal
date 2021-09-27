@@ -30,7 +30,7 @@ describe('createPredicate()', () => {
 
 	describe('optional', () => {
 		it('returns true if the schema is optional and undefined is passed', () => {
-			const predOpt = createPredicate(number().notRequired());
+			const predOpt = createPredicate(number().optional());
 
 			expect(predOpt(undefined)).toBe(true);
 			expect(predOpt(123)).toBe(true);

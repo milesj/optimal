@@ -39,7 +39,7 @@ function validate<T>(
 				? (defaultValue as DefaultValueInitializer<T>)(path, currentObject, rootObject)
 				: defaultValue;
 
-		invalid(!state.required, 'Field is required and must be defined.', path, undefined);
+		invalid(!state.defined, 'Field is required and must be defined.', path, undefined);
 	} else {
 		if (__DEV__ && metadata.deprecatedMessage) {
 			// eslint-disable-next-line no-console
@@ -60,7 +60,7 @@ function validate<T>(
 	validators.forEach((test) => {
 		if (
 			(test.skipIfNull && value === null) ||
-			(test.skipIfOptional && !state.required && value === state.defaultValue) ||
+			(test.skipIfOptional && state.optional && value === state.defaultValue) ||
 			state.never
 		) {
 			return;
@@ -96,10 +96,11 @@ export function createSchema<S extends AnySchema, T = InferSchemaType<S>>(
 ): S {
 	const state: SchemaState<T> = {
 		defaultValue,
+		defined: false,
 		metadata: {},
 		never: false,
 		nullable: false,
-		required: false,
+		optional: false,
 		type,
 	};
 

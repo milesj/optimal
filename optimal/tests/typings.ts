@@ -103,7 +103,7 @@ const other: {
 	f: func(),
 	i: instance(),
 	ic: instance().of(Foo),
-	ir: instance().of(Foo).required(),
+	ir: instance().of(Foo).defined(),
 	in: instance().of(Foo).notNullable(),
 	d: date(),
 	r: regex(),
@@ -114,7 +114,7 @@ const otherInferred = optimal({
 	f: func(),
 	i: instance(),
 	ic: instance().of(Foo),
-	ir: instance().of(Foo).required(),
+	ir: instance().of(Foo).defined(),
 	in: instance().of(Foo).notNullable(),
 	d: date(),
 	r: regex(),
@@ -127,14 +127,14 @@ const funcs: {
 	notNull: () => void;
 } = optimal({
 	opt: func(),
-	req: func().required().notNullable(),
+	req: func().defined().notNullable(),
 	isNull: func().nullable(),
 	notNull: func().notNullable(),
 }).validate({});
 
 const funcsInferred = optimal({
 	opt: func(),
-	req: func().required().notNullable(),
+	req: func().defined().notNullable(),
 	isNull: func().nullable(),
 	notNull: func().notNullable(),
 }).validate({});

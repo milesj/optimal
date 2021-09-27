@@ -37,7 +37,7 @@ export function runCommonTests<T>(
 			expect(schema).not.toBe(otherSchema);
 			expect(anotherSchema).not.toBe(otherSchema);
 
-			const againSchema = (otherSchema as typeof schema).required();
+			const againSchema = (otherSchema as typeof schema).defined();
 
 			expect(againSchema).not.toBe(otherSchema);
 		});
@@ -307,11 +307,11 @@ export function runCommonTests<T>(
 		}
 	});
 
-	describe('required()', () => {
+	describe('defined()', () => {
 		let reqSchema: Schema<T>;
 
 		beforeEach(() => {
-			reqSchema = schema.required();
+			reqSchema = schema.defined();
 		});
 
 		it('returns value when a valid value is passed', () => {

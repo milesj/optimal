@@ -8,7 +8,7 @@ production using dead code elimination.
 - Supports common data types.
 - Autofills missing fields with default values.
 - Allows or restricts unknown fields.
-- Mark fields as nullable or required.
+- Mark fields as nullable, optional, or required.
 - Handles logical operators AND, OR, and XOR.
 
 ```ts

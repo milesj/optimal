@@ -44,6 +44,13 @@ export function custom<T>(state: SchemaState<T>, validator: CriteriaValidator<T>
 }
 
 /**
+ * Require this field to be explicitly defined.
+ */
+export function defined<T>(state: SchemaState<T>) {
+	state.defined = true;
+}
+
+/**
  * Set a message to log when this field is present.
  */
 export function deprecate<T>(state: SchemaState<T>, message: string) {
@@ -61,17 +68,17 @@ export function never<T>(state: SchemaState<T>) {
 }
 
 /**
+ * Dont require this field to be explicitly defined.
+ */
+export function notDefined<T>(state: SchemaState<T>) {
+	state.defined = false;
+}
+
+/**
  * Disallow null values.
  */
 export function notNullable<T>(state: SchemaState<T>) {
 	state.nullable = false;
-}
-
-/**
- * Require this field to NOT be explicitly defined.
- */
-export function notRequired<T>(state: SchemaState<T>) {
-	state.required = false;
 }
 
 /**
@@ -121,10 +128,17 @@ export function or<T>(state: SchemaState<T>, ...keys: string[]): Criteria<T> {
 }
 
 /**
- * Require this field to be explicitly defined.
+ * Allow undefined values.
+ */
+export function optional<T>(state: SchemaState<T>) {
+	state.optional = true;
+}
+
+/**
+ * Disallow undefined values.
  */
 export function required<T>(state: SchemaState<T>) {
-	state.required = true;
+	state.optional = false;
 }
 
 /**

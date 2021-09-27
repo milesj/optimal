@@ -23,7 +23,7 @@ This functionality is available across all schema types.
 | and            |   ✅    |     | 1️⃣  |     |
 | custom handler |   ✅    |     | ✅  |     |
 | default value  |   ✅    | ✅  | ✅  |     |
-| defined        |         | ✅  |     |     |
+| defined        |   ✅    | ✅  |     |     |
 | deprecate      |   ✅    |     |     |     |
 | nand           |         |     | 1️⃣  |     |
 | never          |   ✅    |     | ✅  |     |

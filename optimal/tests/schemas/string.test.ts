@@ -114,7 +114,7 @@ describe('string()', () => {
 
 		it('errors if value matches default value and predicate is required', () => {
 			expect(() => {
-				containsSchema.required().validate('');
+				containsSchema.defined().validate('');
 			}).toThrowErrorMatchingInlineSnapshot(`"String does not include \\"oo\\"."`);
 		});
 
@@ -259,7 +259,7 @@ describe('string()', () => {
 
 		it('errors if value matches default value and predicate is required', () => {
 			expect(() => {
-				matchSchema.required().validate('');
+				matchSchema.defined().validate('');
 			}).toThrowErrorMatchingInlineSnapshot(`"String does not match. (pattern \\"oo\\")"`);
 		});
 

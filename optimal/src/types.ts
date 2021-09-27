@@ -56,11 +56,11 @@ export type CriteriaFactory<Input> = (
 export interface CommonCriterias<S> {
 	and: (...keys: string[]) => S;
 	custom: (callback: CriteriaValidator<InferSchemaType<S>>) => S;
+	defined: () => S;
 	deprecate: (message: string) => S;
-	notRequired: () => S;
+	notDefined: () => S;
 	only: () => S;
 	or: (...keys: string[]) => S;
-	required: () => S;
 	when: (condition: WhenCondition<InferSchemaType<S>>, pass: AnySchema, fail?: AnySchema) => S;
 	xor: (...keys: string[]) => S;
 	// Define in schemas directly
@@ -138,10 +138,11 @@ export interface Schema<Output> {
 
 export interface SchemaState<T> {
 	defaultValue: DefaultValue<T> | undefined;
+	defined: boolean;
 	metadata: UnknownObject;
 	never: boolean;
 	nullable: boolean;
-	required: boolean;
+	optional: boolean;
 	type: string;
 }
 
