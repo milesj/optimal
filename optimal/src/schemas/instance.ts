@@ -1,11 +1,11 @@
 import { createSchema } from '../createSchema';
 import { classCriteria, commonCriteria } from '../criteria';
 import { invalid, isObject } from '../helpers';
-import { CommonCriterias, Constructor, InferNullable, Schema } from '../types';
+import { CommonCriterias, Constructor, InferNullable, NotNull, Schema } from '../types';
 
 export interface InstanceSchema<T> extends Schema<T>, CommonCriterias<InstanceSchema<T>> {
 	never: () => InstanceSchema<never>;
-	notNullable: () => InstanceSchema<NonNullable<T>>;
+	notNullable: () => InstanceSchema<NotNull<T>>;
 	nullable: () => InstanceSchema<T | null>;
 	of: <C>(ref: Constructor<C>, loose?: boolean) => InstanceSchema<InferNullable<T, C>>;
 }

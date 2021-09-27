@@ -1,13 +1,13 @@
 import { createSchema } from '../createSchema';
 import { commonCriteria } from '../criteria';
 import { invalid } from '../helpers';
-import { AnyFunction,CommonCriterias, DefaultValue, Schema } from '../types';
+import { AnyFunction, CommonCriterias, DefaultValue, NotNull, Schema } from '../types';
 
 export interface FunctionSchema<T = AnyFunction>
 	extends Schema<T>,
 		CommonCriterias<FunctionSchema<T>> {
 	never: () => FunctionSchema<never>;
-	notNullable: () => FunctionSchema<NonNullable<T>>;
+	notNullable: () => FunctionSchema<NotNull<T>>;
 	nullable: () => FunctionSchema<T | null>;
 }
 

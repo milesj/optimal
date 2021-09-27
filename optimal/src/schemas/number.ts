@@ -5,6 +5,7 @@ import {
 	CommonCriterias,
 	DefaultValue,
 	InferNullable,
+	NotNull,
 	NumberCriterias,
 	Options,
 	Schema,
@@ -15,7 +16,7 @@ export interface NumberSchema<T = number>
 		NumberCriterias<NumberSchema<T>>,
 		CommonCriterias<NumberSchema<T>> {
 	never: () => NumberSchema<never>;
-	notNullable: () => NumberSchema<NonNullable<T>>;
+	notNullable: () => NumberSchema<NotNull<T>>;
 	nullable: () => NumberSchema<T | null>;
 	oneOf: <I extends number = number>(
 		list: I[],

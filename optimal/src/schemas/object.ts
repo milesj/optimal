@@ -5,6 +5,7 @@ import {
 	CommonCriterias,
 	DefaultValue,
 	InferNullable,
+	NotNull,
 	ObjectCriterias,
 	Options,
 	Schema,
@@ -17,7 +18,7 @@ export interface ObjectSchema<T = object>
 		CommonCriterias<ObjectSchema<T>> {
 	keysOf: (schema: StringSchema, options?: Options) => ObjectSchema<T>;
 	never: () => ObjectSchema<never>;
-	notNullable: () => ObjectSchema<NonNullable<T>>;
+	notNullable: () => ObjectSchema<NotNull<T>>;
 	nullable: () => ObjectSchema<T | null>;
 	of: <V, K extends PropertyKey = keyof T>(
 		schema: Schema<V>,

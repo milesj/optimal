@@ -5,6 +5,7 @@ import {
 	CommonCriterias,
 	DefaultValue,
 	InferNullable,
+	NotNull,
 	Options,
 	Schema,
 	StringCriterias,
@@ -15,7 +16,7 @@ export interface StringSchema<T = string>
 		StringCriterias<StringSchema<T>>,
 		CommonCriterias<StringSchema<T>> {
 	never: () => StringSchema<never>;
-	notNullable: () => StringSchema<NonNullable<T>>;
+	notNullable: () => StringSchema<NotNull<T>>;
 	nullable: () => StringSchema<T | null>;
 	oneOf: <I extends string = string>(
 		list: I[],
