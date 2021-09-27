@@ -34,12 +34,12 @@ function validate<T>(
 
 	// Handle undefined
 	if (value === undefined) {
-		value =
-			typeof defaultValue === 'function'
-				? (defaultValue as DefaultValueInitializer<T>)(path, currentObject, rootObject)
-				: defaultValue;
-
-		invalid(!state.defined, 'Field is required and must be defined.', path, undefined);
+		if (!state.optional) {
+			value =
+				typeof defaultValue === 'function'
+					? (defaultValue as DefaultValueInitializer<T>)(path, currentObject, rootObject)
+					: defaultValue;
+		}
 	} else {
 		if (__DEV__ && metadata.deprecatedMessage) {
 			// eslint-disable-next-line no-console
@@ -60,7 +60,7 @@ function validate<T>(
 	validators.forEach((test) => {
 		if (
 			(test.skipIfNull && value === null) ||
-			(test.skipIfOptional && state.optional && value === state.defaultValue) ||
+			(test.skipIfOptional && value === undefined) ||
 			state.never
 		) {
 			return;
