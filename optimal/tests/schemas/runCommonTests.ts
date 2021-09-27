@@ -327,11 +327,11 @@ export function runCommonTests<T>(
 		});
 	});
 
-	describe('notRequired()', () => {
+	describe('notDefined()', () => {
 		let optSchema: Schema<T>;
 
 		beforeEach(() => {
-			optSchema = schema.notRequired();
+			optSchema = schema.notDefined();
 		});
 
 		if (!skipDefaultAsserts) {

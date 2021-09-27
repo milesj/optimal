@@ -6,6 +6,7 @@ import {
 	DefaultValue,
 	InferNullable,
 	NotNull,
+	NotUndefined,
 	NumberCriterias,
 	Options,
 	Schema,
@@ -22,6 +23,8 @@ export interface NumberSchema<T = number>
 		list: I[],
 		options?: Options,
 	) => NumberSchema<InferNullable<T, I>>;
+	optional: () => NumberSchema<T | undefined>;
+	required: () => NumberSchema<NotUndefined<T>>;
 }
 
 function cast(value: unknown): number {

@@ -6,6 +6,7 @@ import {
 	DefaultValue,
 	InferNullable,
 	NotNull,
+	NotUndefined,
 	Options,
 	Schema,
 	StringCriterias,
@@ -22,6 +23,8 @@ export interface StringSchema<T = string>
 		list: I[],
 		options?: Options,
 	) => StringSchema<InferNullable<T, I>>;
+	optional: () => StringSchema<T | undefined>;
+	required: () => StringSchema<NotUndefined<T>>;
 }
 
 function cast(value: unknown): string {

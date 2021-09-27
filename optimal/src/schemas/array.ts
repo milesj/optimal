@@ -7,6 +7,7 @@ import {
 	DefaultValue,
 	InferNullable,
 	NotNull,
+	NotUndefined,
 	Schema,
 } from '../types';
 
@@ -18,6 +19,8 @@ export interface ArraySchema<T = unknown[]>
 	notNullable: () => ArraySchema<NotNull<T>>;
 	nullable: () => ArraySchema<T | null>;
 	of: <V>(schema: Schema<V>) => ArraySchema<InferNullable<T, V[]>>;
+	optional: () => ArraySchema<T | undefined>;
+	required: () => ArraySchema<NotUndefined<T>>;
 }
 
 export function array<T = unknown>(defaultValue: DefaultValue<T[]> = []): ArraySchema<T[]> {

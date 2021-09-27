@@ -1,7 +1,14 @@
 import { createSchema } from '../createSchema';
 import { commonCriteria, dateCriteria } from '../criteria';
 import { createDate, invalid, isValidDate } from '../helpers';
-import { CommonCriterias, DateCriterias, DefaultValue, NotNull, Schema } from '../types';
+import {
+	CommonCriterias,
+	DateCriterias,
+	DefaultValue,
+	NotNull,
+	NotUndefined,
+	Schema,
+} from '../types';
 
 export interface DateSchema<T = Date>
 	extends Schema<T>,
@@ -10,6 +17,8 @@ export interface DateSchema<T = Date>
 	never: () => DateSchema<never>;
 	notNullable: () => DateSchema<NotNull<T>>;
 	nullable: () => DateSchema<T | null>;
+	optional: () => DateSchema<T | undefined>;
+	required: () => DateSchema<NotUndefined<T>>;
 }
 
 export function date(defaultValue?: DefaultValue<Date>): DateSchema<Date> {

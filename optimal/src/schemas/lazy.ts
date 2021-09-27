@@ -1,12 +1,14 @@
 import { createSchema } from '../createSchema';
 import { commonCriteria } from '../criteria';
 import { invariant, isSchema } from '../helpers';
-import { DefaultValue, NotNull, Schema } from '../types';
+import { DefaultValue, NotNull, NotUndefined, Schema } from '../types';
 
 export interface LazySchema<T = boolean> extends Schema<T> {
 	never: () => LazySchema<never>;
 	notNullable: () => LazySchema<NotNull<T>>;
 	nullable: () => LazySchema<T | null>;
+	optional: () => LazySchema<T | undefined>;
+	required: () => LazySchema<NotUndefined<T>>;
 }
 
 export function lazy<T>(

@@ -22,7 +22,7 @@ describe('common', () => {
 			expect(() => {
 				string().when(
 					'abc',
-					string().notRequired(),
+					string(),
 					// @ts-expect-error Invalid type
 					123,
 				);

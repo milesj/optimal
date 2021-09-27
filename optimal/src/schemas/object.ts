@@ -6,6 +6,7 @@ import {
 	DefaultValue,
 	InferNullable,
 	NotNull,
+	NotUndefined,
 	ObjectCriterias,
 	Options,
 	Schema,
@@ -23,6 +24,8 @@ export interface ObjectSchema<T = object>
 	of: <V, K extends PropertyKey = keyof T>(
 		schema: Schema<V>,
 	) => ObjectSchema<InferNullable<T, Record<K, V>>>;
+	optional: () => ObjectSchema<T | undefined>;
+	required: () => ObjectSchema<NotUndefined<T>>;
 }
 
 export function object<V = unknown, K extends PropertyKey = string>(

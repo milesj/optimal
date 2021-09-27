@@ -1,6 +1,6 @@
 import { createSchema } from '../createSchema';
 import { commonCriteria, unionCriteria } from '../criteria';
-import { AnySchema, CommonCriterias, DefaultValue, NotNull, Schema } from '../types';
+import { AnySchema, CommonCriterias, DefaultValue, NotNull, NotUndefined, Schema } from '../types';
 
 export interface UnionSchema<T> extends Schema<T>, CommonCriterias<UnionSchema<T>> {
 	never: () => UnionSchema<never>;
@@ -8,6 +8,8 @@ export interface UnionSchema<T> extends Schema<T>, CommonCriterias<UnionSchema<T
 	nullable: () => UnionSchema<T | null>;
 	// Distribute these types in the future. Currently breaks on nulls...
 	of: (schemas: AnySchema[]) => UnionSchema<T>;
+	optional: () => UnionSchema<T | undefined>;
+	required: () => UnionSchema<NotUndefined<T>>;
 }
 
 export function union<T = unknown>(defaultValue: DefaultValue<T>): UnionSchema<T> {

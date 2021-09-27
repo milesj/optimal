@@ -1,7 +1,14 @@
 import { createSchema } from '../createSchema';
 import { commonCriteria } from '../criteria';
 import { invalid } from '../helpers';
-import { AnyFunction, CommonCriterias, DefaultValue, NotNull, Schema } from '../types';
+import {
+	AnyFunction,
+	CommonCriterias,
+	DefaultValue,
+	NotNull,
+	NotUndefined,
+	Schema,
+} from '../types';
 
 export interface FunctionSchema<T = AnyFunction>
 	extends Schema<T>,
@@ -9,6 +16,8 @@ export interface FunctionSchema<T = AnyFunction>
 	never: () => FunctionSchema<never>;
 	notNullable: () => FunctionSchema<NotNull<T>>;
 	nullable: () => FunctionSchema<T | null>;
+	optional: () => FunctionSchema<T | undefined>;
+	required: () => FunctionSchema<NotUndefined<T>>;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

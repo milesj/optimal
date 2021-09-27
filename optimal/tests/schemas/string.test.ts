@@ -114,13 +114,13 @@ describe('string()', () => {
 
 		it('errors if value matches default value and predicate is required', () => {
 			expect(() => {
-				containsSchema.defined().validate('');
+				containsSchema.required().validate('');
 			}).toThrowErrorMatchingInlineSnapshot(`"String does not include \\"oo\\"."`);
 		});
 
 		it('doesnt error if value matches default value and predicate is optional', () => {
 			expect(() => {
-				containsSchema.validate('');
+				containsSchema.optional().validate('');
 			}).not.toThrow();
 		});
 
@@ -259,13 +259,13 @@ describe('string()', () => {
 
 		it('errors if value matches default value and predicate is required', () => {
 			expect(() => {
-				matchSchema.defined().validate('');
+				matchSchema.required().validate('');
 			}).toThrowErrorMatchingInlineSnapshot(`"String does not match. (pattern \\"oo\\")"`);
 		});
 
 		it('doesnt error if value matches default value and predicate is optional', () => {
 			expect(() => {
-				matchSchema.validate('');
+				matchSchema.optional().validate('');
 			}).not.toThrow();
 		});
 

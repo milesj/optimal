@@ -21,7 +21,7 @@ describe('createPredicate()', () => {
 		});
 
 		it('returns false if the schema is not nullable and null is passed', () => {
-			const predNotNull = createPredicate(number().notNullable());
+			const predNotNull = createPredicate(number().nullable().notNullable());
 
 			expect(predNotNull(null)).toBe(false);
 			expect(predNotNull(123)).toBe(true);
@@ -37,7 +37,7 @@ describe('createPredicate()', () => {
 		});
 
 		it('returns false if the schema is not optional and undefined is passed', () => {
-			const predNotOpt = createPredicate(number().required());
+			const predNotOpt = createPredicate(number().optional().required());
 
 			expect(predNotOpt(undefined)).toBe(false);
 			expect(predNotOpt(123)).toBe(true);
