@@ -3,6 +3,7 @@ module.exports = {
 		'index',
 		'usage',
 		'schemas',
+		'predicates',
 		'comparison',
 		{
 			type: 'link',

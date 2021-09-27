@@ -13,7 +13,7 @@ export interface OptimalOptions {
 	name?: string;
 	/** @internal */
 	prefix?: string;
-	/** Allow unknown fields to be passed within the object being validate. Otherwise, an error will
+	/** Allow unknown fields to be passed within the object being validated. Otherwise, an error will
   be thrown. */
 	unknown?: boolean;
 }

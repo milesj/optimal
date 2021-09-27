@@ -21,6 +21,7 @@ A comparison between other object/schema validation libraries in the JavaScript 
 | Localization             |         |   ✅   |         |        |
 | Native TypeScript        |   ✅    |        |         |   ✅   |
 | Nullable fields          |   ✅    |   ✅   |         |   ✅   |
+| Predicates               |   ✅    |        |         |        |
 | Required/optional fields |   ✅    |   ✅   |   ✅    |   ✅   |
 | Tree-shakable            |   ✅    |   ✅   |         |   ✅   |
 | Type casting             |   ✅    |   ✅   |   ✅    |        |

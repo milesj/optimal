@@ -2,89 +2,115 @@
 title: Usage
 ---
 
-Most functionality is handled through a single function, `optimal()`, which requires a
-[struct](#struct), [blueprint](#blueprint), and optional configuration [options](#options).
+Optimal supports individual value validation through reusable [schemas](./schemas.md), and advanced
+functionality through the [`optimal()`](#optimal-validation) function. Choose either or both APIs to
+satisfy your use cases!
 
-To understand its power, lets define a class that accepts an options object in the constructor.
+## Optimal validation
+
+A primary API for validating options objects, configuration files, databags, and many more, is with
+the [`optimal()`](/api/optimal/function/optimal) function. This function accepts a
+[blueprint](#blueprints) and an optional [options](/api/optimal/interface/OptimalOptions) object,
+and returns a schema-like API. Internally this function is a [shape](./schemas.md#shapes), but it
+provides additional functionality through options and TypeScript typings.
+
+To understand this function, let's demonstrate it with an example. Say we have the following
+interface and class, and we want to validate the options within the constructor.
 
 ```ts
-import { optimal, bool, string } from 'optimal';
-
 interface PluginOptions {
-	debug: boolean;
-	priority: 'low' | 'normal' | 'high';
+	id: string;
+	debug?: boolean;
+	priority?: 'low' | 'normal' | 'high';
 }
 
 class Plugin {
 	options: PluginOptions;
 
-	constructor(options: Partial<PluginOptions> = {}) {
-		this.options = optimal({
-			debug: bool(),
-			priority: string('low').oneOf(['low', 'normal', 'high']),
-		}).validate(options);
+	constructor(options: PluginOptions) {
+		this.options = options;
 	}
 }
 ```
 
-When the plugin is instantiated, the `optimal()` function will be ran to return an object in the
+We can do this by importing optimal, defining a blueprint, and calling the
+[`.validate()`](/api/optimal/interface/Optimal#validate) method. Let's expand upon the example above
+and provide annotations for what's happening.
+
+```ts
+// Import the optimal function and any schemas we require
+import { bool, string, optimal } from 'optimal';
+
+interface PluginOptions {
+	// This field is required
+	id: string;
+	// While these 2 fields are optional
+	debug?: boolean;
+	priority?: 'low' | 'normal' | 'high';
+}
+
+class Plugin {
+	// We wrap the type in `Required` since optimal ensures they all exist afer validation
+	options: Required<PluginOptions>;
+
+	constructor(options: PluginOptions) {
+		// Instantiate optimal with a blueprint that matches the `PluginOptions` interface
+		this.options = optimal(
+			{
+				// Mark this field as required to match the interface
+				id: string().notEmpty().camelCase().required(),
+				// Omit the required since these 2 fields are optional in the interface
+				debug: bool(),
+				priority: string('low').oneOf(['low', 'normal', 'high']),
+			},
+			{
+				// Provide a unique name within error messages
+				name: this.constructor.name,
+			},
+			// Immediately trigger validation and return a built object!
+		).validate(options);
+	}
+}
+```
+
+Now when the plugin is instantiated, the `optimal()` function will be ran to return an object in the
 shape of the blueprint. For example:
 
 ```ts
-// { debug: false, priority: 'low' }
-new Plugin().options;
+// { id: 'abc', debug: false, priority: 'low' }
+new Plugin({ id: 'abc' }).options;
 
-// { debug: true, priority: 'low' }
-new Plugin({ debug: true }).options;
+// { id: 'abc', debug: true, priority: 'low' }
+new Plugin({ id: 'abc', debug: true }).options;
 
-// { debug: false, priority: 'high' }
-new Plugin({ priority: 'high' }).options;
+// { id: 'abc', debug: false, priority: 'high' }
+new Plugin({ id: 'abc', priority: 'high' }).options;
 
 // Throws an error for invalid `priority` value
-new Plugin({ priority: 'severe' }).options;
+new Plugin({ id: 'abc', priority: 'severe' }).options;
 
 // Throws an error for an unknown filed
-new Plugin({ size: 123 }).options;
+new Plugin({ id: 'abc', size: 123 }).options;
 ```
 
-## Struct
+## Schema validation
 
-A struct is a partial plain object that will be validated against the blueprint. Undefined or
-missing fields will be replaced with default values from the blueprint.
-
-> For documentation purpose's, this argument will be referred to as "struct".
-
-## Blueprint
-
-The blueprint is an object of [schemas](./schemas.md) that define an exact structure to be returned
-from `optimal()`. Each schema defines a default value to be used when a struct field of the same
-name is undefined or missing . Furthermore, it provides a fluent interface for adding rules to be
-ran during the validation process.
-
-## Options
-
-The following options can be passed to the 3rd argument.
-
-- `file` (string) - Include a filename in validation error messages. Can be used in conjunction with
-  `name`.
-- `name` (string) - Include a unique identifier in validation error messages. Can be used in
-  conjunction with `file`.
-- `unknown` (bool) - Allow unknown fields to be passed within the struct. Otherwise, an error will
-  be thrown.
+Besides [`optimal()`](#optimal-validation), every schema supports a
+[`.validate()`](/api/optimal/interface/Schema#validate) function that can be used to validate and
+return a type casted value. [View all available schemas](./schemas.md).
 
 ```ts
-optimal(
-	{},
-	{},
-	{
-		file: 'package.json',
-		name: 'PackageLoader',
-		unknown: true,
-	},
-);
-```
+import { string } from 'optimal';
 
-## Validating values
+const stringSchema = string();
+
+stringSchema.validate(123); // fail
+stringSchema.validate('abc'); // pass
+
+// Or from the instance directly
+
+string().notEmpty().validate(''); // fail
+```
 
 ## Default values
 
@@ -117,10 +143,10 @@ However, these messages are quite generic to support all scenarios, but can be c
 `message` object as the last argument.
 
 ```ts
-// throw "String must be lower cased."
+// throws "String must be lower cased."
 string().lowerCase().validate('FOO');
 
-// throw "Please provide a lowercased value."
+// throws "Please provide a lowercased value."
 string().lowerCase({ message: 'Please provide a lowercased value.' }).validate('FOO');
 ```
 
@@ -209,4 +235,25 @@ xorSchema.validate({ foo: 'abc', baz: true }); // throw error
 // Requires only 1 field to be defined
 xorSchema.validate({ foo: 'abc' }); // -> (shape)
 xorSchema.validate({ bar: 123 }); // -> (shape)
+```
+
+## Blueprints
+
+A blueprint is an object of [schemas](./schemas.md) that define an exact structure to be returned
+from [`optimal()`](/api/optimal/function/optimal) and [`shape()`](/api/optimal/function/optimal).
+Each schema provides a default value to be used when a field of the same name is undefined or
+missing.
+
+```ts
+import { Blueprint, number, string } from 'optimal';
+
+interface User {
+	id: number;
+	name: string;
+}
+
+const user: Blueprint<User> = {
+	id: number().positive(),
+	name: string().notEmpty(),
+};
 ```
