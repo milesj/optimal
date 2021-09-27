@@ -61,7 +61,7 @@ module.exports = {
 		footer: {
 			style: 'dark',
 			links: [],
-			copyright: `Copyright © ${new Date().getFullYear()} Miles Johnson. Built with <a href="https://docusaurus.io/">Docusaurus</a>.`,
+			copyright: `Copyright © ${new Date().getFullYear()} Miles Johnson. Built with <a href="https://docusaurus.io/">Docusaurus</a>. Icon by <a href="https://thenounproject.com/term/crystal/570598/">Joshua Nichol</a>.`,
 		},
 		prism: {
 			theme: lightCodeTheme,
