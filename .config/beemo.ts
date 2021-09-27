@@ -12,4 +12,7 @@ export default {
 			},
 		],
 	],
+	settings: {
+		react: true,
+	},
 };

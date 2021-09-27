@@ -1,6 +1,4 @@
 /* eslint-disable react/no-array-index-key */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
 import React from 'react';
 import clsx from 'clsx';
@@ -61,8 +59,8 @@ export default function Home(): JSX.Element {
 
 	return (
 		<Layout
-			title={`Hello from ${siteConfig.title}`}
 			description="Description will go into a meta tag in <head />"
+			title={`Hello from ${siteConfig.title}`}
 		>
 			<header className={clsx('hero hero--primary', styles.heroBanner)}>
 				<div className="container">
