@@ -7,11 +7,11 @@ import { CommonCriterias, NotNull, NotUndefined, Schema } from '../types';
 export interface TupleSchema<T> extends Schema<Required<T>>, CommonCriterias<TupleSchema<T>> {
 	never: () => TupleSchema<never>;
 	notNullable: () => TupleSchema<NotNull<T>>;
+	notUndefinable: () => TupleSchema<NotUndefined<T>>;
 	nullable: () => TupleSchema<T | null>;
 	/** @internal */
 	of: <I extends unknown[]>(schemas: InferTupleItems<I>) => TupleSchema<I>;
-	optional: () => TupleSchema<T | undefined>;
-	required: () => TupleSchema<NotUndefined<T>>;
+	undefinable: () => TupleSchema<T | undefined>;
 }
 
 export function tuple<T extends unknown[] = unknown[]>(

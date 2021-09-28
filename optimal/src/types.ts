@@ -44,7 +44,7 @@ export type CriteriaValidator<Input> = (
 
 export interface Criteria<Input> {
 	skipIfNull?: boolean;
-	skipIfOptional?: boolean;
+	skipIfUndefined?: boolean;
 	validate: CriteriaValidator<Input>;
 }
 
@@ -56,11 +56,11 @@ export type CriteriaFactory<Input> = (
 export interface CommonCriterias<S> {
 	and: (...keys: string[]) => S;
 	custom: (callback: CriteriaValidator<InferSchemaType<S>>) => S;
-	defined: () => S;
 	deprecate: (message: string) => S;
-	notDefined: () => S;
 	only: () => S;
+	optional: () => S;
 	or: (...keys: string[]) => S;
+	required: () => S;
 	when: (condition: WhenCondition<InferSchemaType<S>>, pass: AnySchema, fail?: AnySchema) => S;
 	xor: (...keys: string[]) => S;
 	// Define in schemas directly
@@ -134,18 +134,19 @@ export interface SchemaValidateOptions {
 
 export interface Schema<Output> {
 	schema: () => string;
+	state: () => SchemaState<Output>;
 	type: () => string;
 	validate: (value: unknown, path?: string, options?: SchemaValidateOptions) => Output;
 }
 
 export interface SchemaState<T> {
 	defaultValue: DefaultValue<T> | undefined;
-	defined: boolean;
 	metadata: UnknownObject;
 	never: boolean;
 	nullable: boolean;
-	optional: boolean;
+	required: boolean;
 	type: string;
+	undefinable: boolean;
 }
 
 export interface SchemaOptions<T> {

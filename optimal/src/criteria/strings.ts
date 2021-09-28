@@ -13,7 +13,7 @@ export function contains(
 
 	return {
 		skipIfNull: true,
-		skipIfOptional: true,
+		skipIfUndefined: true,
 		validate(value, path) {
 			invalid(
 				value.includes(token, options.index ?? 0),
@@ -37,7 +37,7 @@ export function match(
 
 	return {
 		skipIfNull: true,
-		skipIfOptional: true,
+		skipIfUndefined: true,
 		validate(value, path) {
 			invalid(
 				!!value.match(pattern),

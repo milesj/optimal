@@ -357,7 +357,7 @@ describe('union()', () => {
 	it('returns shapes as their full objects', () => {
 		const shapesUnion = union<ExampleShape | Record<string, number>>({}).of([
 			shape({
-				foo: string().defined(),
+				foo: string().required(),
 				bar: number(),
 				baz: bool(),
 			}).exact(),

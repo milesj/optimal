@@ -15,9 +15,9 @@ export interface FunctionSchema<T = AnyFunction>
 		CommonCriterias<FunctionSchema<T>> {
 	never: () => FunctionSchema<never>;
 	notNullable: () => FunctionSchema<NotNull<T>>;
+	notUndefinable: () => FunctionSchema<NotUndefined<T>>;
 	nullable: () => FunctionSchema<T | null>;
-	optional: () => FunctionSchema<T | undefined>;
-	required: () => FunctionSchema<NotUndefined<T>>;
+	undefinable: () => FunctionSchema<T | undefined>;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -33,7 +33,7 @@ export function func<T extends (...args: any[]) => any = AnyFunction>(
 		[
 			{
 				skipIfNull: true,
-				skipIfOptional: true,
+				skipIfUndefined: true,
 				validate(value, path) {
 					invalid(typeof value === 'function', 'Must be a function.', path, value);
 				},

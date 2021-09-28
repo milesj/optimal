@@ -16,9 +16,9 @@ export interface DateSchema<T = Date>
 		CommonCriterias<DateSchema<T>> {
 	never: () => DateSchema<never>;
 	notNullable: () => DateSchema<NotNull<T>>;
+	notUndefinable: () => DateSchema<NotUndefined<T>>;
 	nullable: () => DateSchema<T | null>;
-	optional: () => DateSchema<T | undefined>;
-	required: () => DateSchema<NotUndefined<T>>;
+	undefinable: () => DateSchema<T | undefined>;
 }
 
 export function date(defaultValue?: DefaultValue<Date>): DateSchema<Date> {

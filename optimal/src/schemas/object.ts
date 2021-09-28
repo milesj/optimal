@@ -20,12 +20,12 @@ export interface ObjectSchema<T = object>
 	keysOf: (schema: StringSchema, options?: Options) => ObjectSchema<T>;
 	never: () => ObjectSchema<never>;
 	notNullable: () => ObjectSchema<NotNull<T>>;
+	notUndefinable: () => ObjectSchema<NotUndefined<T>>;
 	nullable: () => ObjectSchema<T | null>;
 	of: <V, K extends PropertyKey = keyof T>(
 		schema: Schema<V>,
 	) => ObjectSchema<InferNullable<T, Record<K, V>>>;
-	optional: () => ObjectSchema<T | undefined>;
-	required: () => ObjectSchema<NotUndefined<T>>;
+	undefinable: () => ObjectSchema<T | undefined>;
 }
 
 export function object<V = unknown, K extends PropertyKey = string>(

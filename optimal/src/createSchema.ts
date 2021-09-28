@@ -34,7 +34,7 @@ function validate<T>(
 
 	// Handle undefined
 	if (value === undefined) {
-		if (!state.optional) {
+		if (!state.undefinable) {
 			value =
 				typeof defaultValue === 'function'
 					? (defaultValue as DefaultValueInitializer<T>)(path, currentObject, rootObject)
@@ -60,7 +60,7 @@ function validate<T>(
 	validators.forEach((test) => {
 		if (
 			(test.skipIfNull && value === null) ||
-			(test.skipIfOptional && value === undefined) ||
+			(test.skipIfUndefined && value === undefined) ||
 			state.never
 		) {
 			return;
@@ -96,12 +96,12 @@ export function createSchema<S extends AnySchema, T = InferSchemaType<S>>(
 ): S {
 	const state: SchemaState<T> = {
 		defaultValue,
-		defined: false,
 		metadata: {},
 		never: false,
 		nullable: false,
-		optional: false,
+		required: false,
 		type,
+		undefinable: false,
 	};
 
 	const validators: Criteria<T>[] = [];
@@ -121,6 +121,9 @@ export function createSchema<S extends AnySchema, T = InferSchemaType<S>>(
 	const schema: Schema<T> = {
 		schema() {
 			return type;
+		},
+		state() {
+			return state;
 		},
 		type() {
 			return state.type;

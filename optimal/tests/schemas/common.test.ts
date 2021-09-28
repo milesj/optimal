@@ -1,6 +1,46 @@
-import { string } from '../../src';
+import { number, shape, string } from '../../src';
 
 describe('common', () => {
+	describe('required()', () => {
+		const reqSchema = shape({
+			foo: string().required(),
+			bar: number(),
+		});
+
+		it('errors when not defined', () => {
+			expect(() => reqSchema.validate({})).toThrow('Field is required and must be defined.');
+		});
+
+		it('errors when undefined is passed', () => {
+			expect(() => reqSchema.validate({ foo: undefined })).toThrow(
+				'Field is required and must be defined.',
+			);
+		});
+
+		it('doesnt error when a valid value is passed', () => {
+			expect(() => reqSchema.validate({ foo: 'abc', bar: 123 })).not.toThrow();
+		});
+	});
+
+	describe('optional()', () => {
+		const optSchema = shape({
+			foo: string().required().optional(), // Test reseting
+			bar: number(),
+		});
+
+		it('doesnt error when nothing is defined', () => {
+			expect(() => optSchema.validate({})).not.toThrow();
+		});
+
+		it('doesnt error when undefined is passed', () => {
+			expect(() => optSchema.validate({})).not.toThrow();
+		});
+
+		it('doesnt error when a valid value is passed', () => {
+			expect(() => optSchema.validate({ foo: 'abc', bar: 123 })).not.toThrow();
+		});
+	});
+
 	describe('when()', () => {
 		it('errors if a non-schema is passed to the pass path', () => {
 			expect(() => {
@@ -14,7 +54,7 @@ describe('common', () => {
 
 		it('doesnt error if a schema is passed to the pass path', () => {
 			expect(() => {
-				string().when('abc', string().required());
+				string().when('abc', string());
 			}).not.toThrow();
 		});
 

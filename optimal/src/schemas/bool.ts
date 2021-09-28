@@ -6,11 +6,11 @@ import { CommonCriterias, DefaultValue, NotNull, NotUndefined, Options, Schema }
 export interface BooleanSchema<T = boolean> extends Schema<T>, CommonCriterias<BooleanSchema<T>> {
 	never: () => BooleanSchema<never>;
 	notNullable: () => BooleanSchema<NotNull<T>>;
+	notUndefinable: () => BooleanSchema<NotUndefined<T>>;
 	nullable: () => BooleanSchema<T | null>;
 	onlyFalse: (options?: Options) => BooleanSchema<false>;
 	onlyTrue: (options?: Options) => BooleanSchema<true>;
-	optional: () => BooleanSchema<T | undefined>;
-	required: () => BooleanSchema<NotUndefined<T>>;
+	undefinable: () => BooleanSchema<T | undefined>;
 }
 
 export function bool(defaultValue: DefaultValue<boolean> = false): BooleanSchema {

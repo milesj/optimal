@@ -17,10 +17,10 @@ export interface ArraySchema<T = unknown[]>
 		CommonCriterias<ArraySchema<T>> {
 	never: () => ArraySchema<never>;
 	notNullable: () => ArraySchema<NotNull<T>>;
+	notUndefinable: () => ArraySchema<NotUndefined<T>>;
 	nullable: () => ArraySchema<T | null>;
 	of: <V>(schema: Schema<V>) => ArraySchema<InferNullable<T, V[]>>;
-	optional: () => ArraySchema<T | undefined>;
-	required: () => ArraySchema<NotUndefined<T>>;
+	undefinable: () => ArraySchema<T | undefined>;
 }
 
 export function array<T = unknown>(defaultValue: DefaultValue<T[]> = []): ArraySchema<T[]> {

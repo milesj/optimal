@@ -12,9 +12,9 @@ import {
 export interface CustomSchema<T> extends Schema<T>, CommonCriterias<CustomSchema<T>> {
 	never: () => CustomSchema<never>;
 	notNullable: () => CustomSchema<NotNull<T>>;
+	notUndefinable: () => CustomSchema<NotUndefined<T>>;
 	nullable: () => CustomSchema<T | null>;
-	optional: () => CustomSchema<T | undefined>;
-	required: () => CustomSchema<NotUndefined<T>>;
+	undefinable: () => CustomSchema<T | undefined>;
 }
 
 export function custom<T>(validator: CriteriaValidator<T>, defaultValue?: DefaultValue<T>) {

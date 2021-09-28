@@ -16,11 +16,11 @@ export interface ShapeSchema<T>
 		CommonCriterias<ShapeSchema<T>> {
 	never: () => ShapeSchema<never>;
 	notNullable: () => ShapeSchema<NotNull<T>>;
+	notUndefinable: () => ShapeSchema<NotUndefined<T>>;
 	nullable: () => ShapeSchema<T | null>;
 	/** @internal */
 	of: <S extends object>(schema: Blueprint<S>) => ShapeSchema<S>;
-	optional: () => ShapeSchema<T | undefined>;
-	required: () => ShapeSchema<NotUndefined<T>>;
+	undefinable: () => ShapeSchema<T | undefined>;
 }
 
 export function shape<T extends object>(blueprint: Blueprint<T>): ShapeSchema<T> {

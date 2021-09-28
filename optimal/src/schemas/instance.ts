@@ -13,10 +13,10 @@ import {
 export interface InstanceSchema<T> extends Schema<T>, CommonCriterias<InstanceSchema<T>> {
 	never: () => InstanceSchema<never>;
 	notNullable: () => InstanceSchema<NotNull<T>>;
+	notUndefinable: () => InstanceSchema<NotUndefined<T>>;
 	nullable: () => InstanceSchema<T | null>;
 	of: <C>(ref: Constructor<C>, loose?: boolean) => InstanceSchema<InferNullable<T, C>>;
-	optional: () => InstanceSchema<T | undefined>;
-	required: () => InstanceSchema<NotUndefined<T>>;
+	undefinable: () => InstanceSchema<T | undefined>;
 }
 
 export function instance() {

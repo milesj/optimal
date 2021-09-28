@@ -72,7 +72,7 @@ const primitives: {
 	s: string(),
 	sn: string().nullable(),
 	sl: string().oneOf<'bar' | 'baz' | 'foo'>(['foo', 'bar', 'baz']),
-	sdu: string('foo').optional(),
+	sdu: string('foo').undefinable(),
 }).validate({});
 
 const primitivesInferred = optimal({
@@ -86,7 +86,7 @@ const primitivesInferred = optimal({
 	s: string(),
 	sn: string().nullable(),
 	sl: string().oneOf<'bar' | 'baz' | 'foo'>(['foo', 'bar', 'baz']),
-	sdu: string('foo').optional(),
+	sdu: string('foo').undefinable(),
 }).validate({});
 
 const other: {
@@ -103,7 +103,7 @@ const other: {
 	f: func(),
 	i: instance(),
 	ic: instance().of(Foo),
-	ir: instance().of(Foo).notNullable().optional(),
+	ir: instance().of(Foo).notNullable().undefinable(),
 	in: instance().of(Foo).notNullable(),
 	d: date(),
 	r: regex(),
@@ -114,7 +114,7 @@ const otherInferred = optimal({
 	f: func(),
 	i: instance(),
 	ic: instance().of(Foo),
-	ir: instance().of(Foo).notNullable().optional(),
+	ir: instance().of(Foo).notNullable().undefinable(),
 	in: instance().of(Foo).notNullable(),
 	d: date(),
 	r: regex(),
@@ -126,15 +126,15 @@ const funcs: {
 	isNull: (() => void) | null;
 	notNull: () => void;
 } = optimal({
-	opt: func().optional(),
-	req: func().required(),
+	opt: func().undefinable(),
+	req: func().notUndefinable(),
 	isNull: func().nullable(),
 	notNull: func().notNullable(),
 }).validate({});
 
 const funcsInferred = optimal({
-	opt: func().optional(),
-	req: func().required(),
+	opt: func().undefinable(),
+	req: func().notUndefinable(),
 	isNull: func().nullable(),
 	notNull: func().notNullable(),
 }).validate({});
@@ -151,7 +151,7 @@ const arrays: {
 	aa: array().of(array().of(string())),
 	ac: array().of(string()),
 	an: array().nullable().of(number().nullable()),
-	au: array().of(number().optional()),
+	au: array().of(number().undefinable()),
 	ad: array([1, 2, 3]).of(number()),
 }).validate({});
 
@@ -160,7 +160,7 @@ const arraysInferred = optimal({
 	aa: array().of(array().of(string())),
 	ac: array().of(string()),
 	an: array().of(number().nullable()).nullable(),
-	au: array().of(number().optional()),
+	au: array().of(number().undefinable()),
 	ad: array([1, 2, 3]).of(number()),
 }).validate({});
 
@@ -177,7 +177,7 @@ const objects: {
 	oc: object().of(number()),
 	on: object().of(number().nullable()).nullable(),
 	od: object({ foo: 'bar' }).of(string()),
-	ou: object().of(string().optional()),
+	ou: object().of(string().undefinable()),
 }).validate({});
 
 const objectsInferred = optimal({
@@ -186,7 +186,7 @@ const objectsInferred = optimal({
 	oc: object().of(number()),
 	on: object().of(number().nullable()).nullable(),
 	od: object({ foo: 'bar' }).of(string()),
-	ou: object().of(string().optional()),
+	ou: object().of(string().undefinable()),
 }).validate({});
 
 const shapes: {
@@ -220,7 +220,7 @@ const shapes: {
 			a: number(123),
 			b: instance(),
 			c: string().oneOf<'foo'>(['foo']),
-		}).optional(),
+		}).undefinable(),
 		h3: func<() => void>(),
 	}),
 }).validate({});
@@ -238,7 +238,7 @@ const shapesInferred = optimal({
 			a: number(123),
 			b: instance(),
 			c: string().oneOf<'foo'>(['foo']),
-		}).optional(),
+		}).undefinable(),
 		h3: func(),
 	}),
 }).validate({});

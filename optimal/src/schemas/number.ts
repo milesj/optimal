@@ -18,13 +18,13 @@ export interface NumberSchema<T = number>
 		CommonCriterias<NumberSchema<T>> {
 	never: () => NumberSchema<never>;
 	notNullable: () => NumberSchema<NotNull<T>>;
+	notUndefinable: () => NumberSchema<NotUndefined<T>>;
 	nullable: () => NumberSchema<T | null>;
 	oneOf: <I extends number = number>(
 		list: I[],
 		options?: Options,
 	) => NumberSchema<InferNullable<T, I>>;
-	optional: () => NumberSchema<T | undefined>;
-	required: () => NumberSchema<NotUndefined<T>>;
+	undefinable: () => NumberSchema<T | undefined>;
 }
 
 function cast(value: unknown): number {

@@ -2,7 +2,7 @@ import { invalid, invariant, isSchema, isValidString, pathKey } from '../helpers
 import { Criteria, CriteriaValidator, Schema, SchemaState, ValueComparator } from '../types';
 
 /**
- * Map a list of field names that must be defined alongside this field.
+ * Map a list of field names that must be defined alongside this field when in a shape/object.
  */
 export function and<T>(state: SchemaState<T>, ...keys: string[]): Criteria<T> {
 	invariant(keys.length > 0, 'AND requires a list of field names.');
@@ -44,13 +44,6 @@ export function custom<T>(state: SchemaState<T>, validator: CriteriaValidator<T>
 }
 
 /**
- * Require this field to be explicitly defined.
- */
-export function defined<T>(state: SchemaState<T>) {
-	state.defined = true;
-}
-
-/**
  * Set a message to log when this field is present.
  */
 export function deprecate<T>(state: SchemaState<T>, message: string) {
@@ -68,10 +61,17 @@ export function never<T>(state: SchemaState<T>) {
 }
 
 /**
- * Dont require this field to be explicitly defined.
+ * Require this field to be explicitly defined when in a shape/object.
  */
-export function notDefined<T>(state: SchemaState<T>) {
-	state.defined = false;
+export function required<T>(state: SchemaState<T>) {
+	state.required = true;
+}
+
+/**
+ * Dont require this field to be explicitly defined when in a shape/object.
+ */
+export function optional<T>(state: SchemaState<T>) {
+	state.required = false;
 }
 
 /**
@@ -107,7 +107,7 @@ export function only<T>(state: SchemaState<T>): Criteria<T> {
 }
 
 /**
- * Map a list of field names that must have at least 1 defined.
+ * Map a list of field names that must have at least 1 defined when in a shape/object.
  */
 export function or<T>(state: SchemaState<T>, ...keys: string[]): Criteria<T> {
 	invariant(keys.length > 0, 'OR requires a list of field names.');
@@ -130,15 +130,15 @@ export function or<T>(state: SchemaState<T>, ...keys: string[]): Criteria<T> {
 /**
  * Allow undefined values.
  */
-export function optional<T>(state: SchemaState<T>) {
-	state.optional = true;
+export function undefinable<T>(state: SchemaState<T>) {
+	state.undefinable = true;
 }
 
 /**
  * Disallow undefined values.
  */
-export function required<T>(state: SchemaState<T>) {
-	state.optional = false;
+export function notUndefinable<T>(state: SchemaState<T>) {
+	state.undefinable = false;
 }
 
 /**
@@ -181,7 +181,7 @@ export function when<T>(
 }
 
 /**
- * Map a list of field names that must not be defined alongside this field.
+ * Map a list of field names that must not be defined alongside this field when in a shape/object.
  */
 export function xor<T>(state: SchemaState<T>, ...keys: string[]): Criteria<T> {
 	invariant(keys.length > 0, 'XOR requires a list of field names.');

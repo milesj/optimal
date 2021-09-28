@@ -37,7 +37,7 @@ export function runCommonTests<T>(
 			expect(schema).not.toBe(otherSchema);
 			expect(anotherSchema).not.toBe(otherSchema);
 
-			const againSchema = (otherSchema as typeof schema).defined();
+			const againSchema = (otherSchema as typeof schema).required();
 
 			expect(againSchema).not.toBe(otherSchema);
 		});
@@ -305,48 +305,6 @@ export function runCommonTests<T>(
 				expect(() => notNullSchema.validate(undefined)).not.toThrow();
 			});
 		}
-	});
-
-	describe('defined()', () => {
-		let reqSchema: Schema<T>;
-
-		beforeEach(() => {
-			reqSchema = schema.defined();
-		});
-
-		it('returns value when a valid value is passed', () => {
-			expect(reqSchema.validate(value)).toEqual(value);
-		});
-
-		it('errors when undefined is passed', () => {
-			expect(() => reqSchema.validate(undefined)).toThrow('Field is required and must be defined.');
-		});
-
-		it('doesnt error when a valid value is passed', () => {
-			expect(() => reqSchema.validate(value)).not.toThrow();
-		});
-	});
-
-	describe('notDefined()', () => {
-		let optSchema: Schema<T>;
-
-		beforeEach(() => {
-			optSchema = schema.notDefined();
-		});
-
-		if (!skipDefaultAsserts) {
-			it('returns default value when undefind is passed', () => {
-				expect(optSchema.validate(undefined)).toEqual(defaultValue);
-			});
-		}
-
-		it('doesnt error when undefined is passed', () => {
-			expect(() => optSchema.validate(undefined)).not.toThrow();
-		});
-
-		it('doesnt error when a valid value is passed', () => {
-			expect(() => optSchema.validate(value)).not.toThrow();
-		});
 	});
 
 	if (!emptyByDefault && !skipDefaultAsserts) {
