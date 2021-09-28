@@ -5,6 +5,8 @@ interface TestCriterias<S> extends CommonCriterias<S> {
 	never: () => S;
 	notNullable: () => S;
 	nullable: () => S;
+	notUndefinable: () => S;
+	undefinable: () => S;
 }
 
 // eslint-disable-next-line jest/no-export
@@ -238,6 +240,46 @@ export function runCommonTests<T>(
 	describe('never()', () => {
 		it('errors when validating', () => {
 			expect(() => schema.never().validate(value)).toThrow('Field should never be used.');
+		});
+	});
+
+	describe('undefinable()', () => {
+		let undefSchema: Schema<T>;
+
+		beforeEach(() => {
+			undefSchema = schema.undefinable();
+		});
+
+		it('returns value when a valid value is passed', () => {
+			expect(undefSchema.validate(value)).toEqual(value);
+		});
+
+		it('doesnt error when undefined is passed', () => {
+			expect(() => undefSchema.validate(undefined)).not.toThrow();
+		});
+
+		it('doesnt error when a valid value is passed', () => {
+			expect(() => undefSchema.validate(value)).not.toThrow();
+		});
+	});
+
+	describe('notUndefinable()', () => {
+		let notUndefSchema: Schema<T>;
+
+		beforeEach(() => {
+			notUndefSchema = (schema.undefinable() as typeof schema).notUndefinable();
+		});
+
+		it('returns value when a valid value is passed', () => {
+			expect(notUndefSchema.validate(value)).toEqual(value);
+		});
+
+		it('returns default value undefined is passed', () => {
+			expect(() => notUndefSchema.validate(undefined)).toEqual(defaultValue);
+		});
+
+		it('doesnt error when a valid value is passed', () => {
+			expect(() => notUndefSchema.validate(value)).not.toThrow();
 		});
 	});
 

@@ -41,6 +41,16 @@ describe('common', () => {
 		});
 	});
 
+	describe('undefinable()', () => {
+		it('returns undefined instead of default value when undefined is passed', () => {
+			expect(string().undefinable().validate(undefined)).toBeUndefined();
+		});
+
+		it('returns new value from criteria (when applicable) when undefined is passed', () => {
+			expect(string().undefinable().validate(undefined)).toBeUndefined();
+		});
+	});
+
 	describe('when()', () => {
 		it('errors if a non-schema is passed to the pass path', () => {
 			expect(() => {

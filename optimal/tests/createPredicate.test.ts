@@ -28,15 +28,15 @@ describe('createPredicate()', () => {
 		});
 	});
 
-	describe('optional', () => {
-		it('returns true if the schema is optional and undefined is passed', () => {
+	describe('undefinable', () => {
+		it('returns true if the schema is undefinable and undefined is passed', () => {
 			const predOpt = createPredicate(number().undefinable());
 
 			expect(predOpt(undefined)).toBe(true);
 			expect(predOpt(123)).toBe(true);
 		});
 
-		it('returns false if the schema is not optional and undefined is passed', () => {
+		it('returns false if the schema is not undefinable and undefined is passed', () => {
 			const predNotOpt = createPredicate(number().undefinable().notUndefinable());
 
 			expect(predNotOpt(undefined)).toBe(false);
