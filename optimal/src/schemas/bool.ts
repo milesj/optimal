@@ -1,6 +1,6 @@
 import { createSchema } from '../createSchema';
 import { booleanCriteria, commonCriteria } from '../criteria';
-import { invalid } from '../helpers';
+import { invalid, validateType } from '../helpers';
 import { CommonCriterias, DefaultValue, NotNull, NotUndefined, Options, Schema } from '../types';
 
 export interface BooleanSchema<T = boolean> extends Schema<T>, CommonCriterias<BooleanSchema<T>> {
@@ -22,12 +22,9 @@ export function bool(defaultValue: DefaultValue<boolean> = false): BooleanSchema
 			type: 'boolean',
 		},
 		[
-			{
-				skipIfNull: true,
-				validate(value, path) {
-					invalid(typeof value === 'boolean', 'Must be a boolean.', path, value);
-				},
-			},
+			validateType((value, path) => {
+				invalid(typeof value === 'boolean', 'Must be a boolean.', path, value);
+			}),
 		],
 	);
 }

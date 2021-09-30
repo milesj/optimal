@@ -1,4 +1,11 @@
-import { invalid, invariant, isSchema, isValidString, pathKey } from '../helpers';
+import {
+	invalid,
+	invariant,
+	isSchema,
+	isValidString,
+	pathKey,
+	shouldReturnUndefined,
+} from '../helpers';
 import { Criteria, CriteriaValidator, Schema, SchemaState, ValueComparator } from '../types';
 
 /**
@@ -32,8 +39,12 @@ export function custom<T>(state: SchemaState<T>, validator: CriteriaValidator<T>
 
 	return {
 		validate(value, path, validateOptions) {
+			if (shouldReturnUndefined(state, value)) {
+				return undefined;
+			}
+
 			try {
-				validator(value, path, validateOptions);
+				return validator(value, path, validateOptions);
 			} catch (error: unknown) {
 				if (error instanceof Error) {
 					invalid(false, error.message, path, value);

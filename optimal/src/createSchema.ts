@@ -27,7 +27,7 @@ function validate<T>(
 		currentObject = {},
 		rootObject = currentObject,
 	}: SchemaValidateOptions = {},
-): T | null {
+): T | null | undefined {
 	const { defaultValue, metadata } = state;
 
 	let value: unknown = initialValue;
@@ -128,10 +128,19 @@ export function createSchema<S extends AnySchema, T = InferSchemaType<S>>(
 		type() {
 			return state.type;
 		},
+		// @ts-expect-error Ignore null/undefined
 		validate(value, path, options) {
-			const result = validate(state, validators, value, path, options)!;
+			const result = validate(state, validators, value, path, options);
 
-			return cast && result !== null ? cast(result) : result;
+			if (state.nullable && result === null) {
+				return null;
+			}
+
+			if (state.undefinable && result === undefined) {
+				return undefined;
+			}
+
+			return cast ? cast(result) : result;
 		},
 	};
 

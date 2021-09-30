@@ -1,6 +1,6 @@
 import { createSchema } from '../createSchema';
 import { commonCriteria, shapeCriteria } from '../criteria';
-import { createObject, invalid, isObject } from '../helpers';
+import { createObject, invalid, isObject, validateType } from '../helpers';
 import { AnySchema } from '../types';
 import { func } from './func';
 import { ShapeSchema } from './shape';
@@ -14,17 +14,15 @@ export function schema<T extends AnySchema>(): ShapeSchema<T> {
 			type: 'shape',
 		},
 		[
-			{
-				skipIfNull: true,
-				validate(value, path) {
-					invalid(isObject(value), 'Must be a schema.', path, value);
-				},
-			},
+			validateType((value, path) => {
+				invalid(isObject(value), 'Must be a schema.', path, value);
+			}),
 		],
 	);
 
 	return shape.of({
 		schema: func<T['schema']>().notNullable().notUndefinable(),
+		state: func<T['state']>().notNullable().notUndefinable(),
 		type: func<T['type']>().notNullable().notUndefinable(),
 		validate: func<T['validate']>().notNullable().notUndefinable(),
 	}) as unknown as ShapeSchema<T>;

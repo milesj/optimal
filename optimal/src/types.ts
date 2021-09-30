@@ -67,8 +67,8 @@ export interface CommonCriterias<S> {
 	// never: () => S;
 	// notNullable: () => S;
 	// nullable: () => S;
-	// optional: () => S;
-	// required: () => S;
+	// notUndefinable: () => S;
+	// undefinable: () => S;
 }
 
 export interface ArrayCriterias<S> {

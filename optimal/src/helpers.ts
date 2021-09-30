@@ -1,4 +1,11 @@
-import { Constructor, Schema, UnknownObject } from './types';
+import {
+	Constructor,
+	CriteriaFactory,
+	CriteriaValidator,
+	Schema,
+	SchemaState,
+	UnknownObject,
+} from './types';
 import { ValidationError } from './ValidationError';
 
 export function isObject(value: unknown): value is object {
@@ -182,4 +189,23 @@ export function tryAndCollect(
 	}
 
 	return result;
+}
+
+export function shouldReturnUndefined(state: SchemaState<unknown>, value: unknown) {
+	return state.undefinable && value === undefined;
+}
+
+export function validateType<T>(validator: CriteriaValidator<T>): CriteriaFactory<T> {
+	return (state) => ({
+		skipIfNull: true,
+		validate(value, path, options) {
+			// We cant use `skipIfUndefined` as we only want this to return if the
+			// schema is _also_ undefinable, otherwise validate and fail.
+			if (shouldReturnUndefined(state, value)) {
+				return undefined;
+			}
+
+			return validator(value, path, options);
+		},
+	});
 }
