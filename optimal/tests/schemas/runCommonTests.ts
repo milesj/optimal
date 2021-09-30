@@ -278,13 +278,15 @@ export function runCommonTests<T>(
 			expect(notUndefSchema.validate(value)).toEqual(value);
 		});
 
-		it('returns default value when undefined is passed', () => {
-			expect(notUndefSchema.validate(undefined)).toEqual(defaultValue);
-		});
+		if (!undefinedByDefault) {
+			it('returns default value when undefined is passed', () => {
+				expect(notUndefSchema.validate(undefined)).toEqual(defaultValue);
+			});
 
-		it('doesnt error when undefined is passed', () => {
-			expect(() => notUndefSchema.validate(undefined)).not.toThrow();
-		});
+			it('doesnt error when undefined is passed', () => {
+				expect(() => notUndefSchema.validate(undefined)).not.toThrow();
+			});
+		}
 
 		it('doesnt error when a valid value is passed', () => {
 			expect(() => notUndefSchema.validate(value)).not.toThrow();

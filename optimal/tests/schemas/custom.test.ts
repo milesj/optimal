@@ -22,13 +22,13 @@ describe('custom()', () => {
 	type ArrayCustom = Infer<typeof arrayCustom>;
 	type TupleCustom = Infer<typeof tupleCustom>;
 
-	runCommonTests((defaultValue) => custom<string>(cb, defaultValue), 'abc', {
+	runCommonTests((defaultValue) => custom<string>(cb, defaultValue ?? ''), 'abc', {
 		defaultValue: 'xyz',
 	});
 
 	describe('type()', () => {
 		it('returns "custom"', () => {
-			expect(custom(cb).type()).toBe('custom');
+			expect(custom(cb, '').type()).toBe('custom');
 		});
 	});
 

@@ -28,7 +28,6 @@ export function instance() {
 		},
 		[
 			(state) => ({
-				skipIfNull: true,
 				validate(value, path) {
 					invalid(
 						isObject(value) && value.constructor !== Object,

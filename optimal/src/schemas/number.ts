@@ -1,6 +1,6 @@
 import { createSchema } from '../createSchema';
 import { commonCriteria, numberCriteria } from '../criteria';
-import { invalid, validateType } from '../helpers';
+import { invalid } from '../helpers';
 import {
 	CommonCriterias,
 	DefaultValue,
@@ -40,9 +40,11 @@ export function number<T extends number>(defaultValue: DefaultValue<number> = 0)
 			type: 'number',
 		},
 		[
-			validateType((value, path) => {
-				invalid(typeof value === 'number', 'Must be a number.', path, value);
-			}),
+			{
+				validate(value, path) {
+					invalid(typeof value === 'number', 'Must be a number.', path, value);
+				},
+			},
 		],
 	);
 }

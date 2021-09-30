@@ -91,7 +91,7 @@ const primitivesInferred = optimal({
 
 const other: {
 	c: string;
-	f: () => void;
+	f: (() => void) | undefined;
 	i: Object | null;
 	ic: Foo | null;
 	ir: Foo | undefined;
@@ -123,20 +123,17 @@ const otherInferred = optimal({
 const funcs: {
 	opt?: (() => void) | undefined;
 	req: () => void;
-	isNull: (() => void) | null;
-	notNull: () => void;
+	isNull: (() => void) | null | undefined;
 } = optimal({
 	opt: func().undefinable(),
 	req: func().notUndefinable(),
 	isNull: func().nullable(),
-	notNull: func().notNullable(),
 }).validate({});
 
 const funcsInferred = optimal({
 	opt: func().undefinable(),
 	req: func().notUndefinable(),
 	isNull: func().nullable(),
-	notNull: func().notNullable(),
 }).validate({});
 
 const arrays: {
@@ -193,7 +190,7 @@ const shapes: {
 	h: {
 		h1: string;
 		h2: boolean;
-		h3: (() => void) | null;
+		h3: (() => void) | undefined;
 		h4: string;
 	} | null;
 	hn: {
@@ -205,7 +202,7 @@ const shapes: {
 					c: 'foo';
 			  }
 			| undefined;
-		h3: (() => void) | null;
+		h3: (() => void) | undefined;
 	};
 } = optimal({
 	h: shape({

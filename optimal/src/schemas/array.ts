@@ -1,6 +1,6 @@
 import { createSchema } from '../createSchema';
 import { arrayCriteria, commonCriteria } from '../criteria';
-import { createArray, invalid, validateType } from '../helpers';
+import { createArray, invalid } from '../helpers';
 import {
 	ArrayCriterias,
 	CommonCriterias,
@@ -32,9 +32,11 @@ export function array<T = unknown>(defaultValue: DefaultValue<T[]> = []): ArrayS
 			type: 'array',
 		},
 		[
-			validateType((value, path) => {
-				invalid(Array.isArray(value), 'Must be an array.', path, value);
-			}),
+			{
+				validate(value, path) {
+					invalid(Array.isArray(value), 'Must be an array.', path, value);
+				},
+			},
 		],
 	);
 }

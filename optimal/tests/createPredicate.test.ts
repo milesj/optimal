@@ -13,10 +13,10 @@ describe('createPredicate()', () => {
 	});
 
 	describe('nullable', () => {
-		it('returns true if the schema is nullable and null is passed', () => {
+		it('returns false if the schema is nullable and null is passed', () => {
 			const predNull = createPredicate(number().nullable());
 
-			expect(predNull(null)).toBe(true);
+			expect(predNull(null)).toBe(false);
 			expect(predNull(123)).toBe(true);
 		});
 
@@ -29,10 +29,10 @@ describe('createPredicate()', () => {
 	});
 
 	describe('undefinable', () => {
-		it('returns true if the schema is undefinable and undefined is passed', () => {
+		it('returns false if the schema is undefinable and undefined is passed', () => {
 			const predOpt = createPredicate(number().undefinable());
 
-			expect(predOpt(undefined)).toBe(true);
+			expect(predOpt(undefined)).toBe(false);
 			expect(predOpt(123)).toBe(true);
 		});
 

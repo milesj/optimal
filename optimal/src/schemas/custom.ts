@@ -17,7 +17,7 @@ export interface CustomSchema<T> extends Schema<T>, CommonCriterias<CustomSchema
 	undefinable: () => CustomSchema<T | undefined>;
 }
 
-export function custom<T>(validator: CriteriaValidator<T>, defaultValue?: DefaultValue<T>) {
+export function custom<T>(validator: CriteriaValidator<T>, defaultValue: DefaultValue<T>) {
 	return createSchema<CustomSchema<T>>({
 		api: { ...commonCriteria },
 		defaultValue,

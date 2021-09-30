@@ -34,5 +34,5 @@ export function func<T extends AnyFunction = AnyFunction>(defaultValue?: Default
 				},
 			},
 		],
-	);
+	).undefinable();
 }

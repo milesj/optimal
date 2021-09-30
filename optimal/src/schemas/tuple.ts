@@ -26,7 +26,6 @@ export function tuple<T extends unknown[] = unknown[]>(
 		},
 		[
 			{
-				skipIfNull: true,
 				validate(value, path) {
 					if (value === undefined) {
 						// Will be built from its items
