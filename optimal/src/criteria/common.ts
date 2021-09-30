@@ -1,4 +1,11 @@
-import { invalid, invariant, isSchema, isValidString, pathKey } from '../helpers';
+import {
+	extractDefaultValue,
+	invalid,
+	invariant,
+	isSchema,
+	isValidString,
+	pathKey,
+} from '../helpers';
 import { Criteria, CriteriaValidator, Schema, SchemaState, ValueComparator } from '../types';
 
 /**
@@ -104,8 +111,10 @@ export function only<T>(state: SchemaState<T>): Criteria<T> {
 	return {
 		dontSkipIfNull: true,
 		dontSkipIfUndefined: true,
-		validate(value, path) {
-			invalid(value === defaultValue, `Value may only be "${defaultValue}".`, path, value);
+		validate(value, path, validateOptions) {
+			const testValue = extractDefaultValue(defaultValue, path, validateOptions);
+
+			invalid(value === testValue, `Value may only be "${testValue}".`, path, value);
 		},
 	};
 }

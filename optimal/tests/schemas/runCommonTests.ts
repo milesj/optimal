@@ -378,6 +378,21 @@ export function runCommonTests<T>(
 					onlySchema.validate(defaultValue);
 				}).not.toThrow();
 			});
+
+			it('handles lazy default value factories', () => {
+				expect(() => {
+					(factory(() => defaultValue) as typeof schema).only().validate(defaultValue);
+				}).not.toThrow();
+			});
+
+			it('errors for lazy default value factories', () => {
+				expect(() => {
+					// @ts-expect-error Ignore
+					(factory(() => 'someRandomValueThatWillFail') as typeof schema)
+						.only()
+						.validate(defaultValue);
+				}).toThrow('Value may only be "someRandomValueThatWillFail".');
+			});
 		});
 	}
 

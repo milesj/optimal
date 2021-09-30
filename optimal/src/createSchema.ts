@@ -1,10 +1,9 @@
-import { invalid, tryAndCollect } from './helpers';
+import { extractDefaultValue, invalid, tryAndCollect } from './helpers';
 import { OptimalError } from './OptimalError';
 import {
 	AnySchema,
 	Criteria,
 	CriteriaFactory,
-	DefaultValueInitializer,
 	InferSchemaType,
 	Schema,
 	SchemaOptions,
@@ -35,10 +34,7 @@ function validate<T>(
 	// Handle undefined
 	if (value === undefined) {
 		if (!state.undefinable) {
-			value =
-				typeof defaultValue === 'function'
-					? (defaultValue as DefaultValueInitializer<T>)(path, currentObject, rootObject)
-					: defaultValue;
+			value = extractDefaultValue(defaultValue, path, { currentObject, rootObject });
 		}
 	} else {
 		if (__DEV__ && metadata.deprecatedMessage) {
