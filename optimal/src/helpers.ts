@@ -1,4 +1,11 @@
-import { Constructor, Schema, UnknownObject } from './types';
+import {
+	Constructor,
+	DefaultValue,
+	DefaultValueInitializer,
+	Schema,
+	SchemaValidateOptions,
+	UnknownObject,
+} from './types';
 import { ValidationError } from './ValidationError';
 
 export function isObject(value: unknown): value is object {
@@ -9,6 +16,7 @@ export function isSchema<T>(value: unknown): value is Schema<T> {
 	return (
 		isObject(value) &&
 		typeof (value as UnknownObject).schema === 'function' &&
+		typeof (value as UnknownObject).state === 'function' &&
 		typeof (value as UnknownObject).type === 'function' &&
 		typeof (value as UnknownObject).validate === 'function'
 	);
@@ -182,4 +190,14 @@ export function tryAndCollect(
 	}
 
 	return result;
+}
+
+export function extractDefaultValue<T>(
+	defaultValue: DefaultValue<T>,
+	path: string,
+	{ currentObject, rootObject }: SchemaValidateOptions,
+) {
+	return typeof defaultValue === 'function'
+		? (defaultValue as DefaultValueInitializer<T>)(path, currentObject!, rootObject!)
+		: defaultValue;
 }

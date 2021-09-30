@@ -27,7 +27,6 @@ export function of<T extends object>(state: SchemaState<T>, schemas: Blueprint<T
 	state.type += `<{ ${types.join(', ')} }>`;
 
 	return {
-		skipIfNull: true,
 		validate(value, path, validateOptions) {
 			if (value) {
 				invalid(isObject(value), 'Value passed to shape must be an object.', path, value);
@@ -45,10 +44,20 @@ export function of<T extends object>(state: SchemaState<T>, schemas: Blueprint<T
 			Object.keys(schemas).forEach((prop) => {
 				const key = prop as keyof T;
 				const schema = schemas[key];
+				const subPath = path ? `${path}.${key}` : String(key);
+
+				if (schema.state().required) {
+					invalid(
+						value[key] !== undefined,
+						'Field is required and must be defined.',
+						subPath,
+						undefined,
+					);
+				}
 
 				tryAndCollect(
 					() => {
-						shape[key] = schema.validate(value[key], path ? `${path}.${key}` : String(key), {
+						shape[key] = schema.validate(value[key], subPath, {
 							...validateOptions,
 							currentObject: value as UnknownObject,
 						});

@@ -3,7 +3,7 @@ import { runCommonTests } from './runCommonTests';
 
 describe('func()', () => {
 	let schema: FunctionSchema<AnyFunction>;
-	const noop = () => {};
+	function noop() {}
 
 	beforeEach(() => {
 		schema = func();
@@ -16,9 +16,9 @@ describe('func()', () => {
 	type NullFunc = Infer<typeof nullFunc>;
 	type TypedFunc = Infer<typeof typedFunc>;
 
-	runCommonTests(() => func(), noop, { defaultValue: undefined });
+	runCommonTests(() => func(), noop, { defaultValue: undefined, skipDefaultAsserts: true });
 
-	it('supports default values', () => {
+	it('supports default values when not undefinable', () => {
 		const spy = jest.fn();
 		schema = func<AnyFunction>(() => spy);
 
@@ -40,7 +40,7 @@ describe('func()', () => {
 
 		it('doesnt error if a function is passed', () => {
 			expect(() => {
-				schema.validate(noop);
+				schema.validate(() => {});
 			}).not.toThrow();
 		});
 

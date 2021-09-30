@@ -5,6 +5,8 @@ import {
 	CommonCriterias,
 	DefaultValue,
 	InferNullable,
+	NotNull,
+	NotUndefined,
 	NumberCriterias,
 	Options,
 	Schema,
@@ -15,12 +17,14 @@ export interface NumberSchema<T = number>
 		NumberCriterias<NumberSchema<T>>,
 		CommonCriterias<NumberSchema<T>> {
 	never: () => NumberSchema<never>;
-	notNullable: () => NumberSchema<NonNullable<T>>;
+	notNullable: () => NumberSchema<NotNull<T>>;
+	notUndefinable: () => NumberSchema<NotUndefined<T>>;
 	nullable: () => NumberSchema<T | null>;
 	oneOf: <I extends number = number>(
 		list: I[],
 		options?: Options,
 	) => NumberSchema<InferNullable<T, I>>;
+	undefinable: () => NumberSchema<T | undefined>;
 }
 
 function cast(value: unknown): number {
@@ -37,7 +41,6 @@ export function number<T extends number>(defaultValue: DefaultValue<number> = 0)
 		},
 		[
 			{
-				skipIfNull: true,
 				validate(value, path) {
 					invalid(typeof value === 'number', 'Must be a number.', path, value);
 				},

@@ -43,8 +43,8 @@ export type CriteriaValidator<Input> = (
 ) => unknown;
 
 export interface Criteria<Input> {
-	skipIfNull?: boolean;
-	skipIfOptional?: boolean;
+	dontSkipIfNull?: boolean;
+	dontSkipIfUndefined?: boolean;
 	validate: CriteriaValidator<Input>;
 }
 
@@ -57,8 +57,8 @@ export interface CommonCriterias<S> {
 	and: (...keys: string[]) => S;
 	custom: (callback: CriteriaValidator<InferSchemaType<S>>) => S;
 	deprecate: (message: string) => S;
-	notRequired: () => S;
 	only: () => S;
+	optional: () => S;
 	or: (...keys: string[]) => S;
 	required: () => S;
 	when: (condition: WhenCondition<InferSchemaType<S>>, pass: AnySchema, fail?: AnySchema) => S;
@@ -67,6 +67,8 @@ export interface CommonCriterias<S> {
 	// never: () => S;
 	// notNullable: () => S;
 	// nullable: () => S;
+	// notUndefinable: () => S;
+	// undefinable: () => S;
 }
 
 export interface ArrayCriterias<S> {
@@ -132,6 +134,7 @@ export interface SchemaValidateOptions {
 
 export interface Schema<Output> {
 	schema: () => string;
+	state: () => SchemaState<Output>;
 	type: () => string;
 	validate: (value: unknown, path?: string, options?: SchemaValidateOptions) => Output;
 }
@@ -143,6 +146,7 @@ export interface SchemaState<T> {
 	nullable: boolean;
 	required: boolean;
 	type: string;
+	undefinable: boolean;
 }
 
 export interface SchemaOptions<T> {
@@ -177,6 +181,10 @@ export type DeepPartial<T> = T extends Builtin | Primitive
 	: T extends object
 	? { [K in keyof T]?: DeepPartial<T[K]> }
 	: T;
+
+export type NotNull<T> = T extends null ? never : T;
+
+export type NotUndefined<T> = T extends undefined ? never : T;
 
 // Any is required for generics to be typed correctly for consumers
 /* eslint-disable @typescript-eslint/no-explicit-any */

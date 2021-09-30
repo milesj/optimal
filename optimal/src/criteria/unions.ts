@@ -26,7 +26,6 @@ export function of<T = unknown>(state: SchemaState<T>, schemas: Schema<unknown>[
 	state.type = schemas.map((item) => item.type()).join(' | ');
 
 	return {
-		skipIfNull: true,
 		validate(value, path, validateOptions) {
 			let nextValue: unknown = value;
 			const allowedValues = schemas.map((schema) => schema.type()).join(', ');

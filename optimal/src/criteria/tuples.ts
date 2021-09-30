@@ -29,7 +29,6 @@ export function of<T extends unknown[]>(
 	state.type = `tuple<${itemsSchemas.map((item) => item.type()).join(', ')}>`;
 
 	return {
-		skipIfNull: true,
 		validate(value, path, validateOptions) {
 			invalid(
 				Array.isArray(value) && value.length <= itemsSchemas.length,

@@ -1,12 +1,14 @@
 import { createSchema } from '../createSchema';
 import { commonCriteria } from '../criteria';
 import { invariant, isSchema } from '../helpers';
-import { DefaultValue, Schema } from '../types';
+import { DefaultValue, NotNull, NotUndefined, Schema } from '../types';
 
 export interface LazySchema<T = boolean> extends Schema<T> {
 	never: () => LazySchema<never>;
-	notNullable: () => LazySchema<NonNullable<T>>;
+	notNullable: () => LazySchema<NotNull<T>>;
+	notUndefinable: () => LazySchema<NotUndefined<T>>;
 	nullable: () => LazySchema<T | null>;
+	undefinable: () => LazySchema<T | undefined>;
 }
 
 export function lazy<T>(
@@ -23,9 +25,6 @@ export function lazy<T>(
 		},
 		[
 			{
-				// Avoid recursion by returning early and using the provided default value
-				skipIfNull: true,
-				skipIfOptional: true,
 				validate(value, path, validateOptions) {
 					const schema = factory(value);
 

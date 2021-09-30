@@ -14,7 +14,6 @@ export function of<T>(
 	state.type = ref.name ?? ref.constructor.name;
 
 	return {
-		skipIfNull: true,
 		validate(value, path) {
 			invalid(
 				typeof ref === 'function' &&

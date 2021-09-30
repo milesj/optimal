@@ -112,15 +112,15 @@ describe('string()', () => {
 			}).toThrowErrorMatchingInlineSnapshot(`"String does not include \\"oo\\"."`);
 		});
 
-		it('errors if value matches default value and predicate is required', () => {
+		it('errors if value matches default value and schema is required', () => {
 			expect(() => {
-				containsSchema.required().validate('');
+				containsSchema.notUndefinable().validate(undefined);
 			}).toThrowErrorMatchingInlineSnapshot(`"String does not include \\"oo\\"."`);
 		});
 
-		it('doesnt error if value matches default value and predicate is optional', () => {
+		it('doesnt error if value matches default value and schema is optional', () => {
 			expect(() => {
-				containsSchema.validate('');
+				containsSchema.undefinable().validate(undefined);
 			}).not.toThrow();
 		});
 
@@ -257,15 +257,15 @@ describe('string()', () => {
 			}).toThrowErrorMatchingInlineSnapshot(`"String does not match. (pattern \\"oo\\")"`);
 		});
 
-		it('errors if value matches default value and predicate is required', () => {
+		it('errors if value matches default value and schema is required', () => {
 			expect(() => {
-				matchSchema.required().validate('');
+				matchSchema.notUndefinable().validate(undefined);
 			}).toThrowErrorMatchingInlineSnapshot(`"String does not match. (pattern \\"oo\\")"`);
 		});
 
-		it('doesnt error if value matches default value and predicate is optional', () => {
+		it('doesnt error if value matches default value and schema is optional', () => {
 			expect(() => {
-				matchSchema.validate('');
+				matchSchema.undefinable().validate(undefined);
 			}).not.toThrow();
 		});
 

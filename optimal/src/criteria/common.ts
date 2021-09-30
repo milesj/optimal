@@ -1,13 +1,22 @@
-import { invalid, invariant, isSchema, isValidString, pathKey } from '../helpers';
+import {
+	extractDefaultValue,
+	invalid,
+	invariant,
+	isSchema,
+	isValidString,
+	pathKey,
+} from '../helpers';
 import { Criteria, CriteriaValidator, Schema, SchemaState, ValueComparator } from '../types';
 
 /**
- * Map a list of field names that must be defined alongside this field.
+ * Map a list of field names that must be defined alongside this field when in a shape/object.
  */
 export function and<T>(state: SchemaState<T>, ...keys: string[]): Criteria<T> {
 	invariant(keys.length > 0, 'AND requires a list of field names.');
 
 	return {
+		dontSkipIfNull: true,
+		dontSkipIfUndefined: true,
 		validate(value, path, { currentObject }) {
 			const andKeys = [...new Set([pathKey(path), ...keys])].sort();
 			const undefs = andKeys.filter(
@@ -61,17 +70,24 @@ export function never<T>(state: SchemaState<T>) {
 }
 
 /**
+ * Require this field to be explicitly defined when in a shape/object.
+ */
+export function required<T>(state: SchemaState<T>) {
+	state.required = true;
+}
+
+/**
+ * Dont require this field to be explicitly defined when in a shape/object.
+ */
+export function optional<T>(state: SchemaState<T>) {
+	state.required = false;
+}
+
+/**
  * Disallow null values.
  */
 export function notNullable<T>(state: SchemaState<T>) {
 	state.nullable = false;
-}
-
-/**
- * Require this field to NOT be explicitly defined.
- */
-export function notRequired<T>(state: SchemaState<T>) {
-	state.required = false;
 }
 
 /**
@@ -93,19 +109,25 @@ export function only<T>(state: SchemaState<T>): Criteria<T> {
 	);
 
 	return {
-		validate(value, path) {
-			invalid(value === defaultValue, `Value may only be "${defaultValue}".`, path, value);
+		dontSkipIfNull: true,
+		dontSkipIfUndefined: true,
+		validate(value, path, validateOptions) {
+			const testValue = extractDefaultValue(defaultValue, path, validateOptions);
+
+			invalid(value === testValue, `Value may only be "${testValue}".`, path, value);
 		},
 	};
 }
 
 /**
- * Map a list of field names that must have at least 1 defined.
+ * Map a list of field names that must have at least 1 defined when in a shape/object.
  */
 export function or<T>(state: SchemaState<T>, ...keys: string[]): Criteria<T> {
 	invariant(keys.length > 0, 'OR requires a list of field names.');
 
 	return {
+		dontSkipIfNull: true,
+		dontSkipIfUndefined: true,
 		validate(value, path, { currentObject }) {
 			const orKeys = [...new Set([pathKey(path), ...keys])].sort();
 			const defs = orKeys.filter(
@@ -121,10 +143,17 @@ export function or<T>(state: SchemaState<T>, ...keys: string[]): Criteria<T> {
 }
 
 /**
- * Require this field to be explicitly defined.
+ * Allow undefined values.
  */
-export function required<T>(state: SchemaState<T>) {
-	state.required = true;
+export function undefinable<T>(state: SchemaState<T>) {
+	state.undefinable = true;
+}
+
+/**
+ * Disallow undefined values.
+ */
+export function notUndefinable<T>(state: SchemaState<T>) {
+	state.undefinable = false;
 }
 
 /**
@@ -143,6 +172,8 @@ export function when<T>(
 	}
 
 	return {
+		dontSkipIfNull: true,
+		dontSkipIfUndefined: true,
 		validate(value, path, validateOptions) {
 			const passed =
 				typeof condition === 'function'
@@ -167,12 +198,14 @@ export function when<T>(
 }
 
 /**
- * Map a list of field names that must not be defined alongside this field.
+ * Map a list of field names that must not be defined alongside this field when in a shape/object.
  */
 export function xor<T>(state: SchemaState<T>, ...keys: string[]): Criteria<T> {
 	invariant(keys.length > 0, 'XOR requires a list of field names.');
 
 	return {
+		dontSkipIfNull: true,
+		dontSkipIfUndefined: true,
 		validate(value, path, { currentObject }) {
 			const xorKeys = [...new Set([pathKey(path), ...keys])].sort();
 			const defs = xorKeys.filter(

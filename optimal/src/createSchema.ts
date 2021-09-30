@@ -1,10 +1,9 @@
-import { invalid, tryAndCollect } from './helpers';
+import { extractDefaultValue, invalid, tryAndCollect } from './helpers';
 import { OptimalError } from './OptimalError';
 import {
 	AnySchema,
 	Criteria,
 	CriteriaFactory,
-	DefaultValueInitializer,
 	InferSchemaType,
 	Schema,
 	SchemaOptions,
@@ -27,19 +26,16 @@ function validate<T>(
 		currentObject = {},
 		rootObject = currentObject,
 	}: SchemaValidateOptions = {},
-): T | null {
+): T | null | undefined {
 	const { defaultValue, metadata } = state;
 
 	let value: unknown = initialValue;
 
 	// Handle undefined
 	if (value === undefined) {
-		value =
-			typeof defaultValue === 'function'
-				? (defaultValue as DefaultValueInitializer<T>)(path, currentObject, rootObject)
-				: defaultValue;
-
-		invalid(!state.required, 'Field is required and must be defined.', path, undefined);
+		if (!state.undefinable) {
+			value = extractDefaultValue(defaultValue, path, { currentObject, rootObject });
+		}
 	} else {
 		if (__DEV__ && metadata.deprecatedMessage) {
 			// eslint-disable-next-line no-console
@@ -59,8 +55,8 @@ function validate<T>(
 
 	validators.forEach((test) => {
 		if (
-			(test.skipIfNull && value === null) ||
-			(test.skipIfOptional && !state.required && value === state.defaultValue) ||
+			(!test.dontSkipIfNull && state.nullable && value === null) ||
+			(!test.dontSkipIfUndefined && state.undefinable && value === undefined) ||
 			state.never
 		) {
 			return;
@@ -101,6 +97,7 @@ export function createSchema<S extends AnySchema, T = InferSchemaType<S>>(
 		nullable: false,
 		required: false,
 		type,
+		undefinable: false,
 	};
 
 	const validators: Criteria<T>[] = [];
@@ -121,13 +118,25 @@ export function createSchema<S extends AnySchema, T = InferSchemaType<S>>(
 		schema() {
 			return type;
 		},
+		state() {
+			return state;
+		},
 		type() {
 			return state.type;
 		},
+		// @ts-expect-error Ignore null/undefined
 		validate(value, path, options) {
-			const result = validate(state, validators, value, path, options)!;
+			const result = validate(state, validators, value, path, options);
 
-			return cast && result !== null ? cast(result) : result;
+			if (state.nullable && result === null) {
+				return null;
+			}
+
+			if (state.undefinable && result === undefined) {
+				return undefined;
+			}
+
+			return cast ? cast(result) : result;
 		},
 	};
 

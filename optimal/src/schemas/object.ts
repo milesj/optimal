@@ -5,6 +5,8 @@ import {
 	CommonCriterias,
 	DefaultValue,
 	InferNullable,
+	NotNull,
+	NotUndefined,
 	ObjectCriterias,
 	Options,
 	Schema,
@@ -17,11 +19,13 @@ export interface ObjectSchema<T = object>
 		CommonCriterias<ObjectSchema<T>> {
 	keysOf: (schema: StringSchema, options?: Options) => ObjectSchema<T>;
 	never: () => ObjectSchema<never>;
-	notNullable: () => ObjectSchema<NonNullable<T>>;
+	notNullable: () => ObjectSchema<NotNull<T>>;
+	notUndefinable: () => ObjectSchema<NotUndefined<T>>;
 	nullable: () => ObjectSchema<T | null>;
 	of: <V, K extends PropertyKey = keyof T>(
 		schema: Schema<V>,
 	) => ObjectSchema<InferNullable<T, Record<K, V>>>;
+	undefinable: () => ObjectSchema<T | undefined>;
 }
 
 export function object<V = unknown, K extends PropertyKey = string>(
@@ -36,7 +40,6 @@ export function object<V = unknown, K extends PropertyKey = string>(
 		},
 		[
 			{
-				skipIfNull: true,
 				validate(value, path) {
 					invalid(isObject(value), 'Must be a plain object.', path, value);
 				},

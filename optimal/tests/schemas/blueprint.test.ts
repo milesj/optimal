@@ -13,7 +13,7 @@ describe('blueprint()', () => {
 	describe('type()', () => {
 		it('returns shape type', () => {
 			expect(blueprint().type()).toBe(
-				'object<shape<{ schema: function, type: function, validate: function }>>',
+				'object<shape<{ schema: function, state: function, type: function, validate: function }>>',
 			);
 		});
 	});

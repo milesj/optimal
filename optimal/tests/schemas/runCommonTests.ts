@@ -5,6 +5,8 @@ interface TestCriterias<S> extends CommonCriterias<S> {
 	never: () => S;
 	notNullable: () => S;
 	nullable: () => S;
+	notUndefinable: () => S;
+	undefinable: () => S;
 }
 
 // eslint-disable-next-line jest/no-export
@@ -19,9 +21,9 @@ export function runCommonTests<T>(
 		skipDefaultAsserts?: boolean;
 	},
 ) {
-	const optionalByDefault = defaultValue === undefined;
-	const nullableByDefault = defaultValue === null;
-	const emptyByDefault = nullableByDefault || optionalByDefault;
+	const undefinedByDefault = defaultValue === undefined;
+	const nullByDefault = defaultValue === null;
+	const emptyByDefault = nullByDefault || undefinedByDefault;
 	let schema: Schema<T> & TestCriterias<Schema<T>>;
 
 	// eslint-disable-next-line jest/require-top-level-describe
@@ -44,15 +46,17 @@ export function runCommonTests<T>(
 	});
 
 	describe('default value', () => {
-		it('returns default value when undefined is passed', () => {
-			expect(schema.validate(undefined)).toEqual(defaultValue);
-		});
+		if (!undefinedByDefault) {
+			it('returns default value when undefined is passed', () => {
+				expect(schema.validate(undefined)).toEqual(defaultValue);
+			});
 
-		it('can lazy load the default value through a callback function', () => {
-			schema = factory(() => defaultValue!) as any;
+			it('can lazy load the default value through a callback function', () => {
+				schema = factory(() => defaultValue!) as any;
 
-			expect(schema.validate(undefined)).toEqual(defaultValue);
-		});
+				expect(schema.validate(undefined)).toEqual(defaultValue);
+			});
+		}
 
 		if (!emptyByDefault && !skipDefaultAsserts) {
 			it('passes the current path and objects to the lazy callback function', () => {
@@ -110,7 +114,7 @@ export function runCommonTests<T>(
 			}).toThrow('All of these fields must be defined: a, c');
 		});
 
-		if (nullableByDefault) {
+		if (nullByDefault) {
 			it('errors if not all properties are defined and null is passed', () => {
 				expect(() => {
 					andSchema.validate(null, 'a', {
@@ -135,7 +139,7 @@ export function runCommonTests<T>(
 			}).not.toThrow();
 		});
 
-		if (nullableByDefault) {
+		if (nullByDefault) {
 			it('doesnt error if all are defined and null is passed', () => {
 				expect(() => {
 					andSchema.validate(null, 'a', {
@@ -241,6 +245,56 @@ export function runCommonTests<T>(
 		});
 	});
 
+	describe('undefinable()', () => {
+		let undefSchema: Schema<T>;
+
+		beforeEach(() => {
+			undefSchema = schema.undefinable();
+		});
+
+		it('returns value when a valid value is passed', () => {
+			expect(undefSchema.validate(value)).toEqual(value);
+		});
+
+		it('returns undefined when undefined is passed', () => {
+			expect(undefSchema.validate(undefined)).toBeUndefined();
+		});
+
+		it('doesnt error when undefined is passed', () => {
+			expect(() => undefSchema.validate(undefined)).not.toThrow();
+		});
+
+		it('doesnt error when a valid value is passed', () => {
+			expect(() => undefSchema.validate(value)).not.toThrow();
+		});
+	});
+
+	describe('notUndefinable()', () => {
+		let notUndefSchema: Schema<T>;
+
+		beforeEach(() => {
+			notUndefSchema = (schema.undefinable() as typeof schema).notUndefinable();
+		});
+
+		it('returns value when a valid value is passed', () => {
+			expect(notUndefSchema.validate(value)).toEqual(value);
+		});
+
+		if (!undefinedByDefault) {
+			it('returns default value when undefined is passed', () => {
+				expect(notUndefSchema.validate(undefined)).toEqual(defaultValue);
+			});
+
+			it('doesnt error when undefined is passed', () => {
+				expect(() => notUndefSchema.validate(undefined)).not.toThrow();
+			});
+		}
+
+		it('doesnt error when a valid value is passed', () => {
+			expect(() => notUndefSchema.validate(value)).not.toThrow();
+		});
+	});
+
 	describe('nullable()', () => {
 		let nullSchema: Schema<T>;
 
@@ -266,9 +320,11 @@ export function runCommonTests<T>(
 			expect(() => nullSchema.validate(null)).not.toThrow();
 		});
 
-		it('doesnt error when undefined is passed', () => {
-			expect(() => nullSchema.validate(undefined)).not.toThrow();
-		});
+		if (!undefinedByDefault) {
+			it('doesnt error when undefined is passed', () => {
+				expect(() => nullSchema.validate(undefined)).not.toThrow();
+			});
+		}
 
 		it('doesnt error when a valid value is passed', () => {
 			expect(() => nullSchema.validate(value)).not.toThrow();
@@ -294,59 +350,19 @@ export function runCommonTests<T>(
 			expect(() => notNullSchema.validate(value)).not.toThrow();
 		});
 
-		if (!nullableByDefault) {
+		if (!nullByDefault) {
 			if (!skipDefaultAsserts) {
 				it('returns default value when undefined is passed', () => {
 					expect(notNullSchema.validate(undefined)).toEqual(defaultValue);
 				});
 			}
 
-			it('doesnt error when undefined is passed', () => {
-				expect(() => notNullSchema.validate(undefined)).not.toThrow();
-			});
+			if (!undefinedByDefault) {
+				it('doesnt error when undefined is passed', () => {
+					expect(() => notNullSchema.validate(undefined)).not.toThrow();
+				});
+			}
 		}
-	});
-
-	describe('required()', () => {
-		let reqSchema: Schema<T>;
-
-		beforeEach(() => {
-			reqSchema = schema.required();
-		});
-
-		it('returns value when a valid value is passed', () => {
-			expect(reqSchema.validate(value)).toEqual(value);
-		});
-
-		it('errors when undefined is passed', () => {
-			expect(() => reqSchema.validate(undefined)).toThrow('Field is required and must be defined.');
-		});
-
-		it('doesnt error when a valid value is passed', () => {
-			expect(() => reqSchema.validate(value)).not.toThrow();
-		});
-	});
-
-	describe('notRequired()', () => {
-		let optSchema: Schema<T>;
-
-		beforeEach(() => {
-			optSchema = schema.notRequired();
-		});
-
-		if (!skipDefaultAsserts) {
-			it('returns default value when undefind is passed', () => {
-				expect(optSchema.validate(undefined)).toEqual(defaultValue);
-			});
-		}
-
-		it('doesnt error when undefined is passed', () => {
-			expect(() => optSchema.validate(undefined)).not.toThrow();
-		});
-
-		it('doesnt error when a valid value is passed', () => {
-			expect(() => optSchema.validate(value)).not.toThrow();
-		});
 	});
 
 	if (!emptyByDefault && !skipDefaultAsserts) {
@@ -361,6 +377,21 @@ export function runCommonTests<T>(
 				expect(() => {
 					onlySchema.validate(defaultValue);
 				}).not.toThrow();
+			});
+
+			it('handles lazy default value factories', () => {
+				expect(() => {
+					(factory(() => defaultValue) as typeof schema).only().validate(defaultValue);
+				}).not.toThrow();
+			});
+
+			it('errors for lazy default value factories', () => {
+				expect(() => {
+					// @ts-expect-error Ignore
+					(factory(() => 'someRandomValueThatWillFail') as typeof schema)
+						.only()
+						.validate(defaultValue);
+				}).toThrow('Value may only be "someRandomValueThatWillFail".');
 			});
 		});
 	}

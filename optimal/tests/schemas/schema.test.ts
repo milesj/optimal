@@ -15,7 +15,7 @@ describe('schema()', () => {
 	describe('type()', () => {
 		it('returns shape type', () => {
 			expect(schemaFunc().type()).toBe(
-				'shape<{ schema: function, type: function, validate: function }>',
+				'shape<{ schema: function, state: function, type: function, validate: function }>',
 			);
 		});
 	});
@@ -30,25 +30,46 @@ describe('schema()', () => {
 		it('errors if no fields provided', () => {
 			expect(() => {
 				schema.validate({});
-			}).toThrow('Field is required and must be defined.');
+			}).toThrowErrorMatchingInlineSnapshot(`
+			"The following validations have failed:
+			  - Invalid field \\"schema\\" with value \`undefined\`. Must be a function.
+			  - Invalid field \\"state\\" with value \`undefined\`. Must be a function.
+			  - Invalid field \\"type\\" with value \`undefined\`. Must be a function.
+			  - Invalid field \\"validate\\" with value \`undefined\`. Must be a function."
+		`);
 		});
 
 		it('errors if a schema is not a function', () => {
 			expect(() => {
 				schema.validate({ schema: 123 });
-			}).toThrow('Must be a function.');
+			}).toThrowErrorMatchingInlineSnapshot(`
+			"The following validations have failed:
+			  - Invalid field \\"schema\\" with value 123. Must be a function.
+			  - Invalid field \\"state\\" with value \`undefined\`. Must be a function.
+			  - Invalid field \\"type\\" with value \`undefined\`. Must be a function.
+			  - Invalid field \\"validate\\" with value \`undefined\`. Must be a function."
+		`);
 		});
 
 		it('errors if a type is not a function', () => {
 			expect(() => {
 				schema.validate({ schema() {}, type: 123 });
-			}).toThrow('Must be a function.');
+			}).toThrowErrorMatchingInlineSnapshot(`
+			"The following validations have failed:
+			  - Invalid field \\"state\\" with value \`undefined\`. Must be a function.
+			  - Invalid field \\"type\\" with value 123. Must be a function.
+			  - Invalid field \\"validate\\" with value \`undefined\`. Must be a function."
+		`);
 		});
 
 		it('errors if a validate is not a function', () => {
 			expect(() => {
 				schema.validate({ schema() {}, type() {}, validate: 123 });
-			}).toThrow('Must be a function.');
+			}).toThrowErrorMatchingInlineSnapshot(`
+			"The following validations have failed:
+			  - Invalid field \\"state\\" with value \`undefined\`. Must be a function.
+			  - Invalid field \\"validate\\" with value 123. Must be a function."
+		`);
 		});
 
 		it('errors if null is passed', () => {

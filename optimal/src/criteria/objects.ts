@@ -16,7 +16,6 @@ export function keysOf<T>(
 	);
 
 	return {
-		skipIfNull: true,
 		validate(value, path, validateOptions) {
 			if (isObject(value)) {
 				Object.keys(value).forEach((key) => {
@@ -47,7 +46,6 @@ export function notEmpty<T>(
 	options: Options = {},
 ): Criteria<Record<string, T>> {
 	return {
-		skipIfNull: true,
 		validate(value, path) {
 			invalid(
 				Object.keys(value).length > 0,
@@ -72,7 +70,6 @@ export function of<T>(
 	state.type += `<${valuesSchema.type()}>`;
 
 	return {
-		skipIfNull: true,
 		validate(value, path, validateOptions) {
 			if (!isObject(value)) {
 				return {};
@@ -106,7 +103,6 @@ export function sizeOf<T>(
 	invariant(typeof size === 'number' && size > 0, 'Size of requires a non-zero positive number.');
 
 	return {
-		skipIfNull: true,
 		validate(value, path) {
 			invalid(
 				Object.keys(value).length === size,

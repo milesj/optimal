@@ -6,7 +6,6 @@ import { Criteria, Options, Schema, SchemaState } from '../types';
  */
 export function notEmpty<T>(state: SchemaState<T[]>, options: Options = {}): Criteria<T[]> {
 	return {
-		skipIfNull: true,
 		validate(value, path) {
 			invalid(value.length > 0, options.message ?? 'Array cannot be empty.', path, value);
 		},
@@ -23,7 +22,6 @@ export function of<T>(state: SchemaState<T[]>, itemsSchema: Schema<T>): Criteria
 	state.type += `<${itemsSchema.type()}>`;
 
 	return {
-		skipIfNull: true,
 		validate(value, path, validateOptions) {
 			if (!Array.isArray(value)) {
 				return [];
@@ -51,7 +49,6 @@ export function sizeOf<T>(
 	invariant(typeof size === 'number' && size > 0, 'Size of requires a non-zero positive number.');
 
 	return {
-		skipIfNull: true,
 		validate(value, path) {
 			invalid(
 				value.length === size,

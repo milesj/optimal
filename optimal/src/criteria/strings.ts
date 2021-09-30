@@ -12,8 +12,6 @@ export function contains(
 	invariant(isValidString(token), 'Contains requires a non-empty token.');
 
 	return {
-		skipIfNull: true,
-		skipIfOptional: true,
 		validate(value, path) {
 			invalid(
 				value.includes(token, options.index ?? 0),
@@ -36,8 +34,6 @@ export function match(
 	invariant(pattern instanceof RegExp, 'Match requires a regular expression to match against.');
 
 	return {
-		skipIfNull: true,
-		skipIfOptional: true,
 		validate(value, path) {
 			invalid(
 				!!value.match(pattern),
@@ -94,7 +90,6 @@ export function snakeCase(state: SchemaState<string>, options: Options = {}): Cr
  */
 export function notEmpty(state: SchemaState<string>, options: Options = {}): Criteria<string> {
 	return {
-		skipIfNull: true,
 		validate(value, path) {
 			invalid(isValidString(value), options.message ?? 'String cannot be empty.', path, value);
 		},
@@ -115,7 +110,6 @@ export function oneOf(
 	);
 
 	return {
-		skipIfNull: true,
 		validate(value, path) {
 			invalid(
 				list.includes(value),
@@ -132,7 +126,6 @@ export function oneOf(
  */
 export function lowerCase(state: SchemaState<string>, options: Options = {}): Criteria<string> {
 	return {
-		skipIfNull: true,
 		validate(value, path) {
 			invalid(
 				value === value.toLocaleLowerCase(),
@@ -149,7 +142,6 @@ export function lowerCase(state: SchemaState<string>, options: Options = {}): Cr
  */
 export function upperCase(state: SchemaState<string>, options: Options = {}): Criteria<string> {
 	return {
-		skipIfNull: true,
 		validate(value, path) {
 			invalid(
 				value === value.toLocaleUpperCase(),
@@ -172,7 +164,6 @@ export function sizeOf(
 	invariant(typeof size === 'number' && size > 0, 'Size requires a non-zero positive number.');
 
 	return {
-		skipIfNull: true,
 		validate(value, path) {
 			invalid(
 				value.length === size,

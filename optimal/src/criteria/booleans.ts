@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-boolean-literal-compare */
+
 import { invalid } from '../helpers';
 import { Criteria, Options, SchemaState } from '../types';
 
@@ -8,8 +10,10 @@ export function onlyFalse(state: SchemaState<boolean>, options: Options = {}): C
 	state.defaultValue = false;
 
 	return {
+		dontSkipIfNull: true,
+		dontSkipIfUndefined: true,
 		validate(value, path) {
-			invalid(!value, options.message ?? 'May only be `false`.', path, value);
+			invalid(value === false, options.message ?? 'May only be `false`.', path, value);
 		},
 	};
 }
@@ -21,8 +25,10 @@ export function onlyTrue(state: SchemaState<boolean>, options: Options = {}): Cr
 	state.defaultValue = true;
 
 	return {
+		dontSkipIfNull: true,
+		dontSkipIfUndefined: true,
 		validate(value, path) {
-			invalid(value, options.message ?? 'May only be `true`.', path, value);
+			invalid(value === true, options.message ?? 'May only be `true`.', path, value);
 		},
 	};
 }

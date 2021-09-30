@@ -5,6 +5,8 @@ import {
 	CommonCriterias,
 	DefaultValue,
 	InferNullable,
+	NotNull,
+	NotUndefined,
 	Options,
 	Schema,
 	StringCriterias,
@@ -15,12 +17,14 @@ export interface StringSchema<T = string>
 		StringCriterias<StringSchema<T>>,
 		CommonCriterias<StringSchema<T>> {
 	never: () => StringSchema<never>;
-	notNullable: () => StringSchema<NonNullable<T>>;
+	notNullable: () => StringSchema<NotNull<T>>;
+	notUndefinable: () => StringSchema<NotUndefined<T>>;
 	nullable: () => StringSchema<T | null>;
 	oneOf: <I extends string = string>(
 		list: I[],
 		options?: Options,
 	) => StringSchema<InferNullable<T, I>>;
+	undefinable: () => StringSchema<T | undefined>;
 }
 
 function cast(value: unknown): string {
@@ -39,7 +43,6 @@ export function string<T extends string = string>(
 		},
 		[
 			{
-				skipIfNull: true,
 				validate(value, path) {
 					invalid(typeof value === 'string', 'Must be a string.', path, value);
 				},
