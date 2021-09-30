@@ -4,7 +4,7 @@ import { invalid } from '../helpers';
 import {
 	AnyFunction,
 	CommonCriterias,
-	DefaultValue,
+	DefaultValueInitializer,
 	NotNull,
 	NotUndefined,
 	Schema,
@@ -20,7 +20,17 @@ export interface FunctionSchema<T = AnyFunction>
 	undefinable: () => FunctionSchema<T | undefined>;
 }
 
-export function func<T extends AnyFunction = AnyFunction>(defaultValue?: DefaultValue<T>) {
+// All schemas need a default value to operate correctly,
+// but functions are a weird one. We want to verify that
+// "this value is a function" without needing to return
+// a default value (predicates, etc), but also sometimes
+// return a default value when undefined is passed
+// (option objects, etc). So by default (pun intended),
+// this schema's default value is `undefined`.
+
+export function func<T extends AnyFunction = AnyFunction>(
+	defaultValue?: DefaultValueInitializer<T>,
+) {
 	return createSchema<FunctionSchema<T>>(
 		{
 			api: { ...commonCriteria },
@@ -34,5 +44,5 @@ export function func<T extends AnyFunction = AnyFunction>(defaultValue?: Default
 				},
 			},
 		],
-	).undefinable();
+	);
 }

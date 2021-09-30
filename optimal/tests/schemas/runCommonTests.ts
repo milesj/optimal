@@ -46,15 +46,17 @@ export function runCommonTests<T>(
 	});
 
 	describe('default value', () => {
-		it('returns default value when undefined is passed', () => {
-			expect(schema.validate(undefined)).toEqual(defaultValue);
-		});
+		if (!undefinedByDefault) {
+			it('returns default value when undefined is passed', () => {
+				expect(schema.validate(undefined)).toEqual(defaultValue);
+			});
 
-		it('can lazy load the default value through a callback function', () => {
-			schema = factory(() => defaultValue!) as any;
+			it('can lazy load the default value through a callback function', () => {
+				schema = factory(() => defaultValue!) as any;
 
-			expect(schema.validate(undefined)).toEqual(defaultValue);
-		});
+				expect(schema.validate(undefined)).toEqual(defaultValue);
+			});
+		}
 
 		if (!emptyByDefault && !skipDefaultAsserts) {
 			it('passes the current path and objects to the lazy callback function', () => {
@@ -318,9 +320,11 @@ export function runCommonTests<T>(
 			expect(() => nullSchema.validate(null)).not.toThrow();
 		});
 
-		it('doesnt error when undefined is passed', () => {
-			expect(() => nullSchema.validate(undefined)).not.toThrow();
-		});
+		if (!undefinedByDefault) {
+			it('doesnt error when undefined is passed', () => {
+				expect(() => nullSchema.validate(undefined)).not.toThrow();
+			});
+		}
 
 		it('doesnt error when a valid value is passed', () => {
 			expect(() => nullSchema.validate(value)).not.toThrow();
@@ -353,9 +357,11 @@ export function runCommonTests<T>(
 				});
 			}
 
-			it('doesnt error when undefined is passed', () => {
-				expect(() => notNullSchema.validate(undefined)).not.toThrow();
-			});
+			if (!undefinedByDefault) {
+				it('doesnt error when undefined is passed', () => {
+					expect(() => notNullSchema.validate(undefined)).not.toThrow();
+				});
+			}
 		}
 	});
 

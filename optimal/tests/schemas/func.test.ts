@@ -2,8 +2,8 @@ import { AnyFunction, func, FunctionSchema, Infer } from '../../src';
 import { runCommonTests } from './runCommonTests';
 
 describe('func()', () => {
-	let schema: FunctionSchema<AnyFunction | undefined>;
-	const noop = () => {};
+	let schema: FunctionSchema<AnyFunction>;
+	function noop() {}
 
 	beforeEach(() => {
 		schema = func();
@@ -16,17 +16,13 @@ describe('func()', () => {
 	type NullFunc = Infer<typeof nullFunc>;
 	type TypedFunc = Infer<typeof typedFunc>;
 
-	runCommonTests(() => func(), noop, { defaultValue: undefined });
-
-	it('returns undefined by default', () => {
-		expect(schema.validate(undefined)).toBeUndefined();
-	});
+	runCommonTests(() => func(), noop, { defaultValue: undefined, skipDefaultAsserts: true });
 
 	it('supports default values when not undefinable', () => {
 		const spy = jest.fn();
 		schema = func<AnyFunction>(() => spy);
 
-		expect(schema.notUndefinable().validate(undefined)).toBe(spy);
+		expect(schema.validate(undefined)).toBe(spy);
 	});
 
 	describe('type()', () => {
@@ -44,7 +40,7 @@ describe('func()', () => {
 
 		it('doesnt error if a function is passed', () => {
 			expect(() => {
-				schema.validate(noop);
+				schema.validate(() => {});
 			}).not.toThrow();
 		});
 
