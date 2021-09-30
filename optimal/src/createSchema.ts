@@ -59,8 +59,8 @@ function validate<T>(
 
 	validators.forEach((test) => {
 		if (
-			(test.skipIfNull && value === null) ||
-			(test.skipIfUndefined && value === undefined) ||
+			(!test.dontSkipIfNull && state.nullable && value === null) ||
+			(!test.dontSkipIfUndefined && state.undefinable && value === undefined) ||
 			state.never
 		) {
 			return;

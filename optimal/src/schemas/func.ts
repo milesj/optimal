@@ -1,6 +1,6 @@
 import { createSchema } from '../createSchema';
 import { commonCriteria } from '../criteria';
-import { invalid, validateType } from '../helpers';
+import { invalid } from '../helpers';
 import {
 	AnyFunction,
 	CommonCriterias,
@@ -20,10 +20,7 @@ export interface FunctionSchema<T = AnyFunction>
 	undefinable: () => FunctionSchema<T | undefined>;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function func<T extends (...args: any[]) => any = AnyFunction>(
-	defaultValue?: DefaultValue<T>,
-) {
+export function func<T extends AnyFunction = AnyFunction>(defaultValue?: DefaultValue<T>) {
 	return createSchema<FunctionSchema<T>>(
 		{
 			api: { ...commonCriteria },
@@ -31,9 +28,11 @@ export function func<T extends (...args: any[]) => any = AnyFunction>(
 			type: 'function',
 		},
 		[
-			validateType((value, path) => {
-				invalid(typeof value === 'function', 'Must be a function.', path, value);
-			}),
+			{
+				validate(value, path) {
+					invalid(typeof value === 'function', 'Must be a function.', path, value);
+				},
+			},
 		],
 	);
 }

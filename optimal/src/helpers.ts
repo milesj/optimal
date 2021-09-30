@@ -197,13 +197,13 @@ export function shouldReturnUndefined(state: SchemaState<unknown>, value: unknow
 
 export function validateType<T>(validator: CriteriaValidator<T>): CriteriaFactory<T> {
 	return (state) => ({
-		skipIfNull: true,
+		// skipIfNull: true,
 		validate(value, path, options) {
 			// We cant use `skipIfUndefined` as we only want this to return if the
 			// schema is _also_ undefinable, otherwise validate and fail.
-			if (shouldReturnUndefined(state, value)) {
-				return undefined;
-			}
+			// if (shouldReturnUndefined(state, value)) {
+			// 	return undefined;
+			// }
 
 			return validator(value, path, options);
 		},

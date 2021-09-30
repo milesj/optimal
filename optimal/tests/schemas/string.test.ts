@@ -114,13 +114,13 @@ describe('string()', () => {
 
 		it('errors if value matches default value and schema is required', () => {
 			expect(() => {
-				containsSchema.notUndefinable().validate('');
+				containsSchema.notUndefinable().validate(undefined);
 			}).toThrowErrorMatchingInlineSnapshot(`"String does not include \\"oo\\"."`);
 		});
 
 		it('doesnt error if value matches default value and schema is optional', () => {
 			expect(() => {
-				containsSchema.undefinable().validate('');
+				containsSchema.undefinable().validate(undefined);
 			}).not.toThrow();
 		});
 
@@ -259,13 +259,13 @@ describe('string()', () => {
 
 		it('errors if value matches default value and schema is required', () => {
 			expect(() => {
-				matchSchema.notUndefinable().validate('');
+				matchSchema.notUndefinable().validate(undefined);
 			}).toThrowErrorMatchingInlineSnapshot(`"String does not match. (pattern \\"oo\\")"`);
 		});
 
 		it('doesnt error if value matches default value and schema is optional', () => {
 			expect(() => {
-				matchSchema.undefinable().validate('');
+				matchSchema.undefinable().validate(undefined);
 			}).not.toThrow();
 		});
 

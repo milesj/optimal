@@ -27,7 +27,6 @@ export function of<T extends object>(state: SchemaState<T>, schemas: Blueprint<T
 	state.type += `<{ ${types.join(', ')} }>`;
 
 	return {
-		skipIfNull: true,
 		validate(value, path, validateOptions) {
 			if (value) {
 				invalid(isObject(value), 'Value passed to shape must be an object.', path, value);

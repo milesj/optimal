@@ -32,7 +32,6 @@ export function shape<T extends object>(blueprint: Blueprint<T>): ShapeSchema<T>
 		},
 		[
 			{
-				skipIfNull: true,
 				validate(value, path) {
 					if (value === undefined) {
 						// Will be built from its items

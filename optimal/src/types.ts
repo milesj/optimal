@@ -43,8 +43,8 @@ export type CriteriaValidator<Input> = (
 ) => unknown;
 
 export interface Criteria<Input> {
-	skipIfNull?: boolean;
-	skipIfUndefined?: boolean;
+	dontSkipIfNull?: boolean;
+	dontSkipIfUndefined?: boolean;
 	validate: CriteriaValidator<Input>;
 }
 

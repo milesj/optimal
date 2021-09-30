@@ -14,7 +14,6 @@ export function after(
 	invariant(isValidDate(afterDate), 'After date must be a valid date.');
 
 	return {
-		skipIfNull: true,
 		validate(value, path) {
 			invalid(
 				isValidDate(value) && value > afterDate,
@@ -39,7 +38,6 @@ export function before(
 	invariant(isValidDate(beforeDate), 'Before date must be a valid date.');
 
 	return {
-		skipIfNull: true,
 		validate(value, path) {
 			invalid(
 				isValidDate(value) && value < beforeDate,
@@ -67,7 +65,6 @@ export function between(
 	invariant(isValidDate(endDate), 'Between end date must be a valid date.');
 
 	return {
-		skipIfNull: true,
 		validate(value, path) {
 			invalid(
 				isValidDate(value) &&

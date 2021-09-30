@@ -16,7 +16,6 @@ export function between(
 	);
 
 	return {
-		skipIfNull: true,
 		validate(value, path) {
 			invalid(
 				isValidNumber(value) &&
@@ -35,7 +34,6 @@ export function between(
  */
 export function float(state: SchemaState<number>, options: Options = {}): Criteria<number> {
 	return {
-		skipIfNull: true,
 		validate(value, path) {
 			invalid(
 				isValidNumber(value) && value % 1 !== 0,
@@ -58,7 +56,6 @@ export function gt(
 	invariant(isValidNumber(min), 'Greater-than requires a minimum number.');
 
 	return {
-		skipIfNull: true,
 		validate(value, path) {
 			if (options.inclusive) {
 				invalid(
@@ -95,7 +92,6 @@ export function gte(
  */
 export function int(state: SchemaState<number>, options: Options = {}): Criteria<number> {
 	return {
-		skipIfNull: true,
 		validate(value, path) {
 			invalid(
 				Number.isSafeInteger(value),
@@ -118,7 +114,6 @@ export function lt(
 	invariant(isValidNumber(max), 'Less-than requires a maximum number.');
 
 	return {
-		skipIfNull: true,
 		validate(value, path) {
 			if (options.inclusive) {
 				invalid(
@@ -155,7 +150,6 @@ export function lte(
  */
 export function negative(state: SchemaState<number>, options: Options = {}): Criteria<number> {
 	return {
-		skipIfNull: true,
 		validate(value, path) {
 			invalid(
 				isValidNumber(value) && value < 0,
@@ -181,7 +175,6 @@ export function oneOf(
 	);
 
 	return {
-		skipIfNull: true,
 		validate(value, path) {
 			invalid(
 				list.includes(value),
@@ -198,7 +191,6 @@ export function oneOf(
  */
 export function positive(state: SchemaState<number>, options: Options = {}): Criteria<number> {
 	return {
-		skipIfNull: true,
 		validate(value, path) {
 			invalid(
 				isValidNumber(value) && value > 0,

@@ -25,9 +25,6 @@ export function lazy<T>(
 		},
 		[
 			{
-				// Avoid recursion by returning early and using the provided default value
-				skipIfNull: true,
-				skipIfUndefined: true,
 				validate(value, path, validateOptions) {
 					const schema = factory(value);
 

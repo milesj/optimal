@@ -21,9 +21,9 @@ export function runCommonTests<T>(
 		skipDefaultAsserts?: boolean;
 	},
 ) {
-	const optionalByDefault = defaultValue === undefined;
-	const nullableByDefault = defaultValue === null;
-	const emptyByDefault = nullableByDefault || optionalByDefault;
+	const undefinedByDefault = defaultValue === undefined;
+	const nullByDefault = defaultValue === null;
+	const emptyByDefault = nullByDefault || undefinedByDefault;
 	let schema: Schema<T> & TestCriterias<Schema<T>>;
 
 	// eslint-disable-next-line jest/require-top-level-describe
@@ -112,7 +112,7 @@ export function runCommonTests<T>(
 			}).toThrow('All of these fields must be defined: a, c');
 		});
 
-		if (nullableByDefault) {
+		if (nullByDefault) {
 			it('errors if not all properties are defined and null is passed', () => {
 				expect(() => {
 					andSchema.validate(null, 'a', {
@@ -137,7 +137,7 @@ export function runCommonTests<T>(
 			}).not.toThrow();
 		});
 
-		if (nullableByDefault) {
+		if (nullByDefault) {
 			it('doesnt error if all are defined and null is passed', () => {
 				expect(() => {
 					andSchema.validate(null, 'a', {
@@ -278,8 +278,12 @@ export function runCommonTests<T>(
 			expect(notUndefSchema.validate(value)).toEqual(value);
 		});
 
-		it('returns default value undefined is passed', () => {
+		it('returns default value when undefined is passed', () => {
 			expect(notUndefSchema.validate(undefined)).toEqual(defaultValue);
+		});
+
+		it('doesnt error when undefined is passed', () => {
+			expect(() => notUndefSchema.validate(undefined)).not.toThrow();
 		});
 
 		it('doesnt error when a valid value is passed', () => {
@@ -340,7 +344,7 @@ export function runCommonTests<T>(
 			expect(() => notNullSchema.validate(value)).not.toThrow();
 		});
 
-		if (!nullableByDefault) {
+		if (!nullByDefault) {
 			if (!skipDefaultAsserts) {
 				it('returns default value when undefined is passed', () => {
 					expect(notNullSchema.validate(undefined)).toEqual(defaultValue);

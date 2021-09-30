@@ -1,11 +1,4 @@
-import {
-	invalid,
-	invariant,
-	isSchema,
-	isValidString,
-	pathKey,
-	shouldReturnUndefined,
-} from '../helpers';
+import { invalid, invariant, isSchema, isValidString, pathKey } from '../helpers';
 import { Criteria, CriteriaValidator, Schema, SchemaState, ValueComparator } from '../types';
 
 /**
@@ -15,6 +8,8 @@ export function and<T>(state: SchemaState<T>, ...keys: string[]): Criteria<T> {
 	invariant(keys.length > 0, 'AND requires a list of field names.');
 
 	return {
+		dontSkipIfNull: true,
+		dontSkipIfUndefined: true,
 		validate(value, path, { currentObject }) {
 			const andKeys = [...new Set([pathKey(path), ...keys])].sort();
 			const undefs = andKeys.filter(
@@ -39,12 +34,8 @@ export function custom<T>(state: SchemaState<T>, validator: CriteriaValidator<T>
 
 	return {
 		validate(value, path, validateOptions) {
-			if (shouldReturnUndefined(state, value)) {
-				return undefined;
-			}
-
 			try {
-				return validator(value, path, validateOptions);
+				validator(value, path, validateOptions);
 			} catch (error: unknown) {
 				if (error instanceof Error) {
 					invalid(false, error.message, path, value);
@@ -111,6 +102,8 @@ export function only<T>(state: SchemaState<T>): Criteria<T> {
 	);
 
 	return {
+		dontSkipIfNull: true,
+		dontSkipIfUndefined: true,
 		validate(value, path) {
 			invalid(value === defaultValue, `Value may only be "${defaultValue}".`, path, value);
 		},
@@ -124,6 +117,8 @@ export function or<T>(state: SchemaState<T>, ...keys: string[]): Criteria<T> {
 	invariant(keys.length > 0, 'OR requires a list of field names.');
 
 	return {
+		dontSkipIfNull: true,
+		dontSkipIfUndefined: true,
 		validate(value, path, { currentObject }) {
 			const orKeys = [...new Set([pathKey(path), ...keys])].sort();
 			const defs = orKeys.filter(
@@ -168,6 +163,8 @@ export function when<T>(
 	}
 
 	return {
+		dontSkipIfNull: true,
+		dontSkipIfUndefined: true,
 		validate(value, path, validateOptions) {
 			const passed =
 				typeof condition === 'function'
@@ -198,6 +195,8 @@ export function xor<T>(state: SchemaState<T>, ...keys: string[]): Criteria<T> {
 	invariant(keys.length > 0, 'XOR requires a list of field names.');
 
 	return {
+		dontSkipIfNull: true,
+		dontSkipIfUndefined: true,
 		validate(value, path, { currentObject }) {
 			const xorKeys = [...new Set([pathKey(path), ...keys])].sort();
 			const defs = xorKeys.filter(
