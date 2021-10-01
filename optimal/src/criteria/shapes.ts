@@ -1,4 +1,4 @@
-import { invalid, invariant, isObject, isSchema, logUnknown, tryAndCollect } from '../helpers';
+import { collectErrors, invalid, invariant, isObject, isSchema, logUnknown } from '../helpers';
 import { Blueprint, Criteria, Schema, SchemaState, UnknownObject } from '../types';
 import { ValidationError } from '../ValidationError';
 
@@ -40,31 +40,28 @@ export function of<T extends object>(state: SchemaState<T>, schemas: Blueprint<T
 				path,
 				value,
 			);
+			const currentValidateOptions = {
+				...validateOptions,
+				currentObject: value as UnknownObject,
+			};
 
 			Object.keys(schemas).forEach((prop) => {
 				const key = prop as keyof T;
 				const schema = schemas[key];
-				const subPath = path ? `${path}.${key}` : String(key);
+				const currentPath = path ? `${path}.${key}` : String(key);
 
 				if (schema.state().required) {
 					invalid(
-						value[key] !== undefined,
+						key in value && value[key] !== undefined,
 						'Field is required and must be defined.',
-						subPath,
+						currentPath,
 						undefined,
 					);
 				}
 
-				tryAndCollect(
-					() => {
-						shape[key] = schema.validate(value[key], subPath, {
-							...validateOptions,
-							currentObject: value as UnknownObject,
-						});
-					},
-					collectionError,
-					validateOptions.collectErrors,
-				);
+				collectErrors(collectionError, () => {
+					shape[key] = schema.validate(value[key], currentPath, currentValidateOptions);
+				});
 
 				// Delete the prop and mark it as known
 				delete unknown[key];

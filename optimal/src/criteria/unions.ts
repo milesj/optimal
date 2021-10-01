@@ -1,4 +1,4 @@
-import { invalid, invariant, isSchema, tryAndCollect, typeOf } from '../helpers';
+import { collectErrors, invalid, invariant, isSchema, typeOf } from '../helpers';
 import { Criteria, Schema, SchemaState } from '../types';
 import { ValidationError } from '../ValidationError';
 
@@ -31,27 +31,23 @@ export function of<T = unknown>(state: SchemaState<T>, schemas: Schema<unknown>[
 					invalid(false, 'Nested unions are not supported.', path);
 				}
 
-				return tryAndCollect(
-					() => {
-						if (
-							valueType === schemaType ||
-							(valueType === 'object/shape' && schemaType === 'object') ||
-							(valueType === 'object/shape' && schemaType === 'shape') ||
-							(valueType === 'array/tuple' && schemaType === 'array') ||
-							(valueType === 'array/tuple' && schemaType === 'tuple') ||
-							schemaType === 'custom'
-						) {
-							// Dont pass path so its not included in the error message
-							nextValue = schema.validate(value, '', validateOptions);
+				return collectErrors(collectionError, () => {
+					if (
+						valueType === schemaType ||
+						(valueType === 'object/shape' && schemaType === 'object') ||
+						(valueType === 'object/shape' && schemaType === 'shape') ||
+						(valueType === 'array/tuple' && schemaType === 'array') ||
+						(valueType === 'array/tuple' && schemaType === 'tuple') ||
+						schemaType === 'custom'
+					) {
+						// Dont pass path so its not included in the error message
+						nextValue = schema.validate(value, '', validateOptions);
 
-							return true;
-						}
+						return true;
+					}
 
-						return false;
-					},
-					collectionError,
-					validateOptions.collectErrors,
-				);
+					return false;
+				});
 			});
 
 			if (!passed) {

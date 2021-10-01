@@ -33,8 +33,10 @@ changelog will use the new verbiage, but may affect previous APIs.
 
 - All error messages are now more user friendly and readable.
 - Chained methods are now immutable, returning new schema instances.
-- Errors are now collected and displayed as one for shapes/tuples, instead of failing on the first error.
-- Added `.notRequired()` method.
+- Errors are now collected and displayed as one for shapes/unions, instead of failing on the first error.
+- Added `.undefinable()` method for allowing undefined values.
+- Added `.notUndefinable()` method.
+- Added `.optional()` method.
 - Added `date()` and `schema()` schemas.
 - Added `object().keysOf()` criteria method.
 - Added `createSchema()` function for creating custom schemas.

@@ -1,5 +1,4 @@
-import { extractDefaultValue, invalid, tryAndCollect } from './helpers';
-import { OptimalError } from './OptimalError';
+import { extractDefaultValue, invalid } from './helpers';
 import {
 	AnySchema,
 	Criteria,
@@ -21,14 +20,9 @@ function validate<T>(
 	validators: Criteria<T>[],
 	initialValue: unknown,
 	path: string = '',
-	{
-		collectErrors = true,
-		currentObject = {},
-		rootObject = currentObject,
-	}: SchemaValidateOptions = {},
+	{ currentObject = {}, rootObject = currentObject }: SchemaValidateOptions = {},
 ): T | null | undefined {
 	const { defaultValue, metadata } = state;
-
 	let value: unknown = initialValue;
 
 	// Handle undefined
@@ -51,8 +45,6 @@ function validate<T>(
 	}
 
 	// Run validations and produce a new value
-	const optimalError = new OptimalError();
-
 	validators.forEach((test) => {
 		if (
 			(!test.dontSkipIfNull && state.nullable && value === null) ||
@@ -62,26 +54,15 @@ function validate<T>(
 			return;
 		}
 
-		tryAndCollect(
-			() => {
-				const result = test.validate(value as T, path, {
-					collectErrors,
-					currentObject,
-					rootObject,
-				});
+		const result = test.validate(value as T, path, {
+			currentObject,
+			rootObject,
+		});
 
-				if (result !== undefined) {
-					value = result as T;
-				}
-			},
-			optimalError,
-			collectErrors,
-		);
+		if (result !== undefined) {
+			value = result as T;
+		}
 	});
-
-	if (optimalError.errors.length > 0) {
-		throw optimalError;
-	}
 
 	return value as T;
 }

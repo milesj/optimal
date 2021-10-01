@@ -190,7 +190,6 @@ export function runCommonTests<T>(
 			});
 
 			expect(spy).toHaveBeenCalledWith(value, 'key', {
-				collectErrors: true,
 				currentObject: { key: null },
 				rootObject: { root: true },
 			});

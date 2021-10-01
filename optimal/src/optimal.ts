@@ -41,7 +41,6 @@ export function optimal<Schemas extends object>(
 
 			try {
 				return schema.validate(struct, options.prefix ?? '', {
-					collectErrors: true,
 					...validateOptions,
 					currentObject: object,
 					rootObject: object,

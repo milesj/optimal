@@ -284,13 +284,6 @@ describe('Optimal', () => {
 		    - Invalid field \\"alias\\". Must be a plain object, received array/tuple.
 		  - Invalid field \\"target\\". String must be one of: async-node, electron-main, electron-renderer, node, node-webkit, web, webworker. Received \\"what\\"."
 	`);
-
-		expect(() => {
-			// @ts-expect-error Invalid types
-			optimal(blueprint).validate(data, { collectErrors: false });
-		}).toThrowErrorMatchingInlineSnapshot(
-			`"Invalid field \\"entry\\". Received number but value must be one of: string, array<string>, object<string | array<string>>, function."`,
-		);
 	});
 
 	it('includes a custom `name` in the error message', () => {

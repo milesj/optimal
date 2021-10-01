@@ -30,10 +30,7 @@ export function lazy<T>(
 
 					invariant(isSchema(schema), 'Factory must return a schema.');
 
-					return schema.validate(value, path, {
-						...validateOptions,
-						collectErrors: false,
-					});
+					return schema.validate(value, path, validateOptions);
 				},
 			},
 		],

@@ -127,7 +127,6 @@ export interface StringCriterias<S> {
 // SCHEMAS
 
 export interface SchemaValidateOptions {
-	collectErrors?: boolean;
 	currentObject?: UnknownObject;
 	rootObject?: UnknownObject;
 }

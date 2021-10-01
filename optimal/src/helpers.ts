@@ -172,10 +172,9 @@ export function prettyValue(value: unknown): string | null {
 	}
 }
 
-export function tryAndCollect(
+export function collectErrors(
+	collectionError: ValidationError,
 	validator: () => boolean | void,
-	validError: ValidationError,
-	collectErrors?: boolean,
 ): boolean {
 	let result = false;
 
@@ -186,10 +185,10 @@ export function tryAndCollect(
 			result = value;
 		}
 	} catch (error: unknown) {
-		if (error instanceof Error && collectErrors) {
-			validError.addError(error);
+		if (error instanceof Error) {
+			collectionError.addError(error);
 		} else {
-			throw error;
+			// How?
 		}
 	}
 

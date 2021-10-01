@@ -28,10 +28,9 @@ describe('blueprint()', () => {
 		it('errors if a value is not a schema', () => {
 			expect(() => {
 				schema.validate({ foo: 123 });
-			}).toThrowErrorMatchingInlineSnapshot(`
-			"Invalid field \\"foo\\". Must be a schema, received number.
-			Invalid field \\"foo\\". Value passed to shape must be an object."
-		`);
+			}).toThrowErrorMatchingInlineSnapshot(
+				`"Invalid field \\"foo\\". Must be a schema, received number."`,
+			);
 		});
 
 		it('errors if null is passed', () => {
