@@ -6,7 +6,9 @@ import {
 	isValidString,
 	pathKey,
 } from '../helpers';
+import { OptimalError } from '../OptimalError';
 import { Criteria, CriteriaValidator, Schema, SchemaState, ValueComparator } from '../types';
+import { ValidationError } from '../ValidationError';
 
 /**
  * Map a list of field names that must be defined alongside this field when in a shape/object.
@@ -19,9 +21,7 @@ export function and<T>(state: SchemaState<T>, ...keys: string[]): Criteria<T> {
 		dontSkipIfUndefined: true,
 		validate(value, path, { currentObject }) {
 			const andKeys = [...new Set([pathKey(path), ...keys])].sort();
-			const undefs = andKeys.filter(
-				(key) => currentObject?.[key] === undefined || currentObject?.[key] === null,
-			);
+			const undefs = andKeys.filter((key) => currentObject?.[key] == null);
 
 			// Only error once when one of the struct is defined
 			if (undefs.length === andKeys.length) {
@@ -46,6 +46,8 @@ export function custom<T>(state: SchemaState<T>, validator: CriteriaValidator<T>
 			} catch (error: unknown) {
 				if (error instanceof Error) {
 					invalid(false, error.message, path, value);
+				} else if (error instanceof ValidationError || error instanceof OptimalError) {
+					throw error;
 				}
 			}
 		},
@@ -185,7 +187,7 @@ export function when<T>(
 					: condition === value;
 
 			if (passed) {
-				return pass.validate(value, path);
+				return pass.validate(value, path, validateOptions);
 			}
 
 			if (fail) {

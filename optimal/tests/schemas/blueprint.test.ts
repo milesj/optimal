@@ -22,13 +22,16 @@ describe('blueprint()', () => {
 		it('errors if a non-object is passed', () => {
 			expect(() => {
 				schema.validate(123);
-			}).toThrow('Must be a plain object.');
+			}).toThrow('Must be a plain object, received number.');
 		});
 
 		it('errors if a value is not a schema', () => {
 			expect(() => {
 				schema.validate({ foo: 123 });
-			}).toThrow('Must be a schema.');
+			}).toThrowErrorMatchingInlineSnapshot(`
+			"Invalid field \\"foo\\". Must be a schema, received number.
+			Invalid field \\"foo\\". Value passed to shape must be an object."
+		`);
 		});
 
 		it('errors if null is passed', () => {

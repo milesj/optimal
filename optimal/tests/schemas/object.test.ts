@@ -93,13 +93,13 @@ describe('object()', () => {
 		it('errors if object has less properties', () => {
 			expect(() => {
 				sizeOfSchema.validate({});
-			}).toThrow('Object must have 1 property.');
+			}).toThrow('Object must have 1 property, received 0.');
 		});
 
 		it('errors if object has more properties', () => {
 			expect(() => {
 				sizeOfSchema.validate({ a: 'a', b: 'b' });
-			}).toThrow('Object must have 1 property.');
+			}).toThrow('Object must have 1 property, received 2.');
 		});
 
 		it('doesnt error if object has exact properties', () => {
@@ -143,13 +143,13 @@ describe('object()', () => {
 		it('errors if a non-object is passed', () => {
 			expect(() => {
 				schema.validate(123);
-			}).toThrow('Must be a plain object.');
+			}).toThrow('Must be a plain object, received number.');
 		});
 
 		it('errors if object value type is invalid', () => {
 			expect(() => {
 				schema.validate({ a: 123 });
-			}).toThrow('Must be a string.');
+			}).toThrow('Invalid field "a". Must be a string, received number.');
 		});
 	});
 });

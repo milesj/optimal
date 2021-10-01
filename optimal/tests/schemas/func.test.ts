@@ -35,7 +35,7 @@ describe('func()', () => {
 		it('errors if a non-function is passed', () => {
 			expect(() => {
 				schema.validate(123);
-			}).toThrow('Must be a function.');
+			}).toThrow('Must be a function, received number.');
 		});
 
 		it('doesnt error if a function is passed', () => {

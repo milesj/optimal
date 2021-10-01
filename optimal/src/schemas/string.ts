@@ -1,6 +1,6 @@
 import { createSchema } from '../createSchema';
 import { commonCriteria, stringCriteria } from '../criteria';
-import { invalid } from '../helpers';
+import { invalid, typeOf } from '../helpers';
 import {
 	CommonCriterias,
 	DefaultValue,
@@ -44,7 +44,12 @@ export function string<T extends string = string>(
 		[
 			{
 				validate(value, path) {
-					invalid(typeof value === 'string', 'Must be a string.', path, value);
+					invalid(
+						typeof value === 'string',
+						`Must be a string, received ${typeOf(value)}.`,
+						path,
+						value,
+					);
 				},
 			},
 		],

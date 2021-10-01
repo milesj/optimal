@@ -59,7 +59,7 @@ describe('tuple()', () => {
 		it('errors if a non-tuple is passed', () => {
 			expect(() => {
 				schema.validate(123);
-			}).toThrow('Must be a tuple.');
+			}).toThrow('Must be a tuple, received number.');
 		});
 
 		it('errors if the first tuple item is invalid', () => {
@@ -71,13 +71,13 @@ describe('tuple()', () => {
 		it('errors if a middle tuple item is invalid', () => {
 			expect(() => {
 				schema.validate([[], false, -10, {}, 'bar']);
-			}).toThrow('Number must be between 0 and 5.');
+			}).toThrow('Number must be between 0 and 5, received -10.');
 		});
 
 		it('errors if the last tuple item is invalid', () => {
 			expect(() => {
 				schema.validate([[], false, 4, {}, 'qux']);
-			}).toThrow('String must be one of: foo, bar, baz');
+			}).toThrow('String must be one of: foo, bar, baz. Received "qux".');
 		});
 
 		it('doesnt error if a matching tuple is passed', () => {

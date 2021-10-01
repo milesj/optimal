@@ -1,6 +1,6 @@
 import { createSchema } from '../createSchema';
 import { commonCriteria, dateCriteria } from '../criteria';
-import { createDate, invalid, isValidDate } from '../helpers';
+import { createDate, invalid, isValidDate, typeOf } from '../helpers';
 import {
 	CommonCriterias,
 	DateCriterias,
@@ -36,7 +36,9 @@ export function date(defaultValue?: DefaultValue<Date>): DateSchema<Date> {
 
 					invalid(
 						isValidDate(time),
-						'Must be a string, number, or `Date` that resolves to a valid date.',
+						`Must be a string, number, or \`Date\` that resolves to a valid date, received ${typeOf(
+							value,
+						)}.`,
 						path,
 						value,
 					);

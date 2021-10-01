@@ -1,7 +1,7 @@
 import { createSchema } from '../createSchema';
 import { commonCriteria, tupleCriteria } from '../criteria';
 import { InferTupleItems } from '../criteria/tuples';
-import { createArray, invalid } from '../helpers';
+import { createArray, invalid, typeOf } from '../helpers';
 import { CommonCriterias, NotNull, NotUndefined, Schema } from '../types';
 
 export interface TupleSchema<T> extends Schema<Required<T>>, CommonCriterias<TupleSchema<T>> {
@@ -32,7 +32,7 @@ export function tuple<T extends unknown[] = unknown[]>(
 						return [];
 					}
 
-					invalid(Array.isArray(value), 'Must be a tuple.', path, value);
+					invalid(Array.isArray(value), `Must be a tuple, received ${typeOf(value)}.`, path, value);
 
 					return value;
 				},

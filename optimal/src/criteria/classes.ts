@@ -18,7 +18,7 @@ export function of<T>(
 			invalid(
 				typeof ref === 'function' &&
 					(value instanceof ref || (loose && isObject(value) && instanceOf(value, ref))),
-				`Must be an instance of "${state.type}".`,
+				`Must be an instance of \`${state.type}\`.`,
 				path,
 				value,
 			);

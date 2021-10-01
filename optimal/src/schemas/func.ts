@@ -1,6 +1,6 @@
 import { createSchema } from '../createSchema';
 import { commonCriteria } from '../criteria';
-import { invalid } from '../helpers';
+import { invalid, typeOf } from '../helpers';
 import {
 	AnyFunction,
 	CommonCriterias,
@@ -40,7 +40,12 @@ export function func<T extends AnyFunction = AnyFunction>(
 		[
 			{
 				validate(value, path) {
-					invalid(typeof value === 'function', 'Must be a function.', path, value);
+					invalid(
+						typeof value === 'function',
+						`Must be a function, received ${typeOf(value)}.`,
+						path,
+						value,
+					);
 				},
 			},
 		],

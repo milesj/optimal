@@ -1,6 +1,6 @@
 import { createSchema } from '../createSchema';
 import { commonCriteria, objectCriteria } from '../criteria';
-import { createObject, invalid, isObject } from '../helpers';
+import { createObject, invalid, isObject, typeOf } from '../helpers';
 import {
 	CommonCriterias,
 	DefaultValue,
@@ -41,7 +41,12 @@ export function object<V = unknown, K extends PropertyKey = string>(
 		[
 			{
 				validate(value, path) {
-					invalid(isObject(value), 'Must be a plain object.', path, value);
+					invalid(
+						isObject(value),
+						`Must be a plain object, received ${typeOf(value)}.`,
+						path,
+						value,
+					);
 				},
 			},
 		],

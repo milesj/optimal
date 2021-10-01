@@ -1,4 +1,4 @@
-import { invalid, invariant, isValidNumber } from '../helpers';
+import { invalid, invariant, isValidNumber, prettyValue } from '../helpers';
 import { Criteria, InclusiveOptions, Options, SchemaState } from '../types';
 
 /**
@@ -21,7 +21,9 @@ export function between(
 				isValidNumber(value) &&
 					(options.inclusive ? value >= min && value <= max : value > min && value < max),
 				options.message ??
-					`Number must be between ${min} and ${max}${options.inclusive ? ' inclusive' : ''}.`,
+					`Number must be between ${min} and ${max}${
+						options.inclusive ? ' inclusive' : ''
+					}, received ${prettyValue(value)}.`,
 				path,
 				value,
 			);
@@ -37,7 +39,7 @@ export function float(state: SchemaState<number>, options: Options = {}): Criter
 		validate(value, path) {
 			invalid(
 				isValidNumber(value) && value % 1 !== 0,
-				options.message ?? 'Number must be a float.',
+				options.message ?? `Number must be a float, received ${prettyValue(value)}.`,
 				path,
 				value,
 			);
@@ -60,14 +62,15 @@ export function gt(
 			if (options.inclusive) {
 				invalid(
 					isValidNumber(value) && value >= min,
-					options.message ?? `Number must be greater than or equal to ${min}.`,
+					options.message ??
+						`Number must be greater than or equal to ${min}, received ${prettyValue(value)}.`,
 					path,
 					value,
 				);
 			} else {
 				invalid(
 					isValidNumber(value) && value > min,
-					options.message ?? `Number must be greater than ${min}.`,
+					options.message ?? `Number must be greater than ${min}, received ${prettyValue(value)}.`,
 					path,
 					value,
 				);
@@ -95,7 +98,7 @@ export function int(state: SchemaState<number>, options: Options = {}): Criteria
 		validate(value, path) {
 			invalid(
 				Number.isSafeInteger(value),
-				options.message ?? 'Number must be an integer.',
+				options.message ?? `Number must be an integer, received ${prettyValue(value)}.`,
 				path,
 				value,
 			);
@@ -118,14 +121,15 @@ export function lt(
 			if (options.inclusive) {
 				invalid(
 					isValidNumber(value) && value <= max,
-					options.message ?? `Number must be less than or equal to ${max}.`,
+					options.message ??
+						`Number must be less than or equal to ${max}, received ${prettyValue(value)}.`,
 					path,
 					value,
 				);
 			} else {
 				invalid(
 					isValidNumber(value) && value < max,
-					options.message ?? `Number must be less than ${max}.`,
+					options.message ?? `Number must be less than ${max}, received ${prettyValue(value)}.`,
 					path,
 					value,
 				);
@@ -153,7 +157,7 @@ export function negative(state: SchemaState<number>, options: Options = {}): Cri
 		validate(value, path) {
 			invalid(
 				isValidNumber(value) && value < 0,
-				options.message ?? 'Number must be negative.',
+				options.message ?? `Number must be negative, received ${prettyValue(value)}.`,
 				path,
 				value,
 			);
@@ -178,7 +182,8 @@ export function oneOf(
 		validate(value, path) {
 			invalid(
 				list.includes(value),
-				options.message ?? `Number must be one of: ${list.join(', ')}`,
+				options.message ??
+					`Number must be one of: ${list.join(', ')}. Received ${prettyValue(value)}.`,
 				path,
 				value,
 			);
@@ -194,7 +199,7 @@ export function positive(state: SchemaState<number>, options: Options = {}): Cri
 		validate(value, path) {
 			invalid(
 				isValidNumber(value) && value > 0,
-				options.message ?? 'Number must be positive.',
+				options.message ?? `Number must be positive, received ${prettyValue(value)}.`,
 				path,
 				value,
 			);

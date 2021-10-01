@@ -94,7 +94,7 @@ describe('bool()', () => {
 		it('errors if a non-boolean is passed', () => {
 			expect(() => {
 				schema.validate(123);
-			}).toThrow('Must be a boolean.');
+			}).toThrow('Must be a boolean, received number.');
 		});
 
 		it('doesnt error if a boolean is passed', () => {

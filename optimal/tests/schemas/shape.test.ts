@@ -107,7 +107,7 @@ describe('shape()', () => {
 		it('errors if a non-shape is passed', () => {
 			expect(() => {
 				schema.validate(123);
-			}).toThrow('Must be a shaped object.');
+			}).toThrow('Must be a shaped object, received number.');
 		});
 	});
 });

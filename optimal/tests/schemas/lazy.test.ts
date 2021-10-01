@@ -1,4 +1,4 @@
-import { AnySchema, lazy, LazySchema, number, shape, string } from '../../src';
+import { lazy, LazySchema, number, shape, string } from '../../src';
 
 describe('lazy()', () => {
 	let schema: LazySchema<string>;
@@ -117,10 +117,10 @@ describe('lazy()', () => {
 			}).toThrow('Factory must return a schema.');
 		});
 
-		it('errors if valid values the lazy schema', () => {
+		it('errors if invalid values passed to the lazy schema', () => {
 			expect(() => {
 				schema.validate(123);
-			}).toThrow('Must be a string.');
+			}).toThrow('Must be a string, received number.');
 
 			expect(() => {
 				schema.validate('a-b');

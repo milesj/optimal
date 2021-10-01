@@ -143,6 +143,10 @@ export function pathKey(path: string): string {
 }
 
 export function prettyValue(value: unknown): string | null {
+	if (value instanceof Date) {
+		return value.toLocaleDateString();
+	}
+
 	switch (typeof value) {
 		case 'string':
 			return `"${value}"`;
@@ -200,4 +204,16 @@ export function extractDefaultValue<T>(
 	return typeof defaultValue === 'function'
 		? (defaultValue as DefaultValueInitializer<T>)(path, currentObject!, rootObject!)
 		: defaultValue;
+}
+
+export function typeOf(value: unknown): string {
+	if (Array.isArray(value)) {
+		return 'array/tuple';
+	}
+
+	if (isObject(value)) {
+		return value.constructor === Object ? 'object/shape' : 'class';
+	}
+
+	return typeof value;
 }

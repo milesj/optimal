@@ -25,13 +25,13 @@ describe('regex()', () => {
 		it('errors if a non-object is passed', () => {
 			expect(() => {
 				schema.validate(123);
-			}).toThrow('Must be an instance of RegExp.');
+			}).toThrow('Must be an instance of `RegExp`, received number.');
 		});
 
 		it('errors if a plain object is passed', () => {
 			expect(() => {
 				schema.validate({});
-			}).toThrow('Must be an instance of RegExp.');
+			}).toThrow('Must be an instance of `RegExp`, received object/shape.');
 		});
 
 		it('doesnt error if a regex pattern is passed', () => {

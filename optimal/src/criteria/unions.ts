@@ -1,18 +1,6 @@
-import { invalid, invariant, isObject, isSchema, tryAndCollect } from '../helpers';
+import { invalid, invariant, isSchema, tryAndCollect, typeOf } from '../helpers';
 import { Criteria, Schema, SchemaState } from '../types';
 import { ValidationError } from '../ValidationError';
-
-function typeOf(value: unknown): string {
-	if (Array.isArray(value)) {
-		return 'array/tuple';
-	}
-
-	if (isObject(value)) {
-		return value.constructor === Object ? 'object/shape' : 'class';
-	}
-
-	return typeof value;
-}
 
 /**
  * Require field value to be one of a specific schema type.
@@ -70,7 +58,12 @@ export function of<T = unknown>(state: SchemaState<T>, schemas: Schema<unknown>[
 				if (collectionError.errors.length > 0) {
 					throw collectionError;
 				} else {
-					invalid(false, `Value must be one of: ${allowedValues}.`, path, value);
+					invalid(
+						false,
+						`Received ${valueType} but value must be one of: ${allowedValues}.`,
+						path,
+						value,
+					);
 				}
 			}
 

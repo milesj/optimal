@@ -215,7 +215,7 @@ describe('string()', () => {
 		it('errors if value is not lower case', () => {
 			expect(() => {
 				lowerSchema.validate('FooBar');
-			}).toThrowErrorMatchingInlineSnapshot(`"String must be lower cased."`);
+			}).toThrowErrorMatchingInlineSnapshot(`"String must be lower cased, received \\"FooBar\\"."`);
 		});
 
 		it('doesnt error if value is lower case', () => {
@@ -353,7 +353,9 @@ describe('string()', () => {
 		it('errors if value is not in the list', () => {
 			expect(() => {
 				oneOfSchema.validate('qux');
-			}).toThrowErrorMatchingInlineSnapshot(`"String must be one of: foo, bar, baz"`);
+			}).toThrowErrorMatchingInlineSnapshot(
+				`"String must be one of: foo, bar, baz. Received \\"qux\\"."`,
+			);
 		});
 
 		it('doesnt error if value contains token', () => {
@@ -447,7 +449,7 @@ describe('string()', () => {
 		it('errors if length doesnt match', () => {
 			expect(() => {
 				sizeOfSchema.validate('');
-			}).toThrowErrorMatchingInlineSnapshot(`"String length must be 3."`);
+			}).toThrowErrorMatchingInlineSnapshot(`"String length must be 3, received 0."`);
 		});
 
 		it('doesnt error if length matches', () => {
@@ -541,7 +543,7 @@ describe('string()', () => {
 		it('errors if value is not upper case', () => {
 			expect(() => {
 				upperSchema.validate('FooBar');
-			}).toThrowErrorMatchingInlineSnapshot(`"String must be upper cased."`);
+			}).toThrowErrorMatchingInlineSnapshot(`"String must be upper cased, received \\"FooBar\\"."`);
 		});
 
 		it('doesnt error if value is upper case', () => {
@@ -571,7 +573,7 @@ describe('string()', () => {
 		it('errors if a non-string is passed', () => {
 			expect(() => {
 				schema.validate(123);
-			}).toThrow('Must be a string.');
+			}).toThrow('Must be a string, received number.');
 		});
 
 		it('doesnt error if a string is passed', () => {

@@ -1,4 +1,4 @@
-import { createDate, invalid, invariant, isValidDate } from '../helpers';
+import { createDate, invalid, invariant, isValidDate, prettyValue } from '../helpers';
 import { Criteria, InclusiveOptions, MaybeDate, Options, SchemaState } from '../types';
 
 /**
@@ -17,7 +17,8 @@ export function after(
 		validate(value, path) {
 			invalid(
 				isValidDate(value) && value > afterDate,
-				options.message ?? `Date must come after ${afterDate.toLocaleDateString()}.`,
+				options.message ??
+					`Date must come after ${prettyValue(afterDate)}, received ${prettyValue(value)}.`,
 				path,
 				value,
 			);
@@ -41,7 +42,8 @@ export function before(
 		validate(value, path) {
 			invalid(
 				isValidDate(value) && value < beforeDate,
-				options.message ?? `Date must come before ${beforeDate.toLocaleDateString()}.`,
+				options.message ??
+					`Date must come before ${prettyValue(beforeDate)}, received ${prettyValue(value)}.`,
 				path,
 				value,
 			);
@@ -72,9 +74,9 @@ export function between(
 						? value >= startDate && value <= endDate
 						: value > startDate && value < endDate),
 				options.message ??
-					`Date must be between ${startDate.toLocaleDateString()} and ${endDate.toLocaleDateString()}${
+					`Date must be between ${prettyValue(startDate)} and ${prettyValue(endDate)}${
 						options.inclusive ? ' inclusive' : ''
-					}.`,
+					}, received ${prettyValue(value)}.`,
 				path,
 				value,
 			);

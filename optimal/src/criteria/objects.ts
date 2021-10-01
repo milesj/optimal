@@ -104,12 +104,14 @@ export function sizeOf<T>(
 
 	return {
 		validate(value, path) {
+			const { length } = Object.keys(value);
+
 			invalid(
-				Object.keys(value).length === size,
+				length === size,
 				options.message ??
 					(size === 1
-						? `Object must have ${size} property.`
-						: `Object must have ${size} properties.`),
+						? `Object must have ${size} property, received ${length}.`
+						: `Object must have ${size} properties, received ${length}.`),
 				path,
 				value,
 			);

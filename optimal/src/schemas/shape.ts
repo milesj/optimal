@@ -1,6 +1,6 @@
 import { createSchema } from '../createSchema';
 import { commonCriteria, shapeCriteria } from '../criteria';
-import { createObject, invalid, isObject } from '../helpers';
+import { createObject, invalid, isObject, typeOf } from '../helpers';
 import {
 	Blueprint,
 	CommonCriterias,
@@ -38,7 +38,12 @@ export function shape<T extends object>(blueprint: Blueprint<T>): ShapeSchema<T>
 						return {};
 					}
 
-					invalid(isObject(value), 'Must be a shaped object.', path, value);
+					invalid(
+						isObject(value),
+						`Must be a shaped object, received ${typeOf(value)}.`,
+						path,
+						value,
+					);
 
 					return value;
 				},

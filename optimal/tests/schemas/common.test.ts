@@ -105,11 +105,11 @@ describe('common', () => {
 
 			expect(() => {
 				schema.validate('FOO');
-			}).toThrow('String must be lower cased.');
+			}).toThrow('String must be lower cased, received "FOO".');
 
 			expect(() => {
 				schema.validate('bar');
-			}).toThrow('String must be upper cased.');
+			}).toThrow('String must be upper cased, received "bar".');
 
 			expect(() => {
 				schema.validate('bAZ');
@@ -147,13 +147,13 @@ describe('common', () => {
 			it('triggers pass condition', () => {
 				expect(() => {
 					schema.validate('fOo');
-				}).toThrow('String must be lower cased.');
+				}).toThrow('String must be lower cased, received "fOo".');
 			});
 
 			it('triggers fail condition', () => {
 				expect(() => {
 					schema.validate('FoO');
-				}).toThrow('String must be upper cased.');
+				}).toThrow('String must be upper cased, received "FoO".');
 			});
 		});
 
@@ -167,13 +167,13 @@ describe('common', () => {
 			it('triggers pass condition', () => {
 				expect(() => {
 					schema.validate('fOo');
-				}).toThrow('String must be lower cased.');
+				}).toThrow('String must be lower cased, received "fOo".');
 			});
 
 			it('triggers fail condition', () => {
 				expect(() => {
 					schema.validate('FoO');
-				}).toThrow('String must be upper cased.');
+				}).toThrow('String must be upper cased, received "FoO".');
 			});
 		});
 	});

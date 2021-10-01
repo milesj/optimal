@@ -32,7 +32,7 @@ describe('number()', () => {
 		it('errors if number is not in list', () => {
 			expect(() => {
 				oneOfSchema.validate(5);
-			}).toThrow('Number must be one of: 1, 2, 3');
+			}).toThrow('Number must be one of: 1, 2, 3. Received 5.');
 		});
 
 		it('doesnt error if number is in list', () => {
@@ -60,13 +60,13 @@ describe('number()', () => {
 			it('errors if number is out of range', () => {
 				expect(() => {
 					betweenSchema.validate(10);
-				}).toThrow('Number must be between 1 and 5.');
+				}).toThrow('Number must be between 1 and 5, received 10.');
 			});
 
 			it('errors if number is edge of range', () => {
 				expect(() => {
 					betweenSchema.validate(5);
-				}).toThrow('Number must be between 1 and 5.');
+				}).toThrow('Number must be between 1 and 5, received 5.');
 			});
 
 			it('doesnt error if number is in range', () => {
@@ -84,7 +84,7 @@ describe('number()', () => {
 			it('errors if number is out of range', () => {
 				expect(() => {
 					betweenSchema.validate(10);
-				}).toThrow('Number must be between 1 and 5 inclusive.');
+				}).toThrow('Number must be between 1 and 5 inclusive, received 10.');
 			});
 
 			it('doesnt error if number is edge of range', () => {
@@ -111,7 +111,7 @@ describe('number()', () => {
 		it('errors if number is a non-float', () => {
 			expect(() => {
 				floatSchema.validate(1);
-			}).toThrow('Number must be a float.');
+			}).toThrow('Number must be a float, received 1.');
 		});
 
 		it('doesnt error if number is a float', () => {
@@ -138,13 +138,13 @@ describe('number()', () => {
 		it('errors if number is too low', () => {
 			expect(() => {
 				gtSchema.validate(5);
-			}).toThrow('Number must be greater than 10.');
+			}).toThrow('Number must be greater than 10, received 5.');
 		});
 
 		it('errors if number is equal', () => {
 			expect(() => {
 				gtSchema.validate(10);
-			}).toThrow('Number must be greater than 10.');
+			}).toThrow('Number must be greater than 10, received 10.');
 		});
 
 		it('doesnt error if number is high enough', () => {
@@ -164,7 +164,7 @@ describe('number()', () => {
 		it('errors if number is too low', () => {
 			expect(() => {
 				gteSchema.validate(5);
-			}).toThrow('Number must be greater than or equal to 10.');
+			}).toThrow('Number must be greater than or equal to 10, received 5.');
 		});
 
 		it('doesnt error if number is equal', () => {
@@ -190,7 +190,7 @@ describe('number()', () => {
 		it('errors if number is a non-integer', () => {
 			expect(() => {
 				intSchema.validate(1.2);
-			}).toThrow('Number must be an integer.');
+			}).toThrow('Number must be an integer, received 1.2.');
 		});
 
 		it('doesnt error if number is an integer', () => {
@@ -217,13 +217,13 @@ describe('number()', () => {
 		it('errors if number is too high', () => {
 			expect(() => {
 				ltSchema.validate(15);
-			}).toThrow('Number must be less than 10.');
+			}).toThrow('Number must be less than 10, received 15.');
 		});
 
 		it('errors if number is equal', () => {
 			expect(() => {
 				ltSchema.validate(10);
-			}).toThrow('Number must be less than 10.');
+			}).toThrow('Number must be less than 10, received 10.');
 		});
 
 		it('doesnt error if number is high enough', () => {
@@ -243,7 +243,7 @@ describe('number()', () => {
 		it('errors if number is too high', () => {
 			expect(() => {
 				lteSchema.validate(15);
-			}).toThrow('Number must be less than or equal to 10.');
+			}).toThrow('Number must be less than or equal to 10, received 15.');
 		});
 
 		it('doesnt error if number is equal', () => {
@@ -269,13 +269,13 @@ describe('number()', () => {
 		it('errors if number is positive', () => {
 			expect(() => {
 				negaSchema.validate(10);
-			}).toThrow('Number must be negative.');
+			}).toThrow('Number must be negative, received 10.');
 		});
 
 		it('errors if number is 0', () => {
 			expect(() => {
 				negaSchema.validate(0);
-			}).toThrow('Number must be negative.');
+			}).toThrow('Number must be negative, received 0.');
 		});
 
 		it('doesnt error if number is negative', () => {
@@ -295,13 +295,13 @@ describe('number()', () => {
 		it('errors if number is negative', () => {
 			expect(() => {
 				posiSchema.validate(-10);
-			}).toThrow('Number must be positive.');
+			}).toThrow('Number must be positive, received -10.');
 		});
 
 		it('errors if number is 0', () => {
 			expect(() => {
 				posiSchema.validate(0);
-			}).toThrow('Number must be positive.');
+			}).toThrow('Number must be positive, received 0.');
 		});
 
 		it('doesnt error if number is positive', () => {
@@ -321,7 +321,7 @@ describe('number()', () => {
 		it('errors if a non-number is passed', () => {
 			expect(() => {
 				schema.validate('abc');
-			}).toThrow('Must be a number.');
+			}).toThrow('Must be a number, received string.');
 		});
 
 		it('doesnt error if a number is passed', () => {

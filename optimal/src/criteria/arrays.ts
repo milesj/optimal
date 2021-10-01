@@ -52,7 +52,7 @@ export function sizeOf<T>(
 		validate(value, path) {
 			invalid(
 				value.length === size,
-				options.message ?? `Array length must be ${size}.`,
+				options.message ?? `Array length must be ${size}, received ${value.length}.`,
 				path,
 				value,
 			);

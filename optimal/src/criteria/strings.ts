@@ -1,4 +1,4 @@
-import { invalid, invariant, isValidString } from '../helpers';
+import { invalid, invariant, isValidString, prettyValue } from '../helpers';
 import { Criteria, Options, SchemaState } from '../types';
 
 /**
@@ -113,7 +113,8 @@ export function oneOf(
 		validate(value, path) {
 			invalid(
 				list.includes(value),
-				options.message ?? `String must be one of: ${list.join(', ')}`,
+				options.message ??
+					`String must be one of: ${list.join(', ')}. Received ${prettyValue(value)}.`,
 				path,
 				value,
 			);
@@ -129,7 +130,7 @@ export function lowerCase(state: SchemaState<string>, options: Options = {}): Cr
 		validate(value, path) {
 			invalid(
 				value === value.toLocaleLowerCase(),
-				options.message ?? 'String must be lower cased.',
+				options.message ?? `String must be lower cased, received ${prettyValue(value)}.`,
 				path,
 				value,
 			);
@@ -145,7 +146,7 @@ export function upperCase(state: SchemaState<string>, options: Options = {}): Cr
 		validate(value, path) {
 			invalid(
 				value === value.toLocaleUpperCase(),
-				options.message ?? 'String must be upper cased.',
+				options.message ?? `String must be upper cased, received ${prettyValue(value)}.`,
 				path,
 				value,
 			);
@@ -167,7 +168,7 @@ export function sizeOf(
 		validate(value, path) {
 			invalid(
 				value.length === size,
-				options.message ?? `String length must be ${size}.`,
+				options.message ?? `String length must be ${size}, received ${value.length}.`,
 				path,
 				value,
 			);

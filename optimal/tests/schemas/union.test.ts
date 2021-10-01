@@ -60,7 +60,9 @@ describe('union()', () => {
 	it('errors if a unsupported type is used', () => {
 		expect(() => {
 			union<boolean | number | string>(0).of([bool(), number(), string()]).validate({});
-		}).toThrowErrorMatchingInlineSnapshot(`"Value must be one of: boolean, number, string."`);
+		}).toThrowErrorMatchingInlineSnapshot(
+			`"Received object/shape but value must be one of: boolean, number, string."`,
+		);
 	});
 
 	it('errors if a nested union is used', () => {
@@ -78,7 +80,7 @@ describe('union()', () => {
 				.validate(new Foo());
 		}).toThrowErrorMatchingInlineSnapshot(`
 		"Received class with the following failures:
-		  - Must be an instance of \\"Buffer\\"."
+		  - Must be an instance of \`Buffer\`."
 	`);
 	});
 
@@ -91,7 +93,7 @@ describe('union()', () => {
 			schema.validate([123]);
 		}).toThrowErrorMatchingInlineSnapshot(`
 		"Received array/tuple with the following failures:
-		  - Invalid member \\"[0]\\" with value 123. Must be a string."
+		  - Invalid member \\"[0]\\". Must be a string, received number."
 	`);
 	});
 
@@ -127,7 +129,7 @@ describe('union()', () => {
 			schema.validate(new Bar());
 		}).toThrowErrorMatchingInlineSnapshot(`
 		"Received class with the following failures:
-		  - Must be an instance of \\"Foo\\"."
+		  - Must be an instance of \`Foo\`."
 	`);
 	});
 
@@ -136,7 +138,7 @@ describe('union()', () => {
 			schema.validate(10);
 		}).toThrowErrorMatchingInlineSnapshot(`
 		"Received number with the following failures:
-		  - Number must be between 0 and 5."
+		  - Number must be between 0 and 5, received 10."
 	`);
 	});
 
@@ -145,7 +147,7 @@ describe('union()', () => {
 			schema.validate({ foo: 'foo' });
 		}).toThrowErrorMatchingInlineSnapshot(`
 		"Received object/shape with the following failures:
-		  - Invalid field \\"foo\\" with value \\"foo\\". Must be a number."
+		  - Invalid field \\"foo\\". Must be a number, received string."
 	`);
 	});
 
@@ -162,7 +164,7 @@ describe('union()', () => {
 		}).toThrowErrorMatchingInlineSnapshot(`
 		"Received object/shape with the following failures:
 		  - The following validations have failed:
-		    - Invalid field \\"foo\\" with value 123. Must be a string."
+		    - Invalid field \\"foo\\". Must be a string, received number."
 	`);
 	});
 
@@ -171,7 +173,7 @@ describe('union()', () => {
 			schema.validate('qux');
 		}).toThrowErrorMatchingInlineSnapshot(`
 		"Received string with the following failures:
-		  - String must be one of: foo, bar, baz"
+		  - String must be one of: foo, bar, baz. Received \\"qux\\"."
 	`);
 	});
 
@@ -182,7 +184,7 @@ describe('union()', () => {
 				.validate([1]);
 		}).toThrowErrorMatchingInlineSnapshot(`
 		"Received array/tuple with the following failures:
-		  - Invalid member \\"[0]\\" with value 1. Must be a string."
+		  - Invalid member \\"[0]\\". Must be a string, received number."
 	`);
 	});
 
@@ -202,8 +204,8 @@ describe('union()', () => {
 			arrayUnion.validate([true]);
 		}).toThrowErrorMatchingInlineSnapshot(`
 		"Received array/tuple with the following failures:
-		  - Invalid member \\"[0]\\" with value \`true\`. Must be a string.
-		  - Invalid member \\"[0]\\" with value \`true\`. Must be a number."
+		  - Invalid member \\"[0]\\". Must be a string, received boolean.
+		  - Invalid member \\"[0]\\". Must be a number, received boolean."
 	`);
 
 		expect(() => {
@@ -225,8 +227,8 @@ describe('union()', () => {
 			objectUnion.validate({ foo: true });
 		}).toThrowErrorMatchingInlineSnapshot(`
 		"Received object/shape with the following failures:
-		  - Invalid field \\"foo\\" with value \`true\`. Must be a string.
-		  - Invalid field \\"foo\\" with value \`true\`. Must be a number."
+		  - Invalid field \\"foo\\". Must be a string, received boolean.
+		  - Invalid field \\"foo\\". Must be a number, received boolean."
 	`);
 
 		expect(() => {
@@ -299,12 +301,12 @@ describe('union()', () => {
 			.toThrowErrorMatchingInlineSnapshot(`
 		"Received array/tuple with the following failures:
 		  - Invalid member \\"[1]\\". Received array/tuple with the following failures:
-		    - Invalid member \\"[1]\\" with value \`null\`. Null is not allowed."
+		    - Invalid member \\"[1]\\". Null is not allowed."
 	`);
 		expect(() => complexUnion.validate({ a: true, b: 123, c: {} }))
 			.toThrowErrorMatchingInlineSnapshot(`
 		"Received object/shape with the following failures:
-		  - Invalid field \\"b\\" with value 123. Value must be one of: boolean, object."
+		  - Invalid field \\"b\\". Received number but value must be one of: boolean, object."
 	`);
 	});
 
@@ -323,7 +325,7 @@ describe('union()', () => {
 		}).toThrowErrorMatchingInlineSnapshot(`
 		"Received object/shape with the following failures:
 		  - Unknown fields: unknown.
-		  - Invalid field \\"unknown\\" with value \`true\`. Must be a string."
+		  - Invalid field \\"unknown\\". Must be a string, received boolean."
 	`);
 
 		expect(() => {
@@ -331,8 +333,8 @@ describe('union()', () => {
 		}).toThrowErrorMatchingInlineSnapshot(`
 		"Received object/shape with the following failures:
 		  - The following validations have failed:
-		    - Invalid field \\"foo\\" with value 123. Must be a string.
-		  - Invalid field \\"foo\\" with value 123. Must be a string."
+		    - Invalid field \\"foo\\". Must be a string, received number.
+		  - Invalid field \\"foo\\". Must be a string, received number."
 	`);
 
 		expect(() => {
@@ -340,9 +342,9 @@ describe('union()', () => {
 		}).toThrowErrorMatchingInlineSnapshot(`
 		"Received object/shape with the following failures:
 		  - The following validations have failed:
-		    - Invalid field \\"bar\\" with value \\"abc\\". Must be a number.
-		    - Invalid field \\"baz\\" with value 123. Must be a boolean.
-		  - Invalid field \\"baz\\" with value 123. Must be a string."
+		    - Invalid field \\"bar\\". Must be a number, received string.
+		    - Invalid field \\"baz\\". Must be a boolean, received number.
+		  - Invalid field \\"baz\\". Must be a string, received number."
 	`);
 
 		expect(() => {
@@ -433,7 +435,7 @@ describe('union()', () => {
 				schema.validate('not a whitelisted string');
 			}).toThrowErrorMatchingInlineSnapshot(`
 			"Received string with the following failures:
-			  - String must be one of: foo, bar, baz"
+			  - String must be one of: foo, bar, baz. Received \\"not a whitelisted string\\"."
 		`);
 		});
 

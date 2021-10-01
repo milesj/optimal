@@ -53,13 +53,13 @@ describe('array()', () => {
 		it('errors if array has less items', () => {
 			expect(() => {
 				schema.validate([]);
-			}).toThrow('Array length must be 1.');
+			}).toThrow('Array length must be 1, received 0.');
 		});
 
 		it('errors if array has more items', () => {
 			expect(() => {
 				schema.validate(['foo', 'bar']);
-			}).toThrow('Array length must be 1.');
+			}).toThrow('Array length must be 1, received 2.');
 		});
 
 		it('doesnt error if array has exact items', () => {
@@ -103,13 +103,13 @@ describe('array()', () => {
 		it('errors if a non-array is passed', () => {
 			expect(() => {
 				schema.validate(123);
-			}).toThrow('Must be an array.');
+			}).toThrow('Must be an array, received number.');
 		});
 
 		it('errors if array value type is invalid', () => {
 			expect(() => {
 				schema.validate([123]);
-			}).toThrow('Must be a string.');
+			}).toThrow('Invalid member "[0]". Must be a string, received number.');
 		});
 	});
 });

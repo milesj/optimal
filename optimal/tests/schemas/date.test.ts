@@ -31,7 +31,11 @@ describe('date()', () => {
 
 			expect(() => {
 				schema.after(base).validate(base - 1000);
-			}).toThrow(`Date must come after ${new Date(base).toLocaleDateString()}.`);
+			}).toThrow(
+				`Date must come after ${new Date(base).toLocaleDateString()}, received ${new Date(
+					base,
+				).toLocaleDateString()}.`,
+			);
 		});
 
 		it('errors if value equals provided date', () => {
@@ -39,7 +43,11 @@ describe('date()', () => {
 
 			expect(() => {
 				schema.after(base).validate(base);
-			}).toThrow(`Date must come after ${new Date(base).toLocaleDateString()}.`);
+			}).toThrow(
+				`Date must come after ${new Date(base).toLocaleDateString()}, received ${new Date(
+					base,
+				).toLocaleDateString()}.`,
+			);
 		});
 
 		it('doesnt error if value comes after provided date', () => {
@@ -64,7 +72,11 @@ describe('date()', () => {
 
 			expect(() => {
 				schema.before(base).validate(base + 1000);
-			}).toThrow(`Date must come before ${new Date(base).toLocaleDateString()}.`);
+			}).toThrow(
+				`Date must come before ${new Date(base).toLocaleDateString()}, received ${new Date(
+					base,
+				).toLocaleDateString()}.`,
+			);
 		});
 
 		it('errors if value equals provided date', () => {
@@ -72,7 +84,11 @@ describe('date()', () => {
 
 			expect(() => {
 				schema.before(base).validate(base);
-			}).toThrow(`Date must come before ${new Date(base).toLocaleDateString()}.`);
+			}).toThrow(
+				`Date must come before ${new Date(base).toLocaleDateString()}, received ${new Date(
+					base,
+				).toLocaleDateString()}.`,
+			);
 		});
 
 		it('doesnt error if value comes before provided date', () => {
@@ -104,7 +120,7 @@ describe('date()', () => {
 			const end = Date.now() + 1000;
 			const error = `Date must be between ${new Date(start).toLocaleDateString()} and ${new Date(
 				end,
-			).toLocaleDateString()}.`;
+			).toLocaleDateString()}, received ${new Date(start).toLocaleDateString()}.`;
 
 			it('errors if value comes before provided dates', () => {
 				expect(() => {
@@ -142,7 +158,7 @@ describe('date()', () => {
 			const end = Date.now() + 1000;
 			const error = `Date must be between ${new Date(start).toLocaleDateString()} and ${new Date(
 				end,
-			).toLocaleDateString()} inclusive.`;
+			).toLocaleDateString()} inclusive, received ${new Date(start).toLocaleDateString()}.`;
 
 			it('errors if value comes before provided dates', () => {
 				expect(() => {
@@ -186,7 +202,9 @@ describe('date()', () => {
 		it('errors if a non-date value is passed', () => {
 			expect(() => {
 				schema.validate([]);
-			}).toThrow('Must be a string, number, or `Date` that resolves to a valid date.');
+			}).toThrow(
+				'Must be a string, number, or `Date` that resolves to a valid date, received array/tuple.',
+			);
 		});
 
 		it('doesnt error if a `Date` is passed', () => {

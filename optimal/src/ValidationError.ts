@@ -1,4 +1,4 @@
-import { pathKey, prettyValue } from './helpers';
+import { pathKey } from './helpers';
 
 export class ValidationError extends Error {
 	errors: ValidationError[] = [];
@@ -16,13 +16,9 @@ export class ValidationError extends Error {
 
 		if (path) {
 			const key = pathKey(path);
-			const valueLabel = prettyValue(value);
-			const typeLabel = key.includes('[') ? 'member' : 'field';
-			const label = valueLabel
-				? `Invalid ${typeLabel} "${key}" with value ${valueLabel}.`
-				: `Invalid ${typeLabel} "${key}".`;
+			const type = key.includes('[') ? 'member' : 'field';
 
-			this.message = `${label} ${this.message}`;
+			this.message = `Invalid ${type} "${key}". ${this.message}`;
 		}
 	}
 

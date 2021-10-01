@@ -58,7 +58,7 @@ describe('instance()', () => {
 			it('errors if the wrong class is passed', () => {
 				expect(() => {
 					schema.validate(new Bar());
-				}).toThrow('Must be an instance of "Foo".');
+				}).toThrow('Must be an instance of `Foo`.');
 			});
 
 			it('errors if the wrong class with same name is passed', () => {
@@ -70,7 +70,7 @@ describe('instance()', () => {
 
 				expect(() => {
 					schema.validate(new Foo2());
-				}).toThrow('Must be an instance of "Foo".');
+				}).toThrow('Must be an instance of `Foo`.');
 			});
 
 			it('doesnt error if the correct class is passed', () => {
@@ -88,7 +88,7 @@ describe('instance()', () => {
 			it('errors if the wrong class is passed', () => {
 				expect(() => {
 					schema.validate(new Bar());
-				}).toThrow('Must be an instance of "Foo".');
+				}).toThrow('Must be an instance of `Foo`.');
 			});
 
 			it('doesnt error if the wrong class with same name is passed', () => {
@@ -125,13 +125,13 @@ describe('instance()', () => {
 		it('errors if a non-object is passed', () => {
 			expect(() => {
 				schema.validate(123);
-			}).toThrow('Must be a class instance.');
+			}).toThrow('Must be a class instance, received number.');
 		});
 
 		it('errors if a plain object is passed', () => {
 			expect(() => {
 				schema.validate({});
-			}).toThrow('Must be a class instance.');
+			}).toThrow('Must be a class instance, received object/shape.');
 		});
 
 		it('doesnt error if a class instance is passed', () => {

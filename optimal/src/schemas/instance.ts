@@ -1,6 +1,6 @@
 import { createSchema } from '../createSchema';
 import { classCriteria, commonCriteria } from '../criteria';
-import { invalid, isObject } from '../helpers';
+import { invalid, isObject, prettyValue, typeOf } from '../helpers';
 import {
 	CommonCriterias,
 	Constructor,
@@ -29,11 +29,17 @@ export function instance() {
 		[
 			(state) => ({
 				validate(value, path) {
+					let valueType = typeOf(value);
+
+					if (valueType === 'class') {
+						valueType = prettyValue(value)!;
+					}
+
 					invalid(
 						isObject(value) && value.constructor !== Object,
 						state.type === 'class'
-							? 'Must be a class instance.'
-							: `Must be an instance of ${state.type}.`,
+							? `Must be a class instance, received ${valueType}.`
+							: `Must be an instance of \`${state.type}\`, received ${valueType}.`,
 						path,
 						value,
 					);

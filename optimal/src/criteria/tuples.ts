@@ -32,7 +32,7 @@ export function of<T extends unknown[]>(
 		validate(value, path, validateOptions) {
 			invalid(
 				Array.isArray(value) && value.length <= itemsSchemas.length,
-				`Value must be a tuple with ${itemsSchemas.length} items.`,
+				`Value must be a tuple with ${itemsSchemas.length} items, received ${value.length}.`,
 				path,
 				value,
 			);
