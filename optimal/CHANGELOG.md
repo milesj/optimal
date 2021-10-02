@@ -3,23 +3,6 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## 5.0.0-alpha.5 - 2021-10-01
-
-#### 🚀 Updates
-
-- Improve error messages. ([a6a7bb8](https://github.com/milesj/optimal/commit/a6a7bb8))
-- Support `undefined` as a first-class type/value. (#39) ([c885310](https://github.com/milesj/optimal/commit/c885310)), closes [#39](https://github.com/milesj/optimal/issues/39)
-
-#### 🐞 Fixes
-
-- Only collection errors for shapes/unions. ([49c64d8](https://github.com/milesj/optimal/commit/49c64d8))
-
-**Note:** Version bump only for package optimal
-
-
-
-
-
 # 5.0.0
 
 Ground-up rewrite that migrates to a more composable API. Under the hood, classes were refactored
@@ -39,6 +22,7 @@ changelog will use the new verbiage, but may affect previous APIs.
 - Updated `instance()` to no longer accept a schema as an argument, use `instance().of()` instead.
 - Updated `object()` to no longer accept a schema as an argument, use `object().of()` instead.
 - Updated `union()` to no longer accept a list of schemas as an argument, use `union().of()` instead.
+- Updated `.and()`, `.or()`, and `.xor()` to accept a list of keys, instead of an argument spread.
 - Renamed `.nonNullable()` method to `.notNullable()`.
 - Removed `.key()` method.
 - Removed `.message()` method.

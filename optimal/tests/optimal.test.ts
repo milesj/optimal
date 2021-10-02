@@ -344,17 +344,17 @@ describe('Optimal', () => {
 	describe('logical operators', () => {
 		it('handles AND', () => {
 			const and = {
-				foo: string('a').and('bar', 'baz'),
-				bar: string('b').and('foo', 'baz'),
-				baz: string('c').and('foo', 'bar'),
+				foo: string('a').and(['bar', 'baz']),
+				bar: string('b').and(['foo', 'baz']),
+				baz: string('c').and(['foo', 'bar']),
 			};
 
 			// Dont error if all are undefined
 			expect(() => {
 				optimal({
-					foo: string('a').and('bar', 'baz'),
-					bar: string('b').and('foo', 'baz'),
-					baz: string('c').and('foo', 'bar'),
+					foo: string('a').and(['bar', 'baz']),
+					bar: string('b').and(['foo', 'baz']),
+					baz: string('c').and(['foo', 'bar']),
 				}).validate({});
 			}).not.toThrow();
 
@@ -398,9 +398,9 @@ describe('Optimal', () => {
 
 		it('handles OR', () => {
 			const or = {
-				foo: string('a').or('bar', 'baz'),
-				bar: string('b').or('foo', 'baz'),
-				baz: string('c').or('foo', 'bar'),
+				foo: string('a').or(['bar', 'baz']),
+				bar: string('b').or(['foo', 'baz']),
+				baz: string('c').or(['foo', 'bar']),
 			};
 
 			expect(() => {
@@ -439,9 +439,9 @@ describe('Optimal', () => {
 
 		it('handles XOR', () => {
 			const xor = {
-				foo: string('a').xor('bar', 'baz'),
-				bar: string('b').xor('foo', 'baz'),
-				baz: string('c').xor('foo', 'bar'),
+				foo: string('a').xor(['bar', 'baz']),
+				bar: string('b').xor(['foo', 'baz']),
+				baz: string('c').xor(['foo', 'bar']),
 			};
 
 			expect(() => {

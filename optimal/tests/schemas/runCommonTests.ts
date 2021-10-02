@@ -94,12 +94,12 @@ export function runCommonTests<T>(
 		let andSchema: Schema<T>;
 
 		beforeEach(() => {
-			andSchema = schema.and('a', 'c');
+			andSchema = schema.and(['a', 'c']);
 		});
 
 		it('errors if no keys are defined', () => {
 			expect(() => {
-				schema.and();
+				schema.and([]);
 			}).toThrow('AND requires a list of field names.');
 		});
 
@@ -112,6 +112,17 @@ export function runCommonTests<T>(
 					},
 				});
 			}).toThrow('All of these fields must be defined: a, c');
+		});
+
+		it('can customize the message', () => {
+			expect(() => {
+				schema.and(['a', 'c'], { message: 'Missing a/c!' }).validate(value, 'a', {
+					currentObject: {
+						a: 'a',
+						b: 'b',
+					},
+				});
+			}).toThrow('Missing a/c!');
 		});
 
 		if (nullByDefault) {
@@ -407,12 +418,12 @@ export function runCommonTests<T>(
 		let orSchema: Schema<T>;
 
 		beforeEach(() => {
-			orSchema = schema.or('a', 'b');
+			orSchema = schema.or(['a', 'b']);
 		});
 
 		it('errors if no keys are defined', () => {
 			expect(() => {
-				schema.or();
+				schema.or([]);
 			}).toThrow('OR requires a list of field names.');
 		});
 
@@ -420,6 +431,12 @@ export function runCommonTests<T>(
 			expect(() => {
 				orSchema.validate(value, 'a', {});
 			}).toThrow('At least one of these fields must be defined: a, b');
+		});
+
+		it('can customize the message', () => {
+			expect(() => {
+				schema.or(['a', 'b'], { message: 'Missing any!' }).validate(value, 'a', {});
+			}).toThrow('Missing any!');
 		});
 
 		it('doesnt error if at least 1 option is defined', () => {
@@ -439,12 +456,12 @@ export function runCommonTests<T>(
 		let xorSchema: Schema<T>;
 
 		beforeEach(() => {
-			xorSchema = schema.xor('b', 'c');
+			xorSchema = schema.xor(['b', 'c']);
 		});
 
 		it('errors if no keys are defined', () => {
 			expect(() => {
-				schema.xor();
+				schema.xor([]);
 			}).toThrow('XOR requires a list of field names.');
 		});
 
@@ -452,6 +469,12 @@ export function runCommonTests<T>(
 			expect(() => {
 				xorSchema.validate(value, 'a', {});
 			}).toThrow('Only one of these fields may be defined: a, b, c');
+		});
+
+		it('can customize the message', () => {
+			expect(() => {
+				schema.xor(['b', 'c'], { message: 'Only one!' }).validate(value, 'a', {});
+			}).toThrow('Only one!');
 		});
 
 		it('errors if more than 1 option is defined', () => {

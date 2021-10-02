@@ -64,15 +64,15 @@ export type CriteriaFactory<Input> = (
 ) => Criteria<Input> | void;
 
 export interface CommonCriterias<S> {
-	and: (...keys: string[]) => S;
+	and: (keys: string[], options?: Options) => S;
 	custom: (callback: CriteriaValidator<InferSchemaType<S>>) => S;
 	deprecate: (message: string) => S;
 	only: (options?: Options) => S;
 	optional: () => S;
-	or: (...keys: string[]) => S;
+	or: (keys: string[], options?: Options) => S;
 	required: (options?: Options) => S;
 	when: (condition: WhenCondition<InferSchemaType<S>>, pass: AnySchema, fail?: AnySchema) => S;
-	xor: (...keys: string[]) => S;
+	xor: (keys: string[], options?: Options) => S;
 	// Define in schemas directly
 	// never: () => S;
 	// notNullable: () => S;

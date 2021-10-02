@@ -20,7 +20,7 @@ import { ValidationError } from '../ValidationError';
 /**
  * Map a list of field names that must be defined alongside this field when in a shape/object.
  */
-export function and<T>(state: SchemaState<T>, ...keys: string[]): Criteria<T> {
+export function and<T>(state: SchemaState<T>, keys: string[], options: Options = {}): Criteria<T> {
 	invariant(keys.length > 0, 'AND requires a list of field names.');
 
 	return {
@@ -35,7 +35,10 @@ export function and<T>(state: SchemaState<T>, ...keys: string[]): Criteria<T> {
 				return;
 			}
 
-			invalid(undefs.length === 0, `All of these fields must be defined: ${andKeys.join(', ')}`);
+			invalid(
+				undefs.length === 0,
+				options.message ?? `All of these fields must be defined: ${andKeys.join(', ')}`,
+			);
 		},
 	};
 }
@@ -113,8 +116,6 @@ export function nullable<T>(state: SchemaState<T>) {
  * Mark that this field can ONLY use a value that matches the default value.
  */
 export function only<T>(state: SchemaState<T>, options: Options = {}): Criteria<T> {
-	state.metadata.onlyMessage = options.message;
-
 	const { defaultValue } = state;
 
 	invariant(
@@ -128,7 +129,12 @@ export function only<T>(state: SchemaState<T>, options: Options = {}): Criteria<
 		validate(value, path, validateOptions) {
 			const testValue = extractDefaultValue(defaultValue, path, validateOptions);
 
-			invalid(value === testValue, `Value may only be "${testValue}".`, path, value);
+			invalid(
+				value === testValue,
+				options.message ?? `Value may only be "${testValue}".`,
+				path,
+				value,
+			);
 		},
 	};
 }
@@ -136,7 +142,7 @@ export function only<T>(state: SchemaState<T>, options: Options = {}): Criteria<
 /**
  * Map a list of field names that must have at least 1 defined when in a shape/object.
  */
-export function or<T>(state: SchemaState<T>, ...keys: string[]): Criteria<T> {
+export function or<T>(state: SchemaState<T>, keys: string[], options: Options = {}): Criteria<T> {
 	invariant(keys.length > 0, 'OR requires a list of field names.');
 
 	return {
@@ -150,7 +156,7 @@ export function or<T>(state: SchemaState<T>, ...keys: string[]): Criteria<T> {
 
 			invalid(
 				defs.length > 0,
-				`At least one of these fields must be defined: ${orKeys.join(', ')}`,
+				options.message ?? `At least one of these fields must be defined: ${orKeys.join(', ')}`,
 			);
 		},
 	};
@@ -214,7 +220,7 @@ export function when<T>(
 /**
  * Map a list of field names that must not be defined alongside this field when in a shape/object.
  */
-export function xor<T>(state: SchemaState<T>, ...keys: string[]): Criteria<T> {
+export function xor<T>(state: SchemaState<T>, keys: string[], options: Options = {}): Criteria<T> {
 	invariant(keys.length > 0, 'XOR requires a list of field names.');
 
 	return {
@@ -226,7 +232,10 @@ export function xor<T>(state: SchemaState<T>, ...keys: string[]): Criteria<T> {
 				(key) => currentObject?.[key] !== undefined && currentObject?.[key] !== null,
 			);
 
-			invalid(defs.length === 1, `Only one of these fields may be defined: ${xorKeys.join(', ')}`);
+			invalid(
+				defs.length === 1,
+				options.message ?? `Only one of these fields may be defined: ${xorKeys.join(', ')}`,
+			);
 		},
 	};
 }
