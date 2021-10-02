@@ -126,9 +126,12 @@ export interface StringCriterias<S> {
 
 // SCHEMAS
 
-export interface SchemaValidateOptions {
-	currentObject?: UnknownObject;
-	rootObject?: UnknownObject;
+export interface SchemaValidateOptions<
+	RO extends object = UnknownObject,
+	CO extends object = UnknownObject,
+> {
+	currentObject?: CO;
+	rootObject?: RO;
 }
 
 export interface Schema<Output> {
