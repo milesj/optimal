@@ -176,10 +176,8 @@ export type Infer<T> = T extends Schema<infer U>
 	? InferFromObject<T>
 	: never;
 
-export type DeepPartial<T> = T extends Builtin | Primitive
+export type DeepPartial<T> = T extends Builtin | Primitive | unknown[]
 	? T
-	: T extends (infer I)[]
-	? DeepPartial<I>[]
 	: T extends object
 	? { [K in keyof T]?: DeepPartial<T[K]> }
 	: T;
