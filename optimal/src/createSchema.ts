@@ -36,12 +36,12 @@ function validate<T>(
 			console.info(`Field "${path}" is deprecated. ${metadata.deprecatedMessage}`);
 		}
 
-		invalid(!state.never, 'Field should never be used.', path);
+		invalid(!state.never, metadata.neverMessage ?? 'Field should never be used.', path);
 	}
 
 	// Handle null
 	if (value === null) {
-		invalid(state.nullable, 'Null is not allowed.', path, null);
+		invalid(state.nullable, metadata.nullableMessage ?? 'Null is not allowed.', path, null);
 	}
 
 	// Run validations and produce a new value

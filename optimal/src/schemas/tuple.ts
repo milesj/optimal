@@ -2,11 +2,11 @@ import { createSchema } from '../createSchema';
 import { commonCriteria, tupleCriteria } from '../criteria';
 import { InferTupleItems } from '../criteria/tuples';
 import { createArray, invalid, typeOf } from '../helpers';
-import { CommonCriterias, NotNull, NotUndefined, Schema } from '../types';
+import { CommonCriterias, NotNull, NotUndefined, Options, Schema } from '../types';
 
 export interface TupleSchema<T> extends Schema<Required<T>>, CommonCriterias<TupleSchema<T>> {
-	never: () => TupleSchema<never>;
-	notNullable: () => TupleSchema<NotNull<T>>;
+	never: (options?: Options) => TupleSchema<never>;
+	notNullable: (options?: Options) => TupleSchema<NotNull<T>>;
 	notUndefinable: () => TupleSchema<NotUndefined<T>>;
 	nullable: () => TupleSchema<T | null>;
 	/** @internal */

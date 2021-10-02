@@ -99,7 +99,7 @@ export function instanceOf<T = unknown>(object: unknown, contract: Constructor<T
 
 export function invalid(
 	condition: boolean,
-	message: string,
+	message: unknown,
 	path: string = '',
 	value: unknown = undefined,
 ) {
@@ -107,7 +107,7 @@ export function invalid(
 		return;
 	}
 
-	throw new ValidationError(message, path, value);
+	throw new ValidationError(String(message), path, value);
 }
 
 export function invariant(condition: boolean, message: string) {

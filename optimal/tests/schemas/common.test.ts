@@ -11,6 +11,14 @@ describe('common', () => {
 			expect(() => reqSchema.validate({})).toThrow('Field is required and must be defined.');
 		});
 
+		it('can customize the message', () => {
+			const reqSchema2 = shape({
+				foo: string().required({ message: 'Define me!' }),
+			});
+
+			expect(() => reqSchema2.validate({})).toThrow('Define me!');
+		});
+
 		it('errors when undefined is passed', () => {
 			expect(() => reqSchema.validate({ foo: undefined })).toThrow(
 				'Field is required and must be defined.',

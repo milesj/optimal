@@ -7,14 +7,15 @@ import {
 	DefaultValueInitializer,
 	NotNull,
 	NotUndefined,
+	Options,
 	Schema,
 } from '../types';
 
 export interface FunctionSchema<T = AnyFunction>
 	extends Schema<T>,
 		CommonCriterias<FunctionSchema<T>> {
-	never: () => FunctionSchema<never>;
-	notNullable: () => FunctionSchema<NotNull<T>>;
+	never: (options?: Options) => FunctionSchema<never>;
+	notNullable: (options?: Options) => FunctionSchema<NotNull<T>>;
 	notUndefinable: () => FunctionSchema<NotUndefined<T>>;
 	nullable: () => FunctionSchema<T | null>;
 	undefinable: () => FunctionSchema<T | undefined>;

@@ -48,12 +48,13 @@ export function of<T extends object>(state: SchemaState<T>, schemas: Blueprint<T
 			Object.keys(schemas).forEach((prop) => {
 				const key = prop as keyof T;
 				const schema = schemas[key];
+				const schemaState = schema.state();
 				const currentPath = path ? `${path}.${key}` : String(key);
 
-				if (schema.state().required) {
+				if (schemaState.required) {
 					invalid(
 						key in value && value[key] !== undefined,
-						'Field is required and must be defined.',
+						schemaState.metadata.requiredMessage ?? 'Field is required and must be defined.',
 						currentPath,
 						undefined,
 					);

@@ -4,8 +4,8 @@ import { invalid, typeOf } from '../helpers';
 import { CommonCriterias, DefaultValue, NotNull, NotUndefined, Options, Schema } from '../types';
 
 export interface BooleanSchema<T = boolean> extends Schema<T>, CommonCriterias<BooleanSchema<T>> {
-	never: () => BooleanSchema<never>;
-	notNullable: () => BooleanSchema<NotNull<T>>;
+	never: (options?: Options) => BooleanSchema<never>;
+	notNullable: (options?: Options) => BooleanSchema<NotNull<T>>;
 	notUndefinable: () => BooleanSchema<NotUndefined<T>>;
 	nullable: () => BooleanSchema<T | null>;
 	onlyFalse: (options?: Options) => BooleanSchema<false>;

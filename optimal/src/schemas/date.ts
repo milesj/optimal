@@ -7,6 +7,7 @@ import {
 	DefaultValue,
 	NotNull,
 	NotUndefined,
+	Options,
 	Schema,
 } from '../types';
 
@@ -14,8 +15,8 @@ export interface DateSchema<T = Date>
 	extends Schema<T>,
 		DateCriterias<DateSchema<T>>,
 		CommonCriterias<DateSchema<T>> {
-	never: () => DateSchema<never>;
-	notNullable: () => DateSchema<NotNull<T>>;
+	never: (options?: Options) => DateSchema<never>;
+	notNullable: (options?: Options) => DateSchema<NotNull<T>>;
 	notUndefinable: () => DateSchema<NotUndefined<T>>;
 	nullable: () => DateSchema<T | null>;
 	undefinable: () => DateSchema<T | undefined>;

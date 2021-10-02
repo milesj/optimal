@@ -7,7 +7,14 @@ import {
 	pathKey,
 } from '../helpers';
 import { OptimalError } from '../OptimalError';
-import { Criteria, CriteriaValidator, Schema, SchemaState, ValueComparator } from '../types';
+import {
+	Criteria,
+	CriteriaValidator,
+	Options,
+	Schema,
+	SchemaState,
+	ValueComparator,
+} from '../types';
 import { ValidationError } from '../ValidationError';
 
 /**
@@ -44,10 +51,10 @@ export function custom<T>(state: SchemaState<T>, validator: CriteriaValidator<T>
 			try {
 				validator(value, path, validateOptions);
 			} catch (error: unknown) {
-				if (error instanceof Error) {
-					invalid(false, error.message, path, value);
-				} else if (error instanceof ValidationError || error instanceof OptimalError) {
+				if (error instanceof ValidationError || error instanceof OptimalError) {
 					throw error;
+				} else if (error instanceof Error) {
+					invalid(false, error.message, path, value);
 				}
 			}
 		},
@@ -66,7 +73,8 @@ export function deprecate<T>(state: SchemaState<T>, message: string) {
 /**
  * Mark that this field should never be used.
  */
-export function never<T>(state: SchemaState<T>) {
+export function never<T>(state: SchemaState<T>, options: Options = {}) {
+	state.metadata.neverMessage = options.message;
 	state.defaultValue = undefined;
 	state.never = true;
 }
@@ -74,7 +82,8 @@ export function never<T>(state: SchemaState<T>) {
 /**
  * Require this field to be explicitly defined when in a shape/object.
  */
-export function required<T>(state: SchemaState<T>) {
+export function required<T>(state: SchemaState<T>, options: Options = {}) {
+	state.metadata.requiredMessage = options.message;
 	state.required = true;
 }
 
@@ -88,7 +97,8 @@ export function optional<T>(state: SchemaState<T>) {
 /**
  * Disallow null values.
  */
-export function notNullable<T>(state: SchemaState<T>) {
+export function notNullable<T>(state: SchemaState<T>, options: Options = {}) {
+	state.metadata.nullableMessage = options.message;
 	state.nullable = false;
 }
 
@@ -102,7 +112,9 @@ export function nullable<T>(state: SchemaState<T>) {
 /**
  * Mark that this field can ONLY use a value that matches the default value.
  */
-export function only<T>(state: SchemaState<T>): Criteria<T> {
+export function only<T>(state: SchemaState<T>, options: Options = {}): Criteria<T> {
+	state.metadata.onlyMessage = options.message;
+
 	const { defaultValue } = state;
 
 	invariant(

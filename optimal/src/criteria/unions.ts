@@ -1,11 +1,15 @@
 import { collectErrors, invalid, invariant, isSchema, typeOf } from '../helpers';
-import { Criteria, Schema, SchemaState } from '../types';
+import { Criteria, Options, Schema, SchemaState } from '../types';
 import { ValidationError } from '../ValidationError';
 
 /**
  * Require field value to be one of a specific schema type.
  */
-export function of<T = unknown>(state: SchemaState<T>, schemas: Schema<unknown>[]): Criteria<T> {
+export function of<T = unknown>(
+	state: SchemaState<T>,
+	schemas: Schema<unknown>[],
+	options: Options = {},
+): Criteria<T> {
 	invariant(
 		Array.isArray(schemas) && schemas.length > 0 && schemas.every(isSchema),
 		'A non-empty array of schemas are required for a union.',
@@ -56,7 +60,7 @@ export function of<T = unknown>(state: SchemaState<T>, schemas: Schema<unknown>[
 				} else {
 					invalid(
 						false,
-						`Received ${valueType} but value must be one of: ${allowedValues}.`,
+						options.message ?? `Received ${valueType} but value must be one of: ${allowedValues}.`,
 						path,
 						value,
 					);

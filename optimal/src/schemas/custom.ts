@@ -6,12 +6,13 @@ import {
 	DefaultValue,
 	NotNull,
 	NotUndefined,
+	Options,
 	Schema,
 } from '../types';
 
 export interface CustomSchema<T> extends Schema<T>, CommonCriterias<CustomSchema<T>> {
-	never: () => CustomSchema<never>;
-	notNullable: () => CustomSchema<NotNull<T>>;
+	never: (options?: Options) => CustomSchema<never>;
+	notNullable: (options?: Options) => CustomSchema<NotNull<T>>;
 	notUndefinable: () => CustomSchema<NotUndefined<T>>;
 	nullable: () => CustomSchema<T | null>;
 	undefinable: () => CustomSchema<T | undefined>;

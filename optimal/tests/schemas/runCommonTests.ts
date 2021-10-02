@@ -1,9 +1,9 @@
 import { jest } from '@jest/globals';
-import { AnySchema, CommonCriterias, DefaultValue, Schema } from '../../src';
+import { AnySchema, CommonCriterias, DefaultValue, Options, Schema } from '../../src';
 
 interface TestCriterias<S> extends CommonCriterias<S> {
-	never: () => S;
-	notNullable: () => S;
+	never: (options?: Options) => S;
+	notNullable: (options?: Options) => S;
 	nullable: () => S;
 	notUndefinable: () => S;
 	undefinable: () => S;
@@ -242,6 +242,10 @@ export function runCommonTests<T>(
 		it('errors when validating', () => {
 			expect(() => schema.never().validate(value)).toThrow('Field should never be used.');
 		});
+
+		it('can customize the message', () => {
+			expect(() => schema.never({ message: 'Dont use!' }).validate(value)).toThrow('Dont use!');
+		});
 	});
 
 	describe('undefinable()', () => {
@@ -343,6 +347,10 @@ export function runCommonTests<T>(
 
 		it('errors when null is passed', () => {
 			expect(() => notNullSchema.validate(null)).toThrow('Null is not allowed.');
+		});
+
+		it('can customize the message', () => {
+			expect(() => schema.notNullable({ message: 'No null!' }).validate(null)).toThrow('No null!');
 		});
 
 		it('doesnt error when a valid value is passed', () => {

@@ -16,8 +16,8 @@ export interface NumberSchema<T = number>
 	extends Schema<T>,
 		NumberCriterias<NumberSchema<T>>,
 		CommonCriterias<NumberSchema<T>> {
-	never: () => NumberSchema<never>;
-	notNullable: () => NumberSchema<NotNull<T>>;
+	never: (options?: Options) => NumberSchema<never>;
+	notNullable: (options?: Options) => NumberSchema<NotNull<T>>;
 	notUndefinable: () => NumberSchema<NotUndefined<T>>;
 	nullable: () => NumberSchema<T | null>;
 	oneOf: <I extends number = number>(

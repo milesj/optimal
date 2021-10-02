@@ -5,17 +5,19 @@ import {
 	CommonCriterias,
 	Constructor,
 	InferNullable,
+	InstanceOfOptions,
 	NotNull,
 	NotUndefined,
+	Options,
 	Schema,
 } from '../types';
 
 export interface InstanceSchema<T> extends Schema<T>, CommonCriterias<InstanceSchema<T>> {
-	never: () => InstanceSchema<never>;
-	notNullable: () => InstanceSchema<NotNull<T>>;
+	never: (options?: Options) => InstanceSchema<never>;
+	notNullable: (options?: Options) => InstanceSchema<NotNull<T>>;
 	notUndefinable: () => InstanceSchema<NotUndefined<T>>;
 	nullable: () => InstanceSchema<T | null>;
-	of: <C>(ref: Constructor<C>, loose?: boolean) => InstanceSchema<InferNullable<T, C>>;
+	of: <C>(ref: Constructor<C>, options?: InstanceOfOptions) => InstanceSchema<InferNullable<T, C>>;
 	undefinable: () => InstanceSchema<T | undefined>;
 }
 

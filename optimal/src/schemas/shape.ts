@@ -6,6 +6,7 @@ import {
 	CommonCriterias,
 	NotNull,
 	NotUndefined,
+	Options,
 	Schema,
 	ShapeCriterias,
 } from '../types';
@@ -14,8 +15,8 @@ export interface ShapeSchema<T>
 	extends Schema<Required<T>>,
 		ShapeCriterias<ShapeSchema<T>>,
 		CommonCriterias<ShapeSchema<T>> {
-	never: () => ShapeSchema<never>;
-	notNullable: () => ShapeSchema<NotNull<T>>;
+	never: (options?: Options) => ShapeSchema<never>;
+	notNullable: (options?: Options) => ShapeSchema<NotNull<T>>;
 	notUndefinable: () => ShapeSchema<NotUndefined<T>>;
 	nullable: () => ShapeSchema<T | null>;
 	/** @internal */

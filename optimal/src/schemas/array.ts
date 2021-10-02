@@ -8,6 +8,7 @@ import {
 	InferNullable,
 	NotNull,
 	NotUndefined,
+	Options,
 	Schema,
 } from '../types';
 
@@ -15,8 +16,8 @@ export interface ArraySchema<T = unknown[]>
 	extends Schema<T>,
 		ArrayCriterias<ArraySchema<T>>,
 		CommonCriterias<ArraySchema<T>> {
-	never: () => ArraySchema<never>;
-	notNullable: () => ArraySchema<NotNull<T>>;
+	never: (options?: Options) => ArraySchema<never>;
+	notNullable: (options?: Options) => ArraySchema<NotNull<T>>;
 	notUndefinable: () => ArraySchema<NotUndefined<T>>;
 	nullable: () => ArraySchema<T | null>;
 	of: <V>(schema: Schema<V>) => ArraySchema<InferNullable<T, V[]>>;

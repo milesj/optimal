@@ -1,5 +1,5 @@
 import { invalid, invariant, isValidString, prettyValue } from '../helpers';
-import { Criteria, Options, SchemaState } from '../types';
+import { Criteria, Options, SchemaState, StringContainsOptions } from '../types';
 
 /**
  * Require field value to contain a provided string.
@@ -7,7 +7,7 @@ import { Criteria, Options, SchemaState } from '../types';
 export function contains(
 	state: SchemaState<string>,
 	token: string,
-	options: Options & { index?: number } = {},
+	options: StringContainsOptions = {},
 ): Criteria<string> {
 	invariant(isValidString(token), 'Contains requires a non-empty token.');
 

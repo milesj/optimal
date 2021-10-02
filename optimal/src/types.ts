@@ -26,15 +26,25 @@ export type ValueComparator<T> = (
 
 export type WhenCondition<T> = T | ValueComparator<T>;
 
-// CRITERIA
+// CRITERIA OPTIONS
 
 export interface Options {
 	message?: string;
 }
 
+export interface InstanceOfOptions extends Options {
+	loose?: boolean;
+}
+
 export interface InclusiveOptions extends Options {
 	inclusive?: boolean;
 }
+
+export interface StringContainsOptions extends Options {
+	index?: number;
+}
+
+// CRITERIA
 
 export type CriteriaValidator<Input> = (
 	value: Input,
@@ -57,10 +67,10 @@ export interface CommonCriterias<S> {
 	and: (...keys: string[]) => S;
 	custom: (callback: CriteriaValidator<InferSchemaType<S>>) => S;
 	deprecate: (message: string) => S;
-	only: () => S;
+	only: (options?: Options) => S;
 	optional: () => S;
 	or: (...keys: string[]) => S;
-	required: () => S;
+	required: (options?: Options) => S;
 	when: (condition: WhenCondition<InferSchemaType<S>>, pass: AnySchema, fail?: AnySchema) => S;
 	xor: (...keys: string[]) => S;
 	// Define in schemas directly
@@ -111,7 +121,7 @@ export interface ShapeCriterias<S> {
 
 export interface StringCriterias<S> {
 	camelCase: (options?: Options) => S;
-	contains: (token: string, options?: Options & { index?: number }) => S;
+	contains: (token: string, options?: StringContainsOptions) => S;
 	kebabCase: (options?: Options) => S;
 	lowerCase: (options?: Options) => S;
 	match: (pattern: RegExp, options?: Options) => S;

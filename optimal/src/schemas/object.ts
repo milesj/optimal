@@ -18,8 +18,8 @@ export interface ObjectSchema<T = object>
 		ObjectCriterias<ObjectSchema<T>>,
 		CommonCriterias<ObjectSchema<T>> {
 	keysOf: (schema: StringSchema, options?: Options) => ObjectSchema<T>;
-	never: () => ObjectSchema<never>;
-	notNullable: () => ObjectSchema<NotNull<T>>;
+	never: (options?: Options) => ObjectSchema<never>;
+	notNullable: (options?: Options) => ObjectSchema<NotNull<T>>;
 	notUndefinable: () => ObjectSchema<NotUndefined<T>>;
 	nullable: () => ObjectSchema<T | null>;
 	of: <V, K extends PropertyKey = keyof T>(

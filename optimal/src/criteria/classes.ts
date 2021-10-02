@@ -1,5 +1,5 @@
 import { instanceOf, invalid, invariant, isObject } from '../helpers';
-import { Constructor, Criteria, SchemaState } from '../types';
+import { Constructor, Criteria, InstanceOfOptions, SchemaState } from '../types';
 
 /**
  * Require this field to be an instance of the defined class.
@@ -7,7 +7,7 @@ import { Constructor, Criteria, SchemaState } from '../types';
 export function of<T>(
 	state: SchemaState<T>,
 	ref: Constructor<T>,
-	loose: boolean = false,
+	options: InstanceOfOptions = {},
 ): Criteria<T> {
 	invariant(typeof ref === 'function', 'A class reference is required.');
 
@@ -17,8 +17,8 @@ export function of<T>(
 		validate(value, path) {
 			invalid(
 				typeof ref === 'function' &&
-					(value instanceof ref || (loose && isObject(value) && instanceOf(value, ref))),
-				`Must be an instance of \`${state.type}\`.`,
+					(value instanceof ref || (!!options.loose && isObject(value) && instanceOf(value, ref))),
+				options.message ?? `Must be an instance of \`${state.type}\`.`,
 				path,
 				value,
 			);
