@@ -35,11 +35,7 @@ export function of<T extends object>(state: SchemaState<T>, schemas: Blueprint<T
 			const isPlainObject = value.constructor === Object;
 			const unknown: Partial<T> = isPlainObject ? { ...value } : {};
 			const shape: Partial<T> = {};
-			const collectionError = new ValidationError(
-				'The following validations have failed:',
-				path,
-				value,
-			);
+			const error = new ValidationError('', path, value);
 			const currentValidateOptions = {
 				...validateOptions,
 				currentObject: value as UnknownObject,
@@ -51,16 +47,16 @@ export function of<T extends object>(state: SchemaState<T>, schemas: Blueprint<T
 				const schemaState = schema.state();
 				const currentPath = path ? `${path}.${key}` : String(key);
 
-				if (schemaState.required) {
-					invalid(
-						key in value && value[key] !== undefined,
-						schemaState.metadata.requiredMessage ?? 'Field is required and must be defined.',
-						currentPath,
-						undefined,
-					);
-				}
+				collectErrors(error, () => {
+					if (schemaState.required) {
+						invalid(
+							key in value && value[key] !== undefined,
+							schemaState.metadata.requiredMessage ?? 'Field is required and must be defined.',
+							currentPath,
+							undefined,
+						);
+					}
 
-				collectErrors(collectionError, () => {
 					shape[key] = schema.validate(value[key], currentPath, currentValidateOptions);
 				});
 
@@ -68,8 +64,9 @@ export function of<T extends object>(state: SchemaState<T>, schemas: Blueprint<T
 				delete unknown[key];
 			});
 
-			if (collectionError.errors.length > 0) {
-				throw collectionError;
+			// Always throw the entire collection to persist nested structure
+			if (error.errors.length > 0) {
+				throw error;
 			}
 
 			// Handle unknown fields

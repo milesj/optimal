@@ -175,6 +175,7 @@ export function prettyValue(value: unknown): string | null {
 export function collectErrors(
 	collectionError: ValidationError,
 	validator: () => boolean | void,
+	forceIndent?: boolean,
 ): boolean {
 	let result = false;
 
@@ -186,7 +187,7 @@ export function collectErrors(
 		}
 	} catch (error: unknown) {
 		if (error instanceof Error) {
-			collectionError.addError(error);
+			collectionError.addError(error, forceIndent);
 		} else {
 			// How?
 		}

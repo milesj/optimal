@@ -22,7 +22,7 @@ export function of<T = unknown>(
 			let nextValue: unknown = value;
 			const allowedValues = schemas.map((schema) => schema.type()).join(', ');
 			const valueType = typeOf(value);
-			const collectionError = new ValidationError(
+			const error = new ValidationError(
 				`Received ${valueType} with the following failures:`,
 				path,
 				value,
@@ -35,36 +35,64 @@ export function of<T = unknown>(
 					invalid(false, 'Nested unions are not supported.', path);
 				}
 
-				return collectErrors(collectionError, () => {
-					if (
-						valueType === schemaType ||
-						(valueType === 'object/shape' && schemaType === 'object') ||
-						(valueType === 'object/shape' && schemaType === 'shape') ||
-						(valueType === 'array/tuple' && schemaType === 'array') ||
-						(valueType === 'array/tuple' && schemaType === 'tuple') ||
-						schemaType === 'custom'
-					) {
-						// Dont pass path so its not included in the error message
-						nextValue = schema.validate(value, '', validateOptions);
+				return collectErrors(
+					error,
+					() => {
+						if (
+							valueType === schemaType ||
+							(valueType === 'object/shape' && schemaType === 'object') ||
+							(valueType === 'object/shape' && schemaType === 'shape') ||
+							(valueType === 'array/tuple' && schemaType === 'array') ||
+							(valueType === 'array/tuple' && schemaType === 'tuple') ||
+							schemaType === 'custom'
+						) {
+							// Dont pass path so its not included in the error message
+							nextValue = schema.validate(value, '', validateOptions);
 
-						return true;
-					}
+							return true;
+						}
 
-					return false;
-				});
+						return false;
+					},
+					true,
+				);
 			});
 
 			if (!passed) {
-				if (collectionError.errors.length > 0) {
-					throw collectionError;
+				if (error.errors.length > 0) {
+					error.throwIfApplicable();
 				} else {
 					invalid(
 						false,
-						options.message ?? `Received ${valueType} but value must be one of: ${allowedValues}.`,
+						`Received ${valueType} but value must be one of: ${allowedValues}.`,
 						path,
 						value,
 					);
 				}
+				// const { length } = collectionError.errors;
+
+				// if (length === 1) {
+				// 	// console.log(collectionError);
+				// }
+
+				// // When >= 2, always list all errors. When == 1, we want to bubble it up when there
+				// // are *no* children, otherwise we need to list out the entire tree!
+				// if (
+				// 	length >= 2 ||
+				// 	(length === 1 && collectionError.errors[0].errors.length > 0) ||
+				// 	(length === 1 && collectionError.errors[0].message.startsWith('-'))
+				// ) {
+				// 	throw collectionError;
+				// } else {
+				// 	invalid(
+				// 		false,
+				// 		collectionError.errors[0]?.message ??
+				// 			options.message ??
+				// 			`Received ${valueType} but value must be one of: ${allowedValues}.`,
+				// 		path,
+				// 		value,
+				// 	);
+				// }
 			}
 
 			return nextValue;

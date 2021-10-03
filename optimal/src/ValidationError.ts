@@ -3,6 +3,8 @@ import { pathKey } from './helpers';
 export class ValidationError extends Error {
 	errors: ValidationError[] = [];
 
+	noIndent: boolean = false;
+
 	path: string;
 
 	value: unknown;
@@ -20,9 +22,11 @@ export class ValidationError extends Error {
 
 			this.message = `Invalid ${type} "${key}". ${this.message}`;
 		}
+
+		this.noIndent = this.message === '';
 	}
 
-	addError(error: Error) {
+	addError(error: Error, forceIndent?: boolean) {
 		const validError =
 			error instanceof ValidationError ? error : new ValidationError(error.message);
 		const hasSameError = this.errors.some((e) => e.message === error.message);
@@ -31,12 +35,30 @@ export class ValidationError extends Error {
 			return;
 		}
 
+		const indent = !this.noIndent ? '  ' : '';
+
 		this.errors.push(validError);
 
-		this.message += '\n';
+		if (this.message) {
+			this.message += '\n';
+		}
+
 		this.message += error.message
 			.split('\n')
-			.map((line) => (line.match(/^\s+-/) ? `  ${line}` : `  - ${line}`))
+			.map((line) => (line.match(/^\s*-/) ? `${indent}${line}` : `${indent}- ${line}`))
 			.join('\n');
+	}
+
+	throwIfApplicable() {
+		if (this.errors.length === 0) {
+			return;
+		}
+
+		// When only 1, avoid the indentation and list format
+		if (this.errors.length === 1) {
+			throw this.errors[0];
+		}
+
+		throw this;
 	}
 }

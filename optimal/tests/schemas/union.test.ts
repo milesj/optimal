@@ -163,8 +163,7 @@ describe('union()', () => {
 				.validate({ foo: 123 });
 		}).toThrowErrorMatchingInlineSnapshot(`
 		"Received object/shape with the following failures:
-		  - The following validations have failed:
-		    - Invalid field \\"foo\\". Must be a string, received number."
+		  - Invalid field \\"foo\\". Must be a string, received number."
 	`);
 	});
 
@@ -178,13 +177,24 @@ describe('union()', () => {
 	});
 
 	it('runs tuple check', () => {
+		const tupleSchema = union(['foo', 'bar', 'baz']).of([
+			tuple<['foo', 'bar', 'baz']>([string(), string(), string()]),
+		]);
+
 		expect(() => {
-			union(['foo', 'bar', 'baz'])
-				.of([tuple<['foo', 'bar', 'baz']>([string(), string(), string()])])
-				.validate([1]);
+			tupleSchema.validate([1]);
 		}).toThrowErrorMatchingInlineSnapshot(`
 		"Received array/tuple with the following failures:
 		  - Invalid member \\"[0]\\". Must be a string, received number."
+	`);
+
+		expect(() => {
+			tupleSchema.validate([1, 2, 3]);
+		}).toThrowErrorMatchingInlineSnapshot(`
+		"Received array/tuple with the following failures:
+		  - Invalid member \\"[0]\\". Must be a string, received number.
+		  - Invalid member \\"[1]\\". Must be a string, received number.
+		  - Invalid member \\"[2]\\". Must be a string, received number."
 	`);
 	});
 
@@ -332,8 +342,6 @@ describe('union()', () => {
 			mixedUnion.validate({ foo: 123 });
 		}).toThrowErrorMatchingInlineSnapshot(`
 		"Received object/shape with the following failures:
-		  - The following validations have failed:
-		    - Invalid field \\"foo\\". Must be a string, received number.
 		  - Invalid field \\"foo\\". Must be a string, received number."
 	`);
 
@@ -341,9 +349,8 @@ describe('union()', () => {
 			mixedUnion.validate({ foo: 'abc', bar: 'abc', baz: 123 });
 		}).toThrowErrorMatchingInlineSnapshot(`
 		"Received object/shape with the following failures:
-		  - The following validations have failed:
-		    - Invalid field \\"bar\\". Must be a number, received string.
-		    - Invalid field \\"baz\\". Must be a boolean, received number.
+		  - Invalid field \\"bar\\". Must be a number, received string.
+		  - Invalid field \\"baz\\". Must be a boolean, received number.
 		  - Invalid field \\"baz\\". Must be a string, received number."
 	`);
 

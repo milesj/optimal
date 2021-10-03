@@ -98,6 +98,28 @@ describe('shape()', () => {
 			expect(schema.validate(undefined)).toEqual({ foo: '', bar: 0, baz: false });
 		});
 
+		it('errors for an invalid value', () => {
+			expect(() => {
+				schema.validate({
+					foo: 123,
+				});
+			}).toThrow('Invalid field "foo". Must be a string, received number.');
+		});
+
+		it('errors for multiple invalid values', () => {
+			expect(() => {
+				schema.validate({
+					foo: 123,
+					bar: true,
+					baz: 'abc',
+				});
+			}).toThrowErrorMatchingInlineSnapshot(`
+			"- Invalid field \\"foo\\". Must be a string, received number.
+			- Invalid field \\"bar\\". Must be a number, received boolean.
+			- Invalid field \\"baz\\". Must be a boolean, received string."
+		`);
+		});
+
 		it('errors if null is passed', () => {
 			expect(() => {
 				schema.validate(null);

@@ -80,6 +80,16 @@ describe('tuple()', () => {
 			}).toThrow('String must be one of: foo, bar, baz. Received "qux".');
 		});
 
+		it('errors if multiple tuple items are invalid', () => {
+			expect(() => {
+				schema.validate([null, true, -10, {}, 'qux']);
+			}).toThrowErrorMatchingInlineSnapshot(`
+			"- Invalid member \\"[0]\\". Null is not allowed.
+			- Invalid member \\"[2]\\". Number must be between 0 and 5, received -10.
+			- Invalid member \\"[4]\\". String must be one of: foo, bar, baz. Received \\"qux\\"."
+		`);
+		});
+
 		it('doesnt error if a matching tuple is passed', () => {
 			expect(() => {
 				schema.validate([[], false, 4, {}, 'foo']);
