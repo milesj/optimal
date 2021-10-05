@@ -1,4 +1,4 @@
-import { collectErrors, invalid, invariant, isSchema } from '../helpers';
+import { invalid, invariant, isSchema } from '../helpers';
 import { AnySchema, Criteria, Schema, SchemaState } from '../types';
 import { ValidationError } from '../ValidationError';
 
@@ -38,18 +38,23 @@ export function of<T extends unknown[]>(
 				value,
 			);
 
-			const error = new ValidationError('', path, value);
+			const errors: Error[] = [];
+
 			const items = itemsSchemas.map((item, i) => {
-				let result: unknown;
+				try {
+					return item.validate(value[i], `${path}[${i}]`, validateOptions) as unknown;
+				} catch (error: unknown) {
+					if (error instanceof Error) {
+						errors.push(error);
+					}
+				}
 
-				collectErrors(error, () => {
-					result = item.validate(value[i], `${path}[${i}]`, validateOptions) as unknown;
-				});
-
-				return result;
+				return null;
 			});
 
-			error.throwIfApplicable();
+			if (errors.length > 0) {
+				throw new ValidationError(errors, path, value);
+			}
 
 			return items;
 		},

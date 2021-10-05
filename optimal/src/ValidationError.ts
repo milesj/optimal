@@ -1,64 +1,91 @@
 import { pathKey } from './helpers';
 
+const PATH_TOKEN = /"(\[\d+]|\w+)"/i;
+const LIST_CHECK = /(\n|\s)+-/;
+
 export class ValidationError extends Error {
 	errors: ValidationError[] = [];
-
-	noIndent: boolean = false;
 
 	path: string;
 
 	value: unknown;
 
-	constructor(message: string, path: string = '', value: unknown = undefined) {
-		super(message);
+	hasOriginalMessage: boolean = false;
+
+	hasPathPrefix: boolean = false;
+
+	constructor(message: Error[] | string, path: string = '', value: unknown = undefined) {
+		super(typeof message === 'string' ? message : '');
 
 		this.name = 'ValidationError';
 		this.path = path;
 		this.value = value;
+		this.hasOriginalMessage = this.message !== '';
 
 		if (path) {
 			const key = pathKey(path);
 			const type = key.includes('[') ? 'member' : 'field';
 
-			this.message = `Invalid ${type} "${key}". ${this.message}`;
+			this.message = `Invalid ${type} "${key}". ${this.message}`.trim();
+			this.hasPathPrefix = true;
 		}
 
-		this.noIndent = this.message === '';
+		if (Array.isArray(message)) {
+			this.addErrors(message);
+		}
 	}
 
-	addError(error: Error, forceIndent?: boolean) {
-		const validError =
-			error instanceof ValidationError ? error : new ValidationError(error.message);
-		const hasSameError = this.errors.some((e) => e.message === error.message);
+	addErrors(errors: Error[]) {
+		this.errors = errors.map((error) =>
+			error instanceof ValidationError ? error : new ValidationError(error.message),
+		);
 
-		if (hasSameError) {
-			return;
+		// Inline error if only 1 and...
+		const firstError = this.errors[0];
+
+		if (
+			this.errors.length === 1 &&
+			((!this.hasOriginalMessage && !firstError.message.match(LIST_CHECK)) || this.message === '')
+		) {
+			this.message =
+				// Avoid double path prefixes by concatenating them
+				this.hasPathPrefix && firstError.hasPathPrefix
+					? firstError.message.replace(
+							PATH_TOKEN,
+							(match, subPath: string) =>
+								`"${this.path}${subPath.startsWith('[') ? '' : '.'}${subPath}"`,
+					  )
+					: `${this.message} ${firstError.message}`.trim();
+
+			// Bubble this up
+			if (firstError.hasPathPrefix) {
+				this.hasPathPrefix = true;
+			}
+
+			return this;
 		}
 
-		const indent = !this.noIndent ? '  ' : '';
+		// Otherwise list out all errors
+		const indent = this.hasOriginalMessage || this.hasPathPrefix ? '  ' : '';
+		const used = new Set<string>();
 
-		this.errors.push(validError);
+		this.errors.forEach((error) => {
+			if (used.has(error.message)) {
+				return;
+			}
 
-		if (this.message) {
-			this.message += '\n';
-		}
+			if (this.message) {
+				this.message += '\n';
+			}
 
-		this.message += error.message
-			.split('\n')
-			.map((line) => (line.match(/^\s*-/) ? `${indent}${line}` : `${indent}- ${line}`))
-			.join('\n');
-	}
+			this.message += error.message
+				.split('\n')
+				.map((line) => (line.match(/^\s*-/) ? `${indent}${line}` : `${indent}- ${line}`))
+				.join('\n');
 
-	throwIfApplicable() {
-		if (this.errors.length === 0) {
-			return;
-		}
+			used.add(error.message);
+		});
 
-		// When only 1, avoid the indentation and list format
-		if (this.errors.length === 1) {
-			throw this.errors[0];
-		}
-
-		throw this;
+		return this;
 	}
 }

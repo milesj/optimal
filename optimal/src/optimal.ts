@@ -46,15 +46,9 @@ export function optimal<Schemas extends object>(
 					rootObject: object,
 				});
 			} catch (error: unknown) {
-				let invalid: OptimalError;
+				const invalid =
+					error instanceof OptimalError ? error : new OptimalError([error as ValidationError]);
 				let prefix = '';
-
-				if (error instanceof OptimalError) {
-					invalid = error;
-				} else {
-					invalid = new OptimalError();
-					invalid.addError(error as ValidationError);
-				}
 
 				if (options.name) {
 					invalid.schema = options.name;

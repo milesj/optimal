@@ -172,30 +172,6 @@ export function prettyValue(value: unknown): string | null {
 	}
 }
 
-export function collectErrors(
-	collectionError: ValidationError,
-	validator: () => boolean | void,
-	forceIndent?: boolean,
-): boolean {
-	let result = false;
-
-	try {
-		const value = validator();
-
-		if (typeof value === 'boolean') {
-			result = value;
-		}
-	} catch (error: unknown) {
-		if (error instanceof Error) {
-			collectionError.addError(error, forceIndent);
-		} else {
-			// How?
-		}
-	}
-
-	return result;
-}
-
 export function extractDefaultValue<T>(
 	defaultValue: DefaultValue<T>,
 	path: string,

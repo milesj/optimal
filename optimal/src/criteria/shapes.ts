@@ -1,4 +1,4 @@
-import { collectErrors, invalid, invariant, isObject, isSchema, logUnknown } from '../helpers';
+import { invalid, invariant, isObject, isSchema, logUnknown } from '../helpers';
 import { Blueprint, Criteria, Schema, SchemaState, UnknownObject } from '../types';
 import { ValidationError } from '../ValidationError';
 
@@ -35,7 +35,7 @@ export function of<T extends object>(state: SchemaState<T>, schemas: Blueprint<T
 			const isPlainObject = value.constructor === Object;
 			const unknown: Partial<T> = isPlainObject ? { ...value } : {};
 			const shape: Partial<T> = {};
-			const error = new ValidationError('', path, value);
+			const errors: Error[] = [];
 			const currentValidateOptions = {
 				...validateOptions,
 				currentObject: value as UnknownObject,
@@ -47,7 +47,7 @@ export function of<T extends object>(state: SchemaState<T>, schemas: Blueprint<T
 				const schemaState = schema.state();
 				const currentPath = path ? `${path}.${key}` : String(key);
 
-				collectErrors(error, () => {
+				try {
 					if (schemaState.required) {
 						invalid(
 							key in value && value[key] !== undefined,
@@ -58,15 +58,18 @@ export function of<T extends object>(state: SchemaState<T>, schemas: Blueprint<T
 					}
 
 					shape[key] = schema.validate(value[key], currentPath, currentValidateOptions);
-				});
+				} catch (error: unknown) {
+					if (error instanceof Error) {
+						errors.push(error);
+					}
+				}
 
 				// Delete the prop and mark it as known
 				delete unknown[key];
 			});
 
-			// Always throw the entire collection to persist nested structure
-			if (error.errors.length > 0) {
-				throw error;
+			if (errors.length > 0) {
+				throw new ValidationError(errors, path, value);
 			}
 
 			// Handle unknown fields

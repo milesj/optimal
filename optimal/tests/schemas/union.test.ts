@@ -78,10 +78,7 @@ describe('union()', () => {
 			union<Buffer | number | null>(0)
 				.of([number(), instance().of(Buffer)])
 				.validate(new Foo());
-		}).toThrowErrorMatchingInlineSnapshot(`
-		"Received class with the following failures:
-		  - Must be an instance of \`Buffer\`."
-	`);
+		}).toThrowErrorMatchingInlineSnapshot(`"Must be an instance of \`Buffer\`."`);
 	});
 
 	it('returns default value if value is undefined', () => {
@@ -91,19 +88,15 @@ describe('union()', () => {
 	it('runs array check', () => {
 		expect(() => {
 			schema.validate([123]);
-		}).toThrowErrorMatchingInlineSnapshot(`
-		"Received array/tuple with the following failures:
-		  - Invalid member \\"[0]\\". Must be a string, received number."
-	`);
+		}).toThrowErrorMatchingInlineSnapshot(
+			`"Invalid member \\"[0]\\". Must be a string, received number."`,
+		);
 	});
 
 	it('runs boolean check', () => {
 		expect(() => {
 			schema.validate(false);
-		}).toThrowErrorMatchingInlineSnapshot(`
-		"Received boolean with the following failures:
-		  - May only be \`true\`."
-	`);
+		}).toThrowErrorMatchingInlineSnapshot(`"May only be \`true\`."`);
 	});
 
 	it('runs custom check', () => {
@@ -118,37 +111,27 @@ describe('union()', () => {
 					}, ''),
 				])
 				.validate(123);
-		}).toThrowErrorMatchingInlineSnapshot(`
-		"Received number with the following failures:
-		  - Encountered a number!"
-	`);
+		}).toThrowErrorMatchingInlineSnapshot(`"Encountered a number!"`);
 	});
 
 	it('runs instance check', () => {
 		expect(() => {
 			schema.validate(new Bar());
-		}).toThrowErrorMatchingInlineSnapshot(`
-		"Received class with the following failures:
-		  - Must be an instance of \`Foo\`."
-	`);
+		}).toThrowErrorMatchingInlineSnapshot(`"Must be an instance of \`Foo\`."`);
 	});
 
 	it('runs number check', () => {
 		expect(() => {
 			schema.validate(10);
-		}).toThrowErrorMatchingInlineSnapshot(`
-		"Received number with the following failures:
-		  - Number must be between 0 and 5, received 10."
-	`);
+		}).toThrowErrorMatchingInlineSnapshot(`"Number must be between 0 and 5, received 10."`);
 	});
 
 	it('runs object check', () => {
 		expect(() => {
 			schema.validate({ foo: 'foo' });
-		}).toThrowErrorMatchingInlineSnapshot(`
-		"Received object/shape with the following failures:
-		  - Invalid field \\"foo\\". Must be a number, received string."
-	`);
+		}).toThrowErrorMatchingInlineSnapshot(
+			`"Invalid field \\"foo\\". Must be a number, received string."`,
+		);
 	});
 
 	it('runs shape check', () => {
@@ -161,19 +144,17 @@ describe('union()', () => {
 					}),
 				])
 				.validate({ foo: 123 });
-		}).toThrowErrorMatchingInlineSnapshot(`
-		"Received object/shape with the following failures:
-		  - Invalid field \\"foo\\". Must be a string, received number."
-	`);
+		}).toThrowErrorMatchingInlineSnapshot(
+			`"Invalid field \\"foo\\". Must be a string, received number."`,
+		);
 	});
 
 	it('runs string check', () => {
 		expect(() => {
 			schema.validate('qux');
-		}).toThrowErrorMatchingInlineSnapshot(`
-		"Received string with the following failures:
-		  - String must be one of: foo, bar, baz. Received \\"qux\\"."
-	`);
+		}).toThrowErrorMatchingInlineSnapshot(
+			`"String must be one of: foo, bar, baz. Received \\"qux\\"."`,
+		);
 	});
 
 	it('runs tuple check', () => {
@@ -183,18 +164,16 @@ describe('union()', () => {
 
 		expect(() => {
 			tupleSchema.validate([1]);
-		}).toThrowErrorMatchingInlineSnapshot(`
-		"Received array/tuple with the following failures:
-		  - Invalid member \\"[0]\\". Must be a string, received number."
-	`);
+		}).toThrowErrorMatchingInlineSnapshot(
+			`"Invalid member \\"[0]\\". Must be a string, received number."`,
+		);
 
 		expect(() => {
 			tupleSchema.validate([1, 2, 3]);
 		}).toThrowErrorMatchingInlineSnapshot(`
-		"Received array/tuple with the following failures:
-		  - Invalid member \\"[0]\\". Must be a string, received number.
-		  - Invalid member \\"[1]\\". Must be a string, received number.
-		  - Invalid member \\"[2]\\". Must be a string, received number."
+		"- Invalid member \\"[0]\\". Must be a string, received number.
+		- Invalid member \\"[1]\\". Must be a string, received number.
+		- Invalid member \\"[2]\\". Must be a string, received number."
 	`);
 	});
 
@@ -213,9 +192,8 @@ describe('union()', () => {
 		expect(() => {
 			arrayUnion.validate([true]);
 		}).toThrowErrorMatchingInlineSnapshot(`
-		"Received array/tuple with the following failures:
-		  - Invalid member \\"[0]\\". Must be a string, received boolean.
-		  - Invalid member \\"[0]\\". Must be a number, received boolean."
+		"- Invalid member \\"[0]\\". Must be a string, received boolean.
+		- Invalid member \\"[0]\\". Must be a number, received boolean."
 	`);
 
 		expect(() => {
@@ -236,9 +214,8 @@ describe('union()', () => {
 		expect(() => {
 			objectUnion.validate({ foo: true });
 		}).toThrowErrorMatchingInlineSnapshot(`
-		"Received object/shape with the following failures:
-		  - Invalid field \\"foo\\". Must be a string, received boolean.
-		  - Invalid field \\"foo\\". Must be a number, received boolean."
+		"- Invalid field \\"foo\\". Must be a string, received boolean.
+		- Invalid field \\"foo\\". Must be a number, received boolean."
 	`);
 
 		expect(() => {
@@ -307,17 +284,14 @@ describe('union()', () => {
 		expect(() => complexUnion.validate({ a: true, b: false, c: {} })).not.toThrow();
 
 		// invalid
-		expect(() => complexUnion.validate(['a', ['b', null], ['c', {}], 'd', 123]))
-			.toThrowErrorMatchingInlineSnapshot(`
-		"Received array/tuple with the following failures:
-		  - Invalid member \\"[1]\\". Received array/tuple with the following failures:
-		    - Invalid member \\"[1]\\". Null is not allowed."
-	`);
-		expect(() => complexUnion.validate({ a: true, b: 123, c: {} }))
-			.toThrowErrorMatchingInlineSnapshot(`
-		"Received object/shape with the following failures:
-		  - Invalid field \\"b\\". Received number but value must be one of: boolean, object."
-	`);
+		expect(() =>
+			complexUnion.validate(['a', ['b', null], ['c', {}], 'd', 123]),
+		).toThrowErrorMatchingInlineSnapshot(`"Invalid member \\"[1][1]\\". Null is not allowed."`);
+		expect(() =>
+			complexUnion.validate({ a: true, b: 123, c: {} }),
+		).toThrowErrorMatchingInlineSnapshot(
+			`"Invalid field \\"b\\". Received number but value must be one of: boolean, object."`,
+		);
 	});
 
 	it('supports object and shape schemas in parallel', () => {
@@ -333,25 +307,22 @@ describe('union()', () => {
 		expect(() => {
 			mixedUnion.validate({ unknown: true });
 		}).toThrowErrorMatchingInlineSnapshot(`
-		"Received object/shape with the following failures:
-		  - Unknown fields: unknown.
-		  - Invalid field \\"unknown\\". Must be a string, received boolean."
+		"- Unknown fields: unknown.
+		- Invalid field \\"unknown\\". Must be a string, received boolean."
 	`);
 
 		expect(() => {
 			mixedUnion.validate({ foo: 123 });
-		}).toThrowErrorMatchingInlineSnapshot(`
-		"Received object/shape with the following failures:
-		  - Invalid field \\"foo\\". Must be a string, received number."
-	`);
+		}).toThrowErrorMatchingInlineSnapshot(
+			`"- Invalid field \\"foo\\". Must be a string, received number."`,
+		);
 
 		expect(() => {
 			mixedUnion.validate({ foo: 'abc', bar: 'abc', baz: 123 });
 		}).toThrowErrorMatchingInlineSnapshot(`
-		"Received object/shape with the following failures:
-		  - Invalid field \\"bar\\". Must be a number, received string.
-		  - Invalid field \\"baz\\". Must be a boolean, received number.
-		  - Invalid field \\"baz\\". Must be a string, received number."
+		"- Invalid field \\"bar\\". Must be a number, received string.
+		- Invalid field \\"baz\\". Must be a boolean, received number.
+		- Invalid field \\"baz\\". Must be a string, received number."
 	`);
 
 		expect(() => {
@@ -440,10 +411,9 @@ describe('union()', () => {
 		it('errors if an invalid value is passed', () => {
 			expect(() => {
 				schema.validate('not a whitelisted string');
-			}).toThrowErrorMatchingInlineSnapshot(`
-			"Received string with the following failures:
-			  - String must be one of: foo, bar, baz. Received \\"not a whitelisted string\\"."
-		`);
+			}).toThrowErrorMatchingInlineSnapshot(
+				`"String must be one of: foo, bar, baz. Received \\"not a whitelisted string\\"."`,
+			);
 		});
 
 		it('doesnt error if a valid value is passed', () => {
