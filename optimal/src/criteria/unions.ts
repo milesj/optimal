@@ -57,7 +57,7 @@ export function of<T = unknown>(
 
 			if (!passed) {
 				if (errors.length > 0) {
-					throw new ValidationError('', path, value).addErrors(errors, true);
+					throw new ValidationError(errors, path, value);
 				} else {
 					invalid(
 						false,

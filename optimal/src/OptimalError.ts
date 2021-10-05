@@ -9,6 +9,6 @@ export class OptimalError extends ValidationError {
 		super('The following validations have failed:');
 
 		this.name = 'OptimalError';
-		this.addErrors(errors, true);
+		this.addErrors(errors);
 	}
 }
