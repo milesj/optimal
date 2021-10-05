@@ -251,9 +251,7 @@ describe('Optimal', () => {
 			});
 		}).toThrowErrorMatchingInlineSnapshot(`
 		"The following validations have failed:
-		  - Invalid field \\"output\\". The following validations have failed:
-		    - Invalid field \\"crossOriginLoading\\". Received string with the following failures:
-		      - String must be one of: anonymous, use-credentials. Received \\"not-anonymous\\"."
+		  - Invalid field \\"output.crossOriginLoading\\". String must be one of: anonymous, use-credentials. Received \\"not-anonymous\\"."
 	`);
 	});
 
@@ -276,12 +274,10 @@ describe('Optimal', () => {
 		}).toThrowErrorMatchingInlineSnapshot(`
 		"The following validations have failed:
 		  - Invalid field \\"entry\\". Received number but value must be one of: string, array<string>, object<string | array<string>>, function.
-		  - Invalid field \\"output\\". The following validations have failed:
-		    - Invalid field \\"crossOriginLoading\\". Received string with the following failures:
-		      - String must be one of: anonymous, use-credentials. Received \\"not-anonymous\\".
+		  - Invalid field \\"output\\".
+		    - Invalid field \\"crossOriginLoading\\". String must be one of: anonymous, use-credentials. Received \\"not-anonymous\\".
 		    - Invalid field \\"publicPath\\". Must be a string, received number.
-		  - Invalid field \\"resolve\\". The following validations have failed:
-		    - Invalid field \\"alias\\". Must be a plain object, received array/tuple.
+		  - Invalid field \\"resolve.alias\\". Must be a plain object, received array/tuple.
 		  - Invalid field \\"target\\". String must be one of: async-node, electron-main, electron-renderer, node, node-webkit, web, webworker. Received \\"what\\"."
 	`);
 	});
@@ -308,7 +304,10 @@ describe('Optimal', () => {
 					foo: 123,
 					bar: 456,
 				});
-			}).toThrowErrorMatchingInlineSnapshot(`"Unknown fields: foo, bar."`);
+			}).toThrowErrorMatchingInlineSnapshot(`
+			"The following validations have failed:
+			  - Unknown fields: foo, bar."
+		`);
 		});
 
 		it('doesnt error for unknown fields if `unknown` is true', () => {

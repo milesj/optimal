@@ -1,4 +1,4 @@
-import { collectErrors, invalid, invariant, isObject, isSchema, logUnknown } from '../helpers';
+import { invalid, invariant, isObject, isSchema, logUnknown } from '../helpers';
 import { Blueprint, Criteria, Schema, SchemaState, UnknownObject } from '../types';
 import { ValidationError } from '../ValidationError';
 
@@ -35,11 +35,7 @@ export function of<T extends object>(state: SchemaState<T>, schemas: Blueprint<T
 			const isPlainObject = value.constructor === Object;
 			const unknown: Partial<T> = isPlainObject ? { ...value } : {};
 			const shape: Partial<T> = {};
-			const collectionError = new ValidationError(
-				'The following validations have failed:',
-				path,
-				value,
-			);
+			const errors: Error[] = [];
 			const currentValidateOptions = {
 				...validateOptions,
 				currentObject: value as UnknownObject,
@@ -51,25 +47,29 @@ export function of<T extends object>(state: SchemaState<T>, schemas: Blueprint<T
 				const schemaState = schema.state();
 				const currentPath = path ? `${path}.${key}` : String(key);
 
-				if (schemaState.required) {
-					invalid(
-						key in value && value[key] !== undefined,
-						schemaState.metadata.requiredMessage ?? 'Field is required and must be defined.',
-						currentPath,
-						undefined,
-					);
-				}
+				try {
+					if (schemaState.required) {
+						invalid(
+							key in value && value[key] !== undefined,
+							schemaState.metadata.requiredMessage ?? 'Field is required and must be defined.',
+							currentPath,
+							undefined,
+						);
+					}
 
-				collectErrors(collectionError, () => {
 					shape[key] = schema.validate(value[key], currentPath, currentValidateOptions);
-				});
+				} catch (error: unknown) {
+					if (error instanceof Error) {
+						errors.push(error);
+					}
+				}
 
 				// Delete the prop and mark it as known
 				delete unknown[key];
 			});
 
-			if (collectionError.errors.length > 0) {
-				throw collectionError;
+			if (errors.length > 0) {
+				throw new ValidationError(errors, path, value);
 			}
 
 			// Handle unknown fields

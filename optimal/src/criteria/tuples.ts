@@ -1,5 +1,6 @@
 import { invalid, invariant, isSchema } from '../helpers';
 import { AnySchema, Criteria, Schema, SchemaState } from '../types';
+import { ValidationError } from '../ValidationError';
 
 export type InferTupleItems<T> = T extends [infer A, infer B, infer C, infer D, infer E]
 	? [Schema<A>, Schema<B>, Schema<C>, Schema<D>, Schema<E>]
@@ -37,9 +38,25 @@ export function of<T extends unknown[]>(
 				value,
 			);
 
-			return itemsSchemas.map(
-				(item, i) => item.validate(value[i], `${path}[${i}]`, validateOptions) as unknown,
-			);
+			const errors: Error[] = [];
+
+			const items = itemsSchemas.map((item, i) => {
+				try {
+					return item.validate(value[i], `${path}[${i}]`, validateOptions) as unknown;
+				} catch (error: unknown) {
+					if (error instanceof Error) {
+						errors.push(error);
+					}
+				}
+
+				return null;
+			});
+
+			if (errors.length > 0) {
+				throw new ValidationError(errors, path, value);
+			}
+
+			return items;
 		},
 	};
 }

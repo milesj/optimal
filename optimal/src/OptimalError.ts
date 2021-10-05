@@ -5,19 +5,10 @@ export class OptimalError extends ValidationError {
 
 	schema: string = '';
 
-	constructor() {
-		super('');
+	constructor(errors: Error[]) {
+		super('The following validations have failed:');
 
 		this.name = 'OptimalError';
-	}
-
-	override addError(error: Error) {
-		const validError =
-			error instanceof ValidationError ? error : new ValidationError(error.message);
-
-		this.errors.push(validError);
-
-		// Avoid indenting at this level
-		this.message = `${this.message}\n${error.message}`.trim();
+		this.addErrors(errors);
 	}
 }

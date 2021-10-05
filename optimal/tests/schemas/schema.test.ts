@@ -31,11 +31,10 @@ describe('schema()', () => {
 			expect(() => {
 				schema.validate({});
 			}).toThrowErrorMatchingInlineSnapshot(`
-			"The following validations have failed:
-			  - Invalid field \\"schema\\". Must be a function, received undefined.
-			  - Invalid field \\"state\\". Must be a function, received undefined.
-			  - Invalid field \\"type\\". Must be a function, received undefined.
-			  - Invalid field \\"validate\\". Must be a function, received undefined."
+			"- Invalid field \\"schema\\". Must be a function, received undefined.
+			- Invalid field \\"state\\". Must be a function, received undefined.
+			- Invalid field \\"type\\". Must be a function, received undefined.
+			- Invalid field \\"validate\\". Must be a function, received undefined."
 		`);
 		});
 
@@ -43,11 +42,10 @@ describe('schema()', () => {
 			expect(() => {
 				schema.validate({ schema: 123 });
 			}).toThrowErrorMatchingInlineSnapshot(`
-			"The following validations have failed:
-			  - Invalid field \\"schema\\". Must be a function, received number.
-			  - Invalid field \\"state\\". Must be a function, received undefined.
-			  - Invalid field \\"type\\". Must be a function, received undefined.
-			  - Invalid field \\"validate\\". Must be a function, received undefined."
+			"- Invalid field \\"schema\\". Must be a function, received number.
+			- Invalid field \\"state\\". Must be a function, received undefined.
+			- Invalid field \\"type\\". Must be a function, received undefined.
+			- Invalid field \\"validate\\". Must be a function, received undefined."
 		`);
 		});
 
@@ -55,10 +53,9 @@ describe('schema()', () => {
 			expect(() => {
 				schema.validate({ schema() {}, type: 123 });
 			}).toThrowErrorMatchingInlineSnapshot(`
-			"The following validations have failed:
-			  - Invalid field \\"state\\". Must be a function, received undefined.
-			  - Invalid field \\"type\\". Must be a function, received number.
-			  - Invalid field \\"validate\\". Must be a function, received undefined."
+			"- Invalid field \\"state\\". Must be a function, received undefined.
+			- Invalid field \\"type\\". Must be a function, received number.
+			- Invalid field \\"validate\\". Must be a function, received undefined."
 		`);
 		});
 
@@ -66,9 +63,8 @@ describe('schema()', () => {
 			expect(() => {
 				schema.validate({ schema() {}, type() {}, validate: 123 });
 			}).toThrowErrorMatchingInlineSnapshot(`
-			"The following validations have failed:
-			  - Invalid field \\"state\\". Must be a function, received undefined.
-			  - Invalid field \\"validate\\". Must be a function, received number."
+			"- Invalid field \\"state\\". Must be a function, received undefined.
+			- Invalid field \\"validate\\". Must be a function, received number."
 		`);
 		});
 

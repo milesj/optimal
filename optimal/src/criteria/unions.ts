@@ -1,4 +1,4 @@
-import { collectErrors, invalid, invariant, isSchema, typeOf } from '../helpers';
+import { invalid, invariant, isSchema, typeOf } from '../helpers';
 import { Criteria, Options, Schema, SchemaState } from '../types';
 import { ValidationError } from '../ValidationError';
 
@@ -22,12 +22,9 @@ export function of<T = unknown>(
 			let nextValue: unknown = value;
 			const allowedValues = schemas.map((schema) => schema.type()).join(', ');
 			const valueType = typeOf(value);
-			const collectionError = new ValidationError(
-				`Received ${valueType} with the following failures:`,
-				path,
-				value,
-			);
+			const errors: Error[] = [];
 
+			// eslint-disable-next-line complexity
 			const passed = schemas.some((schema) => {
 				const schemaType = schema.schema();
 
@@ -35,7 +32,7 @@ export function of<T = unknown>(
 					invalid(false, 'Nested unions are not supported.', path);
 				}
 
-				return collectErrors(collectionError, () => {
+				try {
 					if (
 						valueType === schemaType ||
 						(valueType === 'object/shape' && schemaType === 'object') ||
@@ -49,14 +46,18 @@ export function of<T = unknown>(
 
 						return true;
 					}
+				} catch (error: unknown) {
+					if (error instanceof Error) {
+						errors.push(error);
+					}
+				}
 
-					return false;
-				});
+				return false;
 			});
 
 			if (!passed) {
-				if (collectionError.errors.length > 0) {
-					throw collectionError;
+				if (errors.length > 0) {
+					throw new ValidationError(errors, path, value);
 				} else {
 					invalid(
 						false,
