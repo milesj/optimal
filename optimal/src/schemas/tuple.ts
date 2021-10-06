@@ -9,11 +9,13 @@ export interface TupleSchema<T> extends Schema<Required<T>>, CommonCriterias<Tup
 	never: (options?: Options) => TupleSchema<never>;
 	/** Disallow null values. */
 	notNullable: (options?: Options) => TupleSchema<NotNull<T>>;
+	/** Disallow undefined values. Will fallback to the default value. */
 	notUndefinable: () => TupleSchema<NotUndefined<T>>;
-	/** Allow null values. */
+	/** Allow and return null values. */
 	nullable: () => TupleSchema<T | null>;
 	/** @internal */
 	of: <I extends unknown[]>(schemas: InferTupleItems<I>) => TupleSchema<I>;
+	/** Allow and return undefined values. Will NOT fallback to the default value. */
 	undefinable: () => TupleSchema<T | undefined>;
 }
 

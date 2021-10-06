@@ -71,7 +71,7 @@ export interface CommonCriterias<S> {
 	/** Set a callback to run custom validation logic. */
 	custom: (callback: CriteriaValidator<InferSchemaType<S>>) => S;
 	/** Set a message to log when this field is present. */
-	deprecate: (message: string, options?: Options) => S;
+	deprecate: (message: string) => S;
 	/** Mark that this field can ONLY use a value that matches the default value. */
 	only: (options?: Options) => S;
 	/** Require this field to NOT be explicitly defined. */
@@ -81,12 +81,7 @@ export interface CommonCriterias<S> {
 	/** Require this field to be explicitly defined. */
 	required: (options?: Options) => S;
 	/** Validate with another schema when a condition is met. */
-	when: (
-		condition: WhenCondition<InferSchemaType<S>>,
-		pass: AnySchema,
-		fail?: AnySchema,
-		options?: Options,
-	) => S;
+	when: (condition: WhenCondition<InferSchemaType<S>>, pass: AnySchema, fail?: AnySchema) => S;
 	/** Map a list of field names that must not be defined alongside this field. */
 	xor: (keys: string[], options?: Options) => S;
 	// Define in schemas directly

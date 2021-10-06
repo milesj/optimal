@@ -8,9 +8,11 @@ export interface LazySchema<T = boolean> extends Schema<T> {
 	never: (options?: Options) => LazySchema<never>;
 	/** Disallow null values. */
 	notNullable: (options?: Options) => LazySchema<NotNull<T>>;
+	/** Disallow undefined values. Will fallback to the default value. */
 	notUndefinable: () => LazySchema<NotUndefined<T>>;
-	/** Allow null values. */
+	/** Allow and return null values. */
 	nullable: () => LazySchema<T | null>;
+	/** Allow and return undefined values. Will NOT fallback to the default value. */
 	undefinable: () => LazySchema<T | undefined>;
 }
 

@@ -19,9 +19,11 @@ export interface DateSchema<T = Date>
 	never: (options?: Options) => DateSchema<never>;
 	/** Disallow null values. */
 	notNullable: (options?: Options) => DateSchema<NotNull<T>>;
+	/** Disallow undefined values. Will fallback to the default value. */
 	notUndefinable: () => DateSchema<NotUndefined<T>>;
-	/** Allow null values. */
+	/** Allow and return null values. */
 	nullable: () => DateSchema<T | null>;
+	/** Allow and return undefined values. Will NOT fallback to the default value. */
 	undefinable: () => DateSchema<T | undefined>;
 }
 

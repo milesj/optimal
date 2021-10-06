@@ -15,12 +15,14 @@ export interface UnionSchema<T> extends Schema<T>, CommonCriterias<UnionSchema<T
 	never: (options?: Options) => UnionSchema<never>;
 	/** Disallow null values. */
 	notNullable: (options?: Options) => UnionSchema<NotNull<T>>;
+	/** Disallow undefined values. Will fallback to the default value. */
 	notUndefinable: () => UnionSchema<NotUndefined<T>>;
-	/** Allow null values. */
+	/** Allow and return null values. */
 	nullable: () => UnionSchema<T | null>;
 	// Distribute these types in the future. Currently breaks on nulls...
 	/** Require field value to be one of a specific schema type. */
 	of: (schemas: AnySchema[], options?: Options) => UnionSchema<T>;
+	/** Allow and return undefined values. Will NOT fallback to the default value. */
 	undefinable: () => UnionSchema<T | undefined>;
 }
 

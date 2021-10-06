@@ -19,11 +19,13 @@ export interface ShapeSchema<T>
 	never: (options?: Options) => ShapeSchema<never>;
 	/** Disallow null values. */
 	notNullable: (options?: Options) => ShapeSchema<NotNull<T>>;
+	/** Disallow undefined values. Will fallback to the default value. */
 	notUndefinable: () => ShapeSchema<NotUndefined<T>>;
-	/** Allow null values. */
+	/** Allow and return null values. */
 	nullable: () => ShapeSchema<T | null>;
 	/** @internal */
 	of: <S extends object>(schema: Blueprint<S>) => ShapeSchema<S>;
+	/** Allow and return undefined values. Will NOT fallback to the default value. */
 	undefinable: () => ShapeSchema<T | undefined>;
 }
 

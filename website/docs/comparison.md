@@ -12,9 +12,9 @@ A comparison between other object/schema validation libraries in the JavaScript 
 | Custom error mesages     |   ✅    |        |         |   ✅   |
 | Deep path validation     |         |   ✅   |         |        |
 | Dependency count         |    0    |   7    |    5    |   0    |
-| File size (unminified)   |  41kB   | 152kB  |  430kB  | 217kB  |
-| File size (minified)     |  16kB   | 59.5kB | 145.1kB |  49kB  |
-| File size (gzipped)      |  4.6kB  | 18.1kB | 41.8kB  | 11.2kB |
+| File size (unminified)   |  47kB   | 152kB  |  430kB  | 217kB  |
+| File size (minified)     | 16.6kB  | 59.5kB | 145.1kB |  49kB  |
+| File size (gzipped)      |  4.7kB  | 18.1kB | 41.8kB  | 11.2kB |
 | Immutable schemas        |   ✅    |   ✅   |   ✅    |   ✅   |
 | Lazy default values      |   ✅    |   ✅   |   ✅    |   ✅   |
 | Lazy schemas             |   ✅    |   ✅   |         |   ✅   |
@@ -25,7 +25,7 @@ A comparison between other object/schema validation libraries in the JavaScript 
 | Required/optional fields |   ✅    |   ✅   |   ✅    |   ✅   |
 | Tree-shakable            |   ✅    |   ✅   |         |   ✅   |
 | Type casting             |   ✅    |   ✅   |   ✅    |        |
-| Undefined fields         |         |        |         |   ✅   |
+| Undefined fields         |   ✅    |        |         |   ✅   |
 | Value transformation     |         |   ✅   |   ✅    |   ✅   |
 
 ### Common methods

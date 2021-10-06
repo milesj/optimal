@@ -110,8 +110,7 @@ The [`custom()`](/api/optimal/function/custom) schema verifies a value based on 
 callback. This callback receives the current value to validate, an object path, and validation
 options (which includes any root and current objects).
 
-By default this schema has no default value (returns `undefined`), but this can be customized with
-the 2nd argument.
+A default value is required as the 2nd argument.
 
 ```ts
 import path from 'path';
@@ -162,9 +161,10 @@ funcSchema.validate(() => {}); // pass
 funcSchema.validate(123); // fail
 ```
 
-By default this schema has no default value (returns `undefined`), but this can be customized with
-the 1st argument. However, because of our [lazy default values](./usage.md#default-values), the
-"default function" must be returned with another function.
+By default this schema has no default value (returns `undefined`), regardless of undefinable state,
+but this can be customized with the 1st argument. However, because of our
+[lazy default values](./usage.md#default-values), the "default function" must be returned with
+another function.
 
 ```ts
 import { func } from 'optimal';
@@ -250,7 +250,7 @@ numberObjectSchema.validate({ bar: 'abc' }); // fail
 Objects can also define schemas for keys. For example, say we _only_ want underscored names.
 
 ```ts
-object().keyOf(string().snakeCase());
+object().keysOf(string().snakeCase());
 ```
 
 Object schemas support all methods found on the

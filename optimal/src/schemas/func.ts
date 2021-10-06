@@ -18,9 +18,11 @@ export interface FunctionSchema<T = AnyFunction>
 	never: (options?: Options) => FunctionSchema<never>;
 	/** Disallow null values. */
 	notNullable: (options?: Options) => FunctionSchema<NotNull<T>>;
+	/** Disallow undefined values. Will fallback to the default value. */
 	notUndefinable: () => FunctionSchema<NotUndefined<T>>;
-	/** Allow null values. */
+	/** Allow and return null values. */
 	nullable: () => FunctionSchema<T | null>;
+	/** Allow and return undefined values. Will NOT fallback to the default value. */
 	undefinable: () => FunctionSchema<T | undefined>;
 }
 

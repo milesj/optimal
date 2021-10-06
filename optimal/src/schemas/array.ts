@@ -20,16 +20,16 @@ export interface ArraySchema<T = unknown[]>
 	never: (options?: Options) => ArraySchema<never>;
 	/** Disallow null values. */
 	notNullable: (options?: Options) => ArraySchema<NotNull<T>>;
-	/** Disallow undefined values. */
+	/** Disallow undefined values. Will fallback to the default value. */
 	notUndefinable: () => ArraySchema<NotUndefined<T>>;
-	/** Allow null values. */
+	/** Allow and return null values. */
 	nullable: () => ArraySchema<T | null>;
 	/**
 	 * Require field array items to be of a specific schema type.
 	 * Will rebuild the array and type cast values.
 	 */
 	of: <V>(schema: Schema<V>) => ArraySchema<InferNullable<T, V[]>>;
-	/** Allow undefined values. */
+	/** Allow and return undefined values. Will NOT fallback to the default value. */
 	undefinable: () => ArraySchema<T | undefined>;
 }
 

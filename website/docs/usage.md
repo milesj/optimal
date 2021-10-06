@@ -8,8 +8,8 @@ satisfy your use cases!
 
 ## Optimal validation
 
-A primary API for validating options objects, configuration files, databags, and many more, is with
-the [`optimal()`](/api/optimal/function/optimal) function. This function accepts a
+The primary API for validating options objects, configuration files, databags, and many more, is
+with the [`optimal()`](/api/optimal/function/optimal) function. This function accepts a
 [blueprint](#blueprints) and an optional [options](/api/optimal/interface/OptimalOptions) object,
 and returns a schema-like API. Internally this function is a [shape](./schemas.md#shapes), but it
 provides additional functionality through options and TypeScript typings.
@@ -115,8 +115,8 @@ string().notEmpty().validate(''); // fail
 ## Default values
 
 Most schemas support a custom default value when being instantiated, which will be used as a
-fallback when the field is not explicitly defined, or an explicit `undefined` is passed. The default
-value must be the same type as the schema.
+fallback when the field is not explicitly defined, or an explicit `undefined` is passed (unless
+[undefinable](#undefinable-fields)). The default value must be the same type as the schema.
 
 ```ts
 const severitySchema = string('low').oneOf(['low', 'high']);
@@ -152,10 +152,9 @@ string().lowerCase({ message: 'Please provide a lowercased value.' }).validate('
 
 ## Nullable fields
 
-Excluding [`instance()`](./schemas.md#class-instances), all schemas are _not_ nullable by default.
-This means `null` cannot be passed as a value to a field being validated. To accept `null` values,
-chain the `nullable()` method on a schema, inversely, chain `notNullable()` to _not_ accept `null`
-values.
+Most schemas are _not_ nullable by default, which means `null` cannot be returned from a field being
+validated. To accept and return `null` values, chain the `nullable()` method on a schema, inversely,
+chain `notNullable()` to _not_ accept `null` values (resets).
 
 ```ts
 const objectSchema = object().notNullable(); // default
@@ -165,11 +164,33 @@ objectSchema.validate(null); // throw error
 nullableObjectSchema.validate(null); // -> null
 ```
 
-## Required fields
+> When nullable, the schema's return type is `T | null`.
+
+## Undefinable fields
+
+Unlike nullable above, all schemas by default do _not_ return `undefined`, as we fallback to the
+default value when `undefined` is passed in. However, they are some scenarios where you want to
+return `undefined`, and when this happens, the default value and most validation criteria is
+completely ignored.
+
+To accept and return `undefined` values, chain the `undefinable()` method on a schema, inversely,
+chain `notUndefinable()` to _not_ accept `undefined` values (resets).
+
+```ts
+const numberSchema = number(123).notUndefinable(); // default
+const undefinableNumberSchema = number(456).undefinable();
+
+numberSchema.validate(undefined); // -> 123
+undefinableNumberSchema.validate(undefined); // -> undefined
+```
+
+> When undefinable, the schema's return type is `T | undefined`.
+
+## Required & optional fields
 
 When a schema is marked as `required()`, it requires the field to be explicitly defined and passed
-when validating a _shape_, otherwise it throws an error. This _does not_ change the typing and
-acceptance of `undefined` values, it simply checks existence.
+when validating a _shape_, otherwise it throws an error. To invert and reset the requirement, use
+the `optional()` method.
 
 ```ts
 const userSchema = shape({
@@ -181,6 +202,9 @@ userSchema.validate({}); // throw error
 userSchema.validate({ name: 'Bruce Wayne' }); // -> (shape)
 ```
 
+This _does not_ change the typing and acceptance of `undefined` values, it simply checks property
+existence. Use [undefinable fields](#undefinable-fields) for that functionality.
+
 ## Logical operators
 
 [Shapes](./schemas.md#shapes) support the AND, OR, and XOR logical operators. When a schema is
@@ -191,8 +215,8 @@ related fields to be defined.
 
 ```ts
 const andSchema = shape({
-	foo: string().and('bar'),
-	bar: number().and('foo'),
+	foo: string().and(['bar']),
+	bar: number().and(['foo']),
 });
 
 andSchema.validate({ foo: 'abc' }); // throw error
@@ -206,9 +230,9 @@ fields to be defined.
 
 ```ts
 const orSchema = shape({
-	foo: string().or('bar', 'baz'),
-	bar: number().or('foo', 'baz'),
-	baz: bool().or('foo', 'bar'),
+	foo: string().or(['bar', 'baz']),
+	bar: number().or(['foo', 'baz']),
+	baz: bool().or(['foo', 'bar']),
 });
 
 orSchema.validate({}); // throw error
@@ -224,9 +248,9 @@ fields to be defined.
 
 ```ts
 const xorSchema = shape({
-	foo: string().xor('bar', 'baz'),
-	bar: number().xor('foo', 'baz'),
-	baz: bool().xor('foo', 'bar'),
+	foo: string().xor(['bar', 'baz']),
+	bar: number().xor(['foo', 'baz']),
+	baz: bool().xor(['foo', 'bar']),
 });
 
 xorSchema.validate({}); // throw error

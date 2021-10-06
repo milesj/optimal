@@ -13,8 +13,10 @@ export class ValidationError extends Error {
 	/** Field value at time of failure. */
 	value: unknown;
 
+	/** Whether an original message was provided through the constructor. */
 	hasOriginalMessage: boolean = false;
 
+	/** Whether a "Invalid path" message was prepended to the original message. */
 	hasPathPrefix: boolean = false;
 
 	constructor(message: Error[] | string, path: string = '', value: unknown = undefined) {

@@ -15,9 +15,11 @@ export interface CustomSchema<T> extends Schema<T>, CommonCriterias<CustomSchema
 	never: (options?: Options) => CustomSchema<never>;
 	/** Disallow null values. */
 	notNullable: (options?: Options) => CustomSchema<NotNull<T>>;
+	/** Disallow undefined values. Will fallback to the default value. */
 	notUndefinable: () => CustomSchema<NotUndefined<T>>;
-	/** Allow null values. */
+	/** Allow and return null values. */
 	nullable: () => CustomSchema<T | null>;
+	/** Allow and return undefined values. Will NOT fallback to the default value. */
 	undefinable: () => CustomSchema<T | undefined>;
 }
 

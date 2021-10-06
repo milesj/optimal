@@ -1,4 +1,4 @@
-/* eslint-disable react/no-array-index-key */
+/* eslint-disable sort-keys */
 
 import React from 'react';
 import clsx from 'clsx';
@@ -15,29 +15,29 @@ interface FeatureItem {
 
 const FeatureList: FeatureItem[] = [
 	{
-		title: 'Easy to Use',
+		title: '🔑 Immutable schemas',
 		description: (
 			<>
-				Docusaurus was designed from the ground up to be easily installed and used to get your
-				website up and running quickly.
+				Process any value with our immutable, fluent, stateless, and typed schemas. With this API
+				design, compose and reuse schemas with ease!
 			</>
 		),
 	},
 	{
-		title: 'Focus on What Matters',
+		title: '🧶 Typed values',
 		description: (
 			<>
-				Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go ahead and move your
-				docs into the <code>docs</code> directory.
+				We provide a TypeScript-first schema with a powerful inferrence API for many value types,
+				such as, numbers, strings, objects, arrays, unions, tuples, and many more!
 			</>
 		),
 	},
 	{
-		title: 'Powered by React',
+		title: '👣 Small footprint',
 		description: (
 			<>
-				Extend or customize your website layout by reusing React. Docusaurus can be extended while
-				reusing the same header and footer.
+				Optimal has been engineered to provide the best performance, the lowest possible filesize,
+				and a great developer experience.
 			</>
 		),
 	},
@@ -46,10 +46,8 @@ const FeatureList: FeatureItem[] = [
 function Feature({ title, description }: FeatureItem) {
 	return (
 		<div className={clsx('col col--4')}>
-			<div className="text--center padding-horiz--md">
-				<h3>{title}</h3>
-				<p>{description}</p>
-			</div>
+			<h3>{title}</h3>
+			<p>{description}</p>
 		</div>
 	);
 }
@@ -58,10 +56,7 @@ export default function Home(): JSX.Element {
 	const { siteConfig } = useDocusaurusContext();
 
 	return (
-		<Layout
-			description="Description will go into a meta tag in <head />"
-			title={`Hello from ${siteConfig.title}`}
-		>
+		<Layout description={siteConfig.tagline} title="">
 			<header className={clsx('hero hero--primary', styles.heroBanner)}>
 				<div className="container">
 					<h1 className="hero__title">{siteConfig.title}</h1>

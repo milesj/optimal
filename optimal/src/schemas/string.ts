@@ -20,14 +20,16 @@ export interface StringSchema<T = string>
 	never: (options?: Options) => StringSchema<never>;
 	/** Disallow null values. */
 	notNullable: (options?: Options) => StringSchema<NotNull<T>>;
+	/** Disallow undefined values. Will fallback to the default value. */
 	notUndefinable: () => StringSchema<NotUndefined<T>>;
-	/** Allow null values. */
+	/** Allow and return null values. */
 	nullable: () => StringSchema<T | null>;
 	/** Require field value to be one of the provided strings. */
 	oneOf: <I extends string = string>(
 		list: I[],
 		options?: Options,
 	) => StringSchema<InferNullable<T, I>>;
+	/** Allow and return undefined values. Will NOT fallback to the default value. */
 	undefinable: () => StringSchema<T | undefined>;
 }
 

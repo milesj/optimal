@@ -6,12 +6,13 @@ slug: /
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Optimal is a system for building and validating defined object structures, like options objects,
-configuration files, validation fields, and many more, using typed schemas. Optimal aims to provide
-a powerful API, with high performance, the lowest possible filesize, and first-class TypeScript
-support.
+Optimal is a system for building and validating any value with typed schemas, and first-class
+support for defined object structures, like options objects, configuration files, validation fields,
+and many more. Optimal aims to provide a powerful API, with high performance, the lowest possible
+filesize, and TypeScript-first support.
 
 ```ts
+// Import schemas to build validators with
 import { array, string, number, optimal } from 'optimal';
 
 // Define and validate values with individual schemas
@@ -48,9 +49,9 @@ const options = schema.validate({ name: 'Optimal' });
 - Immutable & fluent schema builder pattern.
 - Recursively builds and validates nested structures.
 - Supports common data types.
-- Autofills missing fields with default values.
+- Autofills missing or undefined fields with default values.
 - Allows or restricts unknown fields.
-- Mark fields as nullable or required.
+- Mark fields as nullable, undefinable, optional, or required.
 - Handles logical operators AND, OR, and XOR.
 
 ## Requirements

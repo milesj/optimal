@@ -20,14 +20,16 @@ export interface NumberSchema<T = number>
 	never: (options?: Options) => NumberSchema<never>;
 	/** Disallow null values. */
 	notNullable: (options?: Options) => NumberSchema<NotNull<T>>;
+	/** Disallow undefined values. Will fallback to the default value. */
 	notUndefinable: () => NumberSchema<NotUndefined<T>>;
-	/** Allow null values. */
+	/** Allow and return null values. */
 	nullable: () => NumberSchema<T | null>;
 	/** Require field value to be one of the provided numbers. */
 	oneOf: <I extends number = number>(
 		list: I[],
 		options?: Options,
 	) => NumberSchema<InferNullable<T, I>>;
+	/** Allow and return undefined values. Will NOT fallback to the default value. */
 	undefinable: () => NumberSchema<T | undefined>;
 }
 

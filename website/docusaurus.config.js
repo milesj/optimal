@@ -2,10 +2,12 @@ const path = require('path');
 const lightCodeTheme = require('prism-react-renderer/themes/github');
 const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
+const pkg = require('../optimal/package.json');
+
 module.exports = {
 	title: 'Optimal',
-	tagline: 'Easiest solution to building, parsing, and validating objects with typed schemas!',
-	url: 'https://optimal.dev',
+	tagline: 'Build, validate, and transform values with immutable typed schemas.',
+	url: 'https://optimallib.dev',
 	baseUrl: '/',
 	onBrokenLinks: 'throw',
 	onBrokenMarkdownLinks: 'warn',
@@ -40,6 +42,11 @@ module.exports = {
 				src: 'img/logo.svg',
 			},
 			items: [
+				{
+					label: `v${pkg.version}`,
+					position: 'left',
+					href: `https://www.npmjs.com/package/optimal`,
+				},
 				{
 					to: 'docs',
 					activeBasePath: 'docs',
