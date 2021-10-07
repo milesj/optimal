@@ -6,7 +6,7 @@ const pkg = require('../optimal/package.json');
 
 module.exports = {
 	title: 'Optimal',
-	tagline: 'Build, validate, and transform values with immutable typed schemas.',
+	tagline: pkg.description,
 	url: 'https://optimallib.dev',
 	baseUrl: '/',
 	onBrokenLinks: 'throw',

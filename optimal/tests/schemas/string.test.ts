@@ -449,7 +449,7 @@ describe('string()', () => {
 		it('errors if length doesnt match', () => {
 			expect(() => {
 				lengthOfSchema.validate('');
-			}).toThrowErrorMatchingInlineSnapshot(`"String length must be 3."`);
+			}).toThrowErrorMatchingInlineSnapshot(`"String length must be 3, received 0."`);
 		});
 
 		it('doesnt error if length matches', () => {

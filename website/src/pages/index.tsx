@@ -1,5 +1,3 @@
-/* eslint-disable sort-keys */
-
 import React from 'react';
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
@@ -36,8 +34,8 @@ const FeatureList: FeatureItem[] = [
 		title: '👣 Small footprint',
 		description: (
 			<>
-				Optimal has been engineered to provide the best performance, the lowest possible filesize,
-				and a great developer experience.
+				Optimal has been engineered to provide the best performance, the lowest possible filesize
+				(less than 5kB), and a great developer experience.
 			</>
 		),
 	},
@@ -84,6 +82,7 @@ export default function Home(): JSX.Element {
 					<div className="container">
 						<div className="row">
 							{FeatureList.map((props, idx) => (
+								// eslint-disable-next-line react/no-array-index-key
 								<Feature key={idx} {...props} />
 							))}
 						</div>
