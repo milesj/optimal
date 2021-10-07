@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[709],{1367:function(e){e.exports=JSON.parse('{"id":586,"name":"DateSchema","nextId":660,"permalink":"/api/optimal/interface/DateSchema","previousId":1403}')}}]);

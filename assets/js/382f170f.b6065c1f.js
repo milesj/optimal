@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[9483],{6435:function(e){e.exports=JSON.parse('{"id":453,"name":"blueprint","nextId":455,"permalink":"/api/optimal/function/blueprint","previousId":381}')}}]);
