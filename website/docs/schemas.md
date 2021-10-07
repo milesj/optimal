@@ -181,10 +181,31 @@ func(() => noop);
 Function schemas support all methods found on the
 [`FunctionSchema`](/api/optimal/interface/FunctionSchema) interface.
 
+## IDs
+
+The [`id()`](/api/optimal/function/id) schema verifies a value is an auto-incrementing ID, most
+commonly used for database records. All IDs _must_ be a positive integer, and will not accept `0`,
+`null`, or `undefined`.
+
+```ts
+import { id } from 'optimal';
+
+const idSchema = id();
+
+idSchema.validate(123); // pass
+idSchema.validate(0); // fail
+idSchema.validate(-123); // fail
+idSchema.validate(null); // fail
+```
+
+ID schemas support all methods found on the [`NumberSchema`](/api/optimal/interface/NumberSchema)
+interface.
+
 ## Lazy / recursive
 
-The `lazy()` schema is useful for declaring deferred evaluation or recursive schemas. When using
-this pattern, the lazy element _must_ declare a default value, and _must_ never be required.
+The [`lazy()`](/api/optimal/function/number) schema is useful for declaring deferred evaluation or
+recursive schemas. When using this pattern, the lazy element _must_ declare a default value, and
+_must_ never be required.
 
 ```ts
 import { lazy, LazySchema, number, shape } from 'optimal';

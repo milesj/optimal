@@ -129,6 +129,14 @@ The `func()` (or `function()`) schema for functions.
 | implements |         |        |     | ✅  |
 | return     |         |        |     | ✅  |
 
+### IDs / UUIDs
+
+The `id()` and `uuid()` schemas for record identifiers.
+
+|     | optimal | yup | joi | zod |
+| :-- | :-----: | :-: | :-: | :-: |
+| id  |   ✅    |     |     |     |
+
 ### Lazy
 
 The `lazy()` schema for deferring evaluation, or recursive schemas.

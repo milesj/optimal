@@ -6,7 +6,7 @@ export { date } from './date';
 export { func } from './func';
 export { instance } from './instance';
 export { lazy } from './lazy';
-export { number } from './number';
+export { id, number } from './number';
 export { object, record } from './object';
 export { regex } from './regex';
 export { schema } from './schema';

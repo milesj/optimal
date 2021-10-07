@@ -62,3 +62,10 @@ export function number<T extends number>(defaultValue: DefaultValue<number> = 0)
 		],
 	);
 }
+
+/**
+ * Create a schema that validates a value is an auto-incrementing ID.
+ */
+export function id(): NumberSchema<number> {
+	return number().positive().int().notNullable().notUndefinable();
+}
