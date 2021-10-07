@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[4046],{6830:function(e){e.exports=JSON.parse('{"id":794,"name":"LazySchema","nextId":1428,"permalink":"/api/optimal/interface/LazySchema","previousId":724}')}}]);

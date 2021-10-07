@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[5590],{6473:function(e){e.exports=JSON.parse('{"id":1565,"name":"ValidationError","nextId":381,"permalink":"/api/optimal/class/ValidationError","previousId":367}')}}]);
