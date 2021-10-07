@@ -444,3 +444,30 @@ interface.
 
 > When using TypeScript, the type cannot be inferred automatically, so defaults to `unknown`. This
 > can be overridden by explicitly defining the generic, as seen in the examples above.
+
+## UUIDs
+
+The [`uuid()`](/api/optimal/function/uuid) schema verifies a value is a universally unique
+identifier, most commonly used for database records. All UUIDs _must_ be align with the
+[specification](https://en.wikipedia.org/wiki/Universally_unique_identifier), and will not accept an
+empty string (`""`), `null`, or `undefined`.
+
+```ts
+import { uuid } from 'optimal';
+
+const uuidSchema = uuid();
+
+uuidSchema.validate('e023d5bd-5c1b-3b47-8646-cacb8b8e3634'); // pass
+uuidSchema.validate(''); // fail
+uuidSchema.validate(null); // fail
+```
+
+By default the schema will validate _all_ UUID versions, but this can be customized with the 1st
+argument.
+
+```ts
+const v4UuidSchema = uuid(4);
+```
+
+UUID schemas support all methods found on the [`StringSchema`](/api/optimal/interface/StringSchema)
+interface.

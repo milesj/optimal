@@ -11,6 +11,6 @@ export { object, record } from './object';
 export { regex } from './regex';
 export { schema } from './schema';
 export { shape } from './shape';
-export { string } from './string';
+export { string, uuid } from './string';
 export { tuple } from './tuple';
 export { union } from './union';

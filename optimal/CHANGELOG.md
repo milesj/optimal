@@ -38,7 +38,7 @@ changelog will use the new verbiage, but may affect previous APIs.
 - Added `.undefinable()` method for allowing undefined values.
 - Added `.notUndefinable()` method.
 - Added `.optional()` method.
-- Added `date()`, `id()`, and `schema()` schemas.
+- Added `date()`, `id()`, `schema()`, and `uuid()` schemas.
 - Added `object().keysOf()` criteria method.
 - Added `createSchema()` function for creating custom schemas.
 - Added `createPredicate()` function for creating boolean return checkers.

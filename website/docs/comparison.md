@@ -133,9 +133,12 @@ The `func()` (or `function()`) schema for functions.
 
 The `id()` and `uuid()` schemas for record identifiers.
 
-|     | optimal | yup | joi | zod |
-| :-- | :-----: | :-: | :-: | :-: |
-| id  |   ✅    |     |     |     |
+- For non-optimal libs, they don't support UUID directly, see [strings](#strings).
+
+|      | optimal | yup | joi | zod |
+| :--- | :-----: | :-: | :-: | :-: |
+| id   |   ✅    |     |     |     |
+| uuid |   ✅    | ✅  | ✅  | ✅  |
 
 ### Lazy
 
@@ -174,7 +177,7 @@ The `number()` schema for numbers.
 
 The `object()` schema for _indexed_ objects.
 
-- For `joi` and `yup`, they don't support this type, see [shapes](#shape).
+- For `joi` and `yup`, they don't support this type, see [shapes](#shapes).
 - For `zod`, this is a `record()`.
 
 |               | optimal | yup ❌ | joi ❌ | zod |

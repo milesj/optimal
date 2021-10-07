@@ -64,3 +64,22 @@ export function string<T extends string = string>(
 		],
 	);
 }
+
+/**
+ * Create a schema that validates a value is a UUID (universally unique identifier).
+ */
+// eslint-disable-next-line no-magic-numbers
+export function uuid(version?: 1 | 2 | 3 | 4 | 5): StringSchema<string> {
+	return string()
+		.notEmpty()
+		.match(
+			new RegExp(
+				`^([0-9a-f]{8}-[0-9a-f]{4}-[${
+					version ?? '1-5'
+				}][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})|([0]{8}-[0]{4}-[0]{4}-[0]{4}-[0]{12})$`,
+				'i',
+			),
+		)
+		.notNullable()
+		.notUndefinable();
+}
