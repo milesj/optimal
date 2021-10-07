@@ -14,10 +14,15 @@ import {
 export interface FunctionSchema<T = AnyFunction>
 	extends Schema<T>,
 		CommonCriterias<FunctionSchema<T>> {
+	/** Mark that this field should never be used. */
 	never: (options?: Options) => FunctionSchema<never>;
+	/** Disallow null values. */
 	notNullable: (options?: Options) => FunctionSchema<NotNull<T>>;
+	/** Disallow undefined values. Will fallback to the default value. */
 	notUndefinable: () => FunctionSchema<NotUndefined<T>>;
+	/** Allow and return null values. */
 	nullable: () => FunctionSchema<T | null>;
+	/** Allow and return undefined values. Will NOT fallback to the default value. */
 	undefinable: () => FunctionSchema<T | undefined>;
 }
 
@@ -29,6 +34,9 @@ export interface FunctionSchema<T = AnyFunction>
 // (option objects, etc). So by default (pun intended),
 // this schema's default value is `undefined`.
 
+/**
+ * Create a schema that validates a value is a function.
+ */
 export function func<T extends AnyFunction = AnyFunction>(
 	defaultValue?: DefaultValueInitializer<T>,
 ) {

@@ -4,10 +4,7 @@ describe('blueprint()', () => {
 	let schema: ObjectSchema<Record<string, AnySchema>>;
 
 	beforeEach(() => {
-		schema = blueprint({
-			foo: string(),
-			bar: number(),
-		});
+		schema = blueprint();
 	});
 
 	describe('type()', () => {

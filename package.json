@@ -8,6 +8,7 @@
     "check": "yarn run type && yarn run test && yarn run lint",
     "clean": "packemon clean",
     "coverage": "yarn run test --coverage",
+    "docs": "cd website && yarn run start",
     "lint": "beemo eslint",
     "format": "beemo prettier",
     "release": "yarn run pack && yarn run check && yarn beemo run-script lerna-release",
@@ -27,6 +28,7 @@
     "packemon": "^1.5.0"
   },
   "workspaces": [
-    "optimal/"
+    "optimal/",
+    "website/"
   ]
 }

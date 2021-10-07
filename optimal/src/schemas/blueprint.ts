@@ -1,7 +1,9 @@
-import { AnySchema, DefaultValue } from '../types';
 import { object } from './object';
 import { schema } from './schema';
 
-export function blueprint(defaultValue?: DefaultValue<Record<string, AnySchema>>) /* infer */ {
-	return object(defaultValue).of(schema().notNullable());
+/**
+ * Create a schema that validates a value is an indexed object of schemas.
+ */
+export function blueprint() /* infer */ {
+	return object().of(schema().notNullable());
 }

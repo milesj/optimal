@@ -13,14 +13,27 @@ import {
 } from '../types';
 
 export interface InstanceSchema<T> extends Schema<T>, CommonCriterias<InstanceSchema<T>> {
+	/** Mark that this field should never be used. */
 	never: (options?: Options) => InstanceSchema<never>;
+	/** Disallow null values. */
 	notNullable: (options?: Options) => InstanceSchema<NotNull<T>>;
+	/** Disallow undefined values. Will fallback to the default value. */
 	notUndefinable: () => InstanceSchema<NotUndefined<T>>;
+	/** Allow and return null values. */
 	nullable: () => InstanceSchema<T | null>;
+	/**
+	 * Require this field to be an instance of the defined class.
+	 * When `loose` is true, will compare using the class name.
+	 * This should only be used when dealing with realms and package hazards.
+	 */
 	of: <C>(ref: Constructor<C>, options?: InstanceOfOptions) => InstanceSchema<InferNullable<T, C>>;
+	/** Allow and return undefined values. Will NOT fallback to the default value. */
 	undefinable: () => InstanceSchema<T | undefined>;
 }
 
+/**
+ * Create a schema that validates a value is an instance of a class.
+ */
 export function instance() {
 	return createSchema<InstanceSchema<Object | null>>(
 		{

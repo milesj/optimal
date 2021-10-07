@@ -1,0 +1,99 @@
+---
+title: Introduction
+slug: /
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Optimal is a system for building and validating any value with typed schemas, and first-class
+support for defined object structures, like options objects, configuration files, validation fields,
+and many more. Optimal aims to provide a powerful API, with high performance, the lowest possible
+filesize, and TypeScript-first support.
+
+```ts
+// Import schemas to build validators with
+import { array, string, number, optimal } from 'optimal';
+
+// Define and validate values with individual schemas
+const maxSizeSchema = number().positive().lte(10000);
+
+maxSizeSchema.validate(1234);
+
+// Or define an explicit shaped blueprint
+const schema = optimal({
+  name: string().notEmpty(),
+  include: array().of(string()),
+  exclude: array().of(string()),
+  maxSize: maxSizeSchema
+});
+
+// Pass a full or partial object to validate
+const options = schema.validate({ name: 'Optimal' });
+
+// Which validates, builds, and returns the following object
+{
+  name: 'Optimal',
+  include: [],
+  exclude: [],
+  maxSize: 10000,
+}
+```
+
+## Features
+
+- Zero dependencies, with a tree-shakable API.
+- Powerful inferrence using a TypeScript first design.
+- Runs in both Node.js and the browser.
+- Smallest filesize: 5kB minified and gzipped!
+- Immutable & fluent schema builder pattern.
+- Recursively builds and validates nested structures.
+- Supports common data types.
+- Autofills missing or undefined fields with default values.
+- Allows or restricts unknown fields.
+- Mark fields as nullable, undefinable, optional, or required.
+- Handles logical operators AND, OR, and XOR.
+
+## Requirements
+
+- Node v12.17 (server)
+- Edge, Chrome, Firefox, Safari (browser)
+
+## Installation
+
+Install optimal with yarn or npm.
+
+<Tabs
+  groupId="package-manager"
+  defaultValue="yarn"
+  values={[
+    { label: 'Yarn', value: 'yarn' },
+    { label: 'npm', value: 'npm' },
+  ]}
+>
+  <TabItem value="yarn">
+
+```bash
+yarn add optimal
+```
+
+  </TabItem>
+  <TabItem value="npm">
+
+```bash
+npm install optimal
+```
+
+  </TabItem>
+</Tabs>
+
+If using TypeScript, we highly _encourage_ the use of strict mode. We cannot guarantee types will
+infer correctly otherwise.
+
+```json title="tsconfig.json"
+{
+	"compilerOptions": {
+		"strict": true
+	}
+}
+```

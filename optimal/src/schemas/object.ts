@@ -11,23 +11,35 @@ import {
 	Options,
 	Schema,
 } from '../types';
-import { StringSchema } from './string';
 
 export interface ObjectSchema<T = object>
 	extends Schema<T>,
 		ObjectCriterias<ObjectSchema<T>>,
 		CommonCriterias<ObjectSchema<T>> {
-	keysOf: (schema: StringSchema, options?: Options) => ObjectSchema<T>;
+	/** Require all keys in the object to satisfy the defined string schema. */
+	keysOf: (schema: Schema<string>, options?: Options) => ObjectSchema<T>;
+	/** Mark that this field should never be used. */
 	never: (options?: Options) => ObjectSchema<never>;
+	/** Disallow null values. */
 	notNullable: (options?: Options) => ObjectSchema<NotNull<T>>;
+	/** Disallow undefined values. Will fallback to the default value. */
 	notUndefinable: () => ObjectSchema<NotUndefined<T>>;
+	/** Allow and return null values. */
 	nullable: () => ObjectSchema<T | null>;
+	/**
+	 * Require field object values to be of a specific schema type.
+	 * Will rebuild the object and type cast values.
+	 */
 	of: <V, K extends PropertyKey = keyof T>(
 		schema: Schema<V>,
 	) => ObjectSchema<InferNullable<T, Record<K, V>>>;
+	/** Allow and return undefined values. Will NOT fallback to the default value. */
 	undefinable: () => ObjectSchema<T | undefined>;
 }
 
+/**
+ * Create a schema that validates a value is an indexed object (implicit keys).
+ */
 export function object<V = unknown, K extends PropertyKey = string>(
 	defaultValue?: DefaultValue<Record<K, V>>,
 ): ObjectSchema<Record<K, V>> {
@@ -52,3 +64,8 @@ export function object<V = unknown, K extends PropertyKey = string>(
 		],
 	);
 }
+
+/**
+ * Create a schema that validates a value is an indexed object (implicit keys).
+ */
+export const record = object;

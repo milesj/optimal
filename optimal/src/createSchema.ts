@@ -10,11 +10,6 @@ import {
 	SchemaValidateOptions,
 } from './types';
 
-/**
- * Run all validation checks that have been enqueued and return a type casted value.
- * If a value is undefined, inherit the default value, else throw if required.
- * If nullable and the value is null, return early.
- */
 function validate<T>(
 	state: SchemaState<T>,
 	validators: Criteria<T>[],
@@ -67,6 +62,11 @@ function validate<T>(
 	return value as T;
 }
 
+/**
+ * Create a custom schema with a defined list of criteria.
+ * When a value is being validated, all chained criteria will be ran
+ * to test for failures. If no failures, a type casted value is returned.
+ */
 export function createSchema<S extends AnySchema, T = InferSchemaType<S>>(
 	{ api, cast, defaultValue, type }: SchemaOptions<T>,
 	criteria: (Criteria<T> | CriteriaFactory<T>)[] = [],

@@ -4,7 +4,7 @@ import { invalid } from '../helpers';
 import { Criteria, Options, SchemaState } from '../types';
 
 /**
- * Require this field to only be false.
+ * Require this field to only be `false`.
  */
 export function onlyFalse(state: SchemaState<boolean>, options: Options = {}): Criteria<boolean> {
 	state.defaultValue = false;
@@ -19,7 +19,7 @@ export function onlyFalse(state: SchemaState<boolean>, options: Options = {}): C
 }
 
 /**
- * Require this field to only be true.
+ * Require this field to only be `true`.
  */
 export function onlyTrue(state: SchemaState<boolean>, options: Options = {}): Criteria<boolean> {
 	state.defaultValue = true;

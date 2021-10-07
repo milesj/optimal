@@ -1,8 +1,7 @@
 {
   "name": "optimal",
-  "type": "module",
   "version": "5.0.0-alpha.5",
-  "description": "A system for building and validating defined object structures with schemas.",
+  "description": "Build, validate, and transform values with immutable typed schemas.",
   "main": "./lib/node/index.js",
   "browser": "./lib/browser/index.js",
   "module": "./esm/index.js",

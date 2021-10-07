@@ -5,8 +5,11 @@ import { AnySchema } from '../types';
 import { func } from './func';
 import { ShapeSchema } from './shape';
 
-// This is similar to shape, but we want to control the validation
+/**
+ * Create a schema that validates a value is a schema instance.
+ */
 export function schema<T extends AnySchema>(): ShapeSchema<T> {
+	// This is similar to shape, but we want to control the validation
 	const shape = createSchema<ShapeSchema<T>>(
 		{
 			api: { ...commonCriteria, ...shapeCriteria },

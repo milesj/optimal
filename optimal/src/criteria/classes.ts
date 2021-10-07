@@ -3,6 +3,8 @@ import { Constructor, Criteria, InstanceOfOptions, SchemaState } from '../types'
 
 /**
  * Require this field to be an instance of the defined class.
+ * When `loose` is true, will compare using the class name.
+ * This should only be used when dealing with realms and package hazards.
  */
 export function of<T>(
 	state: SchemaState<T>,

@@ -16,14 +16,20 @@ export interface NumberSchema<T = number>
 	extends Schema<T>,
 		NumberCriterias<NumberSchema<T>>,
 		CommonCriterias<NumberSchema<T>> {
+	/** Mark that this field should never be used. */
 	never: (options?: Options) => NumberSchema<never>;
+	/** Disallow null values. */
 	notNullable: (options?: Options) => NumberSchema<NotNull<T>>;
+	/** Disallow undefined values. Will fallback to the default value. */
 	notUndefinable: () => NumberSchema<NotUndefined<T>>;
+	/** Allow and return null values. */
 	nullable: () => NumberSchema<T | null>;
+	/** Require field value to be one of the provided numbers. */
 	oneOf: <I extends number = number>(
 		list: I[],
 		options?: Options,
 	) => NumberSchema<InferNullable<T, I>>;
+	/** Allow and return undefined values. Will NOT fallback to the default value. */
 	undefinable: () => NumberSchema<T | undefined>;
 }
 
@@ -31,6 +37,9 @@ function cast(value: unknown): number {
 	return value === undefined ? 0 : Number(value);
 }
 
+/**
+ * Create a schema that validates a value is a number.
+ */
 export function number<T extends number>(defaultValue: DefaultValue<number> = 0): NumberSchema<T> {
 	return createSchema(
 		{

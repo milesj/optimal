@@ -4,30 +4,30 @@
 [![npm version](https://badge.fury.io/js/optimal.svg)](https://www.npmjs.com/package/optimal)
 [![npm deps](https://david-dm.org/milesj/optimal.svg)](https://www.npmjs.com/package/optimal)
 
-A system for building and validating defined object structures, like argument options, configuration
-files, data bags, validation fields, and more! Runs checks in development and strips checks in
-production using dead code elimination (should not be used on user input!).
-
-- Recursively builds and validates nested structures.
-- Supports common data types.
-- Autofills missing fields with default values.
-- Allows or restricts unknown fields.
-- Mark fields as nullable or required.
-- Handles logical operators AND, OR, and XOR.
+Optimal is a system for building and validating any value with typed schemas, and first-class
+support for defined object structures, like options objects, configuration files, validation fields,
+and many more. Optimal aims to provide a powerful API, with high performance, the lowest possible
+filesize, and TypeScript-first support.
 
 ```ts
-import optimal, { array, string, number } from 'optimal';
+// Import schemas to build validators withs
+import { array, string, number, optimal } from 'optimal';
 
-// Pass a partial object and define an explicit blueprint
-optimal(
-  { name: 'Optimal' },
-  {
-    name: string().notEmpty(),
-    include: array().of(string()),
-    exclude: array().of(string()),
-    maxSize: number(10000).gte(0),
-  },
-);
+// Define and validate values with individual schemas
+const maxSizeSchema = number().positive().lte(10000);
+
+maxSizeSchema.validate(1234);
+
+// Or define an explicit shaped blueprint
+const schema = optimal({
+  name: string().notEmpty(),
+  include: array().of(string()),
+  exclude: array().of(string()),
+  maxSize: maxSizeSchema
+});
+
+// Pass a full or partial object to validate
+const options = schema.validate({ name: 'Optimal' });
 
 // Which validates, builds, and returns the following object
 {
@@ -38,10 +38,24 @@ optimal(
 }
 ```
 
+## Features
+
+- Zero dependencies, with a tree-shakable API.
+- Powerful inferrence using a TypeScript first design.
+- Runs in both Node.js and the browser.
+- Smallest filesize: 5kB minified and gzipped!
+- Immutable & fluent schema builder pattern.
+- Recursively builds and validates nested structures.
+- Supports common data types.
+- Autofills missing fields with default values.
+- Allows or restricts unknown fields.
+- Mark fields as nullable or required.
+- Handles logical operators AND, OR, and XOR.
+
 ## Requirements
 
-- Node 12.17+
-- Edge / Modern browsers
+- Node v12.17 (server)
+- Edge, Chrome, Firefox, Safari (browser)
 
 ## Installation
 
@@ -51,4 +65,4 @@ yarn add optimal
 
 ## Documentation
 
-[https://milesj.gitbook.io/optimal](https://milesj.gitbook.io/optimal)
+[https://optimallib.dev](https://optimallib.dev)
