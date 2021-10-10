@@ -82,7 +82,7 @@ describe('union()', () => {
 	});
 
 	it('returns default value if value is undefined', () => {
-		expect(schema.validate(undefined)).toEqual('baz');
+		expect(schema.validate(undefined)).toBe('baz');
 	});
 
 	it('runs array check', () => {
