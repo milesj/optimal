@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[1739],{764:function(e){e.exports=JSON.parse('{"id":79,"name":"createSchema","nextId":537,"permalink":"/api/optimal/function/createSchema","previousId":74}')}}]);

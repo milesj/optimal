@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[8252],{6553:function(e){e.exports=JSON.parse('{"id":343,"name":"tupleCriteria","nextId":351,"permalink":"/api/optimal/namespace/tupleCriteria","previousId":294}')}}]);

@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[8922],{8238:function(e){e.exports=JSON.parse('{"id":377,"name":"OptimalError","nextId":1624,"permalink":"/api/optimal/class/OptimalError"}')}}]);

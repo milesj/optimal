@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[5760],{6342:function(e){e.exports=JSON.parse('{"id":1182,"name":"TupleSchema","nextId":1247,"permalink":"/api/optimal/interface/TupleSchema","previousId":1083}')}}]);

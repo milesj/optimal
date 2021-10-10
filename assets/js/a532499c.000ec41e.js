@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[7441],{5150:function(e){e.exports=JSON.parse('{"id":1349,"name":"StringContainsOptions","nextId":1481,"permalink":"/api/optimal/interface/StringContainsOptions","previousId":1012}')}}]);

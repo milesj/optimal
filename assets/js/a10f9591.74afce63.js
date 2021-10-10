@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[8277],{8240:function(e){e.exports=JSON.parse('{"id":809,"name":"lazy","nextId":842,"permalink":"/api/optimal/function/lazy","previousId":742}')}}]);

@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[5398],{4878:function(e){e.exports=JSON.parse('{"id":724,"name":"InstanceSchema","nextId":794,"permalink":"/api/optimal/interface/InstanceSchema","previousId":1343}')}}]);

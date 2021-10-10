@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[5815],{1616:function(e){e.exports=JSON.parse('{"id":1285,"name":"UnionSchema","nextId":85,"permalink":"/api/optimal/interface/UnionSchema","previousId":1217}')}}]);

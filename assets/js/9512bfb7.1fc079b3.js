@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[2601],{3622:function(e){e.exports=JSON.parse('{"id":1525,"name":"ShapeCriterias","nextId":1041,"permalink":"/api/optimal/interface/ShapeCriterias","previousId":1565}')}}]);
