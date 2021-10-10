@@ -1,6 +1,6 @@
 {
   "name": "optimal",
-  "version": "5.0.0",
+  "version": "5.1.0",
   "description": "Build, validate, and transform values with immutable typed schemas.",
   "main": "./lib/node/index.js",
   "browser": "./lib/browser/index.js",
