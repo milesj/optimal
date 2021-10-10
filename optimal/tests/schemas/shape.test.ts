@@ -1,4 +1,4 @@
-import { bool, Infer, number, shape, ShapeSchema, string } from '../../src';
+import { bool, func, Infer, number, shape, ShapeSchema, string } from '../../src';
 import { runCommonTests } from './runCommonTests';
 
 describe('shape()', () => {
@@ -118,6 +118,38 @@ describe('shape()', () => {
 			- Invalid field \\"bar\\". Must be a number, received boolean.
 			- Invalid field \\"baz\\". Must be a boolean, received string."
 		`);
+		});
+
+		it('handles function schemas correctly', () => {
+			expect(() => {
+				shape({
+					test1: func(),
+				}).validate({});
+			}).not.toThrow();
+
+			expect(() => {
+				shape({
+					test2: func(),
+				}).validate({
+					test2: undefined,
+				});
+			}).not.toThrow();
+
+			expect(() => {
+				shape({
+					test3: func().undefinable(),
+				}).validate({
+					test3: undefined,
+				});
+			}).not.toThrow();
+
+			expect(() => {
+				shape({
+					test4: func().required(),
+				}).validate({
+					test4: undefined,
+				});
+			}).toThrow('Invalid field "test4". Field is required and must be defined.');
 		});
 
 		it('errors if null is passed', () => {

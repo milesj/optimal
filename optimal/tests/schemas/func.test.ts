@@ -38,16 +38,26 @@ describe('func()', () => {
 			}).toThrow('Must be a function, received number.');
 		});
 
+		it('errors if null is passed', () => {
+			expect(() => {
+				schema.validate(null);
+			}).toThrow('Null is not allowed.');
+		});
+
 		it('doesnt error if a function is passed', () => {
 			expect(() => {
 				schema.validate(() => {});
 			}).not.toThrow();
 		});
 
-		it('errors if null is passed', () => {
+		it('doesnt error if undefined is passed', () => {
 			expect(() => {
-				schema.validate(null);
-			}).toThrow('Null is not allowed.');
+				schema.validate(undefined);
+			}).not.toThrow();
+		});
+
+		it('returns undefined as-is', () => {
+			expect(schema.validate(undefined)).toBeUndefined();
 		});
 	});
 });

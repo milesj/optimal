@@ -5,34 +5,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # 5.0.0 - 2021-10-07
 
-#### 💥 Breaking
-
-- Update and/or/xor to use arrays. ([6f9e12d](https://github.com/milesj/optimal/commit/6f9e12d))
-
-#### 🚀 Updates
-
--  Reduce error noise and complexity. (#40) ([85f9215](https://github.com/milesj/optimal/commit/85f9215)), closes [#40](https://github.com/milesj/optimal/issues/40)
-- Add id() schema. ([162f881](https://github.com/milesj/optimal/commit/162f881))
-- Add options to common criteria. ([21474b6](https://github.com/milesj/optimal/commit/21474b6))
-- Add uuid() schema. ([5021ab9](https://github.com/milesj/optimal/commit/5021ab9))
-
-#### ⚙️ Types
-
-- Allow current/root object to be typed. ([ea39c8c](https://github.com/milesj/optimal/commit/ea39c8c))
-- Dont undefined arrays during deep partial. ([93c1915](https://github.com/milesj/optimal/commit/93c1915))
-
-#### 📘 Docs
-
-- Integrate Docusaurus. (#41) ([7435080](https://github.com/milesj/optimal/commit/7435080)), closes [#41](https://github.com/milesj/optimal/issues/41)
-
-**Note:** Version bump only for package optimal
-
-
-
-
-
-# 5.0.0
-
 Ground-up rewrite that migrates to a more composable API. Under the hood, classes were refactored
 into functions to reduce file size and overhead.
 

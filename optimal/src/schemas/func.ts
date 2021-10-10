@@ -49,12 +49,17 @@ export function func<T extends AnyFunction = AnyFunction>(
 		[
 			{
 				validate(value, path) {
-					invalid(
-						typeof value === 'function',
-						`Must be a function, received ${typeOf(value)}.`,
-						path,
-						value,
-					);
+					// Special case, even when undefinable. See note above!
+					if (value !== undefined) {
+						invalid(
+							typeof value === 'function',
+							`Must be a function, received ${typeOf(value)}.`,
+							path,
+							value,
+						);
+					}
+
+					return value;
 				},
 			},
 		],

@@ -181,6 +181,9 @@ func(() => noop);
 Function schemas support all methods found on the
 [`FunctionSchema`](/api/optimal/interface/FunctionSchema) interface.
 
+> Functions are special when it comes to handling `undefined` values, because, what would the
+> default value of a function be?
+
 ## IDs
 
 The [`id()`](/api/optimal/function/id) schema verifies a value is an auto-incrementing ID, most

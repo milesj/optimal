@@ -31,10 +31,10 @@ describe('schema()', () => {
 			expect(() => {
 				schema.validate({});
 			}).toThrowErrorMatchingInlineSnapshot(`
-			"- Invalid field \\"schema\\". Must be a function, received undefined.
-			- Invalid field \\"state\\". Must be a function, received undefined.
-			- Invalid field \\"type\\". Must be a function, received undefined.
-			- Invalid field \\"validate\\". Must be a function, received undefined."
+			"- Invalid field \\"schema\\". Field is required and must be defined.
+			- Invalid field \\"state\\". Field is required and must be defined.
+			- Invalid field \\"type\\". Field is required and must be defined.
+			- Invalid field \\"validate\\". Field is required and must be defined."
 		`);
 		});
 
@@ -43,9 +43,9 @@ describe('schema()', () => {
 				schema.validate({ schema: 123 });
 			}).toThrowErrorMatchingInlineSnapshot(`
 			"- Invalid field \\"schema\\". Must be a function, received number.
-			- Invalid field \\"state\\". Must be a function, received undefined.
-			- Invalid field \\"type\\". Must be a function, received undefined.
-			- Invalid field \\"validate\\". Must be a function, received undefined."
+			- Invalid field \\"state\\". Field is required and must be defined.
+			- Invalid field \\"type\\". Field is required and must be defined.
+			- Invalid field \\"validate\\". Field is required and must be defined."
 		`);
 		});
 
@@ -53,9 +53,9 @@ describe('schema()', () => {
 			expect(() => {
 				schema.validate({ schema() {}, type: 123 });
 			}).toThrowErrorMatchingInlineSnapshot(`
-			"- Invalid field \\"state\\". Must be a function, received undefined.
+			"- Invalid field \\"state\\". Field is required and must be defined.
 			- Invalid field \\"type\\". Must be a function, received number.
-			- Invalid field \\"validate\\". Must be a function, received undefined."
+			- Invalid field \\"validate\\". Field is required and must be defined."
 		`);
 		});
 
@@ -63,7 +63,7 @@ describe('schema()', () => {
 			expect(() => {
 				schema.validate({ schema() {}, type() {}, validate: 123 });
 			}).toThrowErrorMatchingInlineSnapshot(`
-			"- Invalid field \\"state\\". Must be a function, received undefined.
+			"- Invalid field \\"state\\". Field is required and must be defined.
 			- Invalid field \\"validate\\". Must be a function, received number."
 		`);
 		});
