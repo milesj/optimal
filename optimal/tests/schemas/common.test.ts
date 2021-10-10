@@ -59,6 +59,58 @@ describe('common', () => {
 		});
 	});
 
+	describe('transform()', () => {
+		it('errors if a non-function is passed', () => {
+			expect(() => {
+				// @ts-expect-error Invalid type
+				string().transform(123);
+			}).toThrow('A function is required for transforming values.');
+		});
+
+		it('errors if transformed value type changes', () => {
+			expect(() => {
+				string()
+					// @ts-expect-error Invalid type
+					.transform(() => 123)
+					.validate('');
+			}).toThrow('Invalid transformed value, expected string but received number.');
+		});
+
+		it('can transform the value', () => {
+			expect(
+				string()
+					.transform((value) => value.toUpperCase())
+					.validate('foo'),
+			).toBe('FOO');
+		});
+
+		it('can chain transformers', () => {
+			expect(
+				string()
+					.transform((value) => value.toUpperCase())
+					.transform((value) => `${value}BAR`)
+					.validate('foo'),
+			).toBe('FOOBAR');
+		});
+
+		it('runs criteria in order', () => {
+			const schema = string()
+				.lowerCase()
+				.transform((value) => value.toUpperCase())
+				.upperCase();
+
+			expect(() => {
+				schema.validate('FoO');
+			}).toThrow('String must be lower cased, received "FoO".');
+
+			expect(() => {
+				schema.validate('foo');
+			}).not.toThrow();
+
+			expect(schema.validate('foo')).toBe('FOO');
+		});
+	});
+
 	describe('when()', () => {
 		it('errors if a non-schema is passed to the pass path', () => {
 			expect(() => {

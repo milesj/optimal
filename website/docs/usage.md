@@ -136,6 +136,24 @@ const dateSchema = date(() => new Date(2020, 1, 1));
 > The [`func()`](./schemas.md#functions) schema must _always_ use the factory pattern for defining a
 > default value, otherwise, the default function will be executed inadvertently.
 
+## Transforming values
+
+All schemas support a chainable [`transform()`](/api/optimal/interface/CommonCriterias#transform)
+method that can be used to transform the value. Transformation occurs in place, and _not_ at the
+beginning or end of the validation process.
+
+```ts
+const textSchema = string()
+	// Use smart quotes for typography
+	.transform((value) => value.replace(/'/g, '‘').replace(/"/g, '“'))
+	.notEmpty();
+
+textSchema.validate(''); // throws
+textSchema.validate("How's it going?"); // -> How‘s it going?
+```
+
+> Multiple tranformations can be declared by chaining multiple `transform()`s.
+
 ## Error messages
 
 All failed validations throw an error with descriptive messages for a better user experience.

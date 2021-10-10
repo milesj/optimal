@@ -26,7 +26,7 @@ A comparison between other object/schema validation libraries in the JavaScript 
 | Tree-shakable            |   ✅    |   ✅   |         |   ✅   |
 | Type casting             |   ✅    |   ✅   |   ✅    |        |
 | Undefined fields         |   ✅    |        |         |   ✅   |
-| Value transformation     |         |   ✅   |   ✅    |   ✅   |
+| Value transformation     |   ✅    |   ✅   |   ✅    |   ✅   |
 
 ### Common methods
 
@@ -61,18 +61,20 @@ This functionality is available across all schema types, typically as chainable 
 
 The `array()` schema for arrays.
 
+- 1️⃣ - Supported through transformers.
+
 |              | optimal | yup | joi | zod |
 | :----------- | :-----: | :-: | :-: | :-: |
-| filter       |         | ✅  |     |     |
+| filter       |   1️⃣    | ✅  |     | 1️⃣  |
 | has          |         |     | ✅  |     |
-| items schema |   ✅    |     | ✅  |     |
+| items schema |   ✅    |     | ✅  | ✅  |
 | length       |   ✅    |     | ✅  | ✅  |
 | max          |         | ✅  | ✅  | ✅  |
 | min          |         | ✅  | ✅  | ✅  |
 | not empty    |   ✅    | ✅  | ✅  | ✅  |
-| order        |         |     | ✅  |     |
-| sort         |         |     | ✅  |     |
-| unique       |         |     | ✅  |     |
+| order        |   1️⃣    | 1️⃣  | ✅  | 1️⃣  |
+| sort         |   1️⃣    | 1️⃣  | ✅  | 1️⃣  |
+| unique       |   1️⃣    | 1️⃣  | ✅  | 1️⃣  |
 
 ### Binary
 

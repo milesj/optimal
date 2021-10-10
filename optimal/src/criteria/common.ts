@@ -5,6 +5,7 @@ import {
 	isSchema,
 	isValidString,
 	pathKey,
+	typeOf,
 } from '../helpers';
 import { OptimalError } from '../OptimalError';
 import {
@@ -13,6 +14,7 @@ import {
 	Options,
 	Schema,
 	SchemaState,
+	Transformer,
 	ValueComparator,
 } from '../types';
 import { ValidationError } from '../ValidationError';
@@ -174,6 +176,30 @@ export function undefinable<T>(state: SchemaState<T>) {
  */
 export function notUndefinable<T>(state: SchemaState<T>) {
 	state.undefinable = false;
+}
+
+/**
+ * Transform a value before it's passed to the next criteria.
+ */
+export function transform<T>(state: SchemaState<T>, transformer: Transformer<T>): Criteria<T> {
+	invariant(typeof transformer === 'function', 'A function is required for transforming values.');
+
+	return {
+		validate(value, path) {
+			const beforeType = typeOf(value);
+			const nextValue = transformer(value);
+			const afterType = typeOf(nextValue);
+
+			invalid(
+				afterType === beforeType,
+				`Invalid transformed value, expected ${beforeType} but received ${afterType}.`,
+				path,
+				value,
+			);
+
+			return nextValue;
+		},
+	};
 }
 
 /**

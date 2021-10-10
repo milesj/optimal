@@ -26,6 +26,8 @@ export type ValueComparator<T> = (
 
 export type WhenCondition<T> = T | ValueComparator<T>;
 
+export type Transformer<T> = (value: T) => T;
+
 // CRITERIA OPTIONS
 
 export interface Options {
@@ -80,6 +82,8 @@ export interface CommonCriterias<S> {
 	or: (keys: string[], options?: Options) => S;
 	/** Require this field to be explicitly defined. */
 	required: (options?: Options) => S;
+	/** Transform a value before it's passed to the next criteria. */
+	transform: (transformer: Transformer<InferSchemaType<S>>) => S;
 	/** Validate with another schema when a condition is met. */
 	when: (condition: WhenCondition<InferSchemaType<S>>, pass: AnySchema, fail?: AnySchema) => S;
 	/** Map a list of field names that must not be defined alongside this field. */
