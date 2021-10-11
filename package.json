@@ -20,8 +20,8 @@
     "npm": ">=6.13.0"
   },
   "devDependencies": {
-    "@beemo/cli": "^2.0.2",
-    "@beemo/core": "^2.1.0",
+    "@beemo/cli": "^2.0.3",
+    "@beemo/core": "^2.1.1",
     "@beemo/dev": "^1.6.3",
     "@types/node": "^15.14.9",
     "lerna": "^4.0.0",
