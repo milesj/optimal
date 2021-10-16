@@ -34,8 +34,8 @@ export interface InstanceSchema<T> extends Schema<T>, CommonCriterias<InstanceSc
 /**
  * Create a schema that validates a value is an instance of a class.
  */
-export function instance() {
-	return createSchema<InstanceSchema<Object | null>>(
+export function instance<T = Object>() {
+	return createSchema<InstanceSchema<T | null>>(
 		{
 			api: { ...commonCriteria, ...classCriteria },
 			defaultValue: null,
