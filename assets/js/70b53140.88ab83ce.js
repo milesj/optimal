@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[5158],{6488:function(e){e.exports=JSON.parse('{"id":119,"name":"commonCriteria","nextId":196,"permalink":"/api/optimal/namespace/commonCriteria","previousId":112}')}}]);

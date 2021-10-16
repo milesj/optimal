@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[7938],{4628:function(e){e.exports=JSON.parse('{"id":1477,"name":"NumberCriterias","nextId":848,"permalink":"/api/optimal/interface/NumberCriterias","previousId":817}')}}]);

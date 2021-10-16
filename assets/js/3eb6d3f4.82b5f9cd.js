@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[6309],{4974:function(e){e.exports=JSON.parse('{"id":1462,"name":"DateCriterias","nextId":605,"permalink":"/api/optimal/interface/DateCriterias","previousId":542}')}}]);

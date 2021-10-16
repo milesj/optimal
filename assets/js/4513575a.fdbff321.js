@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[1968],{9313:function(e){e.exports=JSON.parse('{"id":295,"name":"stringCriteria","nextId":344,"permalink":"/api/optimal/namespace/stringCriteria","previousId":284}')}}]);

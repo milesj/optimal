@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[1621],{8569:function(e){e.exports=JSON.parse('{"id":74,"name":"createPredicate","nextId":79,"permalink":"/api/optimal/function/createPredicate","previousId":468}')}}]);

@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[5336],{1687:function(e){e.exports=JSON.parse('{"id":468,"name":"BooleanSchema","nextId":1414,"permalink":"/api/optimal/interface/BooleanSchema","previousId":392}')}}]);
