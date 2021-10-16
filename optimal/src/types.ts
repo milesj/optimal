@@ -232,6 +232,22 @@ export type Blueprint<T extends object> = { [K in keyof T]-?: Schema<T[K]> };
 
 export type Predicate<T> = (value: T | null | undefined) => boolean;
 
+// OPTIMAL
+
+export interface OptimalOptions {
+	/** Include a filename in validation error messages. Can be used in conjunction with
+  `name`. */
+	file?: string;
+	/** Include a unique identifier in validation error messages. Can be used in conjunction
+  with `file`. */
+	name?: string;
+	/** @internal */
+	prefix?: string;
+	/** Allow unknown fields to be passed within the object being validated. Otherwise, an error will
+  be thrown. */
+	unknown?: boolean;
+}
+
 // INFER
 
 export type InferFromObject<T> = { [K in keyof T]: Infer<T[K]> };

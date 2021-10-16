@@ -291,7 +291,7 @@ describe('Optimal', () => {
 				entry: 123,
 			});
 		}).toThrowErrorMatchingInlineSnapshot(`
-		"FooBar: The following validations have failed:
+		"The following validations have failed for \`FooBar\`:
 		  - Invalid field \\"entry\\". Received number but value must be one of: string, array<string>, object<string | array<string>>, function."
 	`);
 	});
