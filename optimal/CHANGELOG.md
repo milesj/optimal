@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+### 5.1.1 - 2021-10-16
+
+#### 🐞 Fixes
+
+- Improve optimal error message with name. ([bfdd104](https://github.com/milesj/optimal/commit/bfdd104))
+
+#### ⚙️ Types
+
+- **[instance]** Allow generic to be customized. ([0ea4958](https://github.com/milesj/optimal/commit/0ea4958))
+
+**Note:** Version bump only for package optimal
+
+
+
+
+
 ## 5.1.0 - 2021-10-10
 
 #### 🚀 Updates

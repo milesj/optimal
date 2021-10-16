@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+### 0.2.1 - 2021-10-16
+
+#### 📘 Docs
+
+- Fix broken favicon. ([c2942e2](https://github.com/milesj/optimal/commit/c2942e2))
+- Update API usage. ([5f881fa](https://github.com/milesj/optimal/commit/5f881fa))
+
+**Note:** Version bump only for package website
+
+
+
+
+
 ## 0.2.0 - 2021-10-10
 
 #### 🚀 Updates
